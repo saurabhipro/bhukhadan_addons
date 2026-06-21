@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="bhukhadan_core.SdmPipelineDashboard" owl="1">
+        <div class="o_group_dashboard o_sdm_pipeline_dashboard">
+            <!-- Dedicated header class avoids dashboards_unified_theme brown gradient on .dashboard-header -->
+            <div class="o_sdm_pd_header o_sdm_pd_header_compact">
+                <div class="container-fluid o_sdm_pd_header_inner px-2 py-1">
+                    <div class="o_sdm_pd_toolbar_row d-flex align-items-center gap-2">
+                        <div class="header-search-container o_sdm_pd_search flex-grow-1" style="min-width: 0;">
+                            <span class="input-group-text bg-transparent border-0 py-0">
+                                <i class="fa fa-search text-muted small"/>
+                            </span>
+                            <input type="text"
+                                   class="header-search-input border-0 py-1 px-2"
+                                   placeholder="Search district, sub division, tehsil, codes, patwari, mobile…"
+                                   t-on-input="onSearchInput"/>
+                        </div>
+                        <div class="o_sdm_pd_controls o_sdm_pd_controls_icon d-flex align-items-center gap-1 flex-shrink-0">
+                            <button type="button"
+                                    t-att-class="'btn btn-sm o_sdm_pd_icon_btn' + (state.showProjectPct ? ' active' : '')"
+                                    title="Show project completion %"
+                                    t-on-click="() => state.showProjectPct = !state.showProjectPct">
+                                <i class="fa fa-percent"/>
+                            </button>
+                            <button type="button"
+                                    t-att-class="'btn btn-sm o_sdm_pd_icon_btn' + (state.showVillagePct ? ' active' : '')"
+                                    title="Show village completion %"
+                                    t-on-click="() => state.showVillagePct = !state.showVillagePct">
+                                <i class="fa fa-pie-chart"/>
+                            </button>
+                            <button type="button" class="btn btn-sm o_sdm_pd_icon_btn" title="Expand all"
+                                    t-on-click="expandAllSubs">
+                                <i class="fa fa-expand"/>
+                            </button>
+                            <button type="button" class="btn btn-sm o_sdm_pd_icon_btn" title="Collapse all"
+                                    t-on-click="collapseAllSubs">
+                                <i class="fa fa-compress"/>
+                            </button>
+                            <button type="button" class="btn btn-sm o_sdm_pd_icon_btn o_sdm_pd_icon_btn_refresh" title="Refresh"
+                                    t-on-click="refresh">
+                                <i class="fa fa-refresh"/>
+                            </button>
+                            <t t-if="state.raw and state.raw.can_impersonate_collector"
+                               t-foreach="pipelineCollectors"
+                               t-as="col"
+                               t-key="col.id">
+                                <span class="o_sdm_pd_hdr_collector o_sdm_pd_hdr_collector_toolbar"
+                                      t-att-title="col.label">
+                                    <i class="fa fa-user-circle-o"/>
+                                    <span class="o_sdm_pd_collector_name" t-esc="col.label"/>
+                                </span>
+                                <button type="button"
+                                        class="o_sdm_pd_hdr_login_as o_sdm_pd_hdr_login_as_collector"
+                                        t-att-title="'Login as ' + col.label"
+                                        t-on-click.stop="() => this.loginAsCollector(col.id, col.label)">
+                                    <i class="fa fa-sign-in"/>
+                                </button>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div t-if="state.loading" class="text-center o_sdm_pd_loading">
+                <div class="o_sdm_pd_loading_ring"/>
+                <p class="mt-3 o_sdm_pd_loading_text">Loading subdivision portfolio…</p>
+            </div>
+
+            <div t-if="!state.loading" class="dashboard-content scrollable-dashboard pb-5">
+                <div class="container-fluid">
+                    <t t-if="filteredBlocks.length === 0">
+                        <div class="card border-0 shadow-sm o_sdm_pd_empty_card">
+                            <div class="card-body text-center py-5 empty-state-wrapper">
+                                <i class="fa fa-folder-open-o fa-3x mb-3 text-muted opacity-50"/>
+                                <h4 class="text-muted fw-bold">
+                                    <t t-if="state.searchTerm">No matches for your search</t>
+                                    <t t-else="">No sub divisions to show</t>
+                                </h4>
+                                <p class="text-muted mb-0 px-lg-5">
+                                    <t t-if="state.searchTerm">
+                                        Try another code or name, or clear the search box. If this project appears for admin but not here, check that you are the SDM on the sub division master and/or listed in the project’s SDM field.
+                                    </t>
+                                    <t t-else="">
+                                        Ensure projects list this sub division on the project form, and that your user is linked as SDM on the sub division master (for SDM login).
+                                    </t>
+                                </p>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-foreach="filteredBlocks" t-as="sd" t-key="sd.id">
+                        <t t-set="sdSum" t-value="sd.summary || {}"/>
+                        <div class="card border-0 shadow-sm mb-3 o_sdm_pd_sub_card">
+                            <div class="o_sdm_pd_sub_head_wrap"
+                                 role="button"
+                                 t-on-click="() => this.toggleSub(sd.id)">
+                                <div class="o_sdm_pd_sub_head_row d-flex align-items-center gap-2 py-1 px-2">
+                                    <button type="button" class="btn btn-sm o_sdm_pd_sub_chevron px-1 border-0"
+                                            t-on-click.stop="() => this.toggleSub(sd.id)"
+                                            t-att-aria-expanded="this.isSubExpanded(sd.id) ? 'true' : 'false'">
+                                        <i t-att-class="'fa ' + (this.isSubExpanded(sd.id) ? 'fa-chevron-down' : 'fa-chevron-right')"/>
+                                    </button>
+                                    <span class="o_sdm_pd_sub_loc_icon flex-shrink-0">
+                                        <i class="fa fa-map-marker"/>
+                                    </span>
+                                    <div class="o_sdm_pd_sub_title_wrap min-w-0 flex-shrink-1">
+                                        <strong class="o_sdm_pd_sub_title_text" t-esc="sd.name"/>
+                                        <span class="o_sdm_pd_sub_meta">
+                                            <t t-esc="sd.district_name"/> · <t t-esc="sd.state_name"/>
+                                        </span>
+                                    </div>
+                                    <div class="o_sdm_pd_sub_kpi_inline d-flex align-items-center gap-1 flex-shrink-1"
+                                         t-on-click.stop="">
+                                        <span class="o_sdm_pd_kpi_chip o_sdm_pd_kpi_chip_projects">
+                                            <i class="fa fa-briefcase"/>
+                                            <b t-esc="sdSum.project_count != null ? sdSum.project_count : sd.project_count"/>
+                                            <span class="o_sdm_pd_kpi_chip_lbl">Projects</span>
+                                        </span>
+                                        <span class="o_sdm_pd_kpi_chip o_sdm_pd_kpi_chip_villages">
+                                            <i class="fa fa-home"/>
+                                            <b t-esc="sdSum.village_count || 0"/>
+                                            <span class="o_sdm_pd_kpi_chip_lbl">Villages</span>
+                                        </span>
+                                        <span class="o_sdm_pd_kpi_chip o_sdm_pd_kpi_chip_tehsils">
+                                            <i class="fa fa-map"/>
+                                            <b t-esc="sdSum.tehsil_count || 0"/>
+                                            <span class="o_sdm_pd_kpi_chip_lbl">Tehsils</span>
+                                        </span>
+                                        <span class="o_sdm_pd_kpi_chip o_sdm_pd_kpi_chip_depts">
+                                            <i class="fa fa-building"/>
+                                            <b t-esc="sdSum.department_count || 0"/>
+                                            <span class="o_sdm_pd_kpi_chip_lbl">Departments</span>
+                                        </span>
+                                        <span class="o_sdm_pd_kpi_chip o_sdm_pd_kpi_chip_surveys">
+                                            <i class="fa fa-clipboard"/>
+                                            <b t-esc="sdSum.survey_count || 0"/>
+                                            <span class="o_sdm_pd_kpi_chip_lbl">Surveys</span>
+                                        </span>
+                                        <span class="o_sdm_pd_kpi_chip o_sdm_pd_kpi_chip_stage"
+                                              t-att-title="'Latest stage: ' + (sdSum.latest_section || '—')">
+                                            <i class="fa fa-flag-checkered"/>
+                                            <b class="o_sdm_pd_kpi_chip_stage_val" t-esc="sdSum.latest_section || '—'"/>
+                                            <span class="o_sdm_pd_kpi_chip_lbl">Latest stage</span>
+                                        </span>
+                                        <span class="o_sdm_pd_kpi_chip o_sdm_pd_kpi_chip_progress"
+                                              title="Average pipeline progress">
+                                            <i class="fa fa-line-chart"/>
+                                            <b><t t-esc="sdSum.avg_pipeline_pct || 0"/>%</b>
+                                            <span class="o_sdm_pd_kpi_chip_lbl">Progress</span>
+                                        </span>
+                                    </div>
+                                    <div class="o_sdm_pd_sub_actions d-flex align-items-center gap-1 flex-shrink-0 ms-auto"
+                                         t-on-click.stop="">
+                                        <span class="o_sdm_pd_hdr_sdrecord"
+                                              t-on-click.stop="() => this.openSubDivisionForm(sd.id)"
+                                              title="Open sub division record">
+                                            <i class="fa fa-external-link"/>
+                                        </span>
+                                        <span class="o_sdm_pd_hdr_sdm"
+                                              t-if="sd.sdm_user"
+                                              t-att-title="sd.sdm_user">
+                                            <i class="fa fa-user-circle"/>
+                                            <span class="dashboard-link o_sdm_pd_sdm_name" t-esc="sd.sdm_user"
+                                                  t-on-click.stop="() => this.openSdmUser(sd.sdm_user_id)"/>
+                                        </span>
+                                        <button type="button"
+                                                class="o_sdm_pd_hdr_login_as"
+                                                t-if="state.raw and state.raw.can_impersonate_sdm and sd.sdm_user_id"
+                                                title="Login as this SDM"
+                                                t-on-click.stop="() => this.loginAsSdm(sd.sdm_user_id, sd.sdm_user)">
+                                            <i class="fa fa-sign-in"/>
+                                        </button>
+                                        <span class="o_sdm_pd_hdr_collector"
+                                              t-if="sd.collector_user_id"
+                                              t-att-title="sd.collector_user">
+                                            <i class="fa fa-user-circle-o"/>
+                                            <span class="dashboard-link o_sdm_pd_collector_name" t-esc="sd.collector_user"
+                                                  t-on-click.stop="() => this.openCollectorUser(sd.collector_user_id)"/>
+                                        </span>
+                                        <button type="button"
+                                                class="o_sdm_pd_hdr_login_as o_sdm_pd_hdr_login_as_collector"
+                                                t-if="state.raw and state.raw.can_impersonate_collector and sd.collector_user_id"
+                                                t-att-title="'Login as ' + (sd.collector_user || 'Collector')"
+                                                t-on-click.stop="() => this.loginAsCollector(sd.collector_user_id, sd.collector_user)">
+                                            <i class="fa fa-sign-in"/>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div t-if="this.isSubExpanded(sd.id)" class="card-body pt-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle mb-0 o_sdm_pd_proj_table">
+                                        <thead class="o_sdm_pd_proj_thead">
+                                            <tr>
+                                                <th class="text-center" style="width:36px"/>
+                                                <th class="text-start"><i class="fa fa-map-marker me-1"/>District</th>
+                                                <th class="text-start"><i class="fa fa-sitemap me-1"/>Sub division</th>
+                                                <th class="text-start"><i class="fa fa-map me-1"/>Tehsil</th>
+                                                <th class="text-start"><i class="fa fa-building me-1"/>Department</th>
+                                                <th class="text-start"><i class="fa fa-briefcase me-1"/>Project</th>
+                                                <th class="text-start"><i class="fa fa-home me-1"/>Villages</th>
+                                                <th class="text-start"><i class="fa fa-clipboard me-1"/>Surveys</th>
+                                                <th class="text-start">Pipeline</th>
+                                                <th t-if="state.showProjectPct" class="text-start">%</th>
+                                                <th class="text-center" style="width:56px"/>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="sd.projects" t-as="proj" t-key="proj.id">
+                                                <tr class="project-row">
+                                                    <td class="text-center">
+                                                        <button type="button" class="btn btn-sm btn-light border"
+                                                                t-on-click="() => this.toggleProject(sd.id, proj.id)"
+                                                                t-att-disabled="!(proj.villages || []).length">
+                                                            <i t-att-class="'fa fa-fw ' + (this.isProjectExpanded(sd.id, proj.id) ? 'fa-chevron-down' : 'fa-chevron-right')"/>
+                                                        </button>
+                                                    </td>
+                                                    <td class="text-start align-middle o_sdm_pd_dist_cell">
+                                                        <div class="o_sdm_pd_cell_chip d-inline-flex align-items-center justify-content-start flex-wrap gap-1">
+                                                            <i class="fa fa-map-marker text-secondary o_sdm_pd_col_ic" title="District"/>
+                                                            <small class="mb-0 text-start" t-esc="proj.district || '—'"/>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-start align-middle o_sdm_pd_subdiv_cell">
+                                                        <div class="o_sdm_pd_cell_chip d-inline-flex align-items-center justify-content-start flex-wrap gap-1">
+                                                            <i class="fa fa-sitemap text-secondary o_sdm_pd_col_ic" title="Sub division"/>
+                                                            <small class="mb-0 text-start" style="max-width: 14rem;" t-esc="proj.sub_division || '—'"/>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-start align-middle o_sdm_pd_tehsil_cell">
+                                                        <div class="o_sdm_pd_cell_chip d-inline-flex align-items-center justify-content-start flex-wrap gap-1">
+                                                            <i class="fa fa-map text-secondary o_sdm_pd_col_ic" title="Tehsil"/>
+                                                            <small class="mb-0 text-start" style="max-width: 14rem;" t-esc="proj.tehsil || '—'"/>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-start align-middle o_sdm_pd_dept_cell">
+                                                        <div class="o_sdm_pd_cell_chip o_sdm_pd_dept_chip d-inline-flex align-items-center justify-content-start flex-wrap gap-2">
+                                                            <div class="o_sdm_pd_dept_logo_slot flex-shrink-0">
+                                                                <img t-if="proj.department_id and proj.department_has_logo"
+                                                                     class="o_sdm_pd_dept_logo rounded border bg-white"
+                                                                     loading="lazy"
+                                                                     decoding="async"
+                                                                     t-att-alt="proj.department || ''"
+                                                                     t-att-src="this.departmentLogoSrc(proj.department_id)"/>
+                                                                <div t-if="!(proj.department_id and proj.department_has_logo)"
+                                                                     class="o_sdm_pd_dept_logo_placeholder rounded border bg-light d-flex align-items-center justify-content-center">
+                                                                    <i t-att-class="this.deptPlaceholderIcon(proj)"/>
+                                                                </div>
+                                                            </div>
+                                                            <small class="mb-0 d-inline-block text-start align-middle"
+                                                                   style="max-width: 18rem;"
+                                                                   t-esc="proj.department || '—'"/>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-start align-middle o_sdm_pd_proj_cell">
+                                                        <div class="o_sdm_pd_cell_chip d-flex align-items-center gap-2 min-w-0">
+                                                            <span class="badge bg-secondary o_sdm_pd_code_badge flex-shrink-0" t-esc="proj.code || '—'"/>
+                                                            <span class="d-inline-flex align-items-center gap-1 min-w-0 flex-grow-1">
+                                                                <i class="fa fa-briefcase text-primary o_sdm_pd_col_ic flex-shrink-0" title="Project"/>
+                                                                <strong class="dashboard-link text-primary mb-0 text-truncate o_sdm_pd_proj_name"
+                                                                        role="button"
+                                                                        t-att-title="proj.name"
+                                                                        t-on-click="() => this.openProjectForm(proj.id)"
+                                                                        t-esc="proj.name"/>
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-start align-middle">
+                                                        <span class="badge bg-info rounded-pill o_sdm_pd_village_count_badge">
+                                                            <i class="fa fa-home"/>
+                                                            <t t-esc="proj.village_count"/>
+                                                        </span>
+                                                    </td>
+                                                    <td class="text-start align-middle">
+                                                        <span role="button"
+                                                              title="Open surveys for this project"
+                                                              t-attf-class="badge rounded-pill o_sdm_pd_survey_count_badge o_sdm_pd_survey_link #{this.surveyBadgeClass(proj.survey_count)}"
+                                                              t-on-click.stop="() => this.openProjectSurveys(proj.id)">
+                                                            <i class="fa fa-clipboard"/>
+                                                            <t t-esc="proj.survey_count || 0"/>
+                                                        </span>
+                                                    </td>
+                                                    <td class="bhu-gdash-stage-cell text-start align-middle o_sdm_pd_stage_cell">
+                                                        <div class="bhu-gdash-stage-dots">
+                                                            <t t-foreach="this.normalizeDots(proj.dots)" t-as="dot" t-key="dot.id">
+                                                                <span role="button"
+                                                                      t-att-title="this.stageDotTitle(dot)"
+                                                                      t-attf-class="bhu-stage-dot bhu-stage-dot--labeled o_sdm_pd_stage_dot #{dot.kind}"
+                                                                      t-on-click.stop="() => this.openPipelineStage(dot.id, proj.id, null, dot.kind)">
+                                                                    <t t-esc="dot.short_label"/>
+                                                                </span>
+                                                            </t>
+                                                        </div>
+                                                    </td>
+                                                    <td t-if="state.showProjectPct" class="text-start align-middle">
+                                                        <span t-attf-class="badge rounded-pill fw-semibold o_sdm_pd_pct_pill #{this.pctTone(proj.pipeline_pct)}">
+                                                            <t t-esc="proj.pipeline_pct"/>%
+                                                        </span>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <button type="button" class="btn btn-sm btn-outline-primary py-0 px-2 o_sdm_pd_docvault_btn"
+                                                                title="Open Doc Vault Viewer in a new browser tab"
+                                                                t-on-click.stop="() => this.openDocViewerInNewTab(proj.id)">
+                                                            <i class="fa fa-folder-open-o"/>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <tr t-if="this.isProjectExpanded(sd.id, proj.id)" class="o_sdm_pd_village_row">
+                                                    <td t-att-colspan="state.showProjectPct ? 11 : 10" class="p-0 border-0">
+                                                        <div class="o_sdm_pd_village_panel">
+                                                            <div class="o_sdm_pd_village_panel_head">
+                                                                <i class="fa fa-home"/>
+                                                                Villages on this project
+                                                            </div>
+                                                            <div class="table-responsive">
+                                                                <table class="table table-sm mb-0 o_sdm_pd_village_table">
+                                                                    <thead class="table-light">
+                                                                        <tr>
+                                                                            <th class="text-start">Code</th>
+                                                                            <th class="text-start"><i class="fa fa-home me-1"/>Village</th>
+                                                                            <th class="text-start"><i class="fa fa-clipboard me-1"/>Surveys</th>
+                                                                            <th class="text-start"><i class="fa fa-user me-1"/>Patwari</th>
+                                                                            <th class="text-start"><i class="fa fa-phone me-1"/>Mobile</th>
+                                                                            <th class="text-start">Pipeline</th>
+                                                                            <th t-if="state.showVillagePct" class="text-start">%</th>
+                                                                            <th/>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <t t-if="!(proj.villages || []).length">
+                                                                            <tr>
+                                                                                <td t-att-colspan="state.showVillagePct ? 8 : 7" class="text-muted text-start py-3">
+                                                                                    No villages linked on this project.
+                                                                                </td>
+                                                                            </tr>
+                                                                        </t>
+                                                                        <t t-foreach="proj.villages || []" t-as="vil" t-key="vil.id">
+                                                                            <tr>
+                                                                                <td class="text-start align-middle">
+                                                                                    <span class="badge bg-secondary o_sdm_pd_code_badge" t-esc="vil.code || '—'"/>
+                                                                                </td>
+                                                                                <td class="text-start align-middle">
+                                                                                    <div class="o_sdm_pd_cell_chip d-inline-flex align-items-center justify-content-start flex-wrap gap-1">
+                                                                                        <i class="fa fa-home text-primary o_sdm_pd_col_ic" title="Village"/>
+                                                                                        <span class="dashboard-link text-primary fw-semibold mb-0"
+                                                                                              role="button"
+                                                                                              t-on-click="() => this.openVillageForm(vil.id)"
+                                                                                              t-esc="vil.name"/>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="text-start align-middle">
+                                                                                    <span role="button"
+                                                                                          title="Open surveys for this village"
+                                                                                          t-attf-class="badge rounded-pill o_sdm_pd_survey_count_badge o_sdm_pd_survey_link #{this.surveyBadgeClass(vil.survey_count)}"
+                                                                                          t-on-click.stop="() => this.openVillageSurveys(proj.id, vil.id)">
+                                                                                        <i class="fa fa-clipboard"/>
+                                                                                        <t t-esc="vil.survey_count || 0"/>
+                                                                                    </span>
+                                                                                </td>
+                                                                                <td class="text-start align-middle"><small class="text-dark d-inline-block text-start" style="max-width:12rem;" t-esc="vil.patwari_name || '—'"/></td>
+                                                                                <td class="text-start align-middle"><small class="text-muted text-nowrap d-inline-block" t-esc="vil.patwari_mobile || '—'"/></td>
+                                                                                <td class="bhu-gdash-stage-cell text-start align-middle o_sdm_pd_stage_cell">
+                                                                                    <div class="bhu-gdash-stage-dots">
+                                                                                        <t t-foreach="this.normalizeDots(vil.dots)" t-as="dot" t-key="dot.id">
+                                                                                            <span role="button"
+                                                                                                  t-att-title="this.stageDotTitle(dot)"
+                                                                                                  t-attf-class="bhu-stage-dot bhu-stage-dot--labeled o_sdm_pd_stage_dot #{dot.kind}"
+                                                                                                  t-on-click.stop="() => this.openPipelineStage(dot.id, proj.id, vil.id, dot.kind)">
+                                                                                                <t t-esc="dot.short_label"/>
+                                                                                            </span>
+                                                                                        </t>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td t-if="state.showVillagePct" class="text-start align-middle">
+                                                                                    <span t-attf-class="badge rounded-pill fw-semibold o_sdm_pd_pct_pill #{this.pctTone(vil.pipeline_pct)}">
+                                                                                        <t t-esc="vil.pipeline_pct"/>%
+                                                                                    </span>
+                                                                                </td>
+                                                                                <td class="text-center">
+                                                                                    <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2"
+                                                                                            t-on-click="() => this.openVillageForm(vil.id)">
+                                                                                        <i class="fa fa-home"/>
+                                                                                    </button>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </t>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

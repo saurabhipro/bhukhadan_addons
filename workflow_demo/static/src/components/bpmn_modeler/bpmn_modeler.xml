@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="bhuarjan_cba_core.BpmnModelerField">
+        <div class="o_cba_bpmn_modeler_wrapper w-100">
+            <div t-if="!workflowId" class="alert alert-info m-2">
+                Save the workflow record first, then open it again to design the BPMN diagram.
+            </div>
+            <div t-if="workflowId" class="o_cba_bpmn_toolbar d-flex flex-wrap gap-2 p-2 border-bottom bg-light">
+                <button type="button" class="btn btn-primary btn-sm"
+                        t-on-click.stop="saveDiagram"
+                        t-att-disabled="state.saving or state.loading">
+                    <i class="fa fa-save me-1"/>
+                    <t t-if="state.saving">Saving…</t>
+                    <t t-else="">Save Diagram</t>
+                </button>
+                <button type="button" class="btn btn-secondary btn-sm"
+                        t-on-click.stop="syncNodesAndTransfers"
+                        t-att-disabled="state.syncing or state.loading or state.importing">
+                    <i class="fa fa-refresh me-1"/>
+                    <t t-if="state.syncing">Syncing…</t>
+                    <t t-else="">Sync Nodes &amp; Transfers</t>
+                </button>
+                <button type="button" class="btn btn-outline-secondary btn-sm"
+                        t-on-click.stop="downloadBpmn"
+                        t-att-disabled="state.loading">
+                    <i class="fa fa-download me-1"/>Download BPMN
+                </button>
+                <button type="button" class="btn btn-outline-secondary btn-sm"
+                        t-on-click.stop="downloadSvg"
+                        t-att-disabled="state.loading">
+                    <i class="fa fa-file-image-o me-1"/>Download SVG
+                </button>
+                <label class="btn btn-outline-secondary btn-sm mb-0"
+                       t-att-class="{ 'disabled': state.loading or state.importing }">
+                    <i class="fa fa-upload me-1"/>
+                    <t t-if="state.importing">Importing…</t>
+                    <t t-else="">Import BPMN</t>
+                    <input type="file" accept=".bpmn,.xml,application/xml,text/xml"
+                           class="d-none" t-ref="fileInput" t-on-change.stop="onFileSelected"/>
+                </label>
+                <span t-if="state.dirty" class="badge bg-warning text-dark align-self-center ms-auto">
+                    Unsaved changes
+                </span>
+            </div>
+            <div t-if="state.loading" class="o_cba_bpmn_loading text-muted p-3">
+                <i class="fa fa-spinner fa-spin me-2"/>Loading BPMN designer…
+            </div>
+            <div t-if="state.error" class="alert alert-danger m-2" role="alert">
+                <t t-esc="state.error"/>
+            </div>
+            <div class="o_cba_bpmn_modeler_canvas" t-ref="bpmnContainer"/>
+        </div>
+    </t>
+</templates>

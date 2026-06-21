@@ -1,0 +1,1039 @@
+/* SDM Pipeline Dashboard — vivid earthy theme (brown · amber · cream) */
+
+.o_sdm_pipeline_dashboard {
+    --sdm-brown-900: #2d1a0c;
+    --sdm-brown-800: #3d2512;
+    --sdm-brown-700: #5c381f;
+    --sdm-brown-600: #6b3410;
+    --sdm-brown-500: #8b4513;
+    --sdm-amber-500: #d97706;
+    --sdm-amber-400: #f59e0b;
+    --sdm-cream-100: #fffefb;
+    --sdm-cream-200: #faf6f0;
+    --sdm-cream-300: #efe6dc;
+    --sdm-green: #16a34a;
+    --sdm-shadow: 0 8px 32px rgba(45, 26, 12, 0.12);
+    --sdm-shadow-sm: 0 4px 16px rgba(45, 26, 12, 0.08);
+    background: #f0ebe3;
+    min-height: 100vh;
+}
+
+/* ── Header (compact: search + icon controls) ── */
+.o_sdm_pipeline_dashboard .o_sdm_pd_header {
+    background: #fff;
+    border: 1px solid #e5ddd4 !important;
+    border-radius: 10px;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 1px 4px rgba(45, 26, 12, 0.06);
+    position: relative;
+    overflow: visible;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_header::before {
+    display: none;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_header_inner {
+    position: relative;
+    z-index: 1;
+    padding-top: 0.35rem !important;
+    padding-bottom: 0.35rem !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_toolbar_row {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #fff !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_subtitle {
+    font-size: 0.72rem;
+    line-height: 1.35;
+    color: rgba(255, 248, 240, 0.78) !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_title_icon {
+    font-size: 1.15rem;
+    line-height: 1;
+    color: #fcd34d !important;
+    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.3));
+}
+
+/* KPI stat chips */
+.o_sdm_pipeline_dashboard .o_sdm_pd_pills {
+    gap: 0.45rem !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_kpi {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.35rem;
+    min-height: 1.85rem;
+    line-height: 1 !important;
+    padding: 0.25rem 0.65rem !important;
+    font-size: 0.72rem;
+    font-weight: 700;
+    vertical-align: middle;
+    background: rgba(255, 255, 255, 0.12) !important;
+    color: #fff !important;
+    border: 1px solid rgba(255, 248, 240, 0.22) !important;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_kpi:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_kpi_ic {
+    font-size: 0.7rem;
+    line-height: 1;
+    opacity: 0.9;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_kpi_accent {
+    background: rgba(34, 197, 94, 0.3) !important;
+    border-color: rgba(134, 239, 172, 0.45) !important;
+    color: #ecfdf5 !important;
+}
+
+/* Pipeline % pills — color-coded */
+.o_sdm_pipeline_dashboard .o_sdm_pd_pct_pill {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 3rem;
+    min-height: 1.55rem;
+    line-height: 1 !important;
+    padding: 0.2rem 0.55rem !important;
+    font-size: 0.75rem;
+    font-weight: 700;
+    vertical-align: middle;
+    border-radius: 999px !important;
+    border: none !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.15s ease;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_pct_pill:hover {
+    transform: scale(1.05);
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_pct_high {
+    background: linear-gradient(135deg, #22c55e, #15803d) !important;
+    color: #fff !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_pct_mid {
+    background: linear-gradient(135deg, #fbbf24, #d97706) !important;
+    color: #3d2512 !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_pct_low {
+    background: linear-gradient(135deg, #fb923c, #ea580c) !important;
+    color: #fff !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_pct_zero {
+    background: #f3f4f6 !important;
+    color: #9ca3af !important;
+    box-shadow: none;
+}
+
+/* Toolbar controls */
+.o_sdm_pipeline_dashboard .o_sdm_pd_btns .btn {
+    padding: 0.28rem 0.52rem;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 248, 240, 0.25) !important;
+    color: #fff !important;
+    transition: all 0.2s ease;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_btns .btn:hover {
+    background: rgba(255, 255, 255, 0.22) !important;
+    transform: translateY(-1px);
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_btns .btn-outline-primary {
+    background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+    border: none !important;
+    color: #3d2512 !important;
+    font-weight: 600;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_header .header-search-container,
+.o_sdm_pipeline_dashboard .o_sdm_pd_search.header-search-container {
+    display: flex !important;
+    align-items: center !important;
+    background: #f8f6f3 !important;
+    border-radius: 8px !important;
+    height: 32px !important;
+    max-width: none !important;
+    padding: 0 8px !important;
+    border: 1px solid #e5ddd4 !important;
+    box-shadow: none !important;
+    transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_header .header-search-container:focus-within,
+.o_sdm_pipeline_dashboard .o_sdm_pd_search.header-search-container:focus-within {
+    border-color: #c87941 !important;
+    background: #fff !important;
+    box-shadow: 0 0 0 2px rgba(200, 121, 65, 0.2) !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_icon_btn {
+    width: 30px;
+    height: 30px;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px !important;
+    border: 1px solid #e5ddd4 !important;
+    background: #fff !important;
+    color: #78716c !important;
+    line-height: 1;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_icon_btn:hover {
+    background: #f8f6f3 !important;
+    color: #5c381f !important;
+    border-color: #d6cfc4 !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_icon_btn.active {
+    background: #efe6dc !important;
+    color: #6b3410 !important;
+    border-color: #c87941 !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_icon_btn_refresh {
+    color: #8b4513 !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_icon_btn_refresh:hover {
+    color: #5c381f !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_header .header-search-container .input-group-text {
+    background: transparent !important;
+    color: #8b4513 !important;
+    padding: 0 8px !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_header .header-search-input {
+    font-size: 0.8125rem !important;
+    font-weight: 500 !important;
+    line-height: 1.25 !important;
+    color: #3d2512 !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_switch.form-check {
+    padding-left: 2.35rem;
+    min-height: 0;
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 0 !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_switch .form-check-input {
+    width: 1.85rem;
+    height: 1rem;
+    margin-top: 0 !important;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_switch .form-check-input:checked {
+    background-color: #22c55e;
+    border-color: #16a34a;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_switch_label {
+    font-size: 0.7rem;
+    color: rgba(255, 248, 240, 0.92);
+    padding-left: 0.15rem;
+    white-space: nowrap;
+    line-height: 1.2 !important;
+    font-weight: 600;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_legend {
+    border-top: 1px solid rgba(255, 248, 240, 0.12);
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_legend_labels {
+    font-size: 0.68rem;
+    color: rgba(255, 248, 240, 0.85) !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_legend_labels .fw-semibold {
+    color: #fcd34d !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_legend_dots {
+    font-size: 0.68rem;
+    color: rgba(255, 248, 240, 0.78);
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_legend_dot {
+    width: 9px !important;
+    height: 9px !important;
+}
+
+/* Loading */
+.o_sdm_pipeline_dashboard .o_sdm_pd_loading {
+    padding: 4rem 1rem;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_loading_ring {
+    width: 52px;
+    height: 52px;
+    border: 4px solid rgba(139, 69, 19, 0.15);
+    border-top-color: #8b4513;
+    border-radius: 50%;
+    animation: o_sdm_pd_spin 0.85s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes o_sdm_pd_spin {
+    to { transform: rotate(360deg); }
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_loading_text {
+    color: #6b3410;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* Content scroll */
+.o_sdm_pipeline_dashboard.scrollable-dashboard,
+.o_sdm_pipeline_dashboard .scrollable-dashboard {
+    scrollbar-width: thin;
+    scrollbar-color: #8b4513 #f0ebe3;
+}
+
+/* ── Sub-division cards ── */
+.o_sdm_pipeline_dashboard .o_sdm_pd_sub_card {
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(107, 52, 16, 0.18);
+    box-shadow: var(--sdm-shadow-sm);
+    background: var(--sdm-cream-100);
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+    animation: o_sdm_pd_fade_up 0.45s ease both;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_sub_card:hover {
+    box-shadow: var(--sdm-shadow);
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_sub_card:nth-child(1) { animation-delay: 0.05s; }
+.o_sdm_pipeline_dashboard .o_sdm_pd_sub_card:nth-child(2) { animation-delay: 0.1s; }
+.o_sdm_pipeline_dashboard .o_sdm_pd_sub_card:nth-child(3) { animation-delay: 0.15s; }
+.o_sdm_pipeline_dashboard .o_sdm_pd_sub_card:nth-child(4) { animation-delay: 0.2s; }
+.o_sdm_pipeline_dashboard .o_sdm_pd_sub_card:nth-child(5) { animation-delay: 0.25s; }
+.o_sdm_pipeline_dashboard .o_sdm_pd_sub_card:nth-child(n+6) { animation-delay: 0.3s; }
+
+@keyframes o_sdm_pd_fade_up {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Sub-division header: one line, white */
+.o_sdm_pipeline_dashboard .o_sdm_pd_sub_head_wrap {
+    border: none !important;
+    background: #fff !important;
+    border-bottom: 1px solid #e8e0d6 !important;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_sub_head_wrap::before {
+    display: none;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_sub_head_wrap:hover {
+    background: #fafafa !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_sub_head_row {
+    min-height: 3.25rem;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_sub_title_wrap {
+    display: flex;
+    align-items: baseline;
+    gap: 0.35rem;
+    flex-wrap: nowrap;
+    overflow: hidden;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_sub_title_text {
+    color: #3b2414 !important;
+    letter-spacing: -0.02em;
+    font-size: 0.9rem;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_sub_meta {
+    color: #a8a29e !important;
+    font-weight: 500;
+    font-size: 0.72rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_sub_kpi_inline {
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    flex-wrap: nowrap;
+    gap: 0.35rem !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_sub_kpi_inline::-webkit-scrollbar {
+    display: none;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_kpi_chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.36rem;
+    padding: 0.23rem 0.65rem;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    line-height: 1.56;
+    white-space: nowrap;
+    border: 1px solid transparent;
+    min-height: 1.85rem;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_kpi_chip i {
+    font-size: 0.91rem;
+    flex-shrink: 0;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_kpi_chip b {
+    font-weight: 800;
+    font-size: 0.96rem;
+    flex-shrink: 0;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_kpi_chip_lbl {
+    font-size: 0.85rem;
+    font-weight: 600;
+    opacity: 0.92;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_kpi_chip_projects {
+    background: #fff7ed;
+    border-color: #fed7aa;
+    color: #9a3412;
+}
+.o_sdm_pipeline_dashboard .o_sdm_pd_kpi_chip_projects i { color: #ea580c; }
+.o_sdm_pipeline_dashboard .o_sdm_pd_kpi_chip_projects b { color: #c2410c; }
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_kpi_chip_villages {
+    background: #ecfeff;
+    border-color: #a5f3fc;
+    color: #155e75;
+}
+.o_sdm_pipeline_dashboard .o_sdm_pd_kpi_chip_villages i { color: #0891b2; }
+.o_sdm_pipeline_dashboard .o_sdm_pd_kpi_chip_villages b { color: #0e7490; }
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_kpi_chip_tehsils {
+    background: #f5f3ff;
+    border-color: #ddd6fe;
+    color: #5b21b6;
+}
+.o_sdm_pipeline_dashboard .o_sdm_pd_kpi_chip_tehsils i { color: #7c3aed; }
+.o_sdm_pipeline_dashboard .o_sdm_pd_kpi_chip_tehsils b { color: #6d28d9; }
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_kpi_chip_depts {
+    background: #faf5f0;
+    border-color: #e7d5c4;
+    color: #6b3410;
+}
+.o_sdm_pipeline_dashboard .o_sdm_pd_kpi_chip_depts i { color: #8b4513; }
+.o_sdm_pipeline_dashboard .o_sdm_pd_kpi_chip_depts b { color: #5c381f; }
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_kpi_chip_surveys {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+    color: #166534;
+}
+.o_sdm_pipeline_dashboard .o_sdm_pd_kpi_chip_surveys i { color: #16a34a; }
+.o_sdm_pipeline_dashboard .o_sdm_pd_kpi_chip_surveys b { color: #15803d; }
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_kpi_chip_stage {
+    background: #fef3c7;
+    border-color: #fde68a;
+    color: #92400e;
+}
+.o_sdm_pipeline_dashboard .o_sdm_pd_kpi_chip_stage i { color: #d97706; }
+.o_sdm_pipeline_dashboard .o_sdm_pd_kpi_chip_stage .o_sdm_pd_kpi_chip_stage_val {
+    font-size: 0.94rem;
+    max-width: 7.15rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #b45309;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_kpi_chip_progress {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+    color: #1e40af;
+}
+.o_sdm_pipeline_dashboard .o_sdm_pd_kpi_chip_progress i { color: #2563eb; }
+.o_sdm_pipeline_dashboard .o_sdm_pd_kpi_chip_progress b { color: #1d4ed8; }
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_sub_loc_icon {
+    background: #8b4513 !important;
+    border: none;
+    box-shadow: none;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_sub_loc_icon {
+    width: 1.65rem;
+    height: 1.65rem;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_sub_chevron {
+    background: transparent !important;
+    color: #8b4513 !important;
+    border: none !important;
+    border-radius: 6px !important;
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0 !important;
+    transition: background 0.15s ease;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_sub_chevron:hover {
+    transform: scale(1.06);
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_hdr_sdrecord,
+.o_sdm_pipeline_dashboard .o_sdm_pd_hdr_sdm,
+.o_sdm_pipeline_dashboard .o_sdm_pd_hdr_collector,
+.o_sdm_pipeline_dashboard .o_sdm_pd_hdr_login_as {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 1.65rem;
+    height: 1.65rem;
+    padding: 0 !important;
+    border-radius: 6px !important;
+    border: 1px solid #e8e0d6 !important;
+    background: #fff !important;
+    color: #78716c !important;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_hdr_sdrecord:hover {
+    color: #6b3410 !important;
+    border-color: #c87941 !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_hdr_sdm {
+    width: auto;
+    max-width: min(140px, 28vw);
+    padding: 0 0.35rem !important;
+    gap: 0.2rem;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_hdr_sdm .dashboard-link,
+.o_sdm_pipeline_dashboard .o_sdm_pd_sdm_name {
+    color: #6b3410 !important;
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.68rem;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_hdr_sdm .dashboard-link:hover {
+    text-decoration: underline;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_hdr_sdm .fa-user-circle {
+    color: #c87941 !important;
+    flex-shrink: 0;
+    font-size: 0.85rem;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_hdr_collector {
+    width: auto;
+    max-width: min(160px, 32vw);
+    padding: 0 0.35rem !important;
+    gap: 0.2rem;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_hdr_collector_toolbar {
+    max-width: min(180px, 40vw);
+    margin-left: 0.25rem;
+    border-color: rgba(37, 99, 235, 0.25) !important;
+    background: #eff6ff !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_hdr_collector .dashboard-link,
+.o_sdm_pipeline_dashboard .o_sdm_pd_collector_name {
+    color: #1d4ed8 !important;
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.68rem;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_hdr_collector .dashboard-link:hover {
+    text-decoration: underline;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_hdr_collector .fa-user-circle-o {
+    color: #3b82f6 !important;
+    flex-shrink: 0;
+    font-size: 0.85rem;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_hdr_login_as {
+    color: #16a34a !important;
+    border-color: rgba(22, 163, 74, 0.35) !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_hdr_login_as:hover {
+    background: #f0fdf4 !important;
+    border-color: #16a34a !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_hdr_login_as_collector {
+    color: #2563eb !important;
+    border-color: rgba(37, 99, 235, 0.35) !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_hdr_login_as_collector:hover {
+    background: #eff6ff !important;
+    border-color: #2563eb !important;
+}
+
+
+/* ── Project table ── */
+.o_sdm_pipeline_dashboard .o_sdm_pd_proj_table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_proj_table thead.o_sdm_pd_proj_thead th {
+    vertical-align: middle;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #fff !important;
+    white-space: nowrap;
+    border: none !important;
+    background: #5c381f !important;
+    padding: 0.65rem 0.5rem !important;
+    box-shadow: 0 2px 8px rgba(45, 26, 12, 0.15);
+    transition: background 0.15s ease;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_proj_table thead.o_sdm_pd_proj_thead th:hover {
+    background: #6b4528 !important;
+    color: #fff !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_proj_table thead.o_sdm_pd_proj_thead th:first-child {
+    border-top-left-radius: 10px;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_proj_table thead.o_sdm_pd_proj_thead th:last-child {
+    border-top-right-radius: 10px;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_proj_table thead.o_sdm_pd_proj_thead th .fa {
+    color: #fcd34d !important;
+    opacity: 0.95;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_proj_table tbody tr.project-row {
+    transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_proj_table tbody tr.project-row:hover {
+    background: linear-gradient(90deg, rgba(200, 121, 65, 0.06), rgba(255, 255, 255, 0)) !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_proj_table tbody tr.project-row td {
+    border-color: rgba(107, 52, 16, 0.08) !important;
+    padding: 0.55rem 0.45rem !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_proj_table .btn-light.border {
+    border-radius: 8px !important;
+    border-color: rgba(139, 69, 19, 0.25) !important;
+    color: #8b4513 !important;
+    background: #fff !important;
+    transition: all 0.2s ease;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_proj_table .btn-light.border:hover:not(:disabled) {
+    background: #fff8f0 !important;
+    transform: scale(1.08);
+    box-shadow: 0 2px 8px rgba(139, 69, 19, 0.2);
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_proj_table .btn-outline-primary {
+    border-radius: 8px !important;
+    background: linear-gradient(135deg, #8b4513, #6b3410) !important;
+    border: none !important;
+    color: #fff !important;
+    transition: transform 0.15s ease;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_proj_table .btn-outline-primary:hover {
+    transform: translateX(2px);
+    filter: brightness(1.08);
+}
+
+/* Stage dots — enhanced for this dashboard */
+.o_sdm_pipeline_dashboard .bhu-gdash-stage-cell {
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.15s ease;
+}
+
+.o_sdm_pipeline_dashboard .bhu-gdash-stage-cell:hover {
+    background: rgba(139, 69, 19, 0.06);
+}
+
+.o_sdm_pipeline_dashboard .bhu-gdash-stage-dots {
+    gap: 4px !important;
+}
+
+.o_sdm_pipeline_dashboard .bhu-stage-dot.active {
+    animation: o_sdm_pd_dot_pulse 2s ease-in-out infinite;
+}
+
+@keyframes o_sdm_pd_dot_pulse {
+    0%, 100% { box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.32); }
+    50% { box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.25); }
+}
+
+.o_sdm_pipeline_dashboard .bhu-gdash-stage-cell:hover .bhu-stage-dot {
+    filter: brightness(1.1);
+    transform: scale(1.08);
+}
+
+.o_sdm_pipeline_dashboard .bhu-gdash-stage-dots .bhu-stage-dot {
+    transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+/* Badges & chips */
+.o_sdm_pipeline_dashboard .o_sdm_pd_code_badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 2.1rem;
+    min-height: 1.4rem;
+    line-height: 1 !important;
+    vertical-align: middle;
+    background: linear-gradient(135deg, #78716c, #57534e) !important;
+    font-weight: 700;
+    font-size: 0.72rem;
+    border-radius: 6px !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_village_count_badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.3rem;
+    min-height: 1.55rem;
+    padding: 0.22rem 0.6rem !important;
+    font-weight: 700;
+    line-height: 1 !important;
+    background: linear-gradient(135deg, #06b6d4, #0891b2) !important;
+    border: none !important;
+    box-shadow: 0 3px 10px rgba(8, 145, 178, 0.3);
+    color: #fff !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_survey_link {
+    cursor: pointer;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_stage_dot {
+    cursor: pointer;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_stage_dot:hover {
+    transform: scale(1.12);
+    filter: brightness(1.05);
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_survey_count_badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.3rem;
+    min-width: 2.5rem;
+    min-height: 1.55rem;
+    padding: 0.22rem 0.55rem !important;
+    font-weight: 700;
+    line-height: 1 !important;
+    border-radius: 999px !important;
+    transition: transform 0.15s ease;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_survey_count_badge:hover {
+    transform: scale(1.06);
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_docvault_btn {
+    border-color: #8b4513 !important;
+    color: #5c381f !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_docvault_btn:hover {
+    background: #8b4513 !important;
+    border-color: #8b4513 !important;
+    color: #fff !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_survey_hot {
+    background: linear-gradient(135deg, #f59e0b, #ea580c) !important;
+    color: #fff !important;
+    border: none !important;
+    box-shadow: 0 3px 12px rgba(234, 88, 12, 0.4);
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_survey_warm {
+    background: linear-gradient(135deg, #fcd34d, #f59e0b) !important;
+    color: #3d2512 !important;
+    border: none !important;
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.35);
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_survey_empty {
+    background: #f3f4f6 !important;
+    color: #9ca3af !important;
+    border: 1px dashed #d1d5db !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_col_ic {
+    flex-shrink: 0;
+    opacity: 0.92;
+    font-size: 0.88rem;
+    line-height: 1;
+}
+
+.o_sdm_pipeline_dashboard td.bhu-gdash-stage-cell .bhu-gdash-stage-dots {
+    justify-content: flex-start !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_proj_cell {
+    max-width: 16rem;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_proj_cell .o_sdm_pd_cell_chip {
+    max-width: 100%;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_proj_name {
+    display: inline-block;
+    max-width: 10rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_proj_cell .dashboard-link {
+    cursor: pointer;
+    transition: color 0.15s ease;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_proj_cell .dashboard-link:hover {
+    color: #c87941 !important;
+    text-decoration: underline;
+}
+
+/* Department logo */
+.o_sdm_pipeline_dashboard .o_sdm_pd_dept_logo_slot {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_dept_logo {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    display: block;
+    padding: 2px;
+    border-radius: 8px !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_dept_logo_placeholder {
+    width: 36px;
+    height: 36px;
+    border-color: rgba(139, 69, 19, 0.2) !important;
+    background: linear-gradient(135deg, #faf6f0, #efe6dc) !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_dept_logo_placeholder .fa {
+    font-size: 0.95rem;
+    color: #8b4513;
+    opacity: 0.85;
+}
+
+/* ── Village nested panel ── */
+.o_sdm_pipeline_dashboard .o_sdm_pd_village_row td {
+    vertical-align: top;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_village_panel {
+    margin: 0.35rem 0.75rem 0.75rem 2.5rem;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(139, 69, 19, 0.18);
+    box-shadow: 0 6px 24px rgba(45, 26, 12, 0.1);
+    background: #fff;
+    animation: o_sdm_pd_slide_down 0.3s ease;
+}
+
+@keyframes o_sdm_pd_slide_down {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_village_panel_head {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 1rem;
+    background: linear-gradient(135deg, #faf6f0 0%, #efe6dc 100%);
+    border-bottom: 1px solid rgba(139, 69, 19, 0.12);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #5c381f;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_village_panel_head .fa {
+    color: #8b4513;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_village_table {
+    margin: 0 !important;
+    border: none !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_village_table thead th {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #5c381f !important;
+    background: #f8f4ee !important;
+    border-color: rgba(139, 69, 19, 0.1) !important;
+    padding: 0.5rem 0.6rem !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_village_table thead th .fa {
+    color: #c87941;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_village_table tbody tr {
+    transition: background 0.12s ease;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_village_table tbody tr:hover {
+    background: rgba(200, 121, 65, 0.05) !important;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_village_table tbody td {
+    padding: 0.5rem 0.6rem !important;
+    border-color: rgba(139, 69, 19, 0.08) !important;
+    vertical-align: middle;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_village_table .btn-outline-secondary {
+    border-radius: 8px !important;
+    border-color: rgba(139, 69, 19, 0.3) !important;
+    color: #8b4513 !important;
+    transition: all 0.15s ease;
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_village_table .btn-outline-secondary:hover {
+    background: #8b4513 !important;
+    color: #fff !important;
+}
+
+/* Empty state */
+.o_sdm_pipeline_dashboard .o_sdm_pd_empty_card {
+    border-radius: 16px !important;
+    background: linear-gradient(135deg, #fffefb, #faf6f0) !important;
+    border: 1px dashed rgba(139, 69, 19, 0.25) !important;
+    box-shadow: var(--sdm-shadow-sm);
+}
+
+.o_sdm_pipeline_dashboard .o_sdm_pd_empty_card .fa-folder-open-o {
+    color: #8b4513 !important;
+    opacity: 0.35 !important;
+}

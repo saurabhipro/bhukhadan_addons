@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Settings Master Form View -->
+        <record id="view_bhuarjan_settings_master_form" model="ir.ui.view">
+            <field name="name">bhuarjan.settings.master.form</field>
+            <field name="model">bhuarjan.settings.master</field>
+            <field name="arch" type="xml">
+                <form string="BhuKhadan Settings Master">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <div class="alert alert-info" role="alert" style="margin-top: 10px;">
+                            <strong>Global Settings:</strong> These settings apply to all projects in the system.
+                        </div>
+                        
+                        <notebook>
+                            <!-- Sequence Settings Tab -->
+                            <page string="Sequence Settings" name="sequence_settings">
+                                <div class="alert alert-info" role="alert">
+                                    <strong>Sequence Number Configuration</strong><br/>
+                                    Configure prefix and initial sequence numbers for each process. These settings apply globally to all projects.
+                                </div>
+                                
+                                <field name="sequence_settings_ids" nolabel="1" context="{'tree_view_ref': 'bhukhadan_core.view_bhuarjan_sequence_settings_tree'}"/>
+                            </page>
+                            
+                            <!-- Workflow Settings Tab -->
+                            <page string="Workflow Settings" name="workflow_settings">
+                                <div class="alert alert-info" role="alert">
+                                    <strong>Workflow Configuration</strong><br/>
+                                    Configure maker, checker, and approver for each process. These settings apply globally to all projects.
+                                </div>
+                                
+                                <field name="workflow_settings_ids" nolabel="1" context="{'tree_view_ref': 'bhukhadan_core.view_bhuarjan_workflow_settings_tree'}"/>
+                            </page>
+                            
+                            <!-- Escalation Matrix Tab -->
+                            <page string="Escalation Matrix" name="escalation_matrix">
+                                <div class="alert alert-info" role="alert">
+                                    <strong>Escalation Matrix Configuration</strong><br/>
+                                    Configure the number of days allowed between process stages. For example, after Form 10 is completed, configure X days to complete SIA Approval, then Y days for Section 4 Notification, and so on.
+                                </div>
+                                
+                                <field name="escalation_matrix_ids" nolabel="1" context="{'tree_view_ref': 'bhukhadan_core.view_bhuarjan_escalation_matrix_tree'}"/>
+                            </page>
+                            
+                            <!-- AWS Configuration Tab -->
+                            <page string="AWS Configuration" name="aws_configuration">
+                                <div class="alert alert-info" role="alert">
+                                    <strong>AWS Configuration</strong><br/>
+                                    Configure AWS S3 settings for file storage and management.
+                                </div>
+                                
+                                <group col="2">
+                                    <group>
+                                        <field name="s3_bucket_name" placeholder="e.g., ddnsambha"/>
+                                        <field name="aws_region" placeholder="e.g., ap-south-1"/>
+                                    </group>
+                                    <group>
+                                        <field name="aws_access_key" placeholder="e.g., AKIAX3YCG3CX33RU"/>
+                                        <field name="aws_secret_key" widget="password" placeholder="Enter AWS Secret Key"/>
+                                    </group>
+                                </group>
+                            </page>
+                            
+                            <!-- OTP API Settings Tab -->
+                            <page string="OTP API Settings" name="otp_api_settings">
+                                <div class="alert alert-info" role="alert">
+                                    <strong>OTP API Configuration</strong><br/>
+                                    Configure OTP API settings for sending SMS messages.
+                                </div>
+                                
+                                <group col="2">
+                                    <group>
+                                        <field name="otp_api_url" placeholder="e.g., https://api.example.com/otp"/>
+                                        <field name="otp_api_key" placeholder="Enter OTP API Key"/>
+                                        <field name="otp_client_id" placeholder="Enter OTP Client ID"/>
+                                    </group>
+                                    <group>
+                                        <field name="otp_sender_id" placeholder="e.g., BHUAJN"/>
+                                        <field name="otp_dlt_template_id" placeholder="Enter DLT Template ID"/>
+                                    </group>
+                                </group>
+                                <group>
+                                    <field name="otp_message_template" placeholder="Enter OTP Message Template"/>
+                                    <field name="android_app_hash" placeholder="e.g. FA+9qCX9VSu"/>
+                                </group>
+                                
+                                <div class="alert alert-success" role="alert" style="margin-top: 16px;">
+                                    <strong>Test SMS Configuration</strong><br/>
+                                    Enter a mobile number and click the button to test if the OTP SMS is sent successfully.
+                                </div>
+                                <group col="6">
+                                    <field name="test_mobile_number" placeholder="Enter Mobile Number"/>
+                                    <field name="test_otp" placeholder="Enter 4-digit OTP"/>
+                                    <button name="action_test_sms" string="Send Test SMS" type="object" class="btn btn-primary" icon="fa-paper-plane"/>
+                                </group>
+                                
+                                <separator string="Test SMS Configuration" style="margin-top: 20px; font-weight: bold; border-bottom: 2px solid #dee2e6; padding-bottom: 5px;"/>
+                                <field name="api_documentation" widget="text" style="min-height: 300px; font-family: monospace; background-color: #f8f9fa; padding: 10px; border: 1px solid #dee2e6; border-radius: 4px;" readonly="1"/>
+
+                                <div class="alert alert-warning" role="alert" style="margin-top: 16px;">
+                                    <strong>Static OTP Configuration</strong><br/>
+                                    Enable static OTP to use a fixed OTP value instead of sending SMS. This is useful when SMS API is disabled or for testing purposes.
+                                </div>
+                                
+                                <group col="2">
+                                    <group>
+                                        <field name="enable_static_otp"/>
+                                    </group>
+                                    <group>
+                                        <field name="static_otp_value" placeholder="e.g., 1234"/>
+                                    </group>
+                                </group>
+                            </page>
+
+                            <!-- Payment / Bank API Tab -->
+                            <page string="Payment / Bank API" name="payment_bank_api_settings">
+                                <notebook>
+                                    <page string="Setup" name="bank_api_setup">
+                                        <div class="alert alert-info py-2 mb-2" role="alert">
+                                            <strong>IBL Domestic Payment Service</strong> — fields marked <strong>*</strong> are mandatory per IndusInd API specification.
+                                        </div>
+                                        <group col="2">
+                                            <group string="API gateway">
+                                                <field name="bank_soap_api_url"
+                                                       placeholder="https://indusapiuat.indusind.bank.in/.../domesticpayservice/v1"/>
+                                                <field name="bank_ibl_client_id" placeholder="IBL-Client-Id"/>
+                                                <field name="bank_ibl_client_secret" widget="password" placeholder="IBL-Client-Secret"/>
+                                                <field name="bank_api_append_operation_path"/>
+                                            </group>
+                                            <group string="Corporate IDs &amp; accounts">
+                                                <field name="bank_customer_id" placeholder="CustomerID / strCustId"/>
+                                                <field name="bank_user_id" placeholder="UserID"/>
+                                                <field name="bank_account_number" placeholder="Balance / statement account"/>
+                                                <field name="debit_account_number" placeholder="Debit account for payments"/>
+                                            </group>
+                                        </group>
+                                    </page>
+
+                                    <page string="1 · Balance" name="bank_api_balance">
+                                        <div class="alert alert-secondary py-2 mb-2" role="alert">
+                                            <strong>GetAccBalance</strong> — uses <strong>Customer ID *</strong>, <strong>User ID *</strong> and <strong>Account Number *</strong> from Setup.
+                                        </div>
+                                        <div class="text-end mb-2">
+                                            <button name="action_test_bank_get_acc_balance" string="Test GetAccBalance"
+                                                    type="object" class="btn btn-primary" icon="fa-university"/>
+                                        </div>
+                                    </page>
+
+                                    <page string="2 · Payment" name="bank_api_payment">
+                                        <div class="alert alert-secondary py-2 mb-2" role="alert">
+                                            <strong>ProcessTxnInXml</strong> — <strong>*</strong> = mandatory (CustomerRefNum, DebitAccount on Setup tab, Amount, ValueDate, BenName, BENE_ACNO, MakerId, CheckerId).
+                                        </div>
+                                        <group col="2">
+                                            <group>
+                                                <field name="bank_txn_tran_type"/>
+                                                <field name="bank_txn_customer_ref" placeholder="Unique customer ref"/>
+                                                <field name="bank_txn_amount"/>
+                                                <field name="bank_txn_value_date" placeholder="DD-MM-YYYY"/>
+                                                <field name="bank_txn_ben_name"/>
+                                                <field name="bank_txn_bene_acno"/>
+                                                <field name="bank_txn_bene_ifsc"/>
+                                            </group>
+                                            <group>
+                                                <field name="bank_txn_bene_branch"/>
+                                                <field name="bank_txn_bene_bank"/>
+                                                <field name="bank_txn_bene_mobile"/>
+                                                <field name="bank_txn_bene_email"/>
+                                                <field name="bank_txn_bene_mmid"/>
+                                                <field name="bank_txn_maker_id"/>
+                                                <field name="bank_txn_checker_id"/>
+                                            </group>
+                                        </group>
+                                        <div class="text-end mt-2">
+                                            <button name="action_test_bank_process_txn" string="Test ProcessTxnInXml"
+                                                    type="object" class="btn btn-primary" icon="fa-money"/>
+                                        </div>
+                                    </page>
+
+                                    <page string="3 · Enquiry" name="bank_api_enquiry">
+                                        <div class="alert alert-secondary py-2 mb-2" role="alert">
+                                            <strong>GetTxnResponseInXml</strong> — requires <strong>Customer ID *</strong> (Setup) and <strong>IBL Ref No *</strong>.
+                                        </div>
+                                        <group>
+                                            <field name="bank_test_ibl_ref_no" placeholder="e.g. DFG4DT0000118082"/>
+                                        </group>
+                                        <div class="text-end mt-2">
+                                            <button name="action_test_bank_get_txn_response" string="Test GetTxnResponseInXml"
+                                                    type="object" class="btn btn-primary" icon="fa-search"/>
+                                        </div>
+                                    </page>
+
+                                    <page string="4 · Statement" name="bank_api_statement">
+                                        <div class="alert alert-secondary py-2 mb-2" role="alert">
+                                            <strong>GetStatement</strong> — requires Setup IDs/accounts plus <strong>From Date *</strong> and <strong>To Date *</strong> (DD-MM-YYYY).
+                                        </div>
+                                        <group col="2">
+                                            <field name="bank_stmt_from_date" placeholder="DD-MM-YYYY"/>
+                                            <field name="bank_stmt_to_date" placeholder="DD-MM-YYYY"/>
+                                        </group>
+                                        <div class="text-end mt-2">
+                                            <button name="action_test_bank_get_statement" string="Test GetStatement"
+                                                    type="object" class="btn btn-primary" icon="fa-list-alt"/>
+                                        </div>
+                                    </page>
+
+                                    <page string="5 · Returns" name="bank_api_returns">
+                                        <div class="alert alert-secondary py-2 mb-2" role="alert">
+                                            <strong>GetReturnTrxn</strong> — requires <strong>Customer ID *</strong> from Setup tab.
+                                        </div>
+                                        <div class="text-end mt-2">
+                                            <button name="action_test_bank_get_return_trxn" string="Test GetReturnTrxn"
+                                                    type="object" class="btn btn-primary" icon="fa-undo"/>
+                                        </div>
+                                    </page>
+
+                                    <page string="API Log" name="bank_api_log">
+                                        <group col="2">
+                                            <field name="bank_api_last_method" readonly="1"/>
+                                            <field name="bank_api_last_url" readonly="1"/>
+                                        </group>
+                                        <group col="2">
+                                            <field name="bank_api_last_request" readonly="1" widget="text" nolabel="1"
+                                                   placeholder="Last SOAP request will appear here..."
+                                                   style="min-height: 220px; font-family: monospace; font-size: 11px;"/>
+                                            <field name="bank_api_last_response" readonly="1" widget="text" nolabel="1"
+                                                   placeholder="Last SOAP response will appear here..."
+                                                   style="min-height: 220px; font-family: monospace; font-size: 11px;"/>
+                                        </group>
+                            </page>
+                        </notebook>
+                    </page>
+
+                            <!-- Mobile App APK Tab -->
+                            <page string="Mobile App" name="mobile_app_settings">
+                                <div class="alert alert-info" role="alert">
+                                    <strong>Android APK Configuration</strong><br/>
+                                    Upload the latest BhuKhadan Field App APK with version and release date.
+                                    After saving, the file is available for download from the public website header and footer.
+                                </div>
+                                <group col="2">
+                                    <group string="Release details">
+                                        <field name="mobile_apk_version" placeholder="e.g. 2.4.1"/>
+                                        <field name="mobile_apk_release_date"/>
+                                    </group>
+                                    <group string="APK file">
+                                        <field name="mobile_apk_file" filename="mobile_apk_filename"/>
+                                        <field name="mobile_apk_filename" invisible="1"/>
+                                    </group>
+                                </group>
+                                <div class="alert alert-secondary" role="alert">
+                                    Public download URL (after save):
+                                    <strong>/bhuarjan/mobile-app/download</strong>
+                                </div>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Settings Master Tree View -->
+        <record id="view_bhuarjan_settings_master_tree" model="ir.ui.view">
+            <field name="name">bhuarjan.settings.master.tree</field>
+            <field name="model">bhuarjan.settings.master</field>
+            <field name="arch" type="xml">
+                <list string="BhuKhadan Settings Master" decoration-info="active == True" decoration-muted="active == False">
+                    <field name="name"/>
+                    <field name="sequence_settings_ids" widget="badge" decoration-info="sequence_settings_ids"/>
+                    <field name="workflow_settings_ids" widget="badge" decoration-success="workflow_settings_ids"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Settings Master Search View -->
+        <record id="view_bhuarjan_settings_master_search" model="ir.ui.view">
+            <field name="name">bhuarjan.settings.master.search</field>
+            <field name="model">bhuarjan.settings.master</field>
+            <field name="arch" type="xml">
+                <search string="BhuKhadan Settings Master">
+                    <field name="name"/>
+                    <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                    <filter string="Inactive" name="inactive" domain="[('active', '=', False)]"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- Sequence Settings Form View -->
+        <record id="view_bhuarjan_sequence_settings_form" model="ir.ui.view">
+            <field name="name">bhuarjan.sequence.settings.form</field>
+            <field name="model">bhuarjan.sequence.settings</field>
+            <field name="arch" type="xml">
+                <form string="Sequence Settings">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="process_name" required="1"/>
+                            </h1>
+                        </div>
+                        
+                        <group>
+                            <group>
+                                <field name="prefix" placeholder="e.g., SC_{bhu.project.code}_"/>
+                                <field name="initial_sequence"/>
+                            </group>
+                            <group>
+                                <field name="padding"/>
+                                <field name="active"/>
+                            </group>
+                        </group>
+                        
+                        <div class="alert alert-warning" role="alert">
+                            <strong>Example:</strong> With prefix "SC_{bhu.project.code}_{bhu.village.code}_", initial sequence 1, and padding 4, 
+                            the first sequence number will be "SC_RAI_VIL001_0001" (where RAI is the project code and VIL001 is the village code).<br/>
+                            <strong>Note:</strong> When using {bhu.village.code}, each village will have its own sequence counter starting from the initial sequence (e.g., 1). 
+                            This means Village A will get SC_RAI_VIL001_0001, SC_RAI_VIL001_0002, etc., and Village B will also start from SC_RAI_VIL002_0001, SC_RAI_VIL002_0002, etc.<br/>
+                            <strong>Supported placeholders:</strong> {%PROJ_CODE%}, {bhu.project.code}, {PROJ_CODE}, {bhu.village.code}
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Workflow Settings Form View -->
+        <record id="view_bhuarjan_workflow_settings_form" model="ir.ui.view">
+            <field name="name">bhuarjan.workflow.settings.form</field>
+            <field name="model">bhuarjan.workflow.settings</field>
+            <field name="arch" type="xml">
+                <form string="Workflow Settings">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="process_name" required="1"/>
+                            </h1>
+                        </div>
+                        
+                        <group>
+                            <group>
+                                <field name="maker_user_ids" widget="many2many_tags" required="1"/>
+                                <field name="checker_user_id"/>
+                                <field name="approver_user_id"/>
+                            </group>
+                            <group>
+                                <field name="require_checker"/>
+                                <field name="require_approver"/>
+                                <field name="notify_maker"/>
+                                <field name="notify_checker"/>
+                                <field name="notify_approver"/>
+                                <field name="active"/>
+                            </group>
+                        </group>
+                        
+                        <div class="alert alert-info" role="alert">
+                            <strong>Workflow Process:</strong><br/>
+                            1. <strong>Maker:</strong> Creates/initiates the process<br/>
+                            2. <strong>Checker:</strong> Reviews and verifies the process (if required)<br/>
+                            3. <strong>Approver:</strong> Gives final approval (if required)
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Sequence Settings Tree View -->
+        <record id="view_bhuarjan_sequence_settings_tree" model="ir.ui.view">
+            <field name="name">bhuarjan.sequence.settings.tree</field>
+            <field name="model">bhuarjan.sequence.settings</field>
+            <field name="arch" type="xml">
+                <list string="Sequence Settings" decoration-info="active == True" decoration-muted="active == False">
+                    <field name="process_name"/>
+                    <field name="prefix"/>
+                    <field name="initial_sequence"/>
+                    <field name="padding"/>
+                    <field name="active" widget="boolean_toggle"/>
+                    <field name="settings_master_id" optional="hide"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Workflow Settings Tree View -->
+        <record id="view_bhuarjan_workflow_settings_tree" model="ir.ui.view">
+            <field name="name">bhuarjan.workflow.settings.tree</field>
+            <field name="model">bhuarjan.workflow.settings</field>
+            <field name="arch" type="xml">
+                <list string="Workflow Settings" decoration-info="active == True" decoration-muted="active == False">
+                    <field name="process_name"/>
+                    <field name="maker_user_ids" widget="many2many_tags"/>
+                    <field name="checker_user_id"/>
+                    <field name="approver_user_id"/>
+                    <field name="require_checker" widget="boolean_toggle"/>
+                    <field name="require_approver" widget="boolean_toggle"/>
+                    <field name="active" widget="boolean_toggle"/>
+                    <field name="settings_master_id" optional="hide"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Escalation Matrix Tree View -->
+        <record id="view_bhuarjan_escalation_matrix_tree" model="ir.ui.view">
+            <field name="name">bhuarjan.escalation.matrix.tree</field>
+            <field name="model">bhuarjan.escalation.matrix</field>
+            <field name="arch" type="xml">
+                <list string="Escalation Matrix" decoration-info="active == True" decoration-muted="active == False">
+                    <field name="sequence" string="Seq. / क्रम"/>
+                    <field name="from_process" string="From Process / प्रक्रिया से"/>
+                    <field name="to_process" string="To Process / प्रक्रिया तक"/>
+                    <field name="days_required" string="Days Required / आवश्यक दिन"/>
+                    <field name="active" widget="boolean_toggle"/>
+                    <field name="settings_master_id" optional="hide"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Escalation Matrix Form View -->
+        <record id="view_bhuarjan_escalation_matrix_form" model="ir.ui.view">
+            <field name="name">bhuarjan.escalation.matrix.form</field>
+            <field name="model">bhuarjan.escalation.matrix</field>
+            <field name="arch" type="xml">
+                <form string="Escalation Matrix">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="sequence" required="1"/>
+                                <field name="from_process" required="1"/>
+                                <field name="to_process" required="1"/>
+                            </group>
+                            <group>
+                                <field name="days_required" required="1"/>
+                                <field name="active"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- Actions -->
+        <record id="action_bhuarjan_settings_master_tree" model="ir.actions.act_window">
+            <field name="name">Settings Master</field>
+            <field name="res_model">bhuarjan.settings.master</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_bhuarjan_settings_master_search"/>
+            <field name="context">{'search_default_active': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create Settings Master
+                </p>
+                <p>
+                    Configure global sequence numbers and workflow settings that apply to all projects. Leave Project empty for global settings.
+                </p>
+            </field>
+        </record>
+
+        <record id="action_bhuarjan_sequence_settings_tree" model="ir.actions.act_window">
+            <field name="name">Sequence Settings</field>
+            <field name="res_model">bhuarjan.sequence.settings</field>
+            <field name="view_mode">list,form</field>
+            <field name="context">{'search_default_active': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create Sequence Settings
+                </p>
+                <p>
+                    Configure sequence numbers for each process in your projects.
+                </p>
+            </field>
+        </record>
+
+        <record id="action_bhuarjan_workflow_settings_tree" model="ir.actions.act_window">
+            <field name="name">Workflow Settings</field>
+            <field name="res_model">bhuarjan.workflow.settings</field>
+            <field name="view_mode">list,form</field>
+            <field name="context">{'search_default_active': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create Workflow Settings
+                </p>
+                <p>
+                    Configure workflow users and approval processes for each project.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

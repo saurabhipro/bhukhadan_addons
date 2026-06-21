@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Sample Section 15 Objections (10 records - one for each survey) -->
+        <record id="objection_sample_1" model="bhu.section15.objection">
+            <field name="name">OBJ-OBJ-0001</field>
+            <field name="project_id" ref="project_ring_road_raigarh"/>
+            <field name="village_id" ref="jurda_village"/>
+            <field name="landowner_id" ref="landowner_jurda_1"/>
+            <field name="survey_id" ref="survey_sample_1"/>
+            <field name="objection_type">area_increase</field>
+            <field name="new_area">3.0000</field>
+            <field name="objection_date">2024-11-15</field>
+            <field name="objection_details"><![CDATA[<p>मेरी भूमि का क्षेत्रफल गलत दर्ज किया गया है। वास्तविक क्षेत्रफल 3.0000 हेक्टेयर है, न कि 2.5000 हेक्टेयर।</p>]]></field>
+            <field name="status">draft</field>
+        </record>
+        
+        <record id="objection_sample_2" model="bhu.section15.objection">
+            <field name="name">OBJ-OBJ-0002</field>
+            <field name="project_id" ref="project_ring_road_raigarh"/>
+            <field name="village_id" ref="jurda_village"/>
+            <field name="landowner_id" ref="landowner_jurda_2"/>
+            <field name="survey_id" ref="survey_sample_2"/>
+            <field name="objection_type">rate_increase</field>
+            <field name="new_rate">150000.00</field>
+            <field name="objection_date">2024-11-16</field>
+            <field name="objection_details"><![CDATA[<p>मुआवजा दर बहुत कम है। मेरी भूमि सिंचित है और उच्च गुणवत्ता की है। प्रति हेक्टेयर ₹1,50,000 होना चाहिए।</p>]]></field>
+            <field name="status">received</field>
+        </record>
+        
+        <record id="objection_sample_3" model="bhu.section15.objection">
+            <field name="name">OBJ-OBJ-0003</field>
+            <field name="project_id" ref="project_ring_road_raigarh"/>
+            <field name="village_id" ref="pandripani_village"/>
+            <field name="landowner_id" ref="landowner_pandripani_1"/>
+            <field name="survey_id" ref="survey_sample_3"/>
+            <field name="objection_type">boundary_dispute</field>
+            <field name="other_specific_details">सीमा रेखा गलत निर्धारित की गई है। मेरी भूमि की सीमा पूर्व दिशा में 50 मीटर आगे है।</field>
+            <field name="objection_date">2024-11-17</field>
+            <field name="objection_details"><![CDATA[<p>सर्वेक्षण में मेरी भूमि की सीमा गलत दर्ज की गई है। सही सीमा निर्धारण के लिए पुनः सर्वेक्षण आवश्यक है।</p>]]></field>
+            <field name="status">under_review</field>
+        </record>
+        
+        <record id="objection_sample_4" model="bhu.section15.objection">
+            <field name="name">OBJ-OBJ-0004</field>
+            <field name="project_id" ref="project_ring_road_raigarh"/>
+            <field name="village_id" ref="pandripani_village"/>
+            <field name="landowner_id" ref="landowner_pandripani_2"/>
+            <field name="survey_id" ref="survey_sample_4"/>
+            <field name="objection_type">tree_count_issue</field>
+            <field name="other_specific_details">मेरे खेत में 25 आम के पेड़ हैं, लेकिन सर्वेक्षण में केवल 15 दर्ज किए गए हैं।</field>
+            <field name="objection_date">2024-11-18</field>
+            <field name="objection_details"><![CDATA[<p>पेड़ों की गिनती गलत है। मेरे खेत में 25 आम के पेड़ हैं जिनका मुआवजा नहीं दिया गया है।</p>]]></field>
+            <field name="status">draft</field>
+        </record>
+        
+        <record id="objection_sample_5" model="bhu.section15.objection">
+            <field name="name">OBJ-OBJ-0005</field>
+            <field name="project_id" ref="project_ring_road_raigarh"/>
+            <field name="village_id" ref="pandripani_village"/>
+            <field name="landowner_id" ref="landowner_pandripani_3"/>
+            <field name="survey_id" ref="survey_sample_5"/>
+            <field name="objection_type">area_increase</field>
+            <field name="new_area">2.2000</field>
+            <field name="objection_date">2024-11-19</field>
+            <field name="objection_details"><![CDATA[<p>क्षेत्रफल में त्रुटि है। वास्तविक क्षेत्रफल 2.2000 हेक्टेयर है।</p>]]></field>
+            <field name="status">received</field>
+        </record>
+        
+        <record id="objection_sample_6" model="bhu.section15.objection">
+            <field name="name">OBJ-OBJ-0006</field>
+            <field name="project_id" ref="project_ring_road_raigarh"/>
+            <field name="village_id" ref="gopalpur_village"/>
+            <field name="landowner_id" ref="landowner_gopalpur_1"/>
+            <field name="survey_id" ref="survey_sample_6"/>
+            <field name="objection_type">rate_increase</field>
+            <field name="new_rate">180000.00</field>
+            <field name="objection_date">2024-11-20</field>
+            <field name="objection_details"><![CDATA[<p>मेरी भूमि सिंचित और उपजाऊ है। मुआवजा दर ₹1,80,000 प्रति हेक्टेयर होनी चाहिए।</p>]]></field>
+            <field name="status">draft</field>
+        </record>
+        
+        <record id="objection_sample_7" model="bhu.section15.objection">
+            <field name="name">OBJ-OBJ-0007</field>
+            <field name="project_id" ref="project_ring_road_raigarh"/>
+            <field name="village_id" ref="gopalpur_village"/>
+            <field name="landowner_id" ref="landowner_gopalpur_2"/>
+            <field name="survey_id" ref="survey_sample_7"/>
+            <field name="objection_type">other</field>
+            <field name="other_specific_details">मेरे खेत में एक कुआं है जिसका मुआवजा नहीं दिया गया है।</field>
+            <field name="objection_date">2024-11-21</field>
+            <field name="objection_details"><![CDATA[<p>मेरे खेत में एक कुआं है जो सर्वेक्षण में दर्ज नहीं किया गया है। कुएं का भी मुआवजा मिलना चाहिए।</p>]]></field>
+            <field name="status">under_review</field>
+        </record>
+        
+        <record id="objection_sample_8" model="bhu.section15.objection">
+            <field name="name">OBJ-OBJ-0008</field>
+            <field name="project_id" ref="project_ring_road_raigarh"/>
+            <field name="village_id" ref="jurda_village"/>
+            <field name="landowner_id" ref="landowner_jurda_6"/>
+            <field name="survey_id" ref="survey_sample_8"/>
+            <field name="objection_type">boundary_dispute</field>
+            <field name="other_specific_details">पश्चिम दिशा में सीमा 30 मीटर गलत है।</field>
+            <field name="objection_date">2024-11-22</field>
+            <field name="objection_details"><![CDATA[<p>सीमा निर्धारण में त्रुटि है। पश्चिम दिशा में सीमा 30 मीटर गलत निर्धारित की गई है।</p>]]></field>
+            <field name="status">draft</field>
+        </record>
+        
+        <record id="objection_sample_9" model="bhu.section15.objection">
+            <field name="name">OBJ-OBJ-0009</field>
+            <field name="project_id" ref="project_ring_road_raigarh"/>
+            <field name="village_id" ref="jurda_village"/>
+            <field name="landowner_id" ref="landowner_jurda_7"/>
+            <field name="survey_id" ref="survey_sample_9"/>
+            <field name="objection_type">tree_count_issue</field>
+            <field name="other_specific_details">मेरे खेत में 12 नीम के पेड़ हैं जो सर्वेक्षण में नहीं दिखाए गए हैं।</field>
+            <field name="objection_date">2024-11-23</field>
+            <field name="objection_details"><![CDATA[<p>पेड़ों की गिनती अधूरी है। 12 नीम के पेड़ों का मुआवजा नहीं दिया गया है।</p>]]></field>
+            <field name="status">received</field>
+        </record>
+        
+        <record id="objection_sample_10" model="bhu.section15.objection">
+            <field name="name">OBJ-OBJ-0010</field>
+            <field name="project_id" ref="project_ring_road_raigarh"/>
+            <field name="village_id" ref="gopalpur_village"/>
+            <field name="landowner_id" ref="landowner_gopalpur_3"/>
+            <field name="survey_id" ref="survey_sample_10"/>
+            <field name="objection_type">rate_increase</field>
+            <field name="new_rate">200000.00</field>
+            <field name="objection_date">2024-11-24</field>
+            <field name="objection_details"><![CDATA[<p>मेरी भूमि बहुत उपजाऊ है और सिंचाई सुविधा उपलब्ध है। मुआवजा दर ₹2,00,000 प्रति हेक्टेयर होनी चाहिए।</p>]]></field>
+            <field name="status">draft</field>
+        </record>
+    </data>
+</odoo>

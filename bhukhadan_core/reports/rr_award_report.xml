@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_report_rr_award_sheet" model="ir.actions.report">
+            <field name="name">R&amp;R Award Sheet / पुनर्वास अवार्ड पत्रक</field>
+            <field name="model">bhu.section23.award</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">bhukhadan_core.rr_award_sheet_report</field>
+            <field name="report_file">bhukhadan_core.rr_award_sheet_report</field>
+            <field name="print_report_name">'RRAwardSheet_%s' % (object.village_id.name or 'Village')</field>
+            <field name="paperformat_id" ref="bhukhadan_core.bhuarjan_section_23_award_paper_format"/>
+        </record>
+    </data>
+
+    <template id="rr_award_sheet_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="bhukhadan_core.section23_award_external_layout">
+                    <t t-set="rows" t-value="o.get_rr_award_data()"/>
+                    <t t-set="headers" t-value="o.get_award_header_constants()['excel']['rr_award_headers']"/>
+                    <style>
+                        @page {
+                            margin-top: 0.8cm;
+                            margin-bottom: 5.5cm;
+                            margin-left: 0.5cm;
+                            margin-right: 0.5cm;
+                        }
+                        .rr-table {
+                            border-collapse: collapse !important;
+                            width: 100%;
+                            table-layout: fixed;
+                        }
+                        .rr-table th,
+                        .rr-table td {
+                            border: 1px solid #000 !important;
+                            padding: 3px 4px;
+                            color: #000;
+                            font-family: 'Noto Sans Devanagari','Mangal','Arial Unicode MS','DejaVu Sans',sans-serif;
+                        }
+                    </style>
+                    <div class="page section23-award-section" style="padding:10px;">
+                        <table class="rr-table" style="border-collapse:collapse;width:100%;table-layout:fixed;" border="1" rules="all">
+                            <thead style="display:table-header-group;">
+                                <tr>
+                                    <th colspan="9" style="border:none !important;background:#fff !important;padding:0 0 4px 0 !important;">
+                                        <div style="display:flex; align-items:flex-start; gap:12px; color:#000;">
+                                            <div style="flex-shrink:0; padding-top:2px;">
+                                                <img src="/bhukhadan_core/static/img/logo.png" alt="Logo" style="height:44px; width:auto;"/>
+                                            </div>
+                                            <div style="flex:1; text-align:center;">
+                                                <div style="font-size:16px; font-weight:700; color:#000;">पुनर्वास अवार्ड पत्रक (R&amp;R Award Sheet)</div>
+                                                <div style="font-size:11px; color:#000; margin-top:3px; line-height:1.55;">
+                                                    भू-अर्जन प्रकरण क्रमांक <span t-esc="o.case_number or ''"/> /
+                                                    ग्राम-<span t-esc="o.village_id.name if o.village_id else ''"/>
+                                                    <t t-if="o.get_urban_body_label()"> (<span t-esc="o.get_urban_body_label()"/>)</t>&#160;
+                                                    <span style="font-weight:800;">Project:</span>
+                                                    <span t-esc="o.get_consolidated_report_project_name()"/>&#160;
+                                                    तहसील-<span t-esc="o.village_id.tehsil_id.name if o.village_id and o.village_id.tehsil_id else ''"/>&#160;
+                                                    जिला-<span t-esc="o.village_id.district_id.name if o.village_id and o.village_id.district_id else ''"/>
+                                                    <t t-if="o.village_id and o.village_id.district_id and o.village_id.district_id.state_id">
+                                                        (<span t-esc="o.village_id.district_id.state_id.name"/>)
+                                                    </t>
+                                                </div>
+                                            </div>
+                                            <div style="flex-shrink:0; text-align:right; padding-top:2px; font-size:11px; font-weight:700;">
+                                                दिनांक: <span t-esc="o.award_date.strftime('%d-%m-%Y') if o.award_date else ''"/>
+                                            </div>
+                                        </div>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <t t-foreach="headers" t-as="h">
+                                        <th style="border:1px solid #000 !important;background:#d3d3d3;text-align:center;font-size:10px;font-weight:900;padding:4px 2px;">
+                                            <span t-esc="h"/>
+                                        </th>
+                                    </t>
+                                </tr>
+                                <tr>
+                                    <th style="border:1px solid #000 !important;background:#e8e8e8;text-align:center;font-size:10px;font-weight:900;padding:3px 2px;">1</th>
+                                    <th style="border:1px solid #000 !important;background:#e8e8e8;text-align:center;font-size:10px;font-weight:900;padding:3px 2px;">2</th>
+                                    <th style="border:1px solid #000 !important;background:#e8e8e8;text-align:center;font-size:10px;font-weight:900;padding:3px 2px;">3</th>
+                                    <th style="border:1px solid #000 !important;background:#e8e8e8;text-align:center;font-size:10px;font-weight:900;padding:3px 2px;">4</th>
+                                    <th style="border:1px solid #000 !important;background:#e8e8e8;text-align:center;font-size:10px;font-weight:900;padding:3px 2px;">5</th>
+                                    <th style="border:1px solid #000 !important;background:#e8e8e8;text-align:center;font-size:10px;font-weight:900;padding:3px 2px;">6</th>
+                                    <th style="border:1px solid #000 !important;background:#e8e8e8;text-align:center;font-size:10px;font-weight:900;padding:3px 2px;">7</th>
+                                    <th style="border:1px solid #000 !important;background:#e8e8e8;text-align:center;font-size:10px;font-weight:900;padding:3px 2px;">8</th>
+                                    <th style="border:1px solid #000 !important;background:#e8e8e8;text-align:center;font-size:10px;font-weight:900;padding:3px 2px;">9</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="t_area" t-value="0.0"/>
+                                <t t-set="t_land_comp" t-value="0.0"/>
+                                <t t-set="t_asset_comp" t-value="0.0"/>
+                                <t t-set="t_tree_comp" t-value="0.0"/>
+                                <t t-set="t_det_comp" t-value="0.0"/>
+                                <t t-set="t_final_comp" t-value="0.0"/>
+                                <t t-foreach="rows" t-as="grp">
+                                    <t t-foreach="grp.get('lines', [])" t-as="line">
+                                        <t t-set="t_area" t-value="t_area + line.get('field_area', 0.0)"/>
+                                        <t t-set="t_land_comp" t-value="t_land_comp + line.get('land_compensation', 0.0)"/>
+                                        <t t-set="t_asset_comp" t-value="t_asset_comp + line.get('asset_compensation', 0.0)"/>
+                                        <t t-set="t_tree_comp" t-value="t_tree_comp + line.get('tree_compensation', 0.0)"/>
+                                    </t>
+                                    <t t-set="t_det_comp" t-value="t_det_comp + grp.get('owner_determined_compensation', 0.0)"/>
+                                    <t t-set="t_final_comp" t-value="t_final_comp + grp.get('owner_final_compensation', 0.0)"/>
+                                    <t t-foreach="grp.get('render_rows', [])" t-as="line">
+                                        <tr>
+                                            <t t-if="line.get('show_owner')">
+                                                <td t-att-rowspan="line.get('rowspan', 1)" style="border:1px solid #000;text-align:center;padding:3px;font-size:10px;vertical-align:top;">
+                                                    <span t-esc="grp.get('serial', '')"/>
+                                                </td>
+                                                <td t-att-rowspan="line.get('rowspan', 1)" style="border:1px solid #000;text-align:left;padding:3px;font-size:10px;vertical-align:top;">
+                                                    <span t-esc="grp.get('owner_text', '')"/>
+                                                </td>
+                                            </t>
+                                            <td style="border:1px solid #000;text-align:center;padding:3px;font-size:10px;">
+                                                <span t-esc="line.get('khasra', '')"/>
+                                            </td>
+                                            <td style="border:1px solid #000;text-align:right;padding:3px;font-size:10px;">
+                                                <span t-esc="'{:.4f}'.format(line.get('field_area', 0.0))"/>
+                                            </td>
+                                            <t t-if="line.get('show_owner')">
+                                                <td t-att-rowspan="line.get('rowspan', 1)" style="border:1px solid #000;text-align:right;padding:3px;font-size:10px;vertical-align:top;">
+                                                    <span t-esc="'{:,.2f}'.format(line.get('owner_land_compensation', 0.0))"/>
+                                                </td>
+                                                <td t-att-rowspan="line.get('rowspan', 1)" style="border:1px solid #000;text-align:right;padding:3px;font-size:10px;vertical-align:top;">
+                                                    <span t-esc="'{:,.2f}'.format(line.get('owner_asset_compensation', 0.0))"/>
+                                                </td>
+                                                <td t-att-rowspan="line.get('rowspan', 1)" style="border:1px solid #000;text-align:right;padding:3px;font-size:10px;vertical-align:top;">
+                                                    <span t-esc="'{:,.2f}'.format(line.get('owner_tree_compensation', 0.0))"/>
+                                                </td>
+                                                <td t-att-rowspan="line.get('rowspan', 1)" style="border:1px solid #000;text-align:right;padding:3px;font-size:10px;vertical-align:top;">
+                                                    <span t-esc="'{:,.2f}'.format(line.get('owner_determined_compensation', 0.0))"/>
+                                                </td>
+                                                <td t-att-rowspan="line.get('rowspan', 1)" style="border:1px solid #000;text-align:right;padding:3px;font-size:10px;vertical-align:top;">
+                                                    <span t-esc="'{:,.2f}'.format(line.get('owner_final_compensation', 0.0))"/>
+                                                </td>
+                                            </t>
+                                        </tr>
+                                    </t>
+                                </t>
+                                <tr style="background:#e8e8e8;font-weight:700;">
+                                    <td colspan="3" style="border:1px solid #000;text-align:center;padding:4px;">कुल / Total</td>
+                                    <td style="border:1px solid #000;text-align:right;padding:4px;"><span t-esc="'{:.4f}'.format(t_area)"/></td>
+                                    <td style="border:1px solid #000;text-align:right;padding:4px;"><span t-esc="'{:,.2f}'.format(t_land_comp)"/></td>
+                                    <td style="border:1px solid #000;text-align:right;padding:4px;"><span t-esc="'{:,.2f}'.format(t_asset_comp)"/></td>
+                                    <td style="border:1px solid #000;text-align:right;padding:4px;"><span t-esc="'{:,.2f}'.format(t_tree_comp)"/></td>
+                                    <td style="border:1px solid #000;text-align:right;padding:4px;"><span t-esc="'{:,.2f}'.format(t_det_comp)"/></td>
+                                    <td style="border:1px solid #000;text-align:right;padding:4px;"><span t-esc="'{:,.2f}'.format(t_final_comp)"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Root menu - click opens role-based dashboard -->
+    <record id="menu_bhu_root" model="ir.ui.menu">
+        <field name="name">BhuKhadan</field>
+        <field name="sequence">1</field>
+        <field name="web_icon">bhuarjan,static/description/icon.png</field>
+        <field name="action" ref="action_role_based_dashboard"/>
+    </record>
+</odoo>
+

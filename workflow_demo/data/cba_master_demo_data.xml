@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo noupdate="1">
+    <!-- SECL / Korba demo master data for CBA case testing -->
+
+    <record id="cba_district_korba" model="cba.district">
+        <field name="name">Korba</field>
+        <field name="code">KORBA</field>
+    </record>
+
+    <record id="cba_district_raigarh" model="cba.district">
+        <field name="name">Raigarh</field>
+        <field name="code">RAIGARH</field>
+    </record>
+
+    <record id="cba_tehsil_katghora" model="cba.tehsil">
+        <field name="name">Katghora</field>
+        <field name="district_id" ref="cba_district_korba"/>
+    </record>
+
+    <record id="cba_tehsil_kartala" model="cba.tehsil">
+        <field name="name">Kartala</field>
+        <field name="district_id" ref="cba_district_korba"/>
+    </record>
+
+    <record id="cba_tehsil_pali" model="cba.tehsil">
+        <field name="name">Pali</field>
+        <field name="district_id" ref="cba_district_korba"/>
+    </record>
+
+    <record id="cba_tehsil_dharamjaigarh" model="cba.tehsil">
+        <field name="name">Dharamjaigarh</field>
+        <field name="district_id" ref="cba_district_raigarh"/>
+    </record>
+
+    <record id="cba_village_dhurawaha" model="cba.village">
+        <field name="name">Dhurawaha</field>
+        <field name="tehsil_id" ref="cba_tehsil_katghora"/>
+    </record>
+
+    <record id="cba_village_gopalpur" model="cba.village">
+        <field name="name">Gopalpur</field>
+        <field name="tehsil_id" ref="cba_tehsil_katghora"/>
+    </record>
+
+    <record id="cba_village_kusmunda" model="cba.village">
+        <field name="name">Kusmunda</field>
+        <field name="tehsil_id" ref="cba_tehsil_kartala"/>
+    </record>
+
+    <record id="cba_village_gevra" model="cba.village">
+        <field name="name">Gevra</field>
+        <field name="tehsil_id" ref="cba_tehsil_kartala"/>
+    </record>
+
+    <record id="cba_village_pali_colony" model="cba.village">
+        <field name="name">Pali Colony</field>
+        <field name="tehsil_id" ref="cba_tehsil_pali"/>
+    </record>
+
+    <record id="cba_village_chakabuda" model="cba.village">
+        <field name="name">Chakabuda</field>
+        <field name="tehsil_id" ref="cba_tehsil_dharamjaigarh"/>
+    </record>
+
+    <record id="cba_project_gevra_ocp" model="cba.project">
+        <field name="name">Gevra Open Cast Project</field>
+        <field name="code">GEVRA-OCP</field>
+        <field name="district_id" ref="cba_district_korba"/>
+        <field name="description">Demo SECL Gevra OCP land acquisition under CBA.</field>
+    </record>
+
+    <record id="cba_project_kusmunda" model="cba.project">
+        <field name="name">Kusmunda Expansion</field>
+        <field name="code">KUSMUNDA-EXP</field>
+        <field name="district_id" ref="cba_district_korba"/>
+        <field name="description">Demo Kusmunda area expansion project.</field>
+    </record>
+
+    <record id="cba_project_dipka" model="cba.project">
+        <field name="name">Dipka OCP</field>
+        <field name="code">DIPKA-OCP</field>
+        <field name="district_id" ref="cba_district_korba"/>
+        <field name="description">Demo Dipka open cast project.</field>
+    </record>
+</odoo>

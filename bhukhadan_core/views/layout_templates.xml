@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="bhuarjan_backend_footer" inherit_id="web.layout" name="BhuKhadan Backend Footer">
+        <xpath expr="//body" position="inside">
+            <div t-if="(request.httprequest.path.startswith('/web') or request.httprequest.path.startswith('/odoo')) and not request.httprequest.path.startswith('/web/login')"
+                 class="bhuarjan-footer bg-primary text-white">
+                <div class="bhuarjan-footer__brand">
+                    <span>Developed and maintained by</span>
+                    <a href="https://www.redmelon.co.in" target="_blank" rel="noopener noreferrer" class="text-white text-decoration-none">
+                        Redmelon Pvt Ltd
+                    </a>
+                    <span>as a technical service provider.</span>
+                </div>
+                <div class="bhuarjan-footer__contact">
+                    <a href="mailto:info@redmelon.co.in" class="bhuarjan-footer__link">
+                        <i class="fa fa-envelope me-1" aria-hidden="true"/> info@redmelon.co.in
+                    </a>
+                    <a href="https://wa.me/917042038092" target="_blank" rel="noopener noreferrer" class="bhuarjan-footer__link">
+                        <i class="fa fa-whatsapp me-1" aria-hidden="true"/> WhatsApp
+                    </a>
+                    <span class="bhuarjan-footer__phone">
+                        <i class="fa fa-phone me-1" aria-hidden="true"/> +91 7042038092
+                    </span>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

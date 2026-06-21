@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Section 15 Objection Resolution Report -->
+    <record id="action_report_section15_objection_resolution" model="ir.actions.report">
+        <field name="name">Section 15 Objection Resolution / धारा 15 आपत्ति समाधान</field>
+        <field name="model">bhu.section15.objection</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">bhukhadan_core.section15_objection_resolution_report</field>
+        <field name="report_file">bhukhadan_core.section15_objection_resolution_report</field>
+        <field name="paperformat_id" ref="bhukhadan_core.bhuarjan_sia_paper_format"/>
+        <field name="print_report_name">'Objection15_' + ((object and object.name) or (docs and docs[0] and docs[0].name) or 'All')</field>
+    </record>
+
+    <!-- Section 15 Objection Resolution Report Template -->
+    <template id="section15_objection_resolution_report">
+        <t t-call="web.html_container">
+            <meta charset="utf-8"/>
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                    <!-- Include centralized CSS styles -->
+                    <t t-call="bhukhadan_core.report_common_styles"/>
+
+                    <div class="container letter_space" style="border: 2px dotted #000; padding: 15px; margin: 10px; position: relative; min-height: calc(100vh - 20px); height: 100%;">
+                        <!-- Watermark with Logo - Centered on Page -->
+                        <div class="watermark">
+                            <div class="watermark-circle"></div>
+                            <t t-set="base_url" t-value="request.env['ir.config_parameter'].sudo().get_param('web.base.url')"/>
+                            <img t-att-src="base_url + '/bhukhadan_core/static/img/logo.png'" alt="Logo Watermark"/>
+                        </div>
+                        
+                        <!-- Header with Logo and QR Code -->
+                        <div style="margin-bottom: 15px; padding-bottom: 8px;">
+                            <table style="width: 100%; border-collapse: collapse; margin-bottom: 8px;">
+                                <tr>
+                                    <!-- Logo on Left -->
+                                    <td rowspan="2" style="width: 12%; padding: 0; text-align: center; vertical-align: middle;">
+                                        <t t-set="base_url" t-value="request.env['ir.config_parameter'].sudo().get_param('web.base.url')"/>
+                                        <img t-att-src="base_url + '/bhukhadan_core/static/img/logo.png'" class="header-logo" alt="Logo"/>
+                                    </td>
+                                    <!-- Header Text - Line 1 -->
+                                    <td colspan="2" style="text-align: center; vertical-align: middle; padding: 0 5px;">
+                                        <h3 class="hindi letter_space header-text" style="margin: 0; padding: 0; font-size: 26px; line-height: 0.95;">
+                                            कार्यालय अनुविभागीय अधिकारी (राजस्व)
+                                        </h3>
+                                    </td>
+                                    <!-- QR Code on Right -->
+                                    <td rowspan="2" style="width: 12%; padding: 0; text-align: center; vertical-align: middle;">
+                                        <div class="qr-code-container"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <!-- Header Text - Line 2 -->
+                                    <td colspan="2" style="text-align: center; vertical-align: middle; padding: 0 5px;">
+                                        <h3 class="hindi letter_space header-text" style="margin: 0; padding: 0; font-size: 26px; line-height: 0.95;">
+                                            जिला-रायगढ़ (छ.ग.)
+                                        </h3>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- Report Title -->
+                        <div style="text-align: center; margin-bottom: 15px;">
+                            <h2 style="text-decoration: underline; margin: 0; padding: 0; font-size: 24px; font-weight: bold; font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif !important;">
+                                <strong>धारा 15 आपत्ति समाधान</strong>
+                            </h2>
+                        </div>
+
+                        <!-- Objection Reference and Date -->
+                        <div class="date-reference-section" style="margin-bottom: 12px !important;">
+                            <span class="normal-text letter_space" style="font-weight: 500 !important; font-size: 18px !important; text-align: left !important;">
+                                <strong>आपत्ति संदर्भ /</strong> <span t-esc="o.name or ''"/>
+                            </span>
+                            <span class="normal-text letter_space" style="text-align: right !important; font-weight: 500 !important; font-size: 18px !important; margin-left: auto !important;">
+                                <strong>दिनांक /</strong> <span t-if="o.objection_date" t-esc="o.objection_date.strftime('%d/%m/%Y')"/><span t-if="not o.objection_date">.........................</span>
+                            </span>
+                        </div>
+
+                        <!-- Project and Village Information -->
+                        <div style="margin-bottom: 15px;">
+                            <table style="width: 100%; border-collapse: collapse; font-size: 18px;">
+                                <tr>
+                                    <td style="padding: 5px; width: 30%;"><strong>परियोजना /</strong></td>
+                                    <td style="padding: 5px;"><span t-esc="o.project_id.name or ''"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 5px;"><strong>ग्राम /</strong></td>
+                                    <td style="padding: 5px;"><span t-esc="o.village_id.name or ''"/></td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- Resolution Changes Summary -->
+                        <t t-set="changes" t-value="o.get_resolution_changes_summary()"/>
+                        <t t-if="changes">
+                            <div style="margin-bottom: 15px; padding: 10px; background-color: #f8f9fa; border-left: 4px solid #5cb85c;">
+                                <h3 style="margin: 0 0 10px 0; font-size: 20px; font-weight: bold; color: #5cb85c;">
+                                    समाधान परिवर्तन सारांश / Resolution Changes Summary
+                                </h3>
+                                
+                                <!-- Removed Landowners -->
+                                <t t-foreach="changes" t-as="change">
+                                    <t t-if="change.get('type') == 'landowner_removed'">
+                                        <div style="margin-bottom: 8px; padding: 8px; background-color: #fff3cd; border-left: 3px solid #ffc107;">
+                                            <strong style="color: #856404;">हटाए गए भूमिस्वामी / Removed Landowners:</strong>
+                                            <p style="margin: 5px 0 0 0;"><span t-esc="change.get('hindi_description', '')"/></p>
+                                        </div>
+                                    </t>
+                                    
+                                    <!-- Area Decreased -->
+                                    <t t-if="change.get('type') == 'area_decreased'">
+                                        <div style="margin-bottom: 8px; padding: 8px; background-color: #d1ecf1; border-left: 3px solid #17a2b8;">
+                                            <strong style="color: #0c5460;">क्षेत्रफल कमी / Area Decrease:</strong>
+                                            <p style="margin: 5px 0 0 0;">
+                                                <span t-esc="change.get('hindi_description', '')"/>
+                                                <br/>
+                                                <span style="font-size: 14px; color: #666;">(Decrease: <span t-esc="'%.4f' % change.get('decrease', 0)"/> hectares)</span>
+                                            </p>
+                                        </div>
+                                    </t>
+                                </t>
+                            </div>
+                        </t>
+
+                        <!-- Khasra Details Table -->
+                        <t t-if="o.resolution_khasra_ids">
+                            <div style="margin-bottom: 15px;">
+                                <h3 style="margin: 0 0 10px 0; font-size: 20px; font-weight: bold;">
+                                    खसरा विवरण / Khasra Details
+                                </h3>
+                                <table style="width: 100%; border-collapse: collapse; border: 2px solid #000; font-size: 18px;">
+                                    <thead>
+                                        <tr style="background-color: #f5f5f5;">
+                                            <th style="border: 1px solid #000; padding: 8px; text-align: center;">क्र. / S.No.</th>
+                                            <th style="border: 1px solid #000; padding: 8px; text-align: center;">खसरा नंबर / Khasra Number</th>
+                                            <th style="border: 1px solid #000; padding: 8px; text-align: center;">मूल अर्जन क्षेत्रफल / Original Acquired Area (हेक्टेयर)</th>
+                                            <th style="border: 1px solid #000; padding: 8px; text-align: center;">समाधान अर्जन क्षेत्रफल / Resolved Acquired Area (हेक्टेयर)</th>
+                                            <th style="border: 1px solid #000; padding: 8px; text-align: center;">कमी / Decrease (हेक्टेयर)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-set="sno" t-value="0"/>
+                                        <t t-foreach="o.resolution_khasra_ids" t-as="khasra">
+                                            <t t-set="sno" t-value="sno + 1"/>
+                                            <tr>
+                                                <td style="border: 1px solid #000; padding: 8px; text-align: center;"><span t-esc="sno"/></td>
+                                                <td style="border: 1px solid #000; padding: 8px; text-align: center;"><span t-esc="khasra.khasra_number or ''"/></td>
+                                                <td style="border: 1px solid #000; padding: 8px; text-align: center;"><span t-esc="'%.4f' % (khasra.original_acquired_area or 0)"/></td>
+                                                <td style="border: 1px solid #000; padding: 8px; text-align: center;"><span t-esc="'%.4f' % (khasra.resolved_acquired_area or 0)"/></td>
+                                                <td style="border: 1px solid #000; padding: 8px; text-align: center;">
+                                                    <t t-set="decrease" t-value="(khasra.original_acquired_area or 0) - (khasra.resolved_acquired_area or 0)"/>
+                                                    <span t-esc="'%.4f' % decrease"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </t>
+
+                        <!-- Landowners Comparison -->
+                        <t t-if="o.original_landowner_ids or o.resolution_landowner_ids">
+                            <div style="margin-bottom: 15px;">
+                                <h3 style="margin: 0 0 10px 0; font-size: 20px; font-weight: bold;">
+                                    भूमिस्वामी विवरण / Landowner Details
+                                </h3>
+                                <table style="width: 100%; border-collapse: collapse; border: 2px solid #000; font-size: 18px;">
+                                    <thead>
+                                        <tr style="background-color: #f5f5f5;">
+                                            <th style="border: 1px solid #000; padding: 8px; text-align: center; width: 50%;">मूल भूमिस्वामी / Original Landowners</th>
+                                            <th style="border: 1px solid #000; padding: 8px; text-align: center; width: 50%;">समाधान के बाद भूमिस्वामी / Landowners After Resolution</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="border: 1px solid #000; padding: 8px;">
+                                                <t t-if="o.original_landowner_ids">
+                                                    <t t-foreach="o.original_landowner_ids" t-as="landowner">
+                                                        <t t-if="landowner_index != 0">, </t><span t-esc="landowner.name or ''"/>
+                                                    </t>
+                                                </t>
+                                                <t t-if="not o.original_landowner_ids">-</t>
+                                            </td>
+                                            <td style="border: 1px solid #000; padding: 8px;">
+                                                <t t-if="o.resolution_landowner_ids">
+                                                    <t t-foreach="o.resolution_landowner_ids" t-as="landowner">
+                                                        <t t-if="landowner_index != 0">, </t><span t-esc="landowner.name or ''"/>
+                                                    </t>
+                                                </t>
+                                                <t t-if="not o.resolution_landowner_ids">-</t>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </t>
+
+                        <!-- Resolution Details -->
+                        <div style="margin-bottom: 15px;">
+                            <h3 style="margin: 0 0 10px 0; font-size: 20px; font-weight: bold;">
+                                समाधान विवरण / Resolution Details
+                            </h3>
+                            <div style="padding: 10px; border: 1px solid #ddd; background-color: #f9f9f9; min-height: 100px;">
+                                <p style="margin: 0; text-align: justify; line-height: 1.6;">
+                                    <t t-out="o.resolution_details or ''"/>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Objection Details (for reference) -->
+                        <div style="margin-bottom: 15px;">
+                            <h3 style="margin: 0 0 10px 0; font-size: 20px; font-weight: bold;">
+                                आपत्ति विवरण / Objection Details
+                            </h3>
+                            <div style="padding: 10px; border: 1px solid #ddd; background-color: #fff; min-height: 80px;">
+                                <p style="margin: 0; text-align: justify; line-height: 1.6;">
+                                    <t t-out="o.objection_details or ''"/>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Footer Section -->
+                        <div class="footer-section" style="margin-top: 30px;">
+                            <p style="text-align: right; margin: 5px 0;">
+                                <strong>अनुविभागीय अधिकारी (राजस्व)</strong>
+                            </p>
+                            <p style="text-align: right; margin: 5px 0;">
+                                <strong>जिला-रायगढ़ (छ.ग.)</strong>
+                            </p>
+                        </div>
+
+                        <!-- Footer Section Name -->
+                        <div class="footer-section-name">Section 15 Objection Resolution / धारा 15 आपत्ति समाधान</div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
+

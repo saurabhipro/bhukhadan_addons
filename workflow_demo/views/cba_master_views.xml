@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- District -->
+    <record id="view_cba_district_tree" model="ir.ui.view">
+        <field name="name">cba.district.tree</field>
+        <field name="model">cba.district</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+                <field name="code"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_cba_district" model="ir.actions.act_window">
+        <field name="name">Districts</field>
+        <field name="res_model">cba.district</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <!-- Tehsil -->
+    <record id="view_cba_tehsil_tree" model="ir.ui.view">
+        <field name="name">cba.tehsil.tree</field>
+        <field name="model">cba.tehsil</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+                <field name="district_id"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_cba_tehsil" model="ir.actions.act_window">
+        <field name="name">Tehsils</field>
+        <field name="res_model">cba.tehsil</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <!-- Village -->
+    <record id="view_cba_village_tree" model="ir.ui.view">
+        <field name="name">cba.village.tree</field>
+        <field name="model">cba.village</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+                <field name="tehsil_id"/>
+                <field name="district_id"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_cba_village" model="ir.actions.act_window">
+        <field name="name">Villages</field>
+        <field name="res_model">cba.village</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <!-- Project -->
+    <record id="view_cba_project_tree" model="ir.ui.view">
+        <field name="name">cba.project.tree</field>
+        <field name="model">cba.project</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="district_id"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_cba_project_form" model="ir.ui.view">
+        <field name="name">cba.project.form</field>
+        <field name="model">cba.project</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                        <field name="district_id"/>
+                    </group>
+                    <field name="description"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_cba_project" model="ir.actions.act_window">
+        <field name="name">Projects</field>
+        <field name="res_model">cba.project</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Photo type -->
+    <record id="view_cba_photo_type_tree" model="ir.ui.view">
+        <field name="name">cba.photo.type.tree</field>
+        <field name="model">cba.photo.type</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_cba_photo_type" model="ir.actions.act_window">
+        <field name="name">Photo Types</field>
+        <field name="res_model">cba.photo.type</field>
+        <field name="view_mode">list</field>
+    </record>
+</odoo>

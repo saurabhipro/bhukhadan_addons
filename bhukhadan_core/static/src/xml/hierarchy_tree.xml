@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="bhukhadan_core.HierarchyTree">
+        <div class="bhu_hierarchy_container" t-att-class="state.orientation">
+            <div class="bhu_hierarchy_header">
+                <div class="bhu_header_left">
+                    <div class="bhu_breadcrumb_nav">
+                        <t t-foreach="state.breadcrumb" t-as="crumb" t-key="crumb.id">
+                            <span class="bhu_breadcrumb_item" t-att-class="crumb_last ? 'active' : ''" t-on-click="() => this.focusOnNode(crumb)">
+                                <t t-if="crumb.type == 'district'"><i class="fa fa-map-marker"/></t>
+                                <t t-elif="crumb.type == 'tehsil'"><i class="fa fa-building-o"/></t>
+                                <t t-elif="crumb.type == 'village'"><i class="fa fa-home"/></t>
+                                <t t-esc="crumb.name"/>
+                            </span>
+                            <i t-if="!crumb_last" class="fa fa-angle-right bhu_breadcrumb_sep"/>
+                        </t>
+                    </div>
+                </div>
+                
+                <div class="bhu_hierarchy_controls">
+                    <div class="bhu_toggle_group">
+                        <button type="button" class="btn" t-att-class="state.orientation == 'vertical' ? 'active' : ''" t-on-click="() => this.toggleOrientation('vertical')">
+                            <i class="fa fa-arrows-v"/> Vertical
+                        </button>
+                        <button type="button" class="btn" t-att-class="state.orientation == 'horizontal' ? 'active' : ''" t-on-click="() => this.toggleOrientation('horizontal')">
+                            <i class="fa fa-arrows-h"/> Horizontal
+                        </button>
+                    </div>
+
+                    <select class="bhu_district_select" t-on-change="onDistrictChange">
+                        <option value="">Switch District</option>
+                        <t t-foreach="state.districts" t-as="district" t-key="district.id">
+                            <option t-att-value="district.id" t-att-selected="district.id == state.selectedDistrictId">
+                                <t t-esc="district.name"/>
+                            </option>
+                        </t>
+                    </select>
+
+                    <div class="btn-action" t-on-click="loadData" title="Refresh">
+                        <i class="fa fa-refresh"/>
+                    </div>
+                    
+                    <div class="btn-action btn-fullscreen" t-on-click="toggleFull" title="Toggle Fullscreen">
+                        <i class="fa fa-expand"/>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bhu_hierarchy_canvas" t-ref="canvas">
+                <div t-if="state.loading" class="bhu_loading_state">
+                    <div class="bhu_spinner"></div>
+                    <p>Loading sub-hierarchy...</p>
+                </div>
+                <div t-elif="state.error" class="bhu_error_state">
+                    <i class="fa fa-exclamation-triangle fa-3x"/>
+                    <p><t t-esc="state.error"/></p>
+                    <button class="btn btn-outline-primary" t-on-click="loadData">Try Again</button>
+                </div>
+                <div t-else="" class="bhu_tree_wrapper">
+                    <div class="bhu_tree_root">
+                        <t t-call="bhukhadan_core.TreeNode">
+                            <t t-set="node" t-value="state.displayData"/>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="bhukhadan_core.TreeNode">
+        <div class="bhu_tree_node_group" t-att-class="{ 'is_collapsed': state.collapsed[node.id] }">
+            <div class="bhu_tree_node" 
+                 t-att-class="node.type + ' ' + (node.role || '')"
+                 t-on-click="() => this.onNodeClick(node)">
+                
+                <div class="bhu_node_card">
+                    <div class="bhu_node_accent"></div>
+                    <div class="bhu_node_icon">
+                        <t t-if="node.type == 'district'"><i class="fa fa-map-marker"/></t>
+                        <t t-elif="node.type == 'tehsil'"><i class="fa fa-building-o"/></t>
+                        <t t-elif="node.type == 'village'"><i class="fa fa-home"/></t>
+                        <t t-elif="node.type == 'user'"><i t-att-class="'fa ' + getRoleIcon(node.role)"/></t>
+                    </div>
+                    <div class="bhu_node_content">
+                        <div class="bhu_node_name" t-esc="node.name"/>
+                        <div class="bhu_node_meta">
+                            <t t-if="node.type == 'user'">
+                                <span class="bhu_role_badge" t-esc="getRoleLabel(node.role)"/>
+                            </t>
+                            <t t-else="">
+                                <span class="bhu_type_label" t-esc="node.type.toUpperCase()"/>
+                            </t>
+                        </div>
+                    </div>
+                    
+                    <div class="bhu_node_actions">
+                        <div t-if="node.type != 'user' &amp;&amp; node.id != state.displayData.id" 
+                             class="bhu_action_btn focus_btn" 
+                             title="Focus on this node"
+                             t-on-click.stop="() => this.focusOnNode(node)">
+                            <i class="fa fa-filter"/>
+                        </div>
+                        <div t-if="node.children &amp;&amp; node.children.length > 0" 
+                             class="bhu_node_toggle" 
+                             t-on-click.stop="() => this.toggleNode(node.id)">
+                            <i t-att-class="state.collapsed[node.id] ? 'fa fa-plus-circle' : 'fa fa-minus-circle'"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div t-if="node.children &amp;&amp; node.children.length > 0 &amp;&amp; !state.collapsed[node.id]" 
+                 class="bhu_tree_children">
+                <t t-foreach="node.children" t-as="child" t-key="child.id">
+                    <t t-call="bhukhadan_core.TreeNode">
+                        <t t-set="node" t-value="child"/>
+                    </t>
+                </t>
+            </div>
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_server_tree_rate_master_export_excel" model="ir.actions.server">
+            <field name="name">Export Rate Master Excel</field>
+            <field name="model_id" ref="model_bhu_tree_master"/>
+            <field name="binding_model_id" ref="model_bhu_tree_master"/>
+            <field name="binding_type">action</field>
+            <field name="binding_view_types">list,form</field>
+            <field name="state">code</field>
+            <field name="code">action = records.action_download_rate_master_excel()</field>
+        </record>
+
+        <record id="action_server_tree_rate_master_regenerate_non_fruit_slabs" model="ir.actions.server">
+            <field name="name">Reset All Non-fruit Rates (Chart)</field>
+            <field name="model_id" ref="model_bhu_tree_master"/>
+            <field name="binding_model_id" ref="model_bhu_tree_master"/>
+            <field name="binding_type">action</field>
+            <field name="binding_view_types">list,form</field>
+            <field name="state">code</field>
+            <field name="code">action = env['bhu.tree.master'].action_regenerate_all_non_fruit_slabs()</field>
+        </record>
+
+        <template id="report_tree_rate_master_pdf">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.basic_layout">
+                        <t t-set="data" t-value="o._get_rate_master_pdf_payload()"/>
+                        <div class="page" style="color:#000;">
+                        <style>
+                            @page {
+                                size: A4 landscape;
+                                margin: 8mm 6mm 8mm 6mm;
+                            }
+                            .tree-rate-table { width:100%; border-collapse:collapse; table-layout:fixed; }
+                            .tree-rate-table thead { display: table-header-group; }
+                            .tree-rate-table tr { page-break-inside: avoid; }
+                            .tree-rate-table,
+                            .tree-rate-table th,
+                            .tree-rate-table td,
+                            .tree-rate-title,
+                            .tree-rate-subtitle,
+                            .tree-rate-label {
+                                font-family:'Noto Sans Devanagari','Mangal','Arial Unicode MS','DejaVu Sans',sans-serif !important;
+                            }
+                            .tree-rate-table th, .tree-rate-table td { border:1px solid #000; padding:4px 3px; font-size:10px; text-align:center; vertical-align:middle; }
+                            .tree-rate-table th { font-weight:700; background:#f3f3f3; }
+                            .tree-rate-title { text-align:center; font-size:16px; font-weight:800; margin-bottom:6px; }
+                            .tree-rate-subtitle { text-align:center; font-size:12px; font-weight:700; margin-bottom:8px; }
+                            .left { text-align:left !important; }
+                            .sound-head { background:#d9ead3 !important; }
+                            .semi-head { background:#fff2cc !important; }
+                            .un-head { background:#f4cccc !important; }
+                            .sound-cell { background:#f3faf1 !important; }
+                            .semi-cell { background:#fffbed !important; }
+                            .un-cell { background:#fff1f1 !important; }
+                        </style>
+
+                        <div class="tree-rate-title">वृक्ष दर मास्टर / Tree Rate Master</div>
+                        <div class="tree-rate-subtitle">Generated On: <span t-esc="data.get('generated_on') or ''"/></div>
+
+                        <div class="tree-rate-label" style="font-size:14px; font-weight:700; margin:8px 0 6px 0;">परिशिष्ट "ख" - फलदार प्रजाति के वृक्षों का मूल्य</div>
+                        <table class="tree-rate-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:70px;">S.No.</th>
+                                    <th class="left">Tree Name</th>
+                                    <th style="width:150px;">Rate (INR)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-if="not data.get('fruit_rows')">
+                                    <td colspan="3">No fruit-bearing tree rates found.</td>
+                                </tr>
+                                <tr t-foreach="data.get('fruit_rows') or []" t-as="row">
+                                    <td><span t-esc="row.get('serial')"/></td>
+                                    <td class="left"><span t-esc="row.get('name')"/></td>
+                                    <td><span t-esc="'{:.0f}'.format(row.get('rate') or 0.0)"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="tree-rate-label" style="font-size:14px; font-weight:700; margin:4px 0 6px 0;">परिशिष्ट "क" - इमारती एवं मिश्रित प्रजाति के खड़े वृक्षों का मूल्य</div>
+                        <table class="tree-rate-table">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2" style="width:90px;">Girth (cm)</th>
+                                    <t t-foreach="data.get('non_teak_columns') or []" t-as="col">
+                                        <th colspan="3"><span t-esc="col.get('name')"/></th>
+                                    </t>
+                                </tr>
+                                <tr>
+                                    <t t-foreach="data.get('non_teak_columns') or []" t-as="col">
+                                        <th class="sound-head">Sound</th>
+                                        <th class="semi-head">Half Sound</th>
+                                        <th class="un-head">Un Sound</th>
+                                    </t>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-if="not data.get('non_teak_columns')">
+                                    <td colspan="2">No non-fruit mixed species selected.</td>
+                                </tr>
+                                <tr t-if="data.get('non_teak_columns')" t-foreach="data.get('non_teak_rows') or []" t-as="row">
+                                    <td><span t-esc="row.get('label')"/></td>
+                                    <t t-foreach="row.get('cells') or []" t-as="cell">
+                                        <td class="sound-cell"><span t-esc="'{:.0f}'.format(cell.get('fully_developed') or 0.0)"/></td>
+                                        <td class="semi-cell"><span t-esc="'{:.0f}'.format(cell.get('semi_developed') or 0.0)"/></td>
+                                        <td class="un-cell"><span t-esc="'{:.0f}'.format(cell.get('undeveloped') or 0.0)"/></td>
+                                    </t>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <t t-if="data.get('teak_rows')">
+                            <div class="tree-rate-label" style="font-size:13px; font-weight:700; margin:10px 0 6px 0;">
+                                वृक्ष का छाती वर्गीकरण - <span t-esc="data.get('teak_name') or 'Teak / सागौन'"/>
+                            </div>
+                            <table class="tree-rate-table" style="width:55%;">
+                                <thead>
+                                    <tr>
+                                        <th style="width:100px;">Girth (cm)</th>
+                                        <th class="sound-head">Sound</th>
+                                        <th class="semi-head">Half Sound</th>
+                                        <th class="un-head">Un Sound</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="data.get('teak_rows') or []" t-as="row">
+                                        <td><span t-esc="row.get('label')"/></td>
+                                        <td class="sound-cell"><span t-esc="'{:.0f}'.format((row.get('cells') or [{}])[0].get('fully_developed') or 0.0)"/></td>
+                                        <td class="semi-cell"><span t-esc="'{:.0f}'.format((row.get('cells') or [{}])[0].get('semi_developed') or 0.0)"/></td>
+                                        <td class="un-cell"><span t-esc="'{:.0f}'.format((row.get('cells') or [{}])[0].get('undeveloped') or 0.0)"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

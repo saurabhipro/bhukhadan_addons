@@ -1,0 +1,1960 @@
+{
+	"info": {
+		"_postman_id": "10ca4a24-20ae-4b5d-a56a-246d9311b389",
+		"name": "BhuKhadan REST API",
+		"description": "REST API collection for BhuKhadan mobile app integration. Default authentication: Bearer Token (use {{token}} variable). Public endpoints (get_otp, login) use No Auth.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19928031",
+		"_collection_link": "https://solardesk.postman.co/workspace/24b88f13-f075-4ab9-9223-1d8667a7eab6/collection/19928031-10ca4a24-20ae-4b5d-a56a-246d9311b389?action=share&source=collection_link&creator=19928031"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "get_otp",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"mobile\": \"9990649990\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/request_otp",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"request_otp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"mobile\":\"9990649990\",\n  \"otp_input\":\"525314\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						},
+						"description": "Login with mobile and OTP. app_version_code is MANDATORY - If missing, returns 400 error. If provided and version check is enforced in settings, validates the app version. If version is disabled, returns 403 error with latest version information. If version check is not enforced in settings, the version is still validated but all versions are allowed."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/users?limit=100&offset=0&role=",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"users"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "100",
+									"description": "Number of records to return (default: 100)"
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "Number of records to skip (default: 0)"
+								},
+								{
+									"key": "role",
+									"value": "",
+									"description": "Filter by bhuarjan_role: patwari, revenue_inspector, nayab_tahsildar, tahsildar, sdm, additional_collector, collector, administrator, sia_team_member (optional)"
+								}
+							]
+						},
+						"description": "Get all users with their details including villages, tehsils, districts, and roles"
+					},
+					"response": []
+				},
+				{
+					"name": "Autocomplete Users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/users/autocomplete?q=john&limit=20",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"users",
+								"autocomplete"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "john",
+									"description": "Search query (minimum 3 characters required). Searches in both name and login fields."
+								},
+								{
+									"key": "limit",
+									"value": "20",
+									"description": "Maximum number of results to return (default: 20, max: 50)"
+								}
+							]
+						},
+						"description": "Autocomplete API for searching users by username or name. Returns simplified user objects suitable for autocomplete dropdowns. Requires minimum 3 characters in the search query."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Projects & Villages",
+			"item": [
+				{
+					"name": "Get All Projects and Villages",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/user/projects?user_id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"user",
+								"projects"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "1",
+									"description": "User ID (required) - Returns departments, projects, and villages mapped to this user"
+								}
+							]
+						},
+						"description": "Get departments, projects, and villages mapped to a user.\n\n**Query Parameters:**\n- `user_id` (required): User ID to filter departments, projects, and villages\n\n**Response Structure:**\n- **First Level:** Departments\n- **Second Level:** Projects (within each department)\n- **Third Level:** Villages (within each project, only villages mapped to the user)\n\n**Response Example:**\n```json\n{\n  \"success\": true,\n  \"data\": [\n    {\n      \"id\": 2,\n      \"name\": \"PWD\",\n      \"code\": \"PWD\",\n      \"projects\": [\n        {\n          \"id\": 3,\n          \"name\": \"रिंग रोड रायगढ़\",\n          \"code\": \"RRR\",\n          \"project_uuid\": \"...\",\n          \"description\": \"...\",\n          \"state\": \"active\",\n          \"villages\": [\n            {\n              \"id\": 30,\n              \"name\": \"मिड़मिडा\",\n              \"village_code\": \"...\",\n              \"village_uuid\": \"...\",\n              \"district_id\": 1,\n              \"district_name\": \"...\",\n              \"tehsil_id\": 1,\n              \"tehsil_name\": \"...\",\n              \"pincode\": \"...\"\n            }\n          ]\n        }\n      ]\n    }\n  ],\n  \"user\": {\n    \"id\": 21,\n    \"name\": \"...\",\n    \"login\": \"...\",\n    \"bhuarjan_role\": \"...\"\n  }\n}\n```\n\n**Note:** Only shows departments, projects, and villages that are related to the user's assigned villages."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Projects and Villages by User ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/user/projects?user_id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"user",
+								"projects"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "1",
+									"description": "User ID (required) - Returns departments, projects, and villages mapped to this user"
+								}
+							]
+						},
+						"description": "Get departments, projects, and villages mapped to a specific user.\n\n**Query Parameters:**\n- `user_id` (required): User ID to filter departments, projects, and villages\n\n**Response Structure:**\n- **First Level:** Departments\n- **Second Level:** Projects (within each department)\n- **Third Level:** Villages (within each project, only villages mapped to the user)\n\n**Note:** Only shows departments, projects, and villages that are related to the user's assigned villages. If user has no villages assigned, returns empty array."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Dashboard",
+			"item": [
+				{
+					"name": "Get Village Dashboard",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/dashboard/village?village_id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"dashboard",
+								"village"
+							],
+							"query": [
+								{
+									"key": "village_id",
+									"value": "1",
+									"description": "Village ID (required)",
+									"disabled": false
+								}
+							]
+						},
+						"description": "Get survey statistics dashboard for a village. Returns total surveys, approved, rejected, pending (submitted + rejected), and counts by state (draft, submitted, approved, rejected)."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Departments",
+			"item": [
+				{
+					"name": "Get All Departments",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/departments?limit=100&offset=0",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"departments"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "100",
+									"description": "Number of records to return (default: 100)"
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "Number of records to skip (default: 0)"
+								}
+							]
+						},
+						"description": "Get all departments with their details"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Projects in Department",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/departments/1/projects?user_id=1&limit=100&offset=0",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"departments",
+								"1",
+								"projects"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "1",
+									"description": "User ID (optional) - If provided, returns only villages associated with this user",
+									"disabled": false
+								},
+								{
+									"key": "limit",
+									"value": "100",
+									"description": "Number of records to return (default: 100)"
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "Number of records to skip (default: 0)"
+								}
+							]
+						},
+						"description": "Get all projects associated with a specific department with village objects.\n\n**Path Parameters:**\n- `department_id` (required): Replace '1' in the URL path with the actual department ID\n\n**Query Parameters:**\n- `user_id` (optional): If provided, returns only villages associated with this user. If not provided, returns all villages for each project.\n- `limit` (optional, default 100): Number of records to return\n- `offset` (optional, default 0): Number of records to skip\n\n**Response:**\n- Returns projects with `villages` array containing village objects (instead of `village_ids`)\n- Each village object includes: id, name, village_code, village_uuid, district_id, district_name, tehsil_id, tehsil_name, pincode\n- If `user_id` is provided, response includes `user` object with user details"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Land Types",
+			"item": [
+				{
+					"name": "Get All Land Types",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/land-types?limit=100&offset=0&active=true",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"land-types"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "100",
+									"description": "Number of records to return (default: 100)"
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "Number of records to skip (default: 0)"
+								},
+								{
+									"key": "active",
+									"value": "true",
+									"description": "Filter by active status: true/false/1/0/yes (optional, default: true - returns only active land types)"
+								}
+							]
+						},
+						"description": "Get all land types with their details. Returns active land types by default."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Surveys",
+			"item": [
+				{
+					"name": "Create Survey",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"project_id\": 3,\n    \"village_id\": 1,\n    \"department_id\": 2,\n    \"tehsil_id\": 1,\n    \"khasra_number\": \"103/90\",\n    \"total_area\": 2.5,\n    \"acquired_area\": 2.0,\n    \"has_traded_land\": \"no\",\n    \"traded_land_area\": 0.0,\n    \"crop_type\": 11,\n    \"irrigation_type\": \"irrigated\",\n    \"has_house\": \"no\",\n    \"house_type\": \"pakka\",\n    \"house_area\": 0.0,\n    \"has_shed\": \"yes\",\n    \"shed_area\": 100.0,\n    \"has_well\": \"yes\",\n    \"well_type\": \"pakka\",\n    \"well_count\": 2,\n    \"has_tubewell\": \"no\",\n    \"tubewell_count\": 0,\n    \"has_pond\": \"no\",\n    \"latitude\": 21.8974,\n    \"longitude\": 83.3960,\n    \"location_accuracy\": 10.5,\n    \"location_timestamp\": \"2024-12-15 10:30:00\",\n    \"remarks\": \"Survey completed successfully\",\n    \"state\": \"submitted\",\n    \"landowner_ids\": [379],\n    \"tree_lines\": [\n        {\n            \"development_stage\": \"undeveloped\",\n            \"tree_master_id\": 1,\n            \"quantity\": 5\n        }\n    ],\n    \"photos\": [\n        {\n            \"s3_url\": \"https://example.com/photo1.jpg\",\n            \"filename\": \"photo1.jpg\",\n            \"file_size\": 1024,\n            \"latitude\": 21.23456789,\n            \"longitude\": 81.98765432\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/survey",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"survey"
+							]
+						},
+						"description": "Create a new survey. Replace IDs with actual values from your database.\n\n## Request Body\n\n**Required Fields:**\n- `project_id`, `village_id`, `department_id`, `tehsil_id`\n- `khasra_number`, `total_area`, `acquired_area`\n- `landowner_ids` (array with at least one landowner)\n\n**Infrastructure Fields:**\n- `has_well` (string): \"yes\" or \"no\"\n- `well_type` (string, optional): \"pakka\" or \"kaccha\" (required if has_well is \"yes\")\n- `well_count` (integer, optional): Number of wells (default: 1 if has_well is \"yes\", 0 if \"no\")\n- `has_tubewell` (string): \"yes\" or \"no\"\n- `tubewell_count` (integer, optional): Number of tubewells/submersible pumps (default: 1 if has_tubewell is \"yes\", 0 if \"no\")\n- `has_pond` (string): \"yes\" or \"no\"\n\n**Tree Lines:**\n- Use `tree_lines` array to add multiple trees\n- Each tree line requires:\n  - `tree_type`: \"fruit_bearing\" or \"non_fruit_bearing\"\n  - Either `tree_master_id` (integer) OR `tree_name` (string) to identify the tree\n  - `quantity`: number of trees (default: 1)\n  - `development_stage`: \"undeveloped\", \"semi_developed\", or \"fully_developed\" (REQUIRED for ALL trees)\n  - For **non-fruit-bearing trees only**:\n    - `girth_cm`: tree girth in centimeters (OPTIONAL, must be > 0 if provided)\n\n## Success Response (201)\n\n```json\n{\n  \"success\": true,\n  \"data\": {\n    \"id\": 257,\n    \"name\": \"SC_001_0001\",\n    \"survey_uuid\": \"...\",\n    \"khasra_number\": \"103\",\n    \"state\": \"draft\"\n  }\n}\n```\n\n## Error Response (400)\n\nAll validation errors follow this standardized format:\n\n```json\n{\n  \"success\": false,\n  \"error\": \"VALIDATION_ERROR\",\n  \"error_code\": \"SPECIFIC_ERROR_CODE\",\n  \"message\": \"Clear, user-friendly error message\",\n  \"fields\": [\"field_name1\", \"field_name2\"]\n}\n```\n\n### Common Error Codes:\n\n**MISSING_REQUIRED_FIELDS**\n```json\n{\n  \"success\": false,\n  \"error\": \"VALIDATION_ERROR\",\n  \"error_code\": \"MISSING_REQUIRED_FIELDS\",\n  \"message\": \"The following required fields are missing: Project, Village\",\n  \"fields\": [\"project_id\", \"village_id\"]\n}\n```\n\n**INVALID_REFERENCE_IDS**\n```json\n{\n  \"success\": false,\n  \"error\": \"VALIDATION_ERROR\",\n  \"error_code\": \"INVALID_REFERENCE_IDS\",\n  \"message\": \"Project ID 3 does not exist; Department ID 3 does not exist\",\n  \"fields\": [\"project_id\", \"department_id\"]\n}\n```\n\n**INVALID_TOTAL_AREA**\n```json\n{\n  \"success\": false,\n  \"error\": \"VALIDATION_ERROR\",\n  \"error_code\": \"INVALID_TOTAL_AREA\",\n  \"message\": \"Total Area must be greater than 0. Provided value: 0\",\n  \"fields\": [\"total_area\"]\n}\n```\n\n**INVALID_ACQUIRED_AREA**\n```json\n{\n  \"success\": false,\n  \"error\": \"VALIDATION_ERROR\",\n  \"error_code\": \"INVALID_ACQUIRED_AREA\",\n  \"message\": \"Acquired Area must be greater than 0. Provided value: 0\",\n  \"fields\": [\"acquired_area\"]\n}\n```\n\n**ACQUIRED_AREA_EXCEEDS_TOTAL**\n```json\n{\n  \"success\": false,\n  \"error\": \"VALIDATION_ERROR\",\n  \"error_code\": \"ACQUIRED_AREA_EXCEEDS_TOTAL\",\n  \"message\": \"Acquired Area (15.0 hectares) cannot be greater than Total Area (10.0 hectares).\",\n  \"fields\": [\"acquired_area\", \"total_area\"]\n}\n```\n\n**MISSING_LANDOWNERS**\n```json\n{\n  \"success\": false,\n  \"error\": \"VALIDATION_ERROR\",\n  \"error_code\": \"MISSING_LANDOWNERS\",\n  \"message\": \"At least one landowner is required to create a survey\",\n  \"fields\": [\"landowner_ids\"]\n}\n```\n\n**INVALID_LANDOWNER_IDS**\n```json\n{\n  \"success\": false,\n  \"error\": \"VALIDATION_ERROR\",\n  \"error_code\": \"INVALID_LANDOWNER_IDS\",\n  \"message\": \"The following landowner ID(s) do not exist or are invalid: 999, 888\",\n  \"fields\": [\"landowner_ids\"]\n}\n```\n\n**MODEL_VALIDATION_FAILED**\n```json\n{\n  \"success\": false,\n  \"error\": \"VALIDATION_ERROR\",\n  \"error_code\": \"MODEL_VALIDATION_FAILED\",\n  \"message\": \"Khasra number 103 already exists in village जुर्दा in another survey.\"\n}\n```\n\n## Field Highlighting\n\nThe `fields` array contains field names that should be highlighted in the mobile app UI. Use these field names to identify and highlight problematic form fields.\n\n## Examples\n\nFruit-bearing tree:\n```json\n{\n  \"tree_type\": \"fruit_bearing\",\n  \"tree_master_id\": 1,\n  \"development_stage\": \"fully_developed\",\n  \"quantity\": 5\n}\n```\n\nNon-fruit-bearing tree (with girth):\n```json\n{\n  \"tree_type\": \"non_fruit_bearing\",\n  \"tree_master_id\": 2,\n  \"development_stage\": \"fully_developed\",\n  \"girth_cm\": 50.5,\n  \"quantity\": 10\n}\n```\n\nNon-fruit-bearing tree (without girth - optional):\n```json\n{\n  \"tree_type\": \"non_fruit_bearing\",\n  \"tree_master_id\": 2,\n  \"development_stage\": \"fully_developed\",\n  \"quantity\": 10\n}\n```"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Survey Details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/survey/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"survey",
+								"1"
+							],
+							"variable": [
+								{
+									"key": "survey_id",
+									"value": "1",
+									"description": "Replace with actual survey ID"
+								}
+							]
+						},
+						"description": "Get detailed information about a specific survey.\n\n## Response Example (200)\n\n```json\n{\n  \"success\": true,\n  \"data\": {\n    \"id\": 257,\n    \"name\": \"SC_001_0001\",\n    \"survey_uuid\": \"550e8400-e29b-41d4-a716-446655440000\",\n    \"project_id\": 1,\n    \"project_name\": \"Ring Road Raigarh\",\n    \"village_id\": 1,\n    \"village_name\": \"जुर्दा\",\n    \"khasra_number\": \"103\",\n    \"total_area\": 2.5,\n    \"acquired_area\": 2.0,\n    \"crop_type\": 1,\n    \"crop_type_name\": \"एक फसली\",\n    \"irrigation_type\": \"irrigated\",\n    \"has_well\": \"yes\",\n    \"well_type\": \"pakka\",\n    \"well_count\": 2,\n    \"has_tubewell\": \"yes\",\n    \"tubewell_count\": 1,\n    \"has_pond\": \"no\",\n    \"photos\": [\n      {\n        \"id\": 1,\n        \"s3_url\": \"https://example.com/photo1.jpg\",\n        \"filename\": \"photo1.jpg\",\n        \"file_size\": 1024,\n        \"latitude\": 21.23456789,\n        \"longitude\": 81.98765432\n      }\n    ],\n    \"tree_lines\": [\n      {\n        \"id\": 1,\n        \"tree_type\": \"fruit_bearing\",\n        \"tree_master_id\": 1,\n        \"tree_name\": \"Mango\",\n        \"development_stage\": \"fully_developed\",\n        \"quantity\": 5\n      },\n      {\n        \"id\": 2,\n        \"tree_type\": \"non_fruit_bearing\",\n        \"tree_master_id\": 2,\n        \"tree_name\": \"Neem\",\n        \"development_stage\": \"semi_developed\",\n        \"girth_cm\": 50.5,\n        \"quantity\": 10\n      }\n    ],\n    \"landowner_ids\": [\n      {\n        \"id\": 1,\n        \"name\": \"राम कुमार सिंह\",\n        \"father_name\": \"श्याम सिंह\",\n        \"spouse_name\": \"सीता देवी\",\n        \"aadhar_number\": \"123456789012\",\n        \"pan_number\": \"ABCDE1234F\",\n        \"phone\": \"9876543210\",\n        \"owner_address\": \"House No. 123, Street Name\"\n      }\n    ],\n    \"state\": \"draft\"\n  }\n}\n```\n\n## Tree Lines Response Fields\n\nEach tree line in the response includes:\n- `id`: Tree line record ID\n- `tree_type`: \"fruit_bearing\" or \"non_fruit_bearing\"\n- `tree_master_id`: Tree master ID\n- `tree_name`: Tree name from tree master\n- `development_stage`: \"undeveloped\", \"semi_developed\", or \"fully_developed\"\n- `girth_cm`: Tree girth in centimeters (only for non-fruit-bearing trees, null for fruit-bearing)\n- `quantity`: Number of trees\n\n## Landowner Response Fields\n\nEach landowner in the `landowner_ids` array includes:\n- `id`: Landowner ID\n- `name`: Full name\n- `father_name`: Father's name\n- `spouse_name`: Spouse's name\n- `aadhar_number`: Aadhar number\n- `pan_number`: PAN number\n- `phone`: Phone number\n- `owner_address`: Complete address"
+					},
+					"response": []
+				},
+				{
+					"name": "List Surveys",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/surveys?project_id=1&village_id=1&state=submitted&limit=100&offset=0",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"surveys"
+							],
+							"query": [
+								{
+									"key": "project_id",
+									"value": "1",
+									"description": "Filter by project ID (optional)"
+								},
+								{
+									"key": "village_id",
+									"value": "1",
+									"description": "Filter by village ID (optional)"
+								},
+								{
+									"key": "state",
+									"value": "submitted",
+									"description": "Filter by state: submitted, approved, rejected (optional)"
+								},
+								{
+									"key": "district_id",
+									"value": "",
+									"description": "Filter by district ID (optional)"
+								},
+								{
+									"key": "tehsil_id",
+									"value": "",
+									"description": "Filter by tehsil ID (optional)"
+								},
+								{
+									"key": "q",
+									"value": "",
+									"description": "Search by Khasra number (optional)"
+								},
+								{
+									"key": "limit",
+									"value": "100",
+									"description": "Number of records to return (default: 100)"
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "Number of records to skip (default: 0)"
+								}
+							]
+						},
+						"description": "List surveys with optional filters.\n\n## Query Parameters\n- `project_id` (integer, optional): Filter by project ID\n- `village_id` (integer, optional): Filter by village ID\n- `state` (string, optional): Filter by state: draft, submitted, approved, rejected\n- `q` (string, optional): Search by Khasra number (supports partial matching)\n- `limit` (integer, optional): Number of records to return (default: 100)\n- `offset` (integer, optional): Number of records to skip (default: 0)\n\n## Response Fields\nEach survey in the response includes:\n- `id`: Survey ID\n- `name`: Survey number\n- `survey_uuid`: Unique survey UUID\n- `khasra_number`: Khasra number\n- `project_id`: Project ID\n- `project_name`: Project name\n- `village_id`: Village ID\n- `village_name`: Village name\n- `survey_date`: Survey date (YYYY-MM-DD)\n- `total_area`: Total area in hectares\n- `acquired_area`: Acquired area in hectares\n- `state`: Survey state (draft, submitted, approved, rejected)\n- `is_notification_4_generated`: Boolean indicating if Notification 4 is generated\n- `surveyor_id`: ID of the user who created the survey\n- `surveyor_name`: Name of the user who created the survey\n\n## Response Example\n```json\n{\n  \"success\": true,\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"SC_001_0001\",\n      \"survey_uuid\": \"550e8400-e29b-41d4-a716-446655440000\",\n      \"khasra_number\": \"103\",\n      \"project_id\": 1,\n      \"project_name\": \"Ring Road Raigarh\",\n      \"village_id\": 1,\n      \"village_name\": \"जुर्दा\",\n      \"survey_date\": \"2024-12-15\",\n      \"total_area\": 2.5,\n      \"acquired_area\": 2.0,\n      \"state\": \"submitted\",\n      \"is_notification_4_generated\": false,\n      \"surveyor_id\": 2,\n      \"surveyor_name\": \"Administrator\"\n    }\n  ],\n  \"total\": 1,\n  \"limit\": 100,\n  \"offset\": 0\n}\n```"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Survey (PATCH)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"description": "JWT token from login API"
+							},
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"khasra_number\": \"104\",\n    \"total_area\": 3.0,\n    \"acquired_area\": 2.5,\n    \"has_traded_land\": \"yes\",\n    \"traded_land_area\": 1.5,\n    \"crop_type\": 2,\n    \"irrigation_type\": \"irrigated\",\n    \"has_well\": \"yes\",\n    \"well_type\": \"pakka\",\n    \"well_count\": 3,\n    \"has_tubewell\": \"yes\",\n    \"tubewell_count\": 2,\n    \"landowner_ids\": [1, 2],\n    \"tree_lines\": [\n        {\n            \"tree_type\": \"fruit_bearing\",\n            \"tree_master_id\": 1,\n            \"development_stage\": \"fully_developed\",\n            \"quantity\": 5\n        },\n        {\n            \"tree_type\": \"non_fruit_bearing\",\n            \"tree_name\": \"Neem\",\n            \"development_stage\": \"semi_developed\",\n            \"girth_cm\": 40.0,\n            \"quantity\": 10\n        },\n        {\n            \"tree_type\": \"non_fruit_bearing\",\n            \"tree_master_id\": 2,\n            \"development_stage\": \"fully_developed\",\n            \"girth_cm\": 60.5,\n            \"quantity\": 20\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/survey/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"survey",
+								"1"
+							],
+							"variable": [
+								{
+									"key": "survey_id",
+									"value": "1",
+									"description": "Replace with actual survey ID"
+								}
+							]
+						},
+						"description": "Update a survey. Only surveys in 'submitted' state can be edited (except for state updates). State updates are allowed regardless of current state. Include only the fields you want to update in the request body.\n\n## Request Body\n\nInclude only the fields you want to update. All validation rules from Create Survey apply.\n\n**State Updates:**\n- You can update the `state` field regardless of the current survey state\n- Valid state values: `draft`, `submitted`, `approved`, `rejected`\n- When setting state to `submitted`:\n  - The survey must have a `khasra_number` (required for submission)\n  - The `submitted_date` will be automatically set if not already set\n\n**Example - Update State Only:**\n```json\n{\n    \"state\": \"submitted\"\n}\n```\n\n**Example - Update State with Other Fields:**\n```json\n{\n    \"state\": \"submitted\",\n    \"remarks\": \"Ready for review\"\n}\n```\n\n**Tree Lines:**\n- Use `tree_lines` array to update tree details (replaces all existing tree lines)\n- Each tree line requires:\n  - `tree_type`: \"fruit_bearing\" or \"non_fruit_bearing\"\n  - Either `tree_master_id` (integer) OR `tree_name` (string) to identify the tree\n  - `quantity`: number of trees (default: 1)\n  - `development_stage`: \"undeveloped\", \"semi_developed\", or \"fully_developed\" (REQUIRED for ALL trees)\n  - For **non-fruit-bearing trees only**:\n    - `girth_cm`: tree girth in centimeters (OPTIONAL, must be > 0 if provided)\n\n## Success Response (200)\n\n```json\n{\n  \"success\": true,\n  \"message\": \"Survey updated successfully\",\n  \"data\": {\n    \"id\": 257,\n    \"name\": \"SC_001_0001\",\n    \"survey_uuid\": \"550e8400-e29b-41d4-a716-446655440000\",\n    \"khasra_number\": \"104\",\n    \"total_area\": 3.0,\n    \"acquired_area\": 2.5,\n    \"tree_lines\": [\n      {\n        \"id\": 1,\n        \"tree_type\": \"fruit_bearing\",\n        \"tree_master_id\": 1,\n        \"tree_name\": \"Mango\",\n        \"development_stage\": \"fully_developed\",\n        \"quantity\": 5\n      },\n      {\n        \"id\": 2,\n        \"tree_type\": \"non_fruit_bearing\",\n        \"tree_master_id\": 2,\n        \"tree_name\": \"Neem\",\n        \"development_stage\": \"semi_developed\",\n        \"girth_cm\": 40.0,\n        \"quantity\": 10\n      }\n    ],\n    \"state\": \"submitted\",\n    \"submitted_date\": \"2024-12-15T10:30:00\"\n  }\n}\n```\n\n## Error Response (400)\n\nSame error format as Create Survey API. All validation errors follow:\n\n```json\n{\n  \"success\": false,\n  \"error\": \"VALIDATION_ERROR\",\n  \"error_code\": \"SPECIFIC_ERROR_CODE\",\n  \"message\": \"Clear, user-friendly error message\",\n  \"fields\": [\"field_name1\", \"field_name2\"]\n}\n```\n\n**State Update Errors:**\n\n**Invalid State Value:**\n```json\n{\n  \"success\": false,\n  \"error\": \"Validation Error\",\n  \"message\": \"Invalid state value. Valid states are: draft, submitted, approved, rejected, locked\"\n}\n```\n\n**Missing Khasra Number (when submitting):**\n```json\n{\n  \"success\": false,\n  \"error\": \"Validation Error\",\n  \"message\": \"Khasra number is required before submitting the survey.\"\n}\n```\n\nSee Create Survey API documentation for all other error codes and examples.\n\n## Examples\n\n**Update State to Submitted:**\n```json\n{\n    \"state\": \"submitted\"\n}\n```\n\n**Update State to Approved:**\n```json\n{\n    \"state\": \"approved\"\n}\n```\n\n**Update State to Rejected:**\n```json\n{\n    \"state\": \"rejected\"\n}\n```\n\n**Update State with Remarks:**\n```json\n{\n    \"state\": \"submitted\",\n    \"remarks\": \"Survey completed and ready for review\"\n}\n```\n\nFruit-bearing tree:\n```json\n{\n  \"tree_type\": \"fruit_bearing\",\n  \"tree_master_id\": 1,\n  \"development_stage\": \"fully_developed\",\n  \"quantity\": 5\n}\n```\n\nNon-fruit-bearing tree (with girth):\n```json\n{\n  \"tree_type\": \"non_fruit_bearing\",\n  \"tree_master_id\": 2,\n  \"development_stage\": \"fully_developed\",\n  \"girth_cm\": 50.5,\n  \"quantity\": 10\n}\n```\n\nNon-fruit-bearing tree (without girth - optional):\n```json\n{\n  \"tree_type\": \"non_fruit_bearing\",\n  \"tree_master_id\": 2,\n  \"development_stage\": \"fully_developed\",\n  \"quantity\": 10\n}\n```"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Survey State (PATCH)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"description": "JWT token from login API"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"state\": \"submitted\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/survey/316",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"survey",
+								"316"
+							],
+							"variable": [
+								{
+									"key": "survey_id",
+									"value": "316",
+									"description": "Replace with actual survey ID"
+								}
+							]
+						},
+						"description": "# 📝 Update Survey State\n\nUpdate the state of a survey. State updates are allowed regardless of the current survey state.\n\n## ✅ Valid State Values\n\n- `draft` - Draft / प्रारूप\n- `submitted` - Submitted / प्रस्तुत\n- `approved` - Approved / अनुमोदित\n- `rejected` - Rejected / अस्वीकृत\n\n## 📝 Request Body\n\n**Minimal Request (State Only):**\n```json\n{\n    \"state\": \"submitted\"\n}\n```\n\n**With Additional Fields:**\n```json\n{\n    \"state\": \"submitted\",\n    \"remarks\": \"Ready for review\"\n}\n```\n\n## ⚠️ Important Notes\n\n### When Setting State to `submitted`:\n- ✅ The survey **must have a `khasra_number`** (required for submission)\n- ✅ The `submitted_date` will be **automatically set** if not already set\n- ✅ This matches the behavior of the `action_submit()` method in the backend\n\n### State Update Rules:\n- ✅ State updates are **allowed regardless** of current survey state\n- ✅ Other field updates are **only allowed** if survey is in `draft` or `submitted` state\n- ✅ You can update state even if the survey is `approved`, `rejected`, or `locked`\n\n## 📤 Success Response (200)\n\n```json\n{\n  \"success\": true,\n  \"message\": \"Survey updated successfully\",\n  \"data\": {\n    \"id\": 316,\n    \"name\": \"SC_001_0001\",\n    \"survey_uuid\": \"550e8400-e29b-41d4-a716-446655440000\",\n    \"khasra_number\": \"103/90\",\n    \"state\": \"submitted\",\n    \"submitted_date\": \"2024-12-15T10:30:00\",\n    \"project_id\": 3,\n    \"village_id\": 1,\n    \"total_area\": 2.5,\n    \"acquired_area\": 2.0\n  }\n}\n```\n\n## ❌ Error Responses\n\n### 404 - Survey Not Found\n```json\n{\n  \"error\": \"Survey with ID 999 not found\"\n}\n```\n\n### 400 - Invalid State Value\n```json\n{\n  \"error\": \"Validation Error\",\n  \"message\": \"Invalid state value. Valid states are: draft, submitted, approved, rejected, locked\"\n}\n```\n\n### 400 - Missing Khasra Number (when submitting)\n```json\n{\n  \"error\": \"Validation Error\",\n  \"message\": \"Khasra number is required before submitting the survey.\"\n}\n```\n\n### 400 - Cannot Edit Other Fields\n```json\n{\n  \"error\": \"Survey cannot be edited. Current state: approved. Only surveys in draft or submitted state can be edited. State updates are allowed regardless of current state.\"\n}\n```\n\n## 💡 Usage Examples\n\n### Submit a Survey\n```bash\ncurl --location --request PATCH 'https://bhuarjan.com/api/bhuarjan/survey/316' \\\n--header 'Accept: application/json' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: Bearer YOUR_TOKEN' \\\n--data '{\"state\":\"submitted\"}'\n```\n\n### Approve a Survey\n```json\n{\n    \"state\": \"approved\"\n}\n```\n\n### Reject a Survey\n```json\n{\n    \"state\": \"rejected\"\n}\n```\n\n### Reset to Submitted (from Rejected)\n```json\n{\n    \"state\": \"submitted\"\n}\n```\n\n## 🔄 State Transition Flow\n\n**API Workflow:**\n1. **Create** survey via API → `state: \"submitted\"` (default for API)\n2. **Approve** survey → `state: \"approved\"`\n3. **Reject** survey → `state: \"rejected\"` (can reset to submitted and resubmit)\n\n**Web UI Workflow:**\n1. **Create** survey in web UI → `state: \"draft\"` (default for web)\n2. **Submit** survey → `state: \"submitted\"`\n3. **Approve** survey → `state: \"approved\"`\n4. **Reject** survey → `state: \"rejected\"` (can reset to submitted and resubmit)"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Survey",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"description": "JWT token from login API"
+							},
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/survey/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"survey",
+								"1"
+							],
+							"variable": [
+								{
+									"key": "survey_id",
+									"value": "1",
+									"description": "Replace with actual survey ID"
+								}
+							]
+						},
+						"description": "Delete a survey. Only surveys in 'draft' or 'submitted' state can be deleted. Once approved or rejected, surveys cannot be deleted."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Survey Photo",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"description": "JWT token from login API"
+							},
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/photo/123",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"photo",
+								"123"
+							],
+							"variable": [
+								{
+									"key": "photo_id",
+									"value": "123",
+									"description": "Replace with actual photo ID"
+								}
+							]
+						},
+						"description": "Delete a survey photo by ID. Only allowed if the survey is not approved (i.e., in 'draft' or 'submitted' state)."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Form 10 (Bulk Table Report)",
+			"item": [
+				{
+					"name": "Download Form 10 PDF (by village)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/form10/download?village_id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"form10",
+								"download"
+							],
+							"query": [
+								{
+									"key": "village_id",
+									"value": "1",
+									"description": "Village ID (required)"
+								}
+							]
+						},
+						"description": "Download Form 10 (Bulk Table Report) PDF based on village_id. Returns all surveys for the specified village across all projects."
+					},
+					"response": []
+				},
+				{
+					"name": "Download Form 10 PDF (by village and project)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/form10/download?village_id=1&project_id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"form10",
+								"download"
+							],
+							"query": [
+								{
+									"key": "village_id",
+									"value": "1",
+									"description": "Village ID (required)"
+								},
+								{
+									"key": "project_id",
+									"value": "1",
+									"description": "Project ID (optional)"
+								}
+							]
+						},
+						"description": "Download Form 10 (Bulk Table Report) PDF based on village_id and project_id. Returns surveys for the specified village and project only."
+					},
+					"response": []
+				},
+				{
+					"name": "Download Form 10 PDF (by survey ID)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/form10/survey/download?survey_id=257",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"form10",
+								"survey",
+								"download"
+							],
+							"query": [
+								{
+									"key": "survey_id",
+									"value": "257",
+									"description": "Survey ID (required)"
+								}
+							]
+						},
+						"description": "Download Form 10 (Bulk Table Report) PDF for a specific survey. Returns the Form 10 PDF for the specified survey_id only."
+					},
+					"response": []
+				},
+				{
+					"name": "Download Form 10 Excel (by village)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/form10/excel/download?village_id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"form10",
+								"excel",
+								"download"
+							],
+							"query": [
+								{
+									"key": "village_id",
+									"value": "1",
+									"description": "Village ID (required)"
+								},
+								{
+									"key": "project_id",
+									"value": "1",
+									"description": "Project ID (optional)"
+								},
+								{
+									"key": "limit",
+									"value": "100",
+									"description": "Maximum number of surveys to export (optional, default: 100, max: 100)"
+								}
+							]
+						},
+						"description": "Download Form 10 (Bulk Table Report) Excel based on village_id. Returns all surveys for the specified village across all projects (or filtered by project_id if provided). Excel file does NOT include logo and QR code. Export is survey-wise and village-wise as in PDF."
+					},
+					"response": []
+				},
+				{
+					"name": "Download Form 10 Excel (by village and project)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/form10/excel/download?village_id=1&project_id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"form10",
+								"excel",
+								"download"
+							],
+							"query": [
+								{
+									"key": "village_id",
+									"value": "1",
+									"description": "Village ID (required)"
+								},
+								{
+									"key": "project_id",
+									"value": "1",
+									"description": "Project ID (optional)"
+								},
+								{
+									"key": "limit",
+									"value": "100",
+									"description": "Maximum number of surveys to export (optional, default: 100, max: 100)"
+								}
+							]
+						},
+						"description": "Download Form 10 (Bulk Table Report) Excel based on village_id and project_id. Returns surveys for the specified village and project only. Excel file does NOT include logo and QR code. Export is survey-wise and village-wise as in PDF."
+					},
+					"response": []
+				},
+				{
+					"name": "Download Form 10 Excel (by survey ID)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/form10/excel/survey/download?survey_id=257",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"form10",
+								"excel",
+								"survey",
+								"download"
+							],
+							"query": [
+								{
+									"key": "survey_id",
+									"value": "257",
+									"description": "Survey ID (required)"
+								}
+							]
+						},
+						"description": "Download Form 10 (Bulk Table Report) Excel for a specific survey. Returns the Form 10 Excel for the specified survey_id only. Excel file does NOT include logo and QR code."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Landowners",
+			"item": [
+				{
+					"name": "Create Landowner",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"राम कुमार सिंह\",\n    \"father_name\": \"श्याम सिंह\",\n    \"mother_name\": \"गीता देवी\",\n    \"spouse_name\": \"सीता देवी\",\n    \"phone\": \"9876543210\",\n    \"village_id\": 1,\n    \"tehsil_id\": 1,\n    \"district_id\": 1,\n    \"owner_address\": \"House No. 123, Street Name, पंडरीपानी, रायगढ़, Chhattisgarh\",\n    \"aadhar_number\": \"123456789012\",\n    \"pan_number\": \"ABCDE1234F\",\n    \"bank_name\": \"State Bank of India\",\n    \"bank_branch\": \"Raigarh Main Branch\",\n    \"account_number\": \"1234567890123456\",\n    \"ifsc_code\": \"SBIN0001234\",\n    \"account_holder_name\": \"राम कुमार सिंह\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/landowner",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"landowner"
+							]
+						},
+						"description": "Create a new landowner. Replace IDs with actual values from your database."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Landowners",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/landowners?survey_id=&village_id=&limit=100&offset=0",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"landowners"
+							],
+							"query": [
+								{
+									"key": "survey_id",
+									"value": "",
+									"description": "Filter by survey ID (optional)"
+								},
+								{
+									"key": "village_id",
+									"value": "",
+									"description": "Filter by village ID (optional)"
+								},
+								{
+									"key": "limit",
+									"value": "100",
+									"description": "Number of records to return (default: 100)"
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "Number of records to skip (default: 0)"
+								}
+							]
+						},
+						"description": "Get landowners based on survey_id and/or village_id (both optional). If both are provided, returns landowners that match both criteria."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Landowner (PATCH)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Updated Name\",\n    \"father_name\": \"Updated Father Name\",\n    \"spouse_name\": \"Updated Spouse Name\",\n    \"phone\": \"9876543210\",\n    \"owner_address\": \"Updated address\",\n    \"aadhar_number\": \"123456789012\",\n    \"pan_number\": \"ABCDE1234F\",\n    \"bank_name\": \"Updated Bank\",\n    \"account_number\": \"1234567890123456\",\n    \"ifsc_code\": \"ABCD0123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/landowner/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"landowner",
+								"1"
+							]
+						},
+						"description": "# 👤 Update Landowner\n\nUpdate an existing landowner. Only include the fields you want to update.\n\n## 📝 Path Parameter\n\n- `landowner_id` (required): Replace '1' in the URL path with the actual landowner ID\n\n## 📝 Request Body\n\nInclude only the fields you want to update. All fields are optional.\n\n**Example Request:**\n```json\n{\n    \"name\": \"Updated Name\",\n    \"father_name\": \"Updated Father Name\",\n    \"mother_name\": \"Updated Mother Name\",\n    \"spouse_name\": \"Updated Spouse Name\",\n    \"phone\": \"9876543210\",\n    \"village_id\": 1,\n    \"tehsil_id\": 1,\n    \"district_id\": 1,\n    \"owner_address\": \"Updated complete address\",\n    \"aadhar_number\": \"123456789012\",\n    \"pan_number\": \"ABCDE1234F\",\n    \"bank_name\": \"Updated Bank Name\",\n    \"bank_branch\": \"Updated Branch\",\n    \"account_number\": \"1234567890123456\",\n    \"ifsc_code\": \"ABCD0123456\",\n    \"account_holder_name\": \"Updated Account Holder Name\"\n}\n```\n\n**Available Fields:**\n- `name` (string): Full name\n- `father_name` (string): Father's name\n- `mother_name` (string): Mother's name\n- `spouse_name` (string): Spouse's name\n- `phone` (string): Phone number\n- `village_id` (integer): Village ID (must exist)\n- `tehsil_id` (integer): Tehsil ID (must exist)\n- `district_id` (integer): District ID (must exist)\n- `owner_address` (string): Complete address\n- `aadhar_number` (string): 12-digit Aadhar number\n- `pan_number` (string): PAN number (format: ABCDE1234F)\n- `bank_name` (string): Bank name\n- `bank_branch` (string): Bank branch\n- `account_number` (string): Account number (9-18 digits)\n- `ifsc_code` (string): IFSC code (format: ABCD0123456)\n- `account_holder_name` (string): Account holder name\n- `aadhar_card` (string): Base64 encoded Aadhar card image (optional)\n- `pan_card` (string): Base64 encoded PAN card image (optional)\n\n## 📤 Success Response (200)\n\n```json\n{\n    \"success\": true,\n    \"data\": {\n        \"id\": 1,\n        \"name\": \"Updated Name\",\n        \"father_name\": \"Updated Father Name\",\n        \"mother_name\": \"Updated Mother Name\",\n        \"spouse_name\": \"Updated Spouse Name\",\n        \"aadhar_number\": \"123456789012\",\n        \"pan_number\": \"ABCDE1234F\",\n        \"phone\": \"9876543210\",\n        \"village_id\": 1,\n        \"village_name\": \"Village Name\",\n        \"tehsil_id\": 1,\n        \"tehsil_name\": \"Tehsil Name\",\n        \"district_id\": 1,\n        \"district_name\": \"District Name\",\n        \"owner_address\": \"Updated complete address\",\n        \"bank_name\": \"Updated Bank Name\",\n        \"bank_branch\": \"Updated Branch\",\n        \"account_number\": \"1234567890123456\",\n        \"ifsc_code\": \"ABCD0123456\",\n        \"account_holder_name\": \"Updated Account Holder Name\"\n    }\n}\n```\n\n## ❌ Error Responses\n\n**404 - Landowner Not Found:**\n```json\n{\n    \"success\": false,\n    \"error\": \"NOT_FOUND\",\n    \"error_code\": \"LANDOWNER_NOT_FOUND\",\n    \"message\": \"Landowner with ID 999 not found\",\n    \"fields\": [\"landowner_id\"]\n}\n```\n\n**400 - Validation Error:**\n```json\n{\n    \"success\": false,\n    \"error\": \"VALIDATION_ERROR\",\n    \"error_code\": \"INVALID_VILLAGE_ID\",\n    \"message\": \"Village with ID 999 not found\",\n    \"fields\": [\"village_id\"]\n}\n```\n\n**400 - No Fields to Update:**\n```json\n{\n    \"success\": false,\n    \"error\": \"VALIDATION_ERROR\",\n    \"error_code\": \"NO_FIELDS_TO_UPDATE\",\n    \"message\": \"No valid fields provided for update\",\n    \"fields\": []\n}\n```\n\n## ⚠️ Important Notes\n\n- ✅ Only include fields you want to update\n- ✅ All fields are optional\n- ✅ Validation rules apply (Aadhar must be 12 digits, PAN format, etc.)\n- ✅ If `village_id`, `tehsil_id`, or `district_id` are provided, they must exist\n- ✅ Document uploads (`aadhar_card`, `pan_card`) should be base64 encoded\n- ✅ Empty strings are allowed for text fields (will clear the field)\n- ⚠️ At least one field must be provided for update"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "S3 File Upload",
+			"item": [
+				{
+					"name": "Generate S3 Presigned URLs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"// Automatically save presigned_url and content_type to environment variables",
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.success && jsonData.data) {",
+									"        // For single file response",
+									"        if (jsonData.data.presigned_url) {",
+									"            pm.environment.set(\"presigned_url\", jsonData.data.presigned_url);",
+									"            pm.environment.set(\"content_type\", jsonData.data.content_type);",
+									"            console.log('✅ Presigned URL saved to environment variable');",
+									"            console.log('✅ Content-Type saved:', jsonData.data.content_type);",
+									"        }",
+									"        // For multiple files response",
+									"        if (jsonData.data.presigned_urls && jsonData.data.presigned_urls.length > 0) {",
+									"            pm.environment.set(\"presigned_url\", jsonData.data.presigned_urls[0].presigned_url);",
+									"            pm.environment.set(\"content_type\", jsonData.data.presigned_urls[0].content_type);",
+									"            console.log('✅ First presigned URL saved to environment variable');",
+									"            console.log('✅ Content-Type saved:', jsonData.data.presigned_urls[0].content_type);",
+									"        }",
+									"    }",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"survey_id\": 257,\n    \"file_names\": [\n        \"image1.jpg\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/s3/presigned-urls",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"s3",
+								"presigned-urls"
+							]
+						},
+						"description": "# 🔗 Generate S3 Presigned URLs\n\nGenerate presigned URLs for uploading files to S3. The URLs are valid for 1 hour.\n\n## 📝 Request Body\n\n**Single File:**\n```json\n{\n    \"survey_id\": 257,\n    \"file_name\": \"image1.jpg\"\n}\n```\n\n**Multiple Files:**\n```json\n{\n    \"survey_id\": 257,\n    \"file_names\": [\"image1.jpg\", \"document1.pdf\", \"photo.png\"]\n}\n```\n\n**Parameters:**\n- `survey_id` (required): Survey ID\n- `file_names` (array, optional): List of filenames\n- `file_name` (string, optional): Single filename (alternative to file_names)\n\n## 📤 Response\n\n**Single File Response:**\n```json\n{\n    \"success\": true,\n    \"data\": {\n        \"file_name\": \"image1.jpg\",\n        \"presigned_url\": \"https://bhukhadan_core.s3.ap-south-1.amazonaws.com/surveys/257/image1.jpg?X-Amz-Algorithm=...\",\n        \"content_type\": \"image/jpeg\",\n        \"s3_key\": \"surveys/257/image1.jpg\",\n        \"bucket_name\": \"bhuarjan\",\n        \"region\": \"ap-south-1\",\n        \"expires_in\": 3600,\n        \"expires_at\": \"2025-11-19T12:00:00+00:00\"\n    }\n}\n```\n\n**Multiple Files Response:**\n```json\n{\n    \"success\": true,\n    \"data\": {\n        \"presigned_urls\": [\n            {\n                \"file_name\": \"image1.jpg\",\n                \"presigned_url\": \"https://bhukhadan_core.s3.ap-south-1.amazonaws.com/surveys/257/image1.jpg?X-Amz-Algorithm=...\",\n                \"content_type\": \"image/jpeg\",\n                \"s3_key\": \"surveys/257/image1.jpg\",\n                \"bucket_name\": \"bhuarjan\",\n                \"region\": \"ap-south-1\",\n                \"expires_in\": 3600,\n                \"expires_at\": \"2025-11-19T12:00:00+00:00\"\n            }\n        ],\n        \"total_files\": 1,\n        \"successful\": 1,\n        \"failed\": 0,\n        \"survey_id\": 257\n    }\n}\n```\n\n## ✅ Next Steps\n\n1. **Copy the `presigned_url`** from the response\n2. **Note the `content_type`** value (e.g., `image/jpeg`)\n3. **Go to 'Upload File to S3' request** and:\n   - Paste the `presigned_url` in the URL field\n   - Set Content-Type header to the `content_type` value\n   - Select your file in Body tab (binary mode)\n   - Send the request\n\n## 💡 Auto-Save Feature\n\nThis request automatically saves `presigned_url` and `content_type` to Postman environment variables:\n- `{{presigned_url}}` - Use this in the Upload request URL\n- `{{content_type}}` - Use this in the Upload request Content-Type header\n\n## ⚠️ IMPORTANT\n\n- ✅ **Include Authorization header (Bearer token)** when calling THIS API\n- ❌ **Do NOT include Authorization header** when uploading to the presigned URL\n- ⏰ Presigned URLs expire after **1 hour** (3600 seconds)\n- 🌍 URLs include the region (`ap-south-1`) in the hostname - this is correct!"
+					},
+					"response": []
+				},
+				{
+					"name": "Upload File to S3 (using presigned URL)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"// Quick Setup: Paste your presigned URL in the URL field below",
+									"// For JPEG files, Content-Type is already set to 'image/jpeg'",
+									"// Just select your file in the Body tab and click Send!",
+									"",
+									"// If using environment variable, it will auto-populate",
+									"if (pm.environment.get('presigned_url')) {",
+									"    console.log('✅ Using presigned_url from environment:', pm.environment.get('presigned_url').substring(0, 80) + '...');",
+									"} else {",
+									"    console.log('📝 Paste your presigned URL in the URL field');",
+									"}",
+									"",
+									"console.log('✅ Ready to upload!');",
+									"console.log('1. URL: Paste presigned URL (or use {{presigned_url}} variable)');",
+									"console.log('2. Content-Type: image/jpeg (already set for JPEG files)');",
+									"console.log('3. Body: Select your JPEG file in binary mode');",
+									"console.log('4. Auth: No Auth (already set)');"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth",
+							"noauth": {}
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "image/jpeg",
+								"description": "⚠️ CRITICAL: Must match the content type used when generating the presigned URL.\n\nFor JPEG files: 'image/jpeg' (already set)\nFor PNG files: Change to 'image/png'\nFor PDF files: Change to 'application/pdf'\n\nIf Content-Type doesn't match, you'll get SignatureDoesNotMatch error!"
+							},
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "binary",
+							"binary": {}
+						},
+						"url": {
+							"raw": "https://bhukhadan_core.s3.ap-south-1.amazonaws.com/surveys/257/image1.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAX3YCG3CXYFUT4LOZ%2F20251119%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20251119T135854Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=content-type%3Bhost&X-Amz-Signature=53608521563e3a2cda93cb39412c0bab13e5ef16d922209319f6ec3f54d43024",
+							"protocol": "https",
+							"host": [
+								"bhuarjan",
+								"s3",
+								"ap-south-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"surveys",
+								"257",
+								"image1.jpg"
+							],
+							"query": [
+								{
+									"key": "X-Amz-Algorithm",
+									"value": "AWS4-HMAC-SHA256"
+								},
+								{
+									"key": "X-Amz-Credential",
+									"value": "AKIAX3YCG3CXYFUT4LOZ/20251119/ap-south-1/s3/aws4_request"
+								},
+								{
+									"key": "X-Amz-Date",
+									"value": "20251119T135854Z"
+								},
+								{
+									"key": "X-Amz-Expires",
+									"value": "3600"
+								},
+								{
+									"key": "X-Amz-SignedHeaders",
+									"value": "content-type;host"
+								},
+								{
+									"key": "X-Amz-Signature",
+									"value": "53608521563e3a2cda93cb39412c0bab13e5ef16d922209319f6ec3f54d43024"
+								}
+							]
+						},
+						"description": "# 📤 Upload Binary JPEG File to S3\n\n## 🚀 Quick Start (3 Steps)\n\n1. **Paste Your Presigned URL:**\n   - Replace the example URL in the URL field with your actual presigned URL\n   - Or use `{{presigned_url}}` if you've set it as an environment variable\n\n2. **Select Your File:**\n   - Go to **Body** tab\n   - Make sure **binary** mode is selected (already set)\n   - Click **Select File** and choose your JPEG image\n\n3. **Send:**\n   - Click **Send** button\n   - You should get **200 OK** if successful!\n\n---\n\n## ✅ Pre-Configured Settings\n\n- ✅ **Method:** PUT (correct for S3 upload)\n- ✅ **Auth:** No Auth (no Bearer token needed)\n- ✅ **Content-Type:** image/jpeg (for JPEG files)\n- ✅ **Body Mode:** Binary (ready for file upload)\n\n**For other file types, update Content-Type:**\n- PNG files: Change to `image/png`\n- PDF files: Change to `application/pdf`\n- GIF files: Change to `image/gif`\n\n---\n\n## 📝 Example Presigned URL (Pre-filled)\n\nThe URL field contains an example presigned URL. **Replace it with your actual presigned URL** from the Generate Presigned URL API response.\n\n**Example format:**\n```\nhttps://bhukhadan_core.s3.ap-south-1.amazonaws.com/surveys/257/image1.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=...&X-Amz-Date=...&X-Amz-Expires=3600&X-Amz-SignedHeaders=content-type%3Bhost&X-Amz-Signature=...\n```\n\n---\n\n## ⚠️ CRITICAL REQUIREMENTS\n\n### ✅ MUST DO:\n- ✅ Use **PUT** method (already set)\n- ✅ Set Auth to **No Auth** (already set)\n- ✅ Use **exact Content-Type** (`image/jpeg` for JPEG files - already set)\n- ✅ Use **complete presigned_url** as-is (don't modify it!)\n- ✅ Select file in **Body tab (binary mode)**\n\n### ❌ DO NOT:\n- ❌ Include any Authorization header (Bearer token)\n- ❌ Use GET or POST method\n- ❌ Change Content-Type to something different (unless uploading different file type)\n- ❌ Modify the presigned URL (use it exactly as returned)\n- ❌ Add or remove any query parameters from the URL\n\n---\n\n## 🐛 Common Errors & Solutions\n\n### Error: `SignatureDoesNotMatch`\n**Causes:**\n- Wrong HTTP method (must be PUT) ✅ Already set\n- Wrong Content-Type header (must be `image/jpeg` for JPEG) ✅ Already set\n- Modified presigned URL\n- Missing or extra query parameters\n\n**Solution:**\n- Verify method is PUT ✅\n- Check Content-Type is `image/jpeg` ✅\n- Use the presigned URL exactly as returned (don't modify it)\n\n### Error: `Only one auth mechanism allowed`\n**Cause:** You're sending an Authorization header\n\n**Solution:**\n- Go to **Auth** tab\n- Select **No Auth** ✅ Already set\n- Remove any Authorization headers\n\n### Error: `AccessDenied`\n**Cause:** AWS IAM permissions issue\n\n**Solution:**\n- Check AWS IAM user has `s3:PutObject` permission\n- Verify bucket name is correct\n- Check AWS credentials in settings\n\n### Error: `403 Forbidden` or `ExpiredToken`\n**Cause:** Presigned URL expired (valid for 1 hour only)\n\n**Solution:**\n- Generate a new presigned URL\n- Use it immediately (within 1 hour)\n\n---\n\n## ✅ Success Response\n\nAfter successful upload:\n- **Status:** `200 OK`\n- **Body:** Empty (this is normal - S3 doesn't return a body)\n\nThe file is now available at the S3 URL:\n`https://bhukhadan_core.s3.ap-south-1.amazonaws.com/surveys/{survey_id}/{filename}`\n\n---\n\n## 💡 Pro Tips\n\n1. **Auto-Fill from API:** If you use the \"Generate S3 Presigned URLs\" request, it automatically saves the URL to `{{presigned_url}}` variable\n2. **Quick Test:** Use the example URL provided, just replace it with your actual presigned URL\n3. **File Size:** Large files may take longer to upload\n4. **Network:** Ensure stable internet connection for large file uploads"
+					},
+					"response": []
+				},
+				{
+					"name": "Generate Single File Presigned URL",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"survey_id\": 1,\n    \"file_name\": \"image1.jpg\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/s3/presigned-urls",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"s3",
+								"presigned-urls"
+							]
+						},
+						"description": "Generate a presigned URL for a single file. Use file_name (string) instead of file_names (array) for single file uploads.\n\n**Request Body:**\n- `survey_id` (required): Survey ID\n- `file_name` (string, required): Single filename, e.g., `\"image1.jpg\"`\n\n**Response:**\n- `presigned_url`: Full URL with region (e.g., `https://bhukhadan_core.s3.ap-south-1.amazonaws.com/...`)\n- `content_type`: Content type to use in upload request (e.g., 'image/jpeg')\n- `s3_key`: S3 object key/path\n- `region`: AWS region (e.g., 'ap-south-1')\n- `expires_in`: Validity in seconds (3600 = 1 hour)\n\n**Next Step:**\nAfter getting the presigned URL, use the 'Upload File to S3 (using presigned URL)' request to upload your file.\n\n**IMPORTANT:**\n- Include Authorization header (Bearer token) when calling THIS API\n- Do NOT include Authorization header when uploading to the presigned URL"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Survey Images",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/survey/images?survey_id=257",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"survey",
+								"images"
+							],
+							"query": [
+								{
+									"key": "survey_id",
+									"value": "257",
+									"description": "Survey ID (required)"
+								},
+								{
+									"key": "photo_type_id",
+									"value": "",
+									"description": "Filter by photo type ID (optional)",
+									"disabled": true
+								}
+							]
+						},
+						"description": "# 📸 Get Survey Images from S3\n\nRetrieve all images uploaded to S3 for a specific survey.\n\n## 📝 Query Parameters\n\n- `survey_id` (required): Survey ID\n- `photo_type_id` (optional): Filter by photo type ID (e.g., 1 for Land, 2 for Well)\n- `active_only` (optional, default: true): Return only active photos. Set to `false` to include inactive photos.\n\n## 📤 Response\n\n```json\n{\n    \"success\": true,\n    \"data\": {\n        \"survey_id\": 257,\n        \"total_images\": 3,\n        \"images\": [\n            {\n                \"id\": 1,\n                \"photo_type_id\": 1,\n                \"photo_type_name\": \"Land\",\n                \"s3_url\": \"https://bhukhadan_core.s3.ap-south-1.amazonaws.com/surveys/257/image1.jpg\",\n                \"filename\": \"image1.jpg\",\n                \"file_size\": 245678,\n                \"sequence\": 10,\n                \"description\": \"Land photo\",\n                \"active\": true,\n                \"latitude\": 21.23456789,\n                \"longitude\": 81.98765432\n            },\n            {\n                \"id\": 2,\n                \"photo_type_id\": 2,\n                \"photo_type_name\": \"Well\",\n                \"s3_url\": \"https://bhukhadan_core.s3.ap-south-1.amazonaws.com/surveys/257/well_image.jpg\",\n                \"filename\": \"well_image.jpg\",\n                \"file_size\": 189234,\n                \"sequence\": 20,\n                \"description\": \"Well photo\",\n                \"active\": true,\n                \"latitude\": 21.23456789,\n                \"longitude\": 81.98765432\n            }\n        ]\n    }\n}\n```\n\n## 📋 Response Fields\n\n- `survey_id`: Survey ID\n- `total_images`: Total number of images found\n- `images`: Array of image objects with:\n  - `id`: Photo record ID\n  - `photo_type_id`: Photo type ID (e.g., 1, 2, 3)\n  - `photo_type_name`: Photo type name (e.g., \"Land\", \"Well\", \"House\")\n  - `s3_url`: Full S3 URL of the image (can be used directly in `<img>` tags)\n  - `filename`: Original filename\n  - `file_size`: File size in bytes\n  - `sequence`: Display order\n  - `description`: Description or notes\n  - `active`: Whether the photo is active\n\n## 🔍 Filtering Examples\n\n**Get all images for survey 257:**\n```\nGET /api/bhuarjan/survey/images?survey_id=257\n```\n\n**Get only Land photos for survey 257:**\n```\nGET /api/bhuarjan/survey/images?survey_id=257&photo_type_id=1\n```\n\n**Get all photos (including inactive):**\n```\nGET /api/bhuarjan/survey/images?survey_id=257&active_only=false\n```\n\n## ✅ Use Cases\n\n- Display all survey images in a gallery\n- Filter images by photo type (Land, Well, House, etc.)\n- Get image URLs for mobile app display\n- Show image metadata (filename, size, description)\n\n## ⚠️ Notes\n\n- Images are ordered by `sequence` and `create_date` (newest first)\n- Only active photos are returned by default\n- S3 URLs are public and can be used directly in image tags\n- If no images are found, `total_images` will be 0 and `images` will be an empty array"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tree Master",
+			"item": [
+				{
+					"name": "Get All Trees",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/trees?limit=100&offset=0",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"trees"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "",
+									"description": "Filter by tree type: 'fruit_bearing' or 'non_fruit_bearing'",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "",
+									"description": "Filter by tree name (partial match, case-insensitive)",
+									"disabled": true
+								},
+								{
+									"key": "development_stage",
+									"value": "",
+									"description": "For non-fruit-bearing trees: 'undeveloped', 'semi_developed', or 'fully_developed'. Requires girth_cm to get rate.",
+									"disabled": true
+								},
+								{
+									"key": "girth_cm",
+									"value": "",
+									"description": "For non-fruit-bearing trees: Girth in cm. Required with development_stage to get rate from tree_rate_master.",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "100",
+									"description": "Number of records to return (default: 100)"
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "Number of records to skip (default: 0)"
+								}
+							]
+						},
+						"description": "Get all tree masters with optional filters by type, name, development stage, and girth.\n\n**Query Parameters:**\n- `type` (optional): Filter by tree type. Values: 'fruit_bearing' or 'non_fruit_bearing'\n- `name` (optional): Filter by tree name (partial match, case-insensitive)\n- `development_stage` (optional): For non-fruit-bearing trees only. Values: 'undeveloped', 'semi_developed', 'fully_developed'. Requires girth_cm to get rate.\n- `girth_cm` (optional): For non-fruit-bearing trees only. Girth in cm. Required with development_stage to lookup rate from tree_rate_master.\n- `limit` (optional, default 100): Number of records to return\n- `offset` (optional, default 0): Number of records to skip\n\n**Response Fields:**\n- `id`: Tree master ID\n- `name`: Tree name\n- `tree_type`: 'fruit_bearing' or 'non_fruit_bearing'\n- `rate`: For fruit-bearing trees, flat rate. For non-fruit-bearing trees, rate from tree_rate_master (if girth_cm and development_stage provided)\n\n**Examples:**\n- Get all trees: `/api/bhuarjan/trees`\n- Get fruit-bearing trees: `/api/bhuarjan/trees?type=fruit_bearing`\n- Get non-fruit-bearing trees: `/api/bhuarjan/trees?type=non_fruit_bearing`\n- Search by name: `/api/bhuarjan/trees?name=Mango`\n- Get non-fruit-bearing tree rate: `/api/bhuarjan/trees?type=non_fruit_bearing&name=Neem&development_stage=undeveloped&girth_cm=50`\n- Combined filters: `/api/bhuarjan/trees?type=non_fruit_bearing&name=Sal&development_stage=semi_developed&girth_cm=75`"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Trees by Name",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/trees?name=Mango&limit=100&offset=0",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"trees"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Mango",
+									"description": "Filter by tree name (partial match, case-insensitive)"
+								},
+								{
+									"key": "limit",
+									"value": "100",
+									"description": "Number of records to return (default: 100)"
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "Number of records to skip (default: 0)"
+								}
+							]
+						},
+						"description": "Get trees filtered by name. The name filter uses partial match (case-insensitive), so 'Mango' will match 'Mango Tree', 'Mangoes', etc."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Trees by Development Stage",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/trees?development_stage=undeveloped&girth_cm=50&limit=100&offset=0",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"trees"
+							],
+							"query": [
+								{
+									"key": "development_stage",
+									"value": "undeveloped",
+									"description": "For non-fruit-bearing trees: 'undeveloped', 'semi_developed', or 'fully_developed'. Requires girth_cm to get rate."
+								},
+								{
+									"key": "girth_cm",
+									"value": "50",
+									"description": "For non-fruit-bearing trees: Girth in cm. Required with development_stage to get rate from tree_rate_master."
+								},
+								{
+									"key": "limit",
+									"value": "100",
+									"description": "Number of records to return (default: 100)"
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "Number of records to skip (default: 0)"
+								}
+							]
+						},
+						"description": "Get trees filtered by development stage. For non-fruit-bearing trees, requires girth_cm parameter to lookup rate from tree_rate_master.\n\n**Development Stages:**\n- `undeveloped`: Undeveloped / अविकसित\n- `semi_developed`: Semi-developed / अर्ध-विकसित\n- `fully_developed`: Fully Developed / पूर्ण विकसित\n\n**Note:** For non-fruit-bearing trees, you must also provide `girth_cm` parameter to get the rate. Example: `?development_stage=undeveloped&girth_cm=50`"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Trees by Name and Development Stage",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/trees?name=Neem&development_stage=semi_developed&girth_cm=75&limit=100&offset=0",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"trees"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Neem",
+									"description": "Filter by tree name (partial match, case-insensitive)"
+								},
+								{
+									"key": "development_stage",
+									"value": "semi_developed",
+									"description": "For non-fruit-bearing trees: 'undeveloped', 'semi_developed', or 'fully_developed'. Requires girth_cm to get rate."
+								},
+								{
+									"key": "girth_cm",
+									"value": "75",
+									"description": "For non-fruit-bearing trees: Girth in cm. Required with development_stage to get rate from tree_rate_master."
+								},
+								{
+									"key": "limit",
+									"value": "100",
+									"description": "Number of records to return (default: 100)"
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "Number of records to skip (default: 0)"
+								}
+							]
+						},
+						"description": "Get trees filtered by both name, development stage, and girth. For non-fruit-bearing trees, this returns the rate from tree_rate_master based on the girth and development stage.\n\n**Note:** For non-fruit-bearing trees, both `development_stage` and `girth_cm` are required to get the rate."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Photo Types",
+			"item": [
+				{
+					"name": "Get All Photo Types",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/photo-types?limit=100&offset=0",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"photo-types"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "100",
+									"description": "Number of records to return (default: 100)"
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "Number of records to skip (default: 0)"
+								},
+								{
+									"key": "active",
+									"value": "true",
+									"description": "Filter by active status (default: true)",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Get all photo types available for tagging survey photos. Photo types include: Land, Well, House, Shed, Tubewell, Pond, Trees, Boundary, Other."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Survey Photos",
+			"item": [
+				{
+					"name": "Add Photos to Survey",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"photos\": [\n        {\n            \"photo_type_id\": 1,\n            \"s3_url\": \"https://bhukhadan_core.s3.ap-south-1.amazonaws.com/surveys/257/image1.jpg\",\n            \"filename\": \"image1.jpg\",\n            \"file_size\": 245678\n        },\n        {\n            \"photo_type_id\": 2,\n            \"s3_url\": \"https://bhukhadan_core.s3.ap-south-1.amazonaws.com/surveys/257/well_photo.jpg\",\n            \"filename\": \"well_photo.jpg\",\n            \"file_size\": 189234\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/survey/photos?survey_id=257",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"survey",
+								"photos"
+							],
+							"query": [
+								{
+									"key": "survey_id",
+									"value": "257",
+									"description": "Survey ID (required)"
+								}
+							]
+						},
+						"description": "# 📸 Add Photos to Survey After Creation\n\nUse this dedicated API to link images to a survey after the survey has been created. This is the **recommended way** to add photos separately from survey creation.\n\n## 🔄 Complete Workflow\n\n### Step 1: Create Survey\n- Use `POST /api/bhuarjan/survey` to create the survey\n- Get the `survey_id` from the response\n\n### Step 2: Upload Images to S3\n1. Call `POST /api/bhuarjan/s3/presigned-urls` with:\n   ```json\n   {\n       \"survey_id\": 257,\n       \"file_names\": [\"image1.jpg\", \"well_photo.jpg\"]\n   }\n   ```\n2. Upload each file to S3 using the presigned URLs (PUT request)\n3. Copy the S3 URLs from the upload responses\n\n### Step 3: Link Photos to Survey\n- Use this API (`POST /api/bhuarjan/survey/photos`) to link the S3 URLs to the survey\n\n## 📝 Request\n\n**Query Parameter:**\n- `survey_id` (required): Survey ID\n\n**Request Body:**\n```json\n{\n    \"photos\": [\n        {\n            \"photo_type_id\": 1,\n            \"s3_url\": \"https://bhukhadan_core.s3.ap-south-1.amazonaws.com/surveys/257/image1.jpg\",\n            \"filename\": \"image1.jpg\",\n            \"file_size\": 245678,\n            \"description\": \"Land photo\",\n            \"sequence\": 10\n        },\n        {\n            \"photo_type_id\": 2,\n            \"s3_url\": \"https://bhukhadan_core.s3.ap-south-1.amazonaws.com/surveys/257/well_photo.jpg\",\n            \"filename\": \"well_photo.jpg\",\n            \"file_size\": 189234,\n            \"description\": \"Well on the property\",\n            \"sequence\": 20\n        }\n    ]\n}\n```\n\n**Photo Object Fields:**\n- `photo_type_id` (required): Photo type ID from photo types master (e.g., 1=Land, 2=Well, 3=House)\n- `s3_url` (required): Full S3 URL after upload (e.g., `https://bhukhadan_core.s3.ap-south-1.amazonaws.com/surveys/257/image1.jpg`)\n- `filename` (optional): Original filename\n- `file_size` (optional): File size in bytes\n- `description` (optional): Description or notes\n- `sequence` (optional): Display order (default: 10)\n\n## 📤 Response\n\n```json\n{\n    \"success\": true,\n    \"message\": \"Successfully added 2 photo(s) to survey\",\n    \"data\": {\n        \"survey_id\": 257,\n        \"added_photos\": [\n            {\n                \"photo_type_id\": 1,\n                \"photo_type_name\": \"Land\",\n                \"s3_url\": \"https://bhukhadan_core.s3.ap-south-1.amazonaws.com/surveys/257/image1.jpg\",\n                \"filename\": \"image1.jpg\"\n            },\n            {\n                \"photo_type_id\": 2,\n                \"photo_type_name\": \"Well\",\n                \"s3_url\": \"https://bhukhadan_core.s3.ap-south-1.amazonaws.com/surveys/257/well_photo.jpg\",\n                \"filename\": \"well_photo.jpg\"\n            }\n        ],\n        \"total_photos\": 2\n    }\n}\n```\n\n## ✅ Alternative: Use PATCH API\n\nYou can also add photos using the PATCH API when updating a survey:\n\n```\nPATCH /api/bhuarjan/survey/257\n```\n\n**Request Body:**\n```json\n{\n    \"photos\": [\n        {\n            \"photo_type_id\": 1,\n            \"s3_url\": \"https://bhukhadan_core.s3.ap-south-1.amazonaws.com/surveys/257/image1.jpg\",\n            \"filename\": \"image1.jpg\"\n        }\n    ]\n}\n```\n\n**Note:** PATCH API adds photos to existing ones (doesn't replace).\n\n## ⚠️ Important Notes\n\n- ✅ This API **adds** photos (doesn't replace existing photos)\n- ✅ You can call this API multiple times to add more photos\n- ✅ Each photo must have a valid `photo_type_id` and `s3_url`\n- ✅ Photos are linked to the survey and can be retrieved using `GET /api/bhuarjan/survey/images?survey_id=257`\n- ⚠️ Make sure the S3 URLs are accessible and valid\n- ⚠️ `photo_type_id` must exist in the photo types master"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "App Version",
+			"item": [
+				{
+					"name": "Check App Version",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/app/version/check?version_code=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"app",
+								"version",
+								"check"
+							],
+							"query": [
+								{
+									"key": "version_code",
+									"value": "1",
+									"description": "App version code (integer, required)"
+								}
+							]
+						},
+						"description": "Check if the app version is allowed to be used. Returns version status and latest version information. If version check is not enforced in settings, returns success with version_check_enforced: false. If version check is enforced and version is disabled, returns 403 error."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Latest App Version",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/app/version/latest",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"app",
+								"version",
+								"latest"
+							]
+						},
+						"description": "Get the latest active app version information including version name, code, force_update flag, and description."
+					},
+					"response": []
+				},
+				{
+					"name": "List All App Versions",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "App-Version-Code",
+								"value": "1",
+								"description": "App version code (MANDATORY) - Required for all API calls. If missing, returns 400 error. If version check is enforced in settings, validates the app version.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/bhuarjan/app/version/list",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bhuarjan",
+								"app",
+								"version",
+								"list"
+							]
+						},
+						"description": "List all app versions (requires authentication). Returns all versions with their status, activation dates, and other details."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "External Services",
+			"item": [
+				{
+					"name": "Send SMS (Zapim)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://qlogin.zapim.com/api/v2/SendSMS?ApiKey=yd1A8jcCSftiW1tkLfx/tAWu1pOVJB+vp60gxiMvO0w=&ClientId=e33522d2-a4cf-4776-838e-1765ad3b5319&senderid=REDM&message=OTP to Login in Survey APP 1234 Redmelon Pvt Ltd.&MobileNumbers=9990649990&msgtype=TXT&response=Y&dlttempid=1707174989930855861",
+							"protocol": "https",
+							"host": [
+								"qlogin",
+								"zapim",
+								"com"
+							],
+							"path": [
+								"api",
+								"v2",
+								"SendSMS"
+							],
+							"query": [
+								{
+									"key": "ApiKey",
+									"value": "yd1A8jcCSftiW1tkLfx/tAWu1pOVJB+vp60gxiMvO0w=",
+									"description": "API Key provided by service"
+								},
+								{
+									"key": "ClientId",
+									"value": "e33522d2-a4cf-4776-838e-1765ad3b5319",
+									"description": "Client ID provided by service"
+								},
+								{
+									"key": "senderid",
+									"value": "REDM",
+									"description": "Sender ID (approved via DLT)"
+								},
+								{
+									"key": "message",
+									"value": "OTP to Login in Survey APP 1234 Redmelon Pvt Ltd.",
+									"description": "Message content (must match template)"
+								},
+								{
+									"key": "MobileNumbers",
+									"value": "9990649990",
+									"description": "Comma separated mobile numbers"
+								},
+								{
+									"key": "msgtype",
+									"value": "TXT",
+									"description": "Message type"
+								},
+								{
+									"key": "response",
+									"value": "Y",
+									"description": "Return response"
+								},
+								{
+									"key": "dlttempid",
+									"value": "1707174989930855861",
+									"description": "DLT Template ID (mandatory)"
+								}
+							]
+						},
+						"description": "Direct test request to Zapim SMS Gateway to verify credentials and template."
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://bhuarjan.com",
+			"type": "string"
+		}
+	]
+}

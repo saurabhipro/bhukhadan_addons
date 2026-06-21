@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_process_send_back_wizard_form" model="ir.ui.view">
+        <field name="name">process.send.back.wizard.form</field>
+        <field name="model">process.send.back.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Send Back">
+                <sheet>
+                    <group>
+                        <field name="res_model" invisible="1"/>
+                        <field name="res_id" invisible="1"/>
+                        <field name="reason" placeholder="Enter reason for sending back..." required="1"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_send_back_confirm" string="Confirm Send Back" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_process_send_back_wizard" model="ir.actions.act_window">
+        <field name="name">Send Back</field>
+        <field name="res_model">process.send.back.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>
+

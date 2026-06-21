@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="bhukhadan_core.CommaPillsChar">
+        <div class="o_bhu_comma_pills d-flex flex-wrap align-items-center gap-1 lh-sm py-1">
+            <t t-foreach="parts" t-as="pill" t-key="pill_index">
+                <span t-att-class="'badge rounded-pill fw-normal lh-sm px-2 py-1 small ' + pillClass(pill_index)" t-out="pill"/>
+            </t>
+        </div>
+    </t>
+</templates>

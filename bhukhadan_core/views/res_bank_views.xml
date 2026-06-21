@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_res_bank_tree_inherit_bhu" model="ir.ui.view">
+        <field name="name">res.bank.list.inherit.bhu</field>
+        <field name="model">res.bank</field>
+        <field name="inherit_id" ref="base.view_res_bank_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list/field[@name='name']" position="after">
+                <field name="bhu_category" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_res_bank_form_inherit_bhu" model="ir.ui.view">
+        <field name="name">res.bank.form.inherit.bhu</field>
+        <field name="model">res.bank</field>
+        <field name="inherit_id" ref="base.view_res_bank_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='bank_details']/field[@name='bic']" position="after">
+                <field name="bhu_category"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_res_bank_search_inherit_bhu" model="ir.ui.view">
+        <field name="name">res.bank.search.inherit.bhu</field>
+        <field name="model">res.bank</field>
+        <field name="inherit_id" ref="base.res_bank_view_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="bhu_category"/>
+            </xpath>
+            <xpath expr="//filter[@name='inactive']" position="before">
+                <separator/>
+                <filter string="Private sector" name="cat_private" domain="[('bhu_category', '=', 'private_sector')]"/>
+                <filter string="Public sector" name="cat_public" domain="[('bhu_category', '=', 'public_sector')]"/>
+                <filter string="RRB" name="cat_rrb" domain="[('bhu_category', '=', 'regional_rural_bank')]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_bhu_res_bank_indian_master" model="ir.actions.act_window">
+        <field name="name">Indian banks (master)</field>
+        <field name="res_model">res.bank</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('bhu_category', '!=', False)]</field>
+        <field name="context">{}</field>
+        <field name="search_view_id" ref="base.res_bank_view_search"/>
+        <field name="help" type="html">
+            <p>Scheduled commercial, payments, small finance, RRB and other Indian banks loaded for R&amp;R payment vouchers.</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_bhu_indian_bank_master"
+              name="Indian banks (master)"
+              action="action_bhu_res_bank_indian_master"
+              parent="menu_bhu_master"
+              sequence="12"
+              groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_district_administrator"/>
+</odoo>

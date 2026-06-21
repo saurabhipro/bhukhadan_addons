@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="bhukhadan_core.ManagementDashboard" owl="1">
+        <!-- Single scroll shell: avoids split flex heights that themes break -->
+        <!-- Must include o_action on root (ActionContainer passes className, but template must match core layout) -->
+        <div class="bhu-mgmt-root o_action o_action_delegate_scroll">
+            <div class="bhu-mgmt-surface">
+                <div class="bhu-mgmt-toolbar">
+                    <button type="button" class="btn btn-sm bhu-mgmt-refresh" t-on-click="onRefresh" title="Refresh">
+                        <i class="fa fa-refresh me-1"/> Refresh
+                    </button>
+                </div>
+
+                <div t-if="dash.loading" class="bhu-mgmt-status">Loading snapshot…</div>
+                <div t-if="dash.error" class="alert alert-danger bhu-mgmt-alert" role="alert" t-out="dash.error"/>
+
+                <section t-if="hasKpis" class="bhu-mgmt-kpis">
+                    <div class="bhu-mgmt-kpi-grid">
+                        <button type="button" class="bhu-mgmt-kpi c-projects" t-on-click="openAllProjects">
+                            <span class="k">Projects</span>
+                            <span class="v" t-out="fmtKpi(dash.data.kpis.total_projects)"/>
+                        </button>
+                        <div class="bhu-mgmt-kpi c-ontrack">
+                            <span class="k">On track</span>
+                            <span class="v" t-out="fmtKpi(dash.data.kpis.on_track_projects)"/>
+                        </div>
+                        <div class="bhu-mgmt-kpi c-delay">
+                            <span class="k">Delayed</span>
+                            <span class="v" t-out="fmtKpi(dash.data.kpis.delayed_projects)"/>
+                        </div>
+                        <div class="bhu-mgmt-kpi c-surveys">
+                            <span class="k" t-esc="surveyKpiLabelText"/>
+                            <span class="v" t-out="fmtKpi(dash.data.kpis.surveys_total)"/>
+                        </div>
+                        <div class="bhu-mgmt-kpi c-budget">
+                            <span class="k">Budget (parsed)</span>
+                            <span class="v" t-out="dash.data.kpis.total_budget_display"/>
+                        </div>
+                        <button type="button" class="bhu-mgmt-kpi c-s23" t-on-click="openSection23Awards">
+                            <span class="k">Sec.23 awards</span>
+                            <span class="v" t-out="fmtKpi(dash.data.kpis.section23_awards)"/>
+                        </button>
+                        <button type="button" class="bhu-mgmt-kpi c-generated" t-on-click="openSection23Awards">
+                            <span class="k">Generated</span>
+                            <span class="v" t-out="fmtKpi(dash.data.kpis.section23_generated)"/>
+                        </button>
+                        <button type="button" class="bhu-mgmt-kpi c-recon" t-on-click="openReconciliations">
+                            <span class="k">Reconciled</span>
+                            <span class="v" t-out="fmtKpi(dash.data.kpis.reconciliation_completed)"/>
+                        </button>
+                        <button type="button" class="bhu-mgmt-kpi c-arb" t-on-click="openLandArbitration">
+                            <span class="k">Arbitration open</span>
+                            <span class="v" t-out="fmtKpi(dash.data.kpis.land_arbitration_open)"/>
+                        </button>
+                    </div>
+                    <p class="bhu-mgmt-foot small text-muted">Budget KPI uses parsed INR from project cost text fields.</p>
+                </section>
+
+                <main t-if="showBody" class="bhu-mgmt-main">
+                    <div class="row g-3 mb-3 align-items-stretch">
+                        <div class="col-12 col-lg-4">
+                            <article class="bhu-mgmt-card">
+                                <header class="bhu-mgmt-card-hd">
+                                    <h2>Survey output by patwari</h2>
+                                    <span class="bhu-mgmt-tag">Bar</span>
+                                </header>
+                                <div class="bhu-mgmt-chart">
+                                    <div class="bhu-mgmt-chart-plate">
+                                        <canvas class="bhu_mgmt_canvas_patwari" width="400" height="260"/>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                        <div class="col-12 col-lg-4">
+                            <article class="bhu-mgmt-card bhu-mgmt-card-accent">
+                                <header class="bhu-mgmt-card-hd">
+                                    <h2>Pipeline posture</h2>
+                                    <span class="bhu-mgmt-tag t-violet">Stages</span>
+                                </header>
+                                <div class="bhu-mgmt-chart">
+                                    <div class="bhu-mgmt-chart-plate">
+                                        <canvas class="bhu_mgmt_canvas_stage" width="400" height="260"/>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                        <div class="col-12 col-lg-4">
+                            <article class="bhu-mgmt-card">
+                                <header class="bhu-mgmt-card-hd">
+                                    <h2>Departments</h2>
+                                    <span class="bhu-mgmt-tag t-teal">Slice</span>
+                                </header>
+                                <div class="bhu-mgmt-chart">
+                                    <div class="bhu-mgmt-chart-plate">
+                                        <canvas class="bhu_mgmt_canvas_department" width="400" height="260"/>
+                                    </div>
+                                    <p class="bhu-mgmt-chart-note mb-0">Projects by department (top slice)</p>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3 align-items-stretch">
+                        <div class="col-12 col-lg-4">
+                            <article class="bhu-mgmt-card">
+                                <header class="bhu-mgmt-card-hd">
+                                    <h2>Surveys by project</h2>
+                                    <span class="bhu-mgmt-tag">Bar</span>
+                                </header>
+                                <div class="bhu-mgmt-chart">
+                                    <div class="bhu-mgmt-chart-plate">
+                                        <canvas class="bhu_mgmt_canvas_project_surveys" width="400" height="260"/>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                        <div class="col-12 col-lg-4">
+                            <article class="bhu-mgmt-card">
+                                <header class="bhu-mgmt-card-hd">
+                                    <h2>Arbitrations by project</h2>
+                                    <span class="bhu-mgmt-tag t-warn">Grievances</span>
+                                </header>
+                                <div class="bhu-mgmt-chart">
+                                    <div class="bhu-mgmt-chart-plate">
+                                        <canvas class="bhu_mgmt_canvas_project_arb" width="400" height="260"/>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                        <div class="col-12 col-lg-4">
+                            <article class="bhu-mgmt-card">
+                                <header class="bhu-mgmt-card-hd">
+                                    <h2>Projects by SDM</h2>
+                                    <span class="bhu-mgmt-tag t-teal">SDM</span>
+                                </header>
+                                <div class="bhu-mgmt-chart">
+                                    <div class="bhu-mgmt-chart-plate">
+                                        <canvas class="bhu_mgmt_canvas_sdm_projects" width="400" height="260"/>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+
+                    <article class="bhu-mgmt-card bhu-mgmt-card-wide mb-4">
+                        <header class="bhu-mgmt-card-hd bhu-mgmt-card-hd-inline">
+                            <h2 class="mb-0">Project snapshot</h2>
+                            <button type="button" class="btn btn-sm bhu-mgmt-snapshot-btn" t-on-click="openAllProjects">Full list</button>
+                        </header>
+                        <div class="bhu-mgmt-table-wide">
+                            <table class="table table-sm mb-0 bhu-mgmt-table">
+                                <thead>
+                                    <tr>
+                                        <th>Project</th>
+                                        <th>Dept</th>
+                                        <th>District</th>
+                                        <th>Status</th>
+                                        <th>Pipeline</th>
+                                        <th class="text-end">Surveys</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="projectsOverviewRows" t-as="pr" t-key="pr.id">
+                                        <td>
+                                            <a href="#" class="bhu-mgmt-a" t-on-click.prevent="() => this.openProject(pr.id)" t-out="pr.name"/>
+                                        </td>
+                                        <td t-out="pr.department"/>
+                                        <td t-out="pr.district"/>
+                                        <td><span class="badge rounded-pill text-bg-light border" t-out="pr.project_state_label"/></td>
+                                        <td><span class="badge rounded-pill bhu-mgmt-pipe" t-out="pr.stage_label"/></td>
+                                        <td class="text-end font-monospace" t-out="fmtKpi(pr.survey_count)"/>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </article>
+                </main>
+            </div>
+        </div>
+    </t>
+</templates>

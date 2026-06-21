@@ -1,0 +1,293 @@
+/* Dashboard KPI Cards */
+.dashboard-kpi-card {
+    border-radius: 6px;
+    padding: 6px 8px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+    transition: all 0.3s ease;
+    border: none;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+    color: #2c3e50;
+    width: 100%;
+    text-align: left;
+    min-height: 55px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.dashboard-kpi-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
+
+.dashboard-kpi-card:focus {
+    outline: none;
+}
+
+/* Green Cards - using green_pattern.jpg */
+.kpi-card-green {
+    background-image: url('/bhukhadan_core/static/img/green_pattern.jpg');
+}
+
+/* Brown Cards - using orange_pattern.jpg (warm brown/orange) */
+.kpi-card-brown {
+    background-image: url('/bhukhadan_core/static/img/orange_pattern.jpg');
+}
+
+/* Orange Cards - using orange_pattern.jpg */
+.kpi-card-orange {
+    background-image: url('/bhukhadan_core/static/img/orange_pattern.jpg');
+}
+
+/* Process Cards */
+.process-card {
+    border-radius: 6px;
+    padding: 6px 8px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+    border: none;
+    position: relative;
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    text-align: left;
+    transition: all 0.3s ease;
+    min-height: 55px;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #2c3e50;
+}
+
+.process-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
+
+.process-card:focus {
+    outline: none;
+}
+
+/* Process Card - Green (Section 4, 11, etc.) */
+.process-card-green {
+    background-image: url('/bhukhadan_core/static/img/green_pattern.jpg');
+}
+
+/* Process Card - Brown (Section 19, etc.) */
+.process-card-brown {
+    background-image: url('/bhukhadan_core/static/img/orange_pattern.jpg');
+}
+
+/* Additional color variants for future use */
+.kpi-card-blue,
+.process-card-blue {
+    background-image: url('/bhukhadan_core/static/img/blue_pattern.jpg');
+}
+
+.kpi-card-purple,
+.process-card-purple {
+    background-image: url('/bhukhadan_core/static/img/purple_pattern.jpg');
+}
+
+.kpi-card-pink,
+.process-card-pink {
+    background-image: url('/bhukhadan_core/static/img/pink_pattern.jpg');
+}
+
+.kpi-card-yellow,
+.process-card-yellow {
+    background-image: url('/bhukhadan_core/static/img/yellow_pattern.jpg');
+}
+
+/* Content positioning - all content above background */
+.dashboard-kpi-card > *,
+.process-card > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* KPI Header */
+.kpi-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 3px;
+}
+
+/* Icons */
+.kpi-icon {
+    font-size: 16px;
+    opacity: 1;
+    flex-shrink: 0;
+    color: #2c3e50;
+}
+
+/* Labels */
+.kpi-label {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2px;
+    flex: 1;
+    margin-left: 4px;
+    opacity: 1;
+    color: #2c3e50;
+}
+
+/* Values */
+.kpi-value {
+    font-size: 18px;
+    font-weight: 900;
+    line-height: 1.1;
+    margin: 0;
+    color: #2c3e50;
+}
+
+/* Process Header */
+.process-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 3px;
+}
+
+.process-value {
+    font-size: 16px !important;
+    font-weight: 900;
+    color: #2c3e50;
+}
+
+/* Process Sub Stats */
+.process-sub-stats {
+    display: flex;
+    gap: 6px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.3);
+    font-size: 11px;
+    flex-wrap: wrap;
+}
+
+.process-sub-stat {
+    flex: 1;
+    min-width: calc(25% - 5px);
+    text-align: center;
+    background: rgba(255,255,255,0.2);
+    padding: 8px 4px;
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.3);
+    transition: all 0.2s ease;
+}
+
+.process-sub-stat:hover {
+    background: rgba(255,255,255,0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.4);
+}
+
+.process-sub-stat-value {
+    font-size: 16px;
+    font-weight: 800;
+    display: block;
+    margin-bottom: 3px;
+    color: #2c3e50;
+}
+
+.process-sub-stat-label {
+    font-size: 9px;
+    opacity: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    color: #2c3e50;
+    line-height: 1.2;
+}
+
+/* Dashboard Section Titles */
+.dashboard-section-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: #2c3e50;
+    margin: 30px 0 20px 0;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #ecf0f1;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.dashboard-section-title i {
+    font-size: 20px;
+    color: #2E8B57;
+    opacity: 0.9;
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    margin-bottom: 25px;
+}
+
+@media (max-width: 1600px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+@media (max-width: 1200px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Ensure all text in cards is black */
+.kpi-card-green .kpi-label,
+.kpi-card-green .kpi-icon,
+.kpi-card-green .kpi-value,
+.kpi-card-brown .kpi-label,
+.kpi-card-brown .kpi-icon,
+.kpi-card-brown .kpi-value,
+.kpi-card-blue .kpi-label,
+.kpi-card-blue .kpi-icon,
+.kpi-card-blue .kpi-value,
+.kpi-card-purple .kpi-label,
+.kpi-card-purple .kpi-icon,
+.kpi-card-purple .kpi-value,
+.kpi-card-pink .kpi-label,
+.kpi-card-pink .kpi-icon,
+.kpi-card-pink .kpi-value,
+.kpi-card-yellow .kpi-label,
+.kpi-card-yellow .kpi-icon,
+.kpi-card-yellow .kpi-value,
+.kpi-card-orange .kpi-label,
+.kpi-card-orange .kpi-icon,
+.kpi-card-orange .kpi-value,
+.process-card-green .kpi-label,
+.process-card-green .kpi-icon,
+.process-card-green .kpi-value,
+.process-card-brown .kpi-label,
+.process-card-brown .kpi-icon,
+.process-card-brown .kpi-value {
+    color: #2c3e50;
+}

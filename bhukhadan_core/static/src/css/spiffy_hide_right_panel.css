@@ -1,0 +1,13 @@
+/* Hide Spiffy theme right bookmark / tools strip (favorites, zoom, search, fullscreen). */
+body.o_web_client .header_menu_right_content,
+body.o_web_client .header_menu_right_content_toggler,
+body.o_web_client.bookmark_panel_show .header_menu_right_content,
+body.o_web_client.bookmark_panel_show .header_menu_right_content_toggler {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+}

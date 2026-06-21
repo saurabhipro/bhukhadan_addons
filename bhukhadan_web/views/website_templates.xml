@@ -1,0 +1,1168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================
+         SHARED SEO — meta keywords, Open Graph, JSON-LD
+         Set optional: bhu_page_keywords, bhu_og_title, bhu_og_description
+         Always set: additional_title, meta_description (Odoo standard)
+         ============================================================ -->
+    <template id="seo_head" name="BhuKhadan SEO Head">
+        <t t-set="bhu_default_keywords"
+           t-value="'coal bearing land acquisition, CBA Act 1957, Coal Bearing Areas, SECL, Section 4, Section 7, Section 11, compensation award, land acquisition software, BhuKhadan'"/>
+        <t t-set="bhu_site_url" t-value="request.httprequest.url_root.rstrip('/')"/>
+        <t t-set="bhu_canonical" t-value="bhu_site_url + request.httprequest.path"/>
+        <t t-set="bhu_og_title_val" t-value="bhu_og_title or (website.name + ' | ' + (additional_title or 'Home'))"/>
+        <t t-set="bhu_og_desc_val" t-value="bhu_og_description or meta_description or 'BhuKhadan — digital platform for coal-bearing land acquisition under the CBA(A&amp;D) Act, 1957.'"/>
+
+        <meta name="keywords" t-att-content="bhu_page_keywords or bhu_default_keywords"/>
+        <meta name="robots" content="index, follow"/>
+        <link rel="canonical" t-att-href="bhu_canonical"/>
+
+        <meta property="og:type" content="website"/>
+        <meta property="og:site_name" content="BhuKhadan"/>
+        <meta property="og:title" t-att-content="bhu_og_title_val"/>
+        <meta property="og:description" t-att-content="bhu_og_desc_val"/>
+        <meta property="og:url" t-att-content="bhu_canonical"/>
+        <meta property="og:image" t-att-content="bhu_site_url + '/bhukhadan_web/static/src/img/bhuarjan_banner_2.webp'"/>
+
+        <meta name="twitter:card" content="summary_large_image"/>
+        <meta name="twitter:title" t-att-content="bhu_og_title_val"/>
+        <meta name="twitter:description" t-att-content="bhu_og_desc_val"/>
+
+        <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "<t t-esc='bhu_site_url'/>/#organization",
+      "name": "BhuKhadan",
+      "url": "<t t-esc='bhu_site_url'/>",
+      "logo": "<t t-esc='bhu_site_url'/>/bhukhadan_web/static/src/img/bhuarjan_logo.png",
+      "description": "Coal Bearing Areas land acquisition management under CBA(A&amp;D) Act 1957.",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+91-70420-38092",
+        "contactType": "customer support",
+        "email": "support@bhuarjan.com",
+        "availableLanguage": ["English", "Hindi"]
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "<t t-esc='bhu_site_url'/>/#website",
+      "url": "<t t-esc='bhu_site_url'/>",
+      "name": "BhuKhadan",
+      "publisher": {"@id": "<t t-esc='bhu_site_url'/>/#organization"},
+      "inLanguage": "en-IN"
+    },
+    {
+      "@type": "ItemList",
+      "name": "BhuKhadan Site Navigation",
+      "itemListElement": [
+        {"@type": "SiteNavigationElement", "position": 1, "name": "Home", "url": "<t t-esc='bhu_site_url'/>/"},
+        {"@type": "SiteNavigationElement", "position": 2, "name": "Features", "url": "<t t-esc='bhu_site_url'/>/features"},
+        {"@type": "SiteNavigationElement", "position": 3, "name": "Mobile App", "url": "<t t-esc='bhu_site_url'/>/mobile-app"},
+        {"@type": "SiteNavigationElement", "position": 4, "name": "Acts Covered", "url": "<t t-esc='bhu_site_url'/>/acts"},
+        {"@type": "SiteNavigationElement", "position": 5, "name": "Contact Us", "url": "<t t-esc='bhu_site_url'/>/contact"}
+      ]
+    }
+  ]
+}
+        </script>
+    </template>
+
+    <!-- ============================================================
+         HOME PAGE
+         ============================================================ -->
+    <template id="homepage" name="BhuKhadan – Home">
+        <t t-call="website.layout">
+            <t t-set="additional_title">Land Acquisition Management Platform</t>
+            <t t-set="meta_description">BhuKhadan is a unified digital platform for coal-bearing land acquisition under the CBA(A&amp;D) Act, 1957 — from Section 4(i) notification through award and compensation.</t>
+            <t t-set="bhu_page_keywords" t-value="'CBA Act 1957, coal bearing land acquisition, Section 4, Section 7, Section 11, SECL, BhuKhadan LAMS'"/>
+            <t t-set="no_header" t-value="1"/>
+            <t t-set="no_footer" t-value="1"/>
+            <t t-set="head">
+                <t t-call="bhukhadan_web.seo_head"/>
+                <link rel="stylesheet" type="text/css"
+                      t-attf-href="/bhukhadan_web/static/src/css/bhuarjan_website.css?v=18.0.1.2.9"/>
+                <link rel="stylesheet"
+                      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+                <link rel="preconnect" href="https://fonts.googleapis.com"/>
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
+                <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap"
+                      rel="stylesheet"/>
+                <script type="text/javascript" src="/bhukhadan_web/static/src/js/bhuarjan_website.js"/>
+            </t>
+
+            <t t-set="bhu_nav_light" t-value="True"/>
+            <!-- ── NAVBAR ── -->
+            <t t-call="bhukhadan_web.navbar"/>
+
+            <div class="bhu-home-v2">
+
+            <!-- ============================================================
+                 HERO — editorial / centered layout
+                 ============================================================ -->
+            <section class="bhu-home-v2-hero">
+                <div class="bhu-home-v2-hero-bg" aria-hidden="true"/>
+                <div class="bhu-home-v2-hero-inner">
+                    <div class="bhu-home-v2-hero-copy">
+                        <span class="bhu-home-v2-kicker">
+                            <i class="fa fa-gem"/> Coal Bearing Land Acquisition · CBA(A&amp;D) Act 1957
+                        </span>
+                        <h1>
+                            Digitise every stage from
+                            <span class="accent">notification</span>
+                            to <span class="accent">award</span>
+                        </h1>
+                        <p class="bhu-home-v2-lead">
+                            BhuKhadan connects field survey, statutory workflows, and compensation
+                            on one auditable platform built for SECL and coal-bearing area administration.
+                        </p>
+                        <div class="bhu-home-v2-actions">
+                            <a href="/odoo" class="bhu-btn primary bhu-home-v2-btn-main">
+                                Launch Portal <i class="fa fa-arrow-right"/>
+                            </a>
+                            <a href="/features/cba" class="bhu-btn ghost bhu-home-v2-btn-alt">
+                                Explore CBA Guide
+                            </a>
+                            <a href="/contact" class="bhu-home-v2-link-demo">
+                                <i class="fa fa-calendar-check"/> Book a demo
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="bhu-home-v2-pipeline" aria-label="CBA acquisition stages">
+                        <a href="/features/cba/section-4" class="bhu-home-v2-stage">
+                            <span class="num">01</span>
+                            <strong>Sec 4(i)</strong>
+                            <small>Notification</small>
+                        </a>
+                        <span class="bhu-home-v2-stage-arrow"><i class="fa fa-chevron-right"/></span>
+                        <a href="/features/cba/section-7" class="bhu-home-v2-stage">
+                            <span class="num">02</span>
+                            <strong>Sec 7(i)</strong>
+                            <small>Intention</small>
+                        </a>
+                        <span class="bhu-home-v2-stage-arrow"><i class="fa fa-chevron-right"/></span>
+                        <a href="/features/cba/section-8" class="bhu-home-v2-stage">
+                            <span class="num">03</span>
+                            <strong>Sec 8</strong>
+                            <small>Objections</small>
+                        </a>
+                        <span class="bhu-home-v2-stage-arrow"><i class="fa fa-chevron-right"/></span>
+                        <a href="/features/cba/section-9" class="bhu-home-v2-stage">
+                            <span class="num">04</span>
+                            <strong>Sec 9(i)</strong>
+                            <small>Declaration</small>
+                        </a>
+                        <span class="bhu-home-v2-stage-arrow"><i class="fa fa-chevron-right"/></span>
+                        <a href="/features/cba/section-11" class="bhu-home-v2-stage">
+                            <span class="num">05</span>
+                            <strong>Sec 11(i)</strong>
+                            <small>Order &amp; Award</small>
+                        </a>
+                    </div>
+
+                    <div class="bhu-home-v2-metrics bhu-home-v2-metrics--inline">
+                        <div class="bhu-home-v2-metric">
+                            <strong>120+</strong>
+                            <span>Projects</span>
+                        </div>
+                        <div class="bhu-home-v2-metric">
+                            <strong>5K+</strong>
+                            <span>Parcels</span>
+                        </div>
+                        <div class="bhu-home-v2-metric accent">
+                            <strong>99%</strong>
+                            <span>Uptime</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================
+                 TRUST GRID — card chips instead of flat bar
+                 ============================================================ -->
+            <section class="bhu-home-v2-trust">
+                <div class="bhu-home-v2-trust-inner">
+                    <article class="bhu-home-v2-trust-card">
+                        <i class="fa fa-mountain"/>
+                        <div>
+                            <strong>CBA(A&amp;D) Act 1957</strong>
+                            <span>Statutory workflow engine</span>
+                        </div>
+                    </article>
+                    <article class="bhu-home-v2-trust-card">
+                        <i class="fa fa-industry"/>
+                        <div>
+                            <strong>SECL Workflows</strong>
+                            <span>Coal-bearing area projects</span>
+                        </div>
+                    </article>
+                    <article class="bhu-home-v2-trust-card">
+                        <i class="fa fa-lock"/>
+                        <div>
+                            <strong>Bank-Grade Security</strong>
+                            <span>Role-based access control</span>
+                        </div>
+                    </article>
+                    <article class="bhu-home-v2-trust-card">
+                        <i class="fa fa-cloud"/>
+                        <div>
+                            <strong>Cloud Native</strong>
+                            <span>Always-on availability</span>
+                        </div>
+                    </article>
+                    <article class="bhu-home-v2-trust-card">
+                        <i class="fa fa-mobile-alt"/>
+                        <div>
+                            <strong>Mobile-First</strong>
+                            <span>Offline field capture</span>
+                        </div>
+                    </article>
+                    <article class="bhu-home-v2-trust-card">
+                        <i class="fa fa-language"/>
+                        <div>
+                            <strong>Hindi &amp; English</strong>
+                            <span>Bilingual interface</span>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- ============================================================
+                 VALUE PROPS — bento layout
+                 ============================================================ -->
+            <section class="bhu-home-v2-values">
+                <div class="bhu-home-v2-values-inner">
+                    <div class="bhu-home-v2-values-head">
+                        <span class="bhu-home-v2-kicker subtle">Why BhuKhadan</span>
+                        <h2>Governance-grade software.<br/>Human-centred experience.</h2>
+                        <p>
+                            From Patwari to Collector — every role gets the right tools, the right
+                            approvals, and a clear audit trail across the full acquisition lifecycle.
+                        </p>
+                    </div>
+                    <div class="bhu-home-v2-bento">
+                        <div class="bhu-home-v2-bento-visual">
+                            <img src="/bhukhadan_web/static/src/img/bhuarjan_image_3.webp"
+                                 alt="BhuKhadan dashboard on tablet and mobile"/>
+                        </div>
+                        <div class="bhu-home-v2-bento-tile">
+                            <i class="fa fa-eye"/>
+                            <h4>Transparent</h4>
+                            <p>Real-time tracking of every project stage.</p>
+                        </div>
+                        <div class="bhu-home-v2-bento-tile">
+                            <i class="fa fa-users"/>
+                            <h4>Collaborative</h4>
+                            <p>Paperless coordination across departments.</p>
+                        </div>
+                        <div class="bhu-home-v2-bento-tile wide">
+                            <i class="fa fa-map-marked-alt"/>
+                            <h4>GIS &amp; Mobile Surveys</h4>
+                            <p>Capture Khasra, GPS, and photos from the field — sync when back online.</p>
+                        </div>
+                        <div class="bhu-home-v2-bento-tile">
+                            <i class="fa fa-balance-scale"/>
+                            <h4>Fair &amp; Accountable</h4>
+                            <p>Equitable records with immutable history.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================
+                 KEY FEATURES (DARK)
+                 ============================================================ -->
+            <section class="bhu-features dark">
+                <div class="bhu-features-inner">
+                    <div class="bhu-sec-head">
+                        <span class="tag">Platform Capabilities</span>
+                        <h2>Everything you need in one platform</h2>
+                        <p>From field data collection to final notification — every step is digitised, secured, and audit-ready.</p>
+                    </div>
+                    <div class="bhu-features-grid">
+                        <div class="bhu-feature">
+                            <div class="ico"><i class="fa fa-mobile-alt"/></div>
+                            <h4>Field Data App</h4>
+                            <p>Patwari and field teams record land details, GPS points, and upload photos on-site — even offline.</p>
+                            <a href="#" class="arrow">Learn more <i class="fa fa-arrow-right"/></a>
+                        </div>
+                        <div class="bhu-feature">
+                            <div class="ico"><i class="fa fa-file-alt"/></div>
+                            <h4>Digital Forms</h4>
+                            <p>Seamless creation and approval workflows for Sections 4(i), 7(i), 8, 9(i), and 11(i).</p>
+                            <a href="#" class="arrow">Learn more <i class="fa fa-arrow-right"/></a>
+                        </div>
+                        <div class="bhu-feature">
+                            <div class="ico"><i class="fa fa-file-signature"/></div>
+                            <h4>Smart PDF &amp; E-Sign</h4>
+                            <p>Instant generation and digital signing of official notifications and reports.</p>
+                            <a href="#" class="arrow">Learn more <i class="fa fa-arrow-right"/></a>
+                        </div>
+                        <div class="bhu-feature">
+                            <div class="ico"><i class="fa fa-chart-line"/></div>
+                            <h4>Live Dashboard</h4>
+                            <p>Track acquisition progress and parcel status across all projects in real time.</p>
+                            <a href="#" class="arrow">Learn more <i class="fa fa-arrow-right"/></a>
+                        </div>
+                        <div class="bhu-feature">
+                            <div class="ico"><i class="fa fa-shield-alt"/></div>
+                            <h4>Role-Based Access</h4>
+                            <p>Secure logins for Collector, SDM, Tahsildar, RI, Patwari &amp; field teams.</p>
+                            <a href="#" class="arrow">Learn more <i class="fa fa-arrow-right"/></a>
+                        </div>
+                        <div class="bhu-feature">
+                            <div class="ico"><i class="fa fa-chart-bar"/></div>
+                            <h4>Analytics &amp; Reports</h4>
+                            <p>Insights with project-wise and section-wise monitoring dashboards and exports.</p>
+                            <a href="#" class="arrow">Learn more <i class="fa fa-arrow-right"/></a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================
+                 WHY CHOOSE - Image cards
+                 ============================================================ -->
+            <section class="bhu-why">
+                <div class="bhu-why-inner">
+                    <div class="bhu-sec-head">
+                        <span class="tag">Our Promise</span>
+                        <h2>Why choose BHUKHADAN?</h2>
+                        <p>Four core pillars that make BhuKhadan the trusted choice for land administration.</p>
+                    </div>
+                    <div class="bhu-why-grid">
+                        <div class="bhu-why-card">
+                            <img class="wi-img" src="/bhukhadan_web/static/src/img/efficiancy.webp" alt="Efficiency"/>
+                            <h4>Efficiency</h4>
+                            <p>"Streamlines workflow and reduces manual effort across all departments."</p>
+                        </div>
+                        <div class="bhu-why-card">
+                            <img class="wi-img" src="/bhukhadan_web/static/src/img/transparency.webp" alt="Transparency"/>
+                            <h4>Transparency</h4>
+                            <p>"Every process is fully traceable through immutable digital records."</p>
+                        </div>
+                        <div class="bhu-why-card">
+                            <img class="wi-img" src="/bhukhadan_web/static/src/img/timeliness.webp" alt="Timeliness"/>
+                            <h4>Timeliness</h4>
+                            <p>"Real-time progress visibility ensures no delays across all stages."</p>
+                        </div>
+                        <div class="bhu-why-card">
+                            <img class="wi-img" src="/bhukhadan_web/static/src/img/colaboration.webp" alt="Collaboration"/>
+                            <h4>Collaboration</h4>
+                            <p>"Seamless coordination between field teams and administration."</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================
+                 INSIGHTS
+                 ============================================================ -->
+            <section class="bhu-insights">
+                <div class="bhu-insights-inner">
+                    <div class="bhu-insights-content">
+                        <span class="tag">Real-Time Insights</span>
+                        <h2>From the field to the Collector's desk — instantly.</h2>
+                        <div class="bhu-insights-list">
+                            <div class="item">
+                                <div class="ico"><i class="fa fa-mobile-alt"/></div>
+                                <div>
+                                    <strong>On-Ground Collection</strong>
+                                    <p>Patwaris and field teams record land details, GPS points, and photos from the field — even offline.</p>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="ico"><i class="fa fa-tachometer-alt"/></div>
+                                <div>
+                                    <strong>Central Dashboard</strong>
+                                    <p>Collectors and officials view project progress, approvals, and compensation status in real time.</p>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="ico"><i class="fa fa-bell"/></div>
+                                <div>
+                                    <strong>Automated Alerts</strong>
+                                    <p>Instant notifications for pending approvals, expiring deadlines, and escalation triggers.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bhu-insights-visual">
+                        <img src="/bhukhadan_web/static/src/img/land_management.jpg"
+                             alt="BHUKHADAN Dashboard"/>
+                        <div class="bhu-insights-stat-card">
+                            <div class="ico"><i class="fa fa-arrow-trend-up"/></div>
+                            <div>
+                                <div class="num">+ 47%</div>
+                                <div class="lbl">Faster turnaround</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================
+                 ACQUISITION TIMELINE
+                 ============================================================ -->
+            <section class="bhu-roadmap">
+                <div class="bhu-roadmap-inner">
+                    <div class="bhu-sec-head">
+                        <span class="tag">Execution Timeline</span>
+                        <h2>End-to-end statutory acquisition timeline</h2>
+                        <p>Track every core stage from survey entry to award and payment in one continuous flow.</p>
+                    </div>
+
+                    <div class="bhu-roadmap-wrap">
+                        <div class="bhu-roadmap-track">
+                            <div class="bhu-roadmap-step done">
+                                <div class="dot"><i class="fa fa-check"/></div>
+                                <h5>Survey</h5>
+                                <p>Form 10</p>
+                            </div>
+                            <div class="bhu-roadmap-step done">
+                                <div class="dot"><i class="fa fa-check"/></div>
+                                <h5>Sec 4(i)</h5>
+                                <p>Notification</p>
+                            </div>
+                            <div class="bhu-roadmap-step current">
+                                <div class="dot">3</div>
+                                <h5>Sec 7(i)</h5>
+                                <p>Intention</p>
+                            </div>
+                            <div class="bhu-roadmap-step pending">
+                                <div class="dot">4</div>
+                                <h5>Sec 8</h5>
+                                <p>Objections</p>
+                            </div>
+                            <div class="bhu-roadmap-step pending">
+                                <div class="dot">5</div>
+                                <h5>Sec 9(i)</h5>
+                                <p>Declaration</p>
+                            </div>
+                            <div class="bhu-roadmap-step pending">
+                                <div class="dot">6</div>
+                                <h5>Sec 11(i)</h5>
+                                <p>Acquisition order</p>
+                            </div>
+                            <div class="bhu-roadmap-step pending">
+                                <div class="dot">7</div>
+                                <h5>Award</h5>
+                                <p>Compensation</p>
+                            </div>
+                            <div class="bhu-roadmap-step pending">
+                                <div class="dot">8</div>
+                                <h5>Payment</h5>
+                                <p>Disbursement</p>
+                            </div>
+                        </div>
+                        <div class="bhu-roadmap-note">
+                            <i class="fa fa-circle-info"/> Status colors: <strong>Green</strong> completed, <strong>Brown</strong> active, <strong>Grey</strong> pending.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================
+                 STATS
+                 ============================================================ -->
+            <section class="bhu-stats">
+                <div class="bhu-stats-inner">
+                    <div class="bhu-stat-item">
+                        <h3><span data-count="120" data-suffix="+">120+</span></h3>
+                        <p>Projects Managed</p>
+                    </div>
+                    <div class="bhu-stat-item">
+                        <h3><span data-count="5000" data-suffix="+">5,000+</span></h3>
+                        <p>Land Parcels Processed</p>
+                    </div>
+                    <div class="bhu-stat-item">
+                        <h3><span data-count="200" data-suffix="+">200+</span></h3>
+                        <p>Government Users</p>
+                    </div>
+                    <div class="bhu-stat-item">
+                        <h3><span data-count="99" data-suffix="%">99%</span></h3>
+                        <p>Platform Uptime</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================
+                 CTA
+                 ============================================================ -->
+            <section class="bhu-cta">
+                <div class="bhu-cta-inner">
+                    <h2>Ready to digitise land acquisition?</h2>
+                    <p>Join leading administrations using BhuKhadan to deliver faster, fairer, and more transparent coal-bearing land acquisition under the CBA(A&amp;D) Act, 1957.</p>
+                    <a href="/contact" class="bhu-btn primary">
+                        Talk to our team <i class="fa fa-arrow-right"/>
+                    </a>
+                </div>
+            </section>
+
+            </div><!-- /.bhu-home-v2 -->
+
+            <!-- FOOTER -->
+            <t t-call="bhukhadan_web.footer"/>
+        </t>
+    </template>
+
+    <!-- ============================================================
+         FEATURES PAGE
+         ============================================================ -->
+    <template id="features_page" name="BhuKhadan – Features">
+        <t t-call="website.layout">
+            <t t-set="additional_title">Features — Land Acquisition Platform</t>
+            <t t-set="meta_description">Explore BhuKhadan features for coal-bearing land acquisition — survey, CBA notifications, objections, awards, dashboards, and document vault.</t>
+            <t t-set="bhu_page_keywords" t-value="'CBA Act features, coal bearing land acquisition, Section 4, Section 7, Section 11, award compensation, BhuKhadan'"/>
+            <t t-set="no_header" t-value="1"/>
+            <t t-set="no_footer" t-value="1"/>
+            <t t-set="head">
+                <t t-call="bhukhadan_web.seo_head"/>
+                <link rel="stylesheet" type="text/css"
+                      t-attf-href="/bhukhadan_web/static/src/css/bhuarjan_website.css?v=18.0.1.2.9"/>
+                <link rel="stylesheet"
+                      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+                <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap"
+                      rel="stylesheet"/>
+            </t>
+
+            <t t-call="bhukhadan_web.navbar"/>
+
+            <section class="bhu-features-hero">
+                <span class="tag">Platform Capabilities</span>
+                <h1>Features across every acquisition stage</h1>
+                <p>
+                    BHUKHADAN digitises survey, notifications, objections, awards, and payment workflows
+                    with audit trails and report-ready documentation.
+                </p>
+                <div class="bhu-features-hero-actions">
+                    <a href="/features/cba" class="bhu-btn primary bhu-features-hero-cta">
+                        CBA Act Guide <i class="fa fa-mountain"/>
+                    </a>
+                    <a href="/acts" class="bhu-btn ghost bhu-features-hero-cta">
+                        View Acts &amp; Stages <i class="fa fa-arrow-right"/>
+                    </a>
+                </div>
+            </section>
+
+            <section class="bhu-features-grid-wrap">
+                <div class="bhu-features-grid">
+                    <article class="bhu-feature-card">
+                        <div class="bhu-feature-card-head">
+                            <div class="bhu-feature-ico"><i class="fa fa-map-marked-alt"/></div>
+                            <span class="bhu-feature-module">Survey Module</span>
+                        </div>
+                        <h3>Project Setup &amp; Land Survey</h3>
+                        <p>Configure projects, villages, and parcel records with field-level tracking and verified ownership details.</p>
+                        <ul class="bhu-feature-points">
+                            <li>Mobile-ready field data capture</li>
+                            <li>Khasra, owner, and geo details in one flow</li>
+                        </ul>
+                    </article>
+                    <article class="bhu-feature-card">
+                        <div class="bhu-feature-card-head">
+                            <div class="bhu-feature-ico"><i class="fa fa-bullhorn"/></div>
+                            <span class="bhu-feature-module">Notification Module</span>
+                        </div>
+                        <h3>Section 4(i) Notification</h3>
+                        <p>Generate and monitor coal-bearing area notifications with date-based status, workflow approvals, and digital traceability.</p>
+                        <ul class="bhu-feature-points">
+                            <li>Automated sequence and document generation</li>
+                            <li>Approval-ready digital workflow</li>
+                        </ul>
+                    </article>
+                    <article class="bhu-feature-card">
+                        <div class="bhu-feature-card-head">
+                            <div class="bhu-feature-ico"><i class="fa fa-gavel"/></div>
+                            <span class="bhu-feature-module">Objection Module</span>
+                        </div>
+                        <h3>Section 7(i) &amp; Section 8 Processing</h3>
+                        <p>Handle intention to acquire, objection intake, hearing actions, and resolution outcomes from one structured dashboard.</p>
+                        <ul class="bhu-feature-points">
+                            <li>Hearing and resolution tracking</li>
+                            <li>Transparent objection lifecycle</li>
+                        </ul>
+                    </article>
+                    <article class="bhu-feature-card">
+                        <div class="bhu-feature-card-head">
+                            <div class="bhu-feature-ico"><i class="fa fa-file-invoice-dollar"/></div>
+                            <span class="bhu-feature-module">Award Module</span>
+                        </div>
+                        <h3>Section 9(i), 11(i) &amp; Compensation</h3>
+                        <p>Drive declaration, acquisition order, beneficiary validation, and compensation calculations with ready reports.</p>
+                        <ul class="bhu-feature-points">
+                            <li>Land, tree, and asset compensation support</li>
+                            <li>Consolidated and R&amp;R output formats</li>
+                        </ul>
+                    </article>
+                    <article class="bhu-feature-card">
+                        <div class="bhu-feature-card-head">
+                            <div class="bhu-feature-ico"><i class="fa fa-user-shield"/></div>
+                            <span class="bhu-feature-module">Access Control</span>
+                        </div>
+                        <h3>Approvals &amp; Role-Based Controls</h3>
+                        <p>Enable Patwari, RI, Tehsildar, SDM, and Collector level actions with strict permission and approval routing.</p>
+                        <ul class="bhu-feature-points">
+                            <li>Role-wise menu and state transitions</li>
+                            <li>Full audit trail of actions</li>
+                        </ul>
+                    </article>
+                    <article class="bhu-feature-card">
+                        <div class="bhu-feature-card-head">
+                            <div class="bhu-feature-ico"><i class="fa fa-chart-line"/></div>
+                            <span class="bhu-feature-module">Dashboard Module</span>
+                        </div>
+                        <h3>Dashboards &amp; Monitoring</h3>
+                        <p>Track project progress, timeline bottlenecks, and pending actions through district and department dashboards.</p>
+                        <ul class="bhu-feature-points">
+                            <li>Live project and section monitoring</li>
+                            <li>Decision-ready KPI cards</li>
+                        </ul>
+                    </article>
+                    <article class="bhu-feature-card">
+                        <div class="bhu-feature-card-head">
+                            <div class="bhu-feature-ico"><i class="fa fa-folder-open"/></div>
+                            <span class="bhu-feature-module">Document Vault</span>
+                        </div>
+                        <h3>Document &amp; Template Management</h3>
+                        <p>Store, manage, and retrieve official files, templates, and signed outputs with searchable metadata.</p>
+                        <ul class="bhu-feature-points">
+                            <li>Centralized legal document repository</li>
+                            <li>Standardized export-ready templates</li>
+                        </ul>
+                    </article>
+                    <article class="bhu-feature-card">
+                        <div class="bhu-feature-card-head">
+                            <div class="bhu-feature-ico"><i class="fa fa-cogs"/></div>
+                            <span class="bhu-feature-module">Master Data</span>
+                        </div>
+                        <h3>Master Configuration Engine</h3>
+                        <p>Manage districts, tehsils, villages, rates, tree masters, sections, and reusable reference masters centrally.</p>
+                        <ul class="bhu-feature-points">
+                            <li>Consistent values across all modules</li>
+                            <li>Fast onboarding for new projects</li>
+                        </ul>
+                    </article>
+                </div>
+            </section>
+
+            <section class="bhu-pdf-shots">
+                <div class="bhu-pdf-head">
+                    <h2>PDF Screenshots</h2>
+                    <p>Sample output views used for review and department communication.</p>
+                </div>
+                <div class="bhu-pdf-grid">
+                    <article class="bhu-pdf-card">
+                        <img src="/bhukhadan_web/static/src/img/dashboard_mockup.jpg" alt="Section report PDF preview"/>
+                        <div class="meta">
+                            <h4>Section Workflow Summary</h4>
+                            <p>Overview snapshot for project progress and section-wise status.</p>
+                        </div>
+                    </article>
+                    <article class="bhu-pdf-card">
+                        <img src="/bhukhadan_web/static/src/img/hero_aerial.jpg" alt="Award statement PDF preview"/>
+                        <div class="meta">
+                            <h4>Award Statement Preview</h4>
+                            <p>Representative format for award and compensation sheets.</p>
+                        </div>
+                    </article>
+                    <article class="bhu-pdf-card">
+                        <img src="/bhukhadan_web/static/src/img/land_management.jpg" alt="Notification order PDF preview"/>
+                        <div class="meta">
+                            <h4>Notification Order Preview</h4>
+                            <p>Template-style preview for downloadable notification documents.</p>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <t t-call="bhukhadan_web.footer"/>
+        </t>
+    </template>
+
+    <!-- ============================================================
+         CONTACT PAGE
+         ============================================================ -->
+    <template id="contact_page" name="BhuKhadan – Contact Us">
+        <t t-call="website.layout">
+            <t t-set="additional_title">Contact Us</t>
+            <t t-set="meta_description">Contact BhuKhadan for coal-bearing land acquisition platform demos, CBA project enquiries, and partnership requests. We respond within 24 hours.</t>
+            <t t-set="bhu_page_keywords" t-value="'contact BhuKhadan, CBA Act demo, coal bearing land acquisition enquiry, BhuKhadan support'"/>
+            <t t-set="no_header" t-value="1"/>
+            <t t-set="no_footer" t-value="1"/>
+            <t t-set="head">
+                <t t-call="bhukhadan_web.seo_head"/>
+                <link rel="stylesheet" type="text/css"
+                      t-attf-href="/bhukhadan_web/static/src/css/bhuarjan_website.css?v=18.0.1.2.9"/>
+                <link rel="stylesheet"
+                      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+                <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap"
+                      rel="stylesheet"/>
+            </t>
+
+            <t t-call="bhukhadan_web.navbar"/>
+
+            <section class="bhu-contact-hero">
+                <span class="tag">We'd love to hear from you</span>
+                <h1>Get in touch</h1>
+                <p>Questions, demo requests, or partnership enquiries — our team is here to help.</p>
+            </section>
+
+            <div class="bhu-contact-body">
+                <div class="bhu-contact-info">
+                    <h3>Reach out</h3>
+                    <p>Choose the channel that works best for you. We typically respond within 24 hours.</p>
+                    <div class="bhu-contact-info-item">
+                        <div class="bhu-ci-icon"><i class="fa fa-map-marker-alt"/></div>
+                        <div class="bhu-ci-text">
+                            <span>Address</span>
+                            <strong>India</strong>
+                        </div>
+                    </div>
+                    <div class="bhu-contact-info-item">
+                        <div class="bhu-ci-icon"><i class="fa fa-phone"/></div>
+                        <div class="bhu-ci-text">
+                            <span>Phone</span>
+                            <strong>+91 70420 38092</strong>
+                        </div>
+                    </div>
+                    <div class="bhu-contact-info-item">
+                        <div class="bhu-ci-icon"><i class="fa fa-envelope"/></div>
+                        <div class="bhu-ci-text">
+                            <span>Email</span>
+                            <strong>support@bhuarjan.com</strong>
+                        </div>
+                    </div>
+                    <div class="bhu-contact-info-item">
+                        <div class="bhu-ci-icon"><i class="fa fa-clock"/></div>
+                        <div class="bhu-ci-text">
+                            <span>Working Hours</span>
+                            <strong>Mon–Sat, 9:00 AM – 6:00 PM IST</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bhu-contact-form">
+                    <h3>Send us a message</h3>
+                    <p>Fill out the form below and we'll get back to you shortly.</p>
+                    <form action="/contact/submit" method="post">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <div class="bhu-form-row">
+                            <div class="bhu-form-group">
+                                <label for="name">Full Name *</label>
+                                <input type="text" id="name" name="name" placeholder="Your full name" required="1"/>
+                            </div>
+                            <div class="bhu-form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" placeholder="+91 98765 43210"/>
+                            </div>
+                        </div>
+                        <div class="bhu-form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" placeholder="you@example.com" required="1"/>
+                        </div>
+                        <div class="bhu-form-group">
+                            <label for="message">Message *</label>
+                            <textarea id="message" name="message" placeholder="Describe your enquiry in detail…" required="1"/>
+                        </div>
+                        <button type="submit" class="bhu-btn-submit">
+                            <i class="fa fa-paper-plane"/> Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <t t-call="bhukhadan_web.footer"/>
+        </t>
+    </template>
+
+    <!-- ============================================================
+         THANK YOU PAGE
+         ============================================================ -->
+    <template id="contact_thanks" name="BhuKhadan – Thank You">
+        <t t-call="website.layout">
+            <t t-set="no_header" t-value="1"/>
+            <t t-set="no_footer" t-value="1"/>
+            <t t-set="head">
+                <link rel="stylesheet" type="text/css"
+                      t-attf-href="/bhukhadan_web/static/src/css/bhuarjan_website.css?v=18.0.1.2.9"/>
+                <link rel="stylesheet"
+                      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+            </t>
+            <t t-call="bhukhadan_web.navbar"/>
+            <div class="bhu-thanks">
+                <div class="bhu-thanks-icon"><i class="fa fa-check"/></div>
+                <h2>Message Sent!</h2>
+                <p>Thank you for reaching out. Our team will get back to you within 24 hours.</p>
+                <a href="/" class="bhu-btn primary"><i class="fa fa-arrow-left"/> Back to Home</a>
+            </div>
+            <t t-call="bhukhadan_web.footer"/>
+        </t>
+    </template>
+
+    <!-- ============================================================
+         REMOVE "Skip to Content" (comes from portal.frontend_layout)
+         ============================================================ -->
+    <template id="remove_skip_to_content" name="Remove Skip to Content"
+              inherit_id="portal.frontend_layout" priority="100">
+        <xpath expr="//a[contains(@class,'o_skip_to_content')]" position="replace">
+            <t/>
+        </xpath>
+    </template>
+
+    <!-- ============================================================
+         SHARED: NAVBAR
+         ============================================================ -->
+    <template id="navbar" name="BhuKhadan Navbar">
+        <t t-set="bhu_mobile_app" t-value="request.env['bhuarjan.settings.master'].sudo().get_mobile_app_public_info()"/>
+        <!-- Critical: desktop dropdown only; mobile uses accordion in main CSS -->
+        <style type="text/css">
+            @media (min-width: 641px) {
+                .bhu-navbar, .bhu-nav-links { overflow: visible !important; }
+                .bhu-nav-links { list-style: none; padding: 0; margin: 0; }
+                .bhu-nav-links li.bhu-nav-dropdown { position: relative; list-style: none; flex: 0 0 auto; }
+                .bhu-nav-drop-toggle {
+                    -webkit-appearance: none;
+                    appearance: none;
+                    background: none !important;
+                    border: none !important;
+                    box-shadow: none !important;
+                    outline: none;
+                    color: rgba(255,255,255,0.75) !important;
+                    font: inherit;
+                    font-size: .92rem;
+                    font-weight: 600;
+                    cursor: pointer;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 6px;
+                    padding: 6px 0;
+                    white-space: nowrap;
+                    line-height: inherit;
+                }
+                .bhu-nav-drop-toggle:hover { color: #ffaa5a !important; }
+                .bhu-nav-dropdown.is-active .bhu-nav-drop-toggle,
+                .bhu-nav-dropdown.open .bhu-nav-drop-toggle { color: #fff !important; }
+                .bhu-nav-drop-toggle i { font-size: .65rem; transition: transform .2s; }
+                .bhu-nav-dropdown.open .bhu-nav-drop-toggle i { transform: rotate(180deg); }
+                .bhu-nav-dropdown-panel {
+                    display: none !important;
+                    visibility: hidden;
+                    opacity: 0;
+                    pointer-events: none;
+                    position: absolute !important;
+                    top: calc(100% + 14px);
+                    left: 50%;
+                    transform: translateX(-50%);
+                    z-index: 10060;
+                    min-width: 420px;
+                    max-width: min(480px, calc(100vw - 32px));
+                    background: #fff;
+                    border-radius: 16px;
+                    border: 1px solid #e2e8f0;
+                    box-shadow: 0 24px 64px rgba(15,23,42,.2);
+                    padding: 18px;
+                    gap: 16px;
+                    grid-template-columns: 1fr 1.2fr;
+                }
+                .bhu-nav-dropdown.open .bhu-nav-dropdown-panel {
+                    display: grid !important;
+                    visibility: visible;
+                    opacity: 1;
+                    pointer-events: auto;
+                }
+            }
+            @media (max-width: 640px) {
+                .bhu-nav-mobile-wrap .bhu-nav-dropdown {
+                    display: flex;
+                    flex-direction: column;
+                    width: 100%;
+                }
+                .bhu-nav-mobile-wrap .bhu-nav-dropdown-panel {
+                    position: static !important;
+                    left: auto !important;
+                    top: auto !important;
+                    transform: none !important;
+                    min-width: 0 !important;
+                    max-width: none !important;
+                    width: 100% !important;
+                    display: none !important;
+                    grid-template-columns: 1fr !important;
+                    background: rgba(255,255,255,0.06) !important;
+                    border: 1px solid rgba(255,255,255,0.1) !important;
+                    box-shadow: none !important;
+                    margin: 0 0 4px !important;
+                    padding: 4px 6px 8px !important;
+                    border-radius: 0 0 12px 12px !important;
+                }
+                .bhu-nav-mobile-wrap .bhu-nav-dropdown.open .bhu-nav-dropdown-panel {
+                    display: block !important;
+                    visibility: visible !important;
+                    opacity: 1 !important;
+                }
+                .bhu-nav-mobile-wrap .bhu-nav-drop-col a {
+                    color: rgba(255,255,255,0.9) !important;
+                }
+            }
+        </style>
+        <nav t-attf-class="bhu-navbar {{ 'bhu-navbar--cream' if bhu_nav_light else '' }}">
+            <a href="/" class="bhu-logo-wrap">
+                <img src="/bhukhadan_web/static/src/img/bhuarjan_logo.png" alt="BhuKhadan"/>
+                <div class="bhu-logo-text">
+                    <span class="lt-1">BHUKHADAN</span>
+                    <span class="lt-2">Land Acquisition Mgmt</span>
+                </div>
+            </a>
+
+            <div class="bhu-nav-mobile-backdrop" aria-hidden="true"/>
+
+            <div class="bhu-nav-mobile-wrap">
+                <div class="bhu-nav-mobile-head">
+                    <span class="bhu-nav-mobile-title">Menu</span>
+                    <button type="button" class="bhu-nav-mobile-close" aria-label="Close menu">
+                        <i class="fa fa-times"/>
+                    </button>
+                </div>
+                <ul class="bhu-nav-links">
+                <li><a href="/" t-attf-class="{{ 'active' if request.httprequest.path == '/' else '' }}">Home</a></li>
+                <li t-attf-class="bhu-nav-dropdown {{ 'is-active' if request.httprequest.path.startswith('/features') else '' }}">
+                    <button type="button" class="bhu-nav-drop-toggle" aria-haspopup="true" aria-expanded="false">
+                        Features <i class="fa fa-chevron-down"/>
+                    </button>
+                    <div class="bhu-nav-dropdown-panel">
+                        <div class="bhu-nav-drop-col">
+                            <span class="bhu-nav-drop-label">Platform</span>
+                            <a href="/features" t-attf-class="{{ 'active' if request.httprequest.path == '/features' else '' }}">All Features</a>
+                            <a href="/mobile-app">Mobile Field App</a>
+                        </div>
+                        <div class="bhu-nav-drop-col">
+                            <span class="bhu-nav-drop-label">CBA Act Guide</span>
+                            <a href="/features/cba" t-attf-class="{{ 'active' if request.httprequest.path == '/features/cba' else '' }}">CBA Overview</a>
+                            <a href="/features/cba/section-4" t-attf-class="{{ 'active' if request.httprequest.path == '/features/cba/section-4' else '' }}">Section 4(i) Notification</a>
+                            <a href="/features/cba/section-7" t-attf-class="{{ 'active' if request.httprequest.path == '/features/cba/section-7' else '' }}">Section 7(i) Intention</a>
+                            <a href="/features/cba/section-11" t-attf-class="{{ 'active' if request.httprequest.path == '/features/cba/section-11' else '' }}">Section 11(i) Order</a>
+                            <a href="/features/cba" class="bhu-nav-drop-all">Browse all CBA stages →</a>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="/mobile-app" t-attf-class="{{ 'active' if request.httprequest.path == '/mobile-app' else '' }}">Mobile App</a></li>
+                <li><a href="/acts" t-attf-class="{{ 'active' if request.httprequest.path == '/acts' else '' }}">Acts</a></li>
+                <li><a href="/contact" t-attf-class="{{ 'active' if request.httprequest.path == '/contact' else '' }}">Contact us</a></li>
+            </ul>
+                <div class="bhu-nav-mobile-foot">
+                    <a t-if="bhu_mobile_app.get('available')" t-att-href="bhu_mobile_app.get('download_url')" class="bhu-btn-nav download bhu-nav-mobile-download">
+                        <i class="fab fa-android"/> Download App
+                        <t t-if="bhu_mobile_app.get('version')"> (v<t t-esc="bhu_mobile_app.get('version')"/>)</t>
+                    </a>
+                    <a href="tel:+917042038092" class="bhu-nav-mobile-call">
+                        <i class="fa fa-phone"/> +91 7042038092
+                    </a>
+                    <a href="/contact" class="bhu-btn-nav cta bhu-nav-mobile-contact">
+                        Contact Us <i class="fa fa-arrow-right"/>
+                    </a>
+                </div>
+            </div>
+
+            <div class="bhu-nav-right">
+                <a t-if="bhu_mobile_app.get('available')" t-att-href="bhu_mobile_app.get('download_url')" class="bhu-btn-nav download" title="Download BhuKhadan Field App">
+                    <i class="fab fa-android"/> Download App
+                </a>
+                <a href="/odoo" class="bhu-btn-nav login">
+                    <i class="fa fa-user"/> Login
+                </a>
+                <a href="/contact" class="bhu-btn-nav cta">
+                    Contact Us <i class="fa fa-arrow-right"/>
+                </a>
+            </div>
+
+            <button type="button" class="bhu-nav-toggle" aria-label="Open menu" aria-expanded="false">
+                <span class="bhu-nav-toggle-bar"/>
+                <span class="bhu-nav-toggle-bar"/>
+                <span class="bhu-nav-toggle-bar"/>
+            </button>
+        </nav>
+    </template>
+
+    <!-- ============================================================
+         SHARED: FOOTER
+         ============================================================ -->
+    <template id="footer" name="BhuKhadan Footer">
+        <t t-set="bhu_mobile_app" t-value="request.env['bhuarjan.settings.master'].sudo().get_mobile_app_public_info()"/>
+        <footer class="bhu-footer">
+            <div class="bhu-footer-inner">
+                <div class="bhu-footer-top">
+                    <div class="bhu-footer-brand">
+                        <div class="logo-wrap">
+                            <img src="/bhukhadan_web/static/src/img/bhuarjan_logo.png" alt="BhuKhadan"/>
+                            <span class="ft-name">BHUKHADAN</span>
+                        </div>
+                        <p>
+                            A unified digital platform for coal-bearing land acquisition under the
+                            CBA(A&amp;D) Act, 1957 — with transparency and full accountability from
+                            notification to award.
+                        </p>
+                        <div class="bhu-social">
+                            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"/></a>
+                            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"/></a>
+                            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"/></a>
+                            <a href="#" aria-label="YouTube"><i class="fab fa-youtube"/></a>
+                        </div>
+                    </div>
+                    <div class="bhu-footer-col">
+                        <h5>Platform</h5>
+                        <ul>
+                            <li><a href="/features">All Features</a></li>
+                            <li><a href="/features/cba">CBA Act Guide</a></li>
+                            <li><a href="/mobile-app">Mobile App</a></li>
+                            <li t-if="bhu_mobile_app.get('available')">
+                                <a t-att-href="bhu_mobile_app.get('download_url')">
+                                    Download App
+                                    <t t-if="bhu_mobile_app.get('version')"> (v<t t-esc="bhu_mobile_app.get('version')"/>)</t>
+                                </a>
+                            </li>
+                            <li><a href="/acts">Acts Covered</a></li>
+                            <li><a href="/odoo">Login Portal</a></li>
+                            <li><a href="/contact">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="bhu-footer-col">
+                        <h5>Resources</h5>
+                        <ul>
+                            <li><a href="/acts">CBA(A&amp;D) Act 1957</a></li>
+                            <li><a href="/features/cba">CBA Section Guides</a></li>
+                            <li><a href="/terms-and-conditions">Terms &amp; Conditions</a></li>
+                            <li><a href="/privacy-policy">Privacy Policy</a></li>
+                            <li><a href="/cookie-policy">Cookie Policy</a></li>
+                        </ul>
+                    </div>
+                    <div class="bhu-footer-col">
+                        <h5>Get in Touch</h5>
+                        <div class="contact-li">
+                            <i class="fa fa-envelope"/>
+                            <a href="mailto:support@bhuarjan.com">support@bhuarjan.com</a>
+                        </div>
+                        <div class="contact-li">
+                            <i class="fa fa-phone"/>
+                            <a href="tel:+917042038092">+91 70420 38092</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="bhu-footer-bottom">
+                    <span>© 2024–2026 BHUKHADAN. All rights reserved.</span>
+                    <span class="bhu-footer-dev">
+                        Developed by
+                        <a href="https://www.redmelon.co.in" target="_blank" rel="noopener noreferrer" class="bhu-redmelon-link">REDMELON BUSINESS SOLUTIONS PRIVATE LIMITED</a>
+                    </span>
+                </div>
+            </div>
+        </footer>
+    </template>
+
+    <!-- Cookie bar disabled on public website -->
+    <template id="bhuarjan_cookies_bar_skip_login" inherit_id="website.cookies_bar" name="BHUKHADAN: disable cookies bar">
+        <xpath expr="//div[@id='website_cookies_bar']" position="attributes">
+            <attribute name="t-if">False</attribute>
+        </xpath>
+    </template>
+
+    <!-- ============================================================
+         COOKIE POLICY PAGE
+         ============================================================ -->
+    <template id="cookie_policy_page" name="BhuKhadan – Cookie Policy">
+        <t t-call="website.layout">
+            <t t-set="additional_title">Cookie Policy</t>
+            <t t-set="meta_description">BhuKhadan cookie policy — how we use essential and optional cookies on bhuarjan.com for security, preferences, and analytics.</t>
+            <t t-set="bhu_page_keywords" t-value="'BhuKhadan cookie policy, website cookies, privacy, land acquisition platform'"/>
+            <t t-set="no_header" t-value="1"/>
+            <t t-set="no_footer" t-value="1"/>
+            <t t-set="head">
+                <t t-call="bhukhadan_web.legal_page_head"/>
+            </t>
+
+            <t t-call="bhukhadan_web.navbar"/>
+
+            <div class="bhu-legal-page">
+                <t t-set="active_tab" t-value="'cookies'"/>
+                <t t-call="bhukhadan_web.legal_nav_tabs"/>
+
+                <div class="bhu-legal-content">
+                    <h1 class="bhu-legal-title">Cookie Policy</h1>
+                    <p class="bhu-legal-intro">
+                        How BhuKhadan uses cookies to keep the platform secure and improve your experience.
+                    </p>
+                <p>
+                    We use cookies and similar technologies to provide core website functionality,
+                    remember your preferences, and understand how visitors use bhuarjan.com.
+                    You can accept all cookies, allow only essentials, or change your choice at any time
+                    using the cookie banner or the cookie settings control.
+                </p>
+
+                <h2>Overview of cookies we may use</h2>
+                <div class="bhu-legal-table-wrap">
+                    <table class="bhu-legal-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Purpose</th>
+                                <th>Examples</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Essential</td>
+                                <td>Required for security, session management, and basic site operation.</td>
+                                <td>Session ID, CSRF protection, login state, cookie consent choice</td>
+                            </tr>
+                            <tr>
+                                <td>Functional</td>
+                                <td>Remember preferences such as language and interface choices.</td>
+                                <td>Language preference, UI settings</td>
+                            </tr>
+                            <tr>
+                                <td>Analytics</td>
+                                <td>Help us measure traffic and improve content (only if you opt in).</td>
+                                <td>Anonymous visit statistics, page performance metrics</td>
+                            </tr>
+                            <tr>
+                                <td>Marketing</td>
+                                <td>Used only if optional marketing cookies are enabled on the website.</td>
+                                <td>Campaign attribution, remarketing tags</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2>Managing cookies</h2>
+                <p>
+                    When you first visit our website, you can choose <strong>Only essentials</strong>
+                    or <strong>I agree</strong> for optional cookies. You can reopen cookie settings
+                    from the small cookie control shown at the bottom of the page after your first choice.
+                </p>
+                <p>
+                    You can also clear cookies through your browser settings. Disabling essential cookies
+                    may prevent parts of the website or login portal from working correctly.
+                </p>
+
+                <h2>Contact</h2>
+                <p>
+                    Questions about this policy? Email
+                    <a href="mailto:support@bhuarjan.com">support@bhuarjan.com</a>
+                    or visit our <a href="/contact">contact page</a>.
+                </p>
+                <p class="bhu-legal-meta">
+                    Platform developed and maintained by
+                    <a href="https://www.redmelon.co.in" target="_blank" rel="noopener noreferrer">REDMELON BUSINESS SOLUTIONS PRIVATE LIMITED</a>
+                </p>
+                </div>
+            </div>
+
+            <t t-call="bhukhadan_web.footer"/>
+        </t>
+    </template>
+
+</odoo>

@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Payment Reconciliation Bank List View -->
+    <record id="view_payment_reconciliation_bank_list" model="ir.ui.view">
+        <field name="name">bhu.payment.reconciliation.bank.list</field>
+        <field name="model">bhu.payment.reconciliation.bank</field>
+        <field name="arch" type="xml">
+            <list string="Payment Reconciliation / भुगतान समाधान" delete="1">
+                <field name="name"/>
+                <field name="payment_file_id"/>
+                <field name="village_id"/>
+                <field name="project_id"/>
+                <field name="reconciliation_date"/>
+                <field name="total_payments"/>
+                <field name="settled_count"/>
+                <field name="failed_count"/>
+                <field name="pending_count"/>
+                <field name="total_amount" sum="Total"/>
+                <field name="settled_amount" sum="Total"/>
+                <field name="failed_amount" sum="Total"/>
+                <field name="state" widget="badge" 
+                       decoration-success="state == 'completed'"
+                       decoration-info="state == 'processed'"
+                       decoration-muted="state == 'draft'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Payment Reconciliation Bank Form View -->
+    <record id="view_payment_reconciliation_bank_form" model="ir.ui.view">
+        <field name="name">bhu.payment.reconciliation.bank.form</field>
+        <field name="model">bhu.payment.reconciliation.bank</field>
+        <field name="arch" type="xml">
+            <form string="Payment Reconciliation / भुगतान समाधान">
+                <header>
+                    <button name="action_process_bank_file" string="Process Bank File" type="object" class="btn-primary" icon="fa-upload"
+                            invisible="state != 'draft'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,processed,completed"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="payment_file_id" required="1"/>
+                            <field name="village_id" readonly="1"/>
+                            <field name="project_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="reconciliation_date"/>
+                            <field name="upload_date"/>
+                            <field name="bank_file" filename="bank_file_filename" widget="binary"/>
+                            <field name="bank_file_filename" invisible="1"/>
+                        </group>
+                    </group>
+                    
+                    <group string="Summary / सारांश">
+                        <field name="total_payments" readonly="1"/>
+                        <field name="settled_count" readonly="1"/>
+                        <field name="failed_count" readonly="1"/>
+                        <field name="pending_count" readonly="1"/>
+                        <field name="total_amount" readonly="1"/>
+                        <field name="settled_amount" readonly="1"/>
+                        <field name="failed_amount" readonly="1"/>
+                    </group>
+                    
+                    <group string="Reconciliation Lines / समाधान पंक्तियां">
+                        <field name="reconciliation_line_ids" nolabel="1">
+                            <list string="Reconciliation Lines" editable="bottom">
+                                <field name="utr_number"/>
+                                <field name="transaction_reference"/>
+                                <field name="beneficiary_account"/>
+                                <field name="beneficiary_name"/>
+                                <field name="beneficiary_bank_code"/>
+                                <field name="credit_amount" sum="Total"/>
+                                <field name="expected_amount" sum="Total"/>
+                                <field name="amount_difference" sum="Total"/>
+                                <field name="status" widget="badge"
+                                       decoration-danger="status == 'failed'"
+                                       decoration-success="status == 'settled'"
+                                       decoration-muted="status == 'pending'"/>
+                                <field name="error"/>
+                                <field name="payment_line_id"/>
+                            </list>
+                        </field>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Minimal Popup Upload View -->
+    <record id="view_payment_reconciliation_bank_popup_form" model="ir.ui.view">
+        <field name="name">bhu.payment.reconciliation.bank.popup.form</field>
+        <field name="model">bhu.payment.reconciliation.bank</field>
+        <field name="arch" type="xml">
+            <form string="Upload Bank Reconciliation">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="payment_file_id" readonly="1"/>
+                            <field name="bank_file" filename="bank_file_filename" widget="binary" required="1"/>
+                            <field name="bank_file_filename" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="state" widget="badge" readonly="1"/>
+                            <field name="upload_date" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Summary" invisible="state == 'draft'">
+                        <field name="total_payments" readonly="1"/>
+                        <field name="settled_count" readonly="1"/>
+                        <field name="failed_count" readonly="1"/>
+                        <field name="pending_count" readonly="1"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_process_bank_file" string="Process File" type="object" class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button string="Close" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Payment Reconciliation Bank Search View -->
+    <record id="view_payment_reconciliation_bank_search" model="ir.ui.view">
+        <field name="name">bhu.payment.reconciliation.bank.search</field>
+        <field name="model">bhu.payment.reconciliation.bank</field>
+        <field name="arch" type="xml">
+            <search string="Payment Reconciliation">
+                <field name="name"/>
+                <field name="payment_file_id"/>
+                <field name="village_id"/>
+                <field name="project_id"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Processed" name="processed" domain="[('state', '=', 'processed')]"/>
+                <filter string="Completed" name="completed" domain="[('state', '=', 'completed')]"/>
+                <filter string="Has Failed Payments" name="has_failed" domain="[('failed_count', '>', 0)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="State" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Village" name="group_village" context="{'group_by': 'village_id'}"/>
+                    <filter string="Project" name="group_project" context="{'group_by': 'project_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Payment Reconciliation Bank Action -->
+    <record id="action_payment_reconciliation_bank" model="ir.actions.act_window">
+        <field name="name">Payment Reconciliation / भुगतान समाधान</field>
+        <field name="res_model">bhu.payment.reconciliation.bank</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Payment Reconciliation
+            </p>
+            <p>
+                Upload bank files to reconcile payments and identify settled and failed transactions.
+            </p>
+        </field>
+    </record>
+
+    <!-- Failed Payment Line List View -->
+    <record id="view_payment_reconciliation_bank_line_list" model="ir.ui.view">
+        <field name="name">bhu.payment.reconciliation.bank.line.list</field>
+        <field name="model">bhu.payment.reconciliation.bank.line</field>
+        <field name="arch" type="xml">
+            <list string="Failed Payments">
+                <field name="reconciliation_id" string="Reconciliation"/>
+                <field name="utr_number" string="UTR Number"/>
+                <field name="transaction_reference" string="Transaction Reference"/>
+                <field name="beneficiary_name" string="Beneficiary Name"/>
+                <field name="beneficiary_account" string="Beneficiary Account"/>
+                <field name="beneficiary_bank_code" string="Beneficiary Bank Code"/>
+                <field name="credit_amount" string="Credit Amount" sum="Total Credit"/>
+                <field name="expected_amount" string="Expected Amount" sum="Total Expected"/>
+                <field name="amount_difference" string="Amount Difference" sum="Total Difference"/>
+                <field name="status" string="Status" widget="badge"
+                       decoration-danger="status == 'failed'"
+                       decoration-success="status == 'settled'"
+                       decoration-muted="status == 'pending'"/>
+                <field name="error" string="Error"/>
+                <field name="payment_line_id" string="Matched Payment Line"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Failed Payment Line Search View -->
+    <record id="view_payment_reconciliation_bank_line_search" model="ir.ui.view">
+        <field name="name">bhu.payment.reconciliation.bank.line.search</field>
+        <field name="model">bhu.payment.reconciliation.bank.line</field>
+        <field name="arch" type="xml">
+            <search string="Failed Payments">
+                <field name="reconciliation_id"/>
+                <field name="beneficiary_name"/>
+                <field name="beneficiary_account"/>
+                <field name="transaction_reference"/>
+                <field name="utr_number"/>
+                <field name="status"/>
+                <filter string="Failed" name="failed" domain="[('status', '=', 'failed')]"/>
+                <filter string="Pending" name="pending" domain="[('status', '=', 'pending')]"/>
+                <filter string="Settled" name="settled" domain="[('status', '=', 'settled')]"/>
+                <filter string="With Error" name="with_error" domain="[('error', '!=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Reconciliation" name="group_reconciliation" context="{'group_by': 'reconciliation_id'}"/>
+                    <filter string="Status" name="group_status" context="{'group_by': 'status'}"/>
+                    <filter string="Beneficiary" name="group_beneficiary" context="{'group_by': 'beneficiary_name'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Failed Payments Action -->
+    <record id="action_failed_payment_lines" model="ir.actions.act_window">
+        <field name="name">Failed Payments</field>
+        <field name="res_model">bhu.payment.reconciliation.bank.line</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_payment_reconciliation_bank_line_list"/>
+        <field name="search_view_id" ref="view_payment_reconciliation_bank_line_search"/>
+        <field name="domain">[('status', '=', 'failed')]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Failed bank transfers will appear here after reconciliation.
+            </p>
+        </field>
+    </record>
+
+    <!-- Success Payments Action -->
+    <record id="action_success_payment_lines" model="ir.actions.act_window">
+        <field name="name">Success Payments</field>
+        <field name="res_model">bhu.payment.reconciliation.bank.line</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_payment_reconciliation_bank_line_list"/>
+        <field name="search_view_id" ref="view_payment_reconciliation_bank_line_search"/>
+        <field name="domain">[('status', '=', 'settled')]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Successful bank transfers will appear here after reconciliation.
+            </p>
+        </field>
+    </record>
+
+</odoo>
+

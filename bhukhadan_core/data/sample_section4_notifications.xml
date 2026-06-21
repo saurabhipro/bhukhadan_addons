@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Sample Section 4 Notifications (2 records - one per village: Pandripani, Gopalpur) -->
+        <!-- Using existing project PROJ01 and existing villages -->
+        <!-- Surveys for these villages are locked (as they have Section 4 notifications) -->
+        <!-- Note: Jurda village surveys remain in draft state (no Section 4 notification) -->
+        <record id="section4_notification_pandripani" model="bhu.section4.notification">
+            <field name="name">NOT4_RRR-001_PP</field>
+            <field name="notification_seq_number">NOT4_RRR-001_PP</field>
+            <field name="project_id" ref="project_ring_road_raigarh"/>
+            <field name="village_id" ref="pandripani_village"/>
+            <field name="state">generated</field>
+            <field name="public_purpose"><![CDATA[<p><strong>रिंग रोड रायगढ़</strong> परियोजना के लिए भूमि अर्जन। यह परियोजना शहर के यातायात को सुविधाजनक बनाने और आर्थिक विकास को बढ़ावा देने के लिए है।</p>]]></field>
+            <field name="public_hearing_datetime">2024-12-20 11:00:00</field>
+            <field name="public_hearing_place">ग्राम पंचायत भवन, पंडरीपानी</field>
+            <field name="q2_directly_affected">12</field>
+            <field name="q3_indirectly_affected">20</field>
+            <field name="q4_private_assets">10 निजी मकान, 6 दुकानें</field>
+            <field name="q5_government_assets">1 शासकीय मकान</field>
+            <field name="q6_minimal_acquisition">हाँ, प्रस्तावित अर्जन न्यूनतम है।</field>
+            <field name="q7_alternatives_considered"><![CDATA[<p>वैकल्पिक मार्गों का सर्वेक्षण किया गया और न्यूनतम प्रभाव वाला मार्ग चुना गया।</p>]]></field>
+            <field name="q8_total_cost">₹ 45 करोड़</field>
+            <field name="q9_project_benefits"><![CDATA[<p>यातायात की सुविधा में सुधार और आर्थिक विकास में वृद्धि।</p>]]></field>
+            <field name="q10_compensation_measures"><![CDATA[<p>भूमि मालिकों को उचित मुआवजा और पुनर्वासन पैकेज। <strong>अनुमानित व्यय:</strong> ₹ 4.5 करोड़</p>]]></field>
+            <field name="q11_other_components"><![CDATA[<p>कृषि भूमि और जल स्रोत प्रभावित होंगे।</p>]]></field>
+        </record>
+        
+        <record id="section4_notification_gopalpur" model="bhu.section4.notification">
+            <field name="name">NOT4_RRR-001_GL</field>
+            <field name="notification_seq_number">NOT4_RRR-001_GL</field>
+            <field name="project_id" ref="project_ring_road_raigarh"/>
+            <field name="village_id" ref="gopalpur_village"/>
+            <field name="state">generated</field>
+            <field name="public_purpose"><![CDATA[<p><strong>रिंग रोड रायगढ़</strong> परियोजना के लिए भूमि अर्जन।</p>]]></field>
+            <field name="public_hearing_datetime">2024-12-25 14:00:00</field>
+            <field name="public_hearing_place">ग्राम पंचायत भवन, गोपालपुर</field>
+            <field name="q2_directly_affected">18</field>
+            <field name="q3_indirectly_affected">30</field>
+            <field name="q4_private_assets">15 निजी मकान, 10 दुकानें, 8 कृषि भूमि</field>
+            <field name="q5_government_assets">3 शासकीय मकान, 1 पंचायत भवन</field>
+            <field name="q6_minimal_acquisition">हाँ, न्यूनतम अर्जन।</field>
+            <field name="q7_alternatives_considered"><![CDATA[<p>सभी वैकल्पिक मार्गों का अध्ययन किया गया।</p>]]></field>
+            <field name="q8_total_cost">₹ 55 करोड़</field>
+            <field name="q9_project_benefits"><![CDATA[<p>यातायात सुविधा, आर्थिक विकास, रोजगार के अवसर।</p>]]></field>
+            <field name="q10_compensation_measures"><![CDATA[<p>मुआवजा और पुनर्वासन। <strong>अनुमानित व्यय:</strong> ₹ 6 करोड़</p>]]></field>
+            <field name="q11_other_components"><![CDATA[<p>कृषि भूमि, वन क्षेत्र, जल स्रोत प्रभावित।</p>]]></field>
+        </record>        
+        <!-- Note: Jurda and Bhikharimal villages do not have Section 4 Notifications -->
+        <!-- Jurda surveys remain in draft state, Bhikharimal surveys also in draft state -->
+    </data>
+</odoo>

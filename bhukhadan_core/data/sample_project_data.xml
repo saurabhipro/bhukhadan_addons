@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Keep old project record to avoid foreign key violations during module update -->
+        <!-- This project won't be updated or deleted due to noupdate="1" -->
+        <!-- Sample data will use PROJ01 via default function in models -->
+        <record id="project_ring_road_raigarh" model="bhu.project">
+            <field name="name">Ring Road Raigarh / रिंग रोड रायगढ़</field>
+            <field name="code">RRR-001</field>
+            <field name="description">Ring Road development project for Raigarh city</field>
+            <field name="state">active</field>
+            <field name="village_ids" eval="[(6, 0, [ref('jurda_village'), ref('pandripani_village'), ref('gopalpur_village'), ref('bhikharimal_village')])]"/>
+        </record>
+    </data>
+</odoo>
+

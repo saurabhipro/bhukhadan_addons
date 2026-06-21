@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Section 19 Notification Report -->
+    <record id="action_report_section19_notification" model="ir.actions.report">
+        <field name="name">Section 19 Notification / धारा 19 अधिसूचना</field>
+        <field name="model">bhu.section19.notification</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">bhukhadan_core.section19_notification_report</field>
+        <field name="report_file">bhukhadan_core.section19_notification_report</field>
+        <field name="paperformat_id" ref="bhukhadan_core.bhuarjan_sia_paper_format"/>
+        <field name="print_report_name">'Section19_' + ((object and object.village_id and object.village_id.name.replace(' ', '_') if object.village_id.name else '') or (docs and docs[0] and docs[0].village_id and docs[0].village_id.name.replace(' ', '_') if docs[0].village_id.name else '') or '') + '_' + ((object and object.create_date and object.create_date.strftime('%Y%m%d')) or (docs and docs[0] and docs[0].create_date and docs[0].create_date.strftime('%Y%m%d')) or '')</field>
+    </record>
+
+    <!-- Section 19 Notification Report Template -->
+    <template id="section19_notification_report">
+        <t t-call="web.html_container">
+            <meta charset="utf-8"/>
+            <t t-set="notification" t-value="object or (docs and docs[0]) or None"/>
+            <t t-if="notification">
+                <t t-call="web.basic_layout">
+                <!-- Include centralized CSS styles -->
+                <t t-call="bhukhadan_core.report_common_styles"/>
+                <!-- Report-specific overrides for Section 19 -->
+                <style>
+                    .normal-text {
+                        font-size: 21px !important;
+                    }
+                    .normal-text p, .normal-text span, .normal-text strong {
+                        font-size: 21px !important;
+                    }
+                    .schedule-table {
+                        margin: 15px 0;
+                        font-size: 21px !important;
+                    }
+                    .schedule-table th, .schedule-table td {
+                        padding: 8px;
+                        font-size: 21px !important;
+                    }
+                    .schedule-table th {
+                        background-color: #f0f0f0;
+                    }
+                </style>
+
+                <div class="container letter_space" style="border: 2px dotted #000; padding: 15px; margin: 10px; position: relative; min-height: calc(100vh - 20px); height: 100%;">
+                    <!-- Watermark with Logo - Centered on Page (using common CSS) -->
+                    <div class="watermark">
+                        <div class="watermark-circle"></div>
+                        <t t-set="base_url" t-value="request.env['ir.config_parameter'].sudo().get_param('web.base.url')"/>
+                        <img t-att-src="base_url + '/bhukhadan_core/static/img/logo.png'" alt="Logo Watermark"/>
+                    </div>
+
+                    <!-- Form Title -->
+                    <div style="text-align: center; margin-bottom: 12px;">
+                        <div style="margin-bottom: 8px;">
+                            <h2 style="margin: 0; padding: 0; font-size: 28px; font-weight: bold; font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif !important;">
+                                <strong>प्रारूप अधिसूचना</strong>
+                            </h2>
+                        </div>
+                    </div>
+
+                    <!-- Header with Logo and QR Code -->
+                    <div style="margin-bottom: 15px; padding-bottom: 8px;">
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 8px;">
+                            <tr>
+                                <!-- Logo on Left -->
+                                <td rowspan="3" style="width: 15%; max-width: 100px; padding: 4px; text-align: center; vertical-align: middle;">
+                                    <t t-set="base_url" t-value="request.env['ir.config_parameter'].sudo().get_param('web.base.url')"/>
+                                    <img t-att-src="base_url + '/bhukhadan_core/static/img/logo.png'" alt="Logo"
+                                         style="display: block; margin: 0 auto; object-fit: contain; width: 80px; height: 80px; max-width: 80px; max-height: 80px;"/>
+                                </td>
+                                <!-- Header Text - Line 1 -->
+                                <td colspan="2" style="text-align: center; vertical-align: middle; padding: 0 5px;">
+                                    <h3 class="hindi letter_space header-text" style="margin: 0; padding: 0; font-size: 24px; line-height: 1.2; font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif !important;">
+                                        कार्यालय कलेक्टर, जिला रायगढ़ एवं पदेन उप सचिव,
+                                    </h3>
+                                </td>
+                                <!-- QR Code on Right -->
+                                <td rowspan="3" style="width: 12%; padding: 0; text-align: center; vertical-align: middle;">
+                                    <t t-set="qr_code_img" t-value="notification.get_qr_code_data() if notification else None"/>
+                                    <t t-set="qr_download_url" t-value="'https://bhuarjan.com/bhuarjan/section19/' + str(notification.notification_uuid or '') + '/download' if notification else '#'"/>
+                                    <t t-if="qr_code_img">
+                                        <a t-att-href="qr_download_url" class="qr-code-container">
+                                            <img t-att-src="'data:image/png;base64,' + qr_code_img"
+                                                 alt="QR Code - Click to download PDF"/>
+                                        </a>
+                                    </t>
+                                    <t t-if="not qr_code_img">
+                                        <a t-att-href="qr_download_url" style="display: block; width: 90%; margin: 0 auto; padding: 0; text-decoration: none;">
+                                            <div style="width: 90%; padding-top: 90%; position: relative; border: none; background: white; margin: 0;">
+                                                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                                                    <div style="text-align: center; font-size: 7px;">
+                                                        <div style="font-weight: bold;">QR Code</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <!-- Header Text - Line 2 (Department) -->
+                                <td colspan="2" style="text-align: center; vertical-align: middle; padding: 0 5px;">
+                                    <h3 class="hindi letter_space header-text" style="margin: 0; padding: 0; font-size: 24px; line-height: 1.2; font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif !important;">
+                                        छत्तीसगढ़ शासन, राजस्व एवं आपदा प्रबंधन विभाग
+                                    </h3>
+                                </td>
+                            </tr>
+                            <tr>
+                                <!-- Notification Title -->
+                                <td colspan="2" style="text-align: center; vertical-align: middle; padding: 0 5px;">
+                                    <h2 style="text-decoration: underline; margin: 0; padding: 0; font-size: 24px; font-weight: bold; font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif !important;">
+                                        <strong>//अधिसूचना//</strong>
+                                    </h2>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- Case Number and Main Body Text -->
+                    <div style="font-size: 21px !important; line-height: 1.6 !important; text-align: justify; margin-bottom: 15px;">
+                        <p style="margin: 0; padding: 0; font-size: 21px !important; line-height: 1.6 !important;">
+                            <strong>भू-अर्जन प्रकरण क्रमांक</strong>
+                            <span t-if="notification.prakaran_kramank" t-esc="notification.prakaran_kramank"/>
+                            <span t-if="not notification.prakaran_kramank">........................</span>
+                           चूँकि राज्य शासन को यह समाधान हो गया है कि नीचे दी गई अनुसूची में वर्णित भूमि की
+                            <span t-if="notification and notification.public_purpose" t-esc="notification.public_purpose"/>
+                            <span t-if="notification and not notification.public_purpose and notification.project_id and notification.project_id.name" t-esc="notification.project_id.name"/>
+                            <span t-if="not notification or (not notification.public_purpose and (not notification.project_id or not notification.project_id.name))">सार्वजनिक प्रयोजन </span>
+                            के लिए आवश्यकता है। 
+                            अतः भूमि अर्जन, पुनर्वासन एवं पुनर्व्यवस्थापन में उचित प्रतिकर और पारदर्शिता अधिकार
+                            अधिनियम, 2013 (जिसे एतद् पश्चात् अधिनियम, 2013 कहा जायेगा) की धारा 19 के तहत
+                            यह घोषित किया जाता है कि इस भूमि की उक्त प्रयोजन के लिए आवश्यकता है :–
+                        </p>
+                    </div>
+
+                    <!-- Schedule Section -->
+                    <div style="margin: 20px 0;">
+                        <div style="text-align: center; font-size: 21px; font-weight: bold; margin-bottom: 10px; text-decoration: underline;">
+                            अनुसूची
+                        </div>
+                        <div style="text-align: left; font-size: 21px; font-weight: bold; margin-bottom: 10px; text-decoration: underline;">
+                            भूमि का विवरण :-
+                        </div>
+                        <div style="margin-bottom: 15px; font-size: 21px !important;">
+                            <ol style="margin: 0; padding-left: 20px;">
+                                <li style="margin-bottom: 5px;">
+                                    जिला
+                                    <span t-if="notification and notification.district_id" t-esc="notification.district_id.name"/>
+                                    <span t-if="not notification or not notification.district_id">........................</span>
+                                </li>
+                                <li style="margin-bottom: 5px;">
+                                    तहसील
+                                    <span t-if="notification and notification.tehsil_id" t-esc="notification.tehsil_id.name"/>
+                                    <span t-if="not notification or not notification.tehsil_id">........................</span>
+                                </li>
+                                <li style="margin-bottom: 5px;">
+                                    ग्राम/नगर
+                                    <span t-if="notification and notification.village_id" t-esc="notification.village_id.name"/>
+                                    <span t-if="not notification or not notification.village_id">........................</span>
+                                </li>
+                                <li style="margin-bottom: 5px;">
+                                    भूमि का क्षेत्रफल
+                                    <t t-set="total_area" t-value="notification._get_total_area_from_surveys() if notification else 0.0"/>
+                                    <span t-if="total_area > 0" t-esc="'{:.4f}'.format(total_area) + ' हेक्टेयर'"/>
+                                    <span t-if="total_area == 0">........................</span>
+                                </li>
+                            </ol>
+                        </div>
+                        <table class="schedule-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50%;">खसरा नम्बर</th>
+                                    <th style="width: 50%;">अर्जित रकबा (हेक्टेयर में)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="surveys_data" t-value="notification._get_approved_surveys_data() if notification else []"/>
+                                <t t-if="surveys_data and len(surveys_data) > 0">
+                                    <t t-foreach="surveys_data" t-as="item">
+                                        <tr>
+                                            <td style="font-size: 21px !important; text-align: center;">
+                                                <t t-esc="item['khasra_number']"/>
+                                            </td>
+                                            <td style="font-size: 21px !important; text-align: center;">
+                                                <t t-if="item['area'] > 0" t-esc="'{:.4f}'.format(item['area'])"/>
+                                                <t t-if="item['area'] == 0">........................</t>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </t>
+                                <t t-if="not surveys_data or len(surveys_data) == 0">
+                                    <tr>
+                                        <td style="text-align: center; padding: 10px; font-size: 21px !important;">........................</td>
+                                        <td style="text-align: center; padding: 10px; font-size: 21px !important;">........................</td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Paragraph 2: Map Inspection -->
+                    <div style="margin: 15px 0; font-size: 21px !important; line-height: 1.6 !important;">
+                        <span style="font-weight: bold;">2.</span>
+                        <span style="margin-left: 8px;">
+                            भूमि का नक्शा (प्लान) का निरीक्षण अनुविभागीय अधिकारी (राजस्व)
+                            <t t-set="sub_division_name" t-value="notification.project_id.sub_division_id.name if notification and notification.project_id and notification.project_id.sub_division_id else (notification.village_id.sub_division_id.name if notification and notification.village_id and notification.village_id.sub_division_id else (notification.tehsil_id.sub_division_id.name if notification and notification.tehsil_id and notification.tehsil_id.sub_division_id else ''))"/>
+                            <span t-if="sub_division_name" t-esc="sub_division_name"/>
+                            <span t-if="not sub_division_name" style="text-decoration: underline;">........................</span>
+                            के कार्यालय में किया जा सकता है।
+                        </span>
+                    </div>
+
+                    <!-- Paragraph 3: Displacement (show either simple line or detailed rehab paragraph based on project flag) -->
+                    <t t-set="is_displacement" t-value="notification.project_id and notification.project_id.is_displacement"/>
+                    <t t-set="affected_count" t-value="notification.affected_persons_count if notification and notification.affected_persons_count and notification.affected_persons_count > 0 else (notification.project_id.affected_persons_count if notification and notification.project_id and notification.project_id.affected_persons_count and notification.project_id.affected_persons_count > 0 else 0)"/>
+                    <!-- Get rehabilitation data from notification first, then fallback to project allocated fields -->
+                    <t t-set="rehab_village" t-value="notification.rehab_village if notification and notification.rehab_village else (notification.project_id.allocated_village if notification and notification.project_id and notification.project_id.allocated_village else '')"/>
+                    <t t-set="rehab_tehsil" t-value="notification.rehab_tehsil if notification and notification.rehab_tehsil else (notification.project_id.allocated_tehsil if notification and notification.project_id and notification.project_id.allocated_tehsil else '')"/>
+                    <t t-set="rehab_district" t-value="notification.rehab_district if notification and notification.rehab_district else (notification.project_id.allocated_district if notification and notification.project_id and notification.project_id.allocated_district else '')"/>
+                    <t t-set="rehab_khasra" t-value="notification.rehab_khasra_number if notification and notification.rehab_khasra_number else (notification.project_id.allocated_khasra_number if notification and notification.project_id and notification.project_id.allocated_khasra_number else '')"/>
+                    <t t-set="rehab_area" t-value="notification.rehab_area_hectares if notification and notification.rehab_area_hectares else (notification.project_id.allocated_area_hectares if notification and notification.project_id and notification.project_id.allocated_area_hectares else 0.0)"/>
+                    <t t-set="rehab_officer_location" t-value="notification.rehab_officer_office_location if notification and notification.rehab_officer_office_location else (notification.project_id.rehab_admin_name if notification and notification.project_id and notification.project_id.rehab_admin_name else '')"/>
+                    <t t-set="rehab_sub_division" t-value="notification.project_id.sub_division_id.name if notification and notification.project_id and notification.project_id.sub_division_id else (notification.village_id.sub_division_id.name if notification and notification.village_id and notification.village_id.sub_division_id else (notification.tehsil_id.sub_division_id.name if notification and notification.tehsil_id and notification.tehsil_id.sub_division_id else ''))"/>
+                    <div style="margin: 15px 0; font-size: 21px !important; line-height: 1.6 !important;">
+                        <span style="font-weight: bold;">3.</span>
+                        <span style="margin-left: 8px;">
+                            <t t-if="not is_displacement">
+                               उक्त भूमि अर्जन में किसी भी व्यक्ति का विस्थापन निहित नहीं है।
+                            </t>
+                            <t t-if="is_displacement">
+                                उक्त योजना के लिए अनुमोदित पुनर्वास योजना के अनुसार प्रस्तावित भू-अर्जन से प्रभावित
+                                <span t-if="affected_count > 0" t-esc="affected_count"/>
+                                <span t-if="affected_count == 0" style="text-decoration: underline;">........................</span>
+                                व्यक्तियों को पुनर्वासित किया जाना प्रस्तावित है। पुनर्वासन तथा पुनर्व्यवस्थापन हेतु ग्राम
+                                <span t-if="rehab_village" t-esc="rehab_village"/>
+                                <span t-if="not rehab_village" style="text-decoration: underline;">........................</span>
+                                तहसील
+                                <span t-if="rehab_tehsil" t-esc="rehab_tehsil"/>
+                                <span t-if="not rehab_tehsil" style="text-decoration: underline;">........................</span>
+                                जिला
+                                <span t-if="rehab_district" t-esc="rehab_district"/>
+                                <span t-if="not rehab_district" style="text-decoration: underline;">........................</span>
+                                की भूमि खसरा नम्बर
+                                <span t-if="rehab_khasra" t-esc="rehab_khasra"/>
+                                <span t-if="not rehab_khasra" style="text-decoration: underline;">........................</span>
+                                रकबा
+                                <span t-if="rehab_area > 0" t-esc="'{:.4f}'.format(rehab_area)"/>
+                                <span t-if="rehab_area == 0" style="text-decoration: underline;">........................</span>
+                                हेक्टेयर का चयन किया गया है। पुनर्वास योजना का अवलोकन प्रशासक/अनुविभागीय अधिकारी (राजस्व)
+                                <span t-if="rehab_sub_division" t-esc="rehab_sub_division"/>
+                                <span t-if="not rehab_sub_division" style="text-decoration: underline;">........................</span>
+                                के कार्यालय में किया जा सकता है।
+                            </t>
+                        </span>
+                    </div>
+
+                    <!-- Footer -->
+                    <div style="text-align: right; margin-top: 30px; margin-right: 0;">
+                        <div style="margin: 10px 0; font-size: 21px !important;">छत्तीसगढ़ के राज्यपाल के नाम से</div>
+                        <div style="margin: 10px 0; font-size: 21px !important;">तथा आदेशानुसार</div>
+                        <div style="margin: 20px 0; font-size: 21px !important;">(........................)</div>
+                        <div style="margin: 10px 0; font-size: 20px !important; font-weight: bold; font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif !important;">कलेक्टर रायगढ़ एवं पदेन उप सचिव</div>
+                        <div style="margin: 5px 0; font-size: 21px !important; font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif !important;">छ.ग. शासन, राजस्व एवं आपदा प्रबंधन विभाग</div>
+                    </div>
+                </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

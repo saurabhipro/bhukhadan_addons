@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Sequences for processes NOT managed by Settings Master -->
+        <!-- Processes managed by Settings Master (Survey, Section 4, Section 11, Section 19, Section 15, Draft Award, Payment File, Payment Reconciliation) -->
+        <!-- are created dynamically by the get_sequence_number method and don't need to be defined here -->
+        
+        <!-- Sequence for Rate Master Numbers -->
+        <record id="seq_bhu_rate_master" model="ir.sequence">
+            <field name="name">Rate Master Number</field>
+            <field name="code">bhu.rate.master</field>
+            <field name="prefix">RM_</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+        
+        <!-- Sequence for SIA Team Numbers -->
+        <record id="seq_bhu_sia_team" model="ir.sequence">
+            <field name="name">SIA Team Number</field>
+            <field name="code">bhu.sia.team</field>
+            <field name="prefix">SIA_</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+        
+        <!-- Sequence for Expert Committee Report Numbers -->
+        <record id="seq_bhu_expert_committee_report" model="ir.sequence">
+            <field name="name">Expert Committee Report Number</field>
+            <field name="code">bhu.expert.committee.report</field>
+            <field name="prefix">ECR_</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+        
+        <!-- Draft R&R Payment Voucher -->
+        <record id="seq_bhu_payment_voucher" model="ir.sequence">
+            <field name="name">R&amp;R Payment Voucher</field>
+            <field name="code">bhu.payment.voucher</field>
+            <field name="prefix">PV/RR/</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+
+        <record id="seq_bhu_payment_voucher_export" model="ir.sequence">
+            <field name="name">R&amp;R Voucher Payment Export</field>
+            <field name="code">bhu.payment.voucher.export</field>
+            <field name="prefix">PVEXP/</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+
+        <!-- Sequence for Payment Reconciliation Bank Numbers -->
+        <record id="seq_bhu_payment_reconciliation_bank" model="ir.sequence">
+            <field name="name">Payment Reconciliation Bank Number</field>
+            <field name="code">bhu.payment.reconciliation.bank</field>
+            <field name="prefix">RECON_</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+        
+        <!-- Note: Sequences for processes managed by Settings Master are created dynamically -->
+        <!-- and don't need to be defined here. These include: -->
+        <!-- - Survey (managed via bhuarjan.sequence.settings) -->
+        <!-- - Section 4 Notification (managed via bhuarjan.sequence.settings) -->
+        <!-- - Section 11 Notification (managed via bhuarjan.sequence.settings) -->
+        <!-- - Section 19 Notification (managed via bhuarjan.sequence.settings) -->
+        <!-- - Section 15 Objection (managed via bhuarjan.sequence.settings) -->
+        <!-- - Draft Award (managed via bhuarjan.sequence.settings) -->
+        <!-- - Payment File (managed via bhuarjan.sequence.settings) -->
+        <!-- - Payment Reconciliation (managed via bhuarjan.sequence.settings) -->
+        <!-- Sequences for CGLRC Section 247 -->
+        <record id="seq_bhu_section247_1_cglrc" model="ir.sequence">
+            <field name="name">Section 247.1 CGLRC Number</field>
+            <field name="code">bhu.section247_1.cglrc</field>
+            <field name="prefix">247.1_</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+        <record id="seq_bhu_section247_2_cglrc" model="ir.sequence">
+            <field name="name">Section 247.2 CGLRC Number</field>
+            <field name="code">bhu.section247_2.cglrc</field>
+            <field name="prefix">247.2_</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+        <record id="seq_bhu_section247_3_cglrc" model="ir.sequence">
+            <field name="name">Section 247.3 CGLRC Number</field>
+            <field name="code">bhu.section247_3.cglrc</field>
+            <field name="prefix">247.3_</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+    </data>
+
+    <data noupdate="0">
+        <!-- Re-assign duplicate export refs after sequence fix (idempotent). -->
+        <function model="bhu.payment.voucher.export" name="_renumber_duplicate_exports"/>
+        <function model="bhu.payment.voucher.export" name="_backfill_payment_file_lines_from_exports"/>
+        <function model="bhu.payment.voucher" name="_recompute_workflow_states"/>
+        <function model="bhu.payment.voucher" name="_merge_all_voucher_duplicate_lines"/>
+        <function model="bhu.payment.voucher.export.line" name="_normalize_legacy_transaction_uuids"/>
+    </data>
+</odoo>

@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!-- ============================================================= -->
+        <!-- Payment Dashboard - Consolidated KPI Landing Page              -->
+        <!-- ============================================================= -->
+        <record id="view_payment_dashboard_form" model="ir.ui.view">
+            <field name="name">bhu.payment.dashboard.form</field>
+            <field name="model">bhu.payment.dashboard</field>
+            <field name="arch" type="xml">
+                <form create="false" edit="false" delete="false" duplicate="false" class="o_bhu_payment_dashboard">
+                    <style>
+                        .o_bhu_payment_dashboard .o_form_sheet_bg { background: #0f1e3d !important; }
+                        .o_bhu_payment_dashboard .o_form_sheet { background: #0f1e3d !important; max-width: 100% !important; box-shadow: none !important; border: 0 !important; }
+                        .o_bhu_payment_dashboard .pd-hero { background: linear-gradient(135deg, #0b2d5a 0%, #16407f 60%, #2a6edb 100%); color: #fff; border-radius: 12px; padding: 18px 24px; margin-bottom: 18px; box-shadow: 0 8px 24px rgba(0,0,0,0.25); }
+                        .o_bhu_payment_dashboard .pd-hero h1 { font-size: 22px; font-weight: 700; margin: 0; letter-spacing: 0.3px; }
+                        .o_bhu_payment_dashboard .pd-hero p { margin: 4px 0 0; opacity: 0.85; font-size: 13px; }
+                        .o_bhu_payment_dashboard .pd-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px; }
+                        .o_bhu_payment_dashboard .pd-grid.pd-grid-3 { grid-template-columns: repeat(3, 1fr); }
+                        .o_bhu_payment_dashboard .pd-card { position: relative; border-radius: 14px; padding: 18px 20px; color: #fff; box-shadow: 0 6px 18px rgba(0,0,0,0.22); overflow: hidden; cursor: pointer; transition: transform 0.15s ease, box-shadow 0.15s ease; }
+                        .o_bhu_payment_dashboard .pd-card:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,0,0,0.32); }
+                        .o_bhu_payment_dashboard .pd-card .pd-label { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; font-weight: 600; }
+                        .o_bhu_payment_dashboard .pd-card .pd-value { font-size: 28px; font-weight: 700; margin-top: 6px; }
+                        .o_bhu_payment_dashboard .pd-card .pd-sub { font-size: 12px; margin-top: 4px; opacity: 0.85; }
+                        .o_bhu_payment_dashboard .pd-card .pd-icon { position: absolute; right: 14px; top: 14px; font-size: 28px; opacity: 0.25; }
+                        .o_bhu_payment_dashboard .pd-card.pd-total { background: linear-gradient(135deg, #3d5afe, #2979ff); }
+                        .o_bhu_payment_dashboard .pd-card.pd-success { background: linear-gradient(135deg, #00c853, #1fa463); }
+                        .o_bhu_payment_dashboard .pd-card.pd-failed { background: linear-gradient(135deg, #d50000, #ff3d00); }
+                        .o_bhu_payment_dashboard .pd-card.pd-pending { background: linear-gradient(135deg, #ff9100, #f57c00); }
+                        .o_bhu_payment_dashboard .pd-card.pd-rate { background: linear-gradient(135deg, #7b1fa2, #ab47bc); }
+                        .o_bhu_payment_dashboard .pd-card.pd-projects { background: linear-gradient(135deg, #00838f, #00acc1); }
+                        .o_bhu_payment_dashboard .pd-card.pd-villages { background: linear-gradient(135deg, #455a64, #78909c); }
+                        .o_bhu_payment_dashboard .pd-section-title { color: #fff; font-size: 15px; font-weight: 700; margin: 8px 0 10px; letter-spacing: 0.3px; text-transform: uppercase; opacity: 0.95; }
+                        .o_bhu_payment_dashboard .pd-section-title small { font-weight: 400; text-transform: none; opacity: 0.7; margin-left: 8px; }
+                        .o_bhu_payment_dashboard .o_Kanban_View, .o_bhu_payment_dashboard .o_kanban_view { background: transparent !important; }
+                    </style>
+                    <sheet>
+                        <div class="pd-hero">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h1><i class="fa fa-tachometer me-2"/>Payment Dashboard</h1>
+                                    <p>Consolidated payout health across every project and village — one glance, full control.</p>
+                                </div>
+                                <div>
+                                    <button name="action_refresh" type="object" class="btn btn-light"><i class="fa fa-refresh me-1"/>Refresh</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- KPI Cards: Row 1 - Counts -->
+                        <div class="pd-grid">
+                            <div class="pd-card pd-total">
+                                <i class="fa fa-exchange pd-icon" title="Total Payments"/>
+                                <div class="pd-label">Total Payments</div>
+                                <div class="pd-value"><field name="total_count"/></div>
+                                <div class="pd-sub">₹ <field name="total_amount" widget="float" options="{'digits': [16, 0]}" nolabel="1"/></div>
+                            </div>
+                            <div class="pd-card pd-success">
+                                <i class="fa fa-check-circle pd-icon" title="Successful Payments"/>
+                                <div class="pd-label">Successful</div>
+                                <div class="pd-value"><field name="success_count"/></div>
+                                <div class="pd-sub">₹ <field name="success_amount" widget="float" options="{'digits': [16, 0]}" nolabel="1"/></div>
+                            </div>
+                            <div class="pd-card pd-failed">
+                                <i class="fa fa-times-circle pd-icon" title="Failed Payments"/>
+                                <div class="pd-label">Failed</div>
+                                <div class="pd-value"><field name="failed_count"/></div>
+                                <div class="pd-sub">₹ <field name="failed_amount" widget="float" options="{'digits': [16, 0]}" nolabel="1"/></div>
+                                <button name="action_open_all_failed" type="object" class="btn btn-sm btn-light mt-2" style="font-weight: 600;">
+                                    <i class="fa fa-search me-1" title="Review Failed"/>Review Failed
+                                </button>
+                            </div>
+                            <div class="pd-card pd-pending">
+                                <i class="fa fa-clock-o pd-icon" title="Pending Payments"/>
+                                <div class="pd-label">Pending</div>
+                                <div class="pd-value"><field name="pending_count"/></div>
+                                <div class="pd-sub">₹ <field name="pending_amount" widget="float" options="{'digits': [16, 0]}" nolabel="1"/></div>
+                            </div>
+                        </div>
+
+                        <!-- KPI Cards: Row 2 - Rate + Counts -->
+                        <div class="pd-grid pd-grid-3">
+                            <div class="pd-card pd-rate">
+                                <i class="fa fa-percent pd-icon" title="Success Rate"/>
+                                <div class="pd-label">Success Rate</div>
+                                <div class="pd-value">
+                                    <field name="success_rate" widget="float" options="{'digits': [3, 2]}"/> %
+                                </div>
+                                <div class="pd-sub">Successful / Total</div>
+                            </div>
+                            <div class="pd-card pd-projects">
+                                <i class="fa fa-building pd-icon" title="Projects Tracked"/>
+                                <div class="pd-label">Projects Tracked</div>
+                                <div class="pd-value"><field name="project_count"/></div>
+                                <div class="pd-sub">Drill down project-wise</div>
+                                <button name="action_open_all_projects" type="object" class="btn btn-sm btn-light mt-2" style="font-weight: 600;">
+                                    <i class="fa fa-th me-1"/>Open Projects
+                                </button>
+                            </div>
+                            <div class="pd-card pd-villages">
+                                <i class="fa fa-map-marker pd-icon" title="Villages Covered"/>
+                                <div class="pd-label">Villages Covered</div>
+                                <div class="pd-value"><field name="village_count"/></div>
+                                <div class="pd-sub">Across all projects</div>
+                            </div>
+                        </div>
+
+                        <div class="pd-section-title">
+                            <i class="fa fa-sitemap me-2"/>Project-wise Payment Health
+                            <small>Click any project card to see village-wise breakdown</small>
+                        </div>
+
+                        <field name="id" invisible="1"/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Note: the previous version of this file used xmlid
+             `action_payment_dashboard` for an ir.actions.server. Odoo will
+             not re-use an xmlid for a different model, so we moved the new
+             OWL client action to `action_payment_dashboard_owl`. The old
+             record is left as an orphan (no menu pointing to it) and can
+             be safely removed by a DB admin if desired. -->
+        <record id="action_payment_dashboard_owl" model="ir.actions.client">
+            <field name="name">Payment Dashboard</field>
+            <field name="tag">bhukhadan_core.payment_dashboard</field>
+            <field name="target">current</field>
+        </record>
+
+        <!-- ============================================================= -->
+        <!-- Project Summary Kanban (drills into villages)                   -->
+        <!-- ============================================================= -->
+        <record id="view_payment_project_summary_kanban" model="ir.ui.view">
+            <field name="name">bhu.payment.project.summary.kanban</field>
+            <field name="model">bhu.payment.project.summary</field>
+            <field name="arch" type="xml">
+                <kanban create="false" edit="false" delete="false" records_draggable="false" class="o_bhu_payment_kanban">
+                    <field name="project_id"/>
+                    <field name="project_name"/>
+                    <field name="total_count"/>
+                    <field name="success_count"/>
+                    <field name="failed_count"/>
+                    <field name="pending_count"/>
+                    <field name="total_amount"/>
+                    <field name="success_amount"/>
+                    <field name="failed_amount"/>
+                    <field name="pending_amount"/>
+                    <field name="success_rate"/>
+                    <templates>
+                        <t t-name="card">
+                            <div class="oe_kanban_global_click pp-card" t-attf-style="border-left: 6px solid #{record.failed_count.raw_value > 0 ? '#d50000' : '#00c853'}; background: #ffffff; border-radius: 12px; padding: 14px 16px; box-shadow: 0 4px 14px rgba(0,0,0,0.08); margin: 6px;">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #607d8b; font-weight: 600;">Project</div>
+                                        <div style="font-size: 18px; font-weight: 700; color: #0f1e3d;"><field name="project_name"/></div>
+                                    </div>
+                                    <div t-attf-style="font-weight: 700; font-size: 13px; padding: 4px 10px; border-radius: 20px; color: #fff; background: #{record.success_rate.raw_value >= 90 ? '#00c853' : (record.success_rate.raw_value >= 60 ? '#ff9100' : '#d50000')};">
+                                        <t t-esc="Math.round(record.success_rate.raw_value)"/>% success
+                                    </div>
+                                </div>
+
+                                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px;">
+                                    <div style="background: linear-gradient(135deg, #00c85322, #00c85310); border-radius: 8px; padding: 8px 10px; border-left: 3px solid #00c853;">
+                                        <div style="font-size: 10px; text-transform: uppercase; color: #1b5e20; font-weight: 600;">Success</div>
+                                        <div style="font-size: 18px; font-weight: 700; color: #1b5e20;"><field name="success_count"/></div>
+                                        <div style="font-size: 11px; color: #2e7d32;">
+                                            <t t-esc="'₹ ' + (record.success_amount.raw_value || 0).toLocaleString('en-IN', {maximumFractionDigits: 0})"/>
+                                        </div>
+                                    </div>
+                                    <div style="background: linear-gradient(135deg, #d5000022, #d5000010); border-radius: 8px; padding: 8px 10px; border-left: 3px solid #d50000;">
+                                        <div style="font-size: 10px; text-transform: uppercase; color: #b71c1c; font-weight: 600;">Failed</div>
+                                        <div style="font-size: 18px; font-weight: 700; color: #b71c1c;"><field name="failed_count"/></div>
+                                        <div style="font-size: 11px; color: #c62828;">
+                                            <t t-esc="'₹ ' + (record.failed_amount.raw_value || 0).toLocaleString('en-IN', {maximumFractionDigits: 0})"/>
+                                        </div>
+                                    </div>
+                                    <div style="background: linear-gradient(135deg, #ff910022, #ff910010); border-radius: 8px; padding: 8px 10px; border-left: 3px solid #ff9100;">
+                                        <div style="font-size: 10px; text-transform: uppercase; color: #e65100; font-weight: 600;">Pending</div>
+                                        <div style="font-size: 18px; font-weight: 700; color: #e65100;"><field name="pending_count"/></div>
+                                        <div style="font-size: 11px; color: #ef6c00;">
+                                            <t t-esc="'₹ ' + (record.pending_amount.raw_value || 0).toLocaleString('en-IN', {maximumFractionDigits: 0})"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 10px; border-top: 1px dashed #e0e0e0;">
+                                    <div style="font-size: 12px; color: #607d8b;">
+                                        Total: <b><field name="total_count"/></b> ·
+                                        <t t-esc="'₹ ' + (record.total_amount.raw_value || 0).toLocaleString('en-IN', {maximumFractionDigits: 0})"/>
+                                    </div>
+                                    <button name="action_open_villages" type="object" class="btn btn-sm btn-primary">
+                                        <i class="fa fa-angle-double-right me-1"/>Villages
+                                    </button>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="view_payment_project_summary_list" model="ir.ui.view">
+            <field name="name">bhu.payment.project.summary.list</field>
+            <field name="model">bhu.payment.project.summary</field>
+            <field name="arch" type="xml">
+                <list create="false" edit="false" delete="false" decoration-danger="failed_count > 0" decoration-success="failed_count == 0 and total_count > 0">
+                    <field name="project_name"/>
+                    <field name="total_count" sum="Total"/>
+                    <field name="success_count" sum="Success"/>
+                    <field name="failed_count" sum="Failed"/>
+                    <field name="pending_count" sum="Pending"/>
+                    <field name="success_rate" widget="progressbar"/>
+                    <field name="total_amount" sum="Total Amount"/>
+                    <field name="success_amount" sum="Success Amount" optional="show"/>
+                    <field name="failed_amount" sum="Failed Amount" optional="show"/>
+                    <field name="pending_amount" sum="Pending Amount" optional="hide"/>
+                    <button name="action_open_villages" type="object" string="Villages" icon="fa-map-marker" class="btn-link"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="action_payment_project_summary" model="ir.actions.act_window">
+            <field name="name">Project Payment Summary</field>
+            <field name="res_model">bhu.payment.project.summary</field>
+            <field name="view_mode">kanban,list</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">No payment data yet.</p>
+                <p>Once a payment reconciliation file is processed, project-wise payment health will show up here.</p>
+            </field>
+        </record>
+
+        <!-- ============================================================= -->
+        <!-- Village Summary Kanban (drills into failed lines)              -->
+        <!-- ============================================================= -->
+        <record id="view_payment_village_summary_kanban" model="ir.ui.view">
+            <field name="name">bhu.payment.village.summary.kanban</field>
+            <field name="model">bhu.payment.village.summary</field>
+            <field name="arch" type="xml">
+                <kanban create="false" edit="false" delete="false" records_draggable="false">
+                    <field name="project_id"/>
+                    <field name="project_name"/>
+                    <field name="village_id"/>
+                    <field name="village_name"/>
+                    <field name="total_count"/>
+                    <field name="success_count"/>
+                    <field name="failed_count"/>
+                    <field name="pending_count"/>
+                    <field name="total_amount"/>
+                    <field name="success_amount"/>
+                    <field name="failed_amount"/>
+                    <field name="pending_amount"/>
+                    <field name="success_rate"/>
+                    <templates>
+                        <t t-name="card">
+                            <div class="oe_kanban_global_click" t-attf-style="border-left: 6px solid #{record.failed_count.raw_value > 0 ? '#d50000' : '#00c853'}; background: #ffffff; border-radius: 12px; padding: 14px 16px; box-shadow: 0 4px 14px rgba(0,0,0,0.08); margin: 6px;">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #607d8b; font-weight: 600;">
+                                            <i class="fa fa-map-marker me-1" title="Village"/>Village
+                                        </div>
+                                        <div style="font-size: 17px; font-weight: 700; color: #0f1e3d;"><field name="village_name"/></div>
+                                        <div style="font-size: 11px; color: #90a4ae; margin-top: 2px;"><field name="project_name"/></div>
+                                    </div>
+                                    <div t-attf-style="font-weight: 700; font-size: 12px; padding: 4px 10px; border-radius: 20px; color: #fff; background: #{record.success_rate.raw_value >= 90 ? '#00c853' : (record.success_rate.raw_value >= 60 ? '#ff9100' : '#d50000')};">
+                                        <t t-esc="Math.round(record.success_rate.raw_value)"/>%
+                                    </div>
+                                </div>
+
+                                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 12px;">
+                                    <div style="background: #e8f5e9; border-radius: 6px; padding: 6px 8px; text-align: center;">
+                                        <div style="font-size: 9px; text-transform: uppercase; color: #1b5e20; font-weight: 600;">Success</div>
+                                        <div style="font-size: 16px; font-weight: 700; color: #1b5e20;"><field name="success_count"/></div>
+                                    </div>
+                                    <div style="background: #ffebee; border-radius: 6px; padding: 6px 8px; text-align: center;">
+                                        <div style="font-size: 9px; text-transform: uppercase; color: #b71c1c; font-weight: 600;">Failed</div>
+                                        <div style="font-size: 16px; font-weight: 700; color: #b71c1c;"><field name="failed_count"/></div>
+                                    </div>
+                                    <div style="background: #fff3e0; border-radius: 6px; padding: 6px 8px; text-align: center;">
+                                        <div style="font-size: 9px; text-transform: uppercase; color: #e65100; font-weight: 600;">Pending</div>
+                                        <div style="font-size: 16px; font-weight: 700; color: #e65100;"><field name="pending_count"/></div>
+                                    </div>
+                                </div>
+
+                                <div style="margin-top: 12px; padding-top: 10px; border-top: 1px dashed #e0e0e0; display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="font-size: 12px; color: #607d8b;">
+                                        <t t-esc="'₹ ' + (record.total_amount.raw_value || 0).toLocaleString('en-IN', {maximumFractionDigits: 0})"/>
+                                    </div>
+                                    <button name="action_open_failed_lines" type="object" class="btn btn-sm btn-outline-danger" invisible="failed_count == 0">
+                                        <i class="fa fa-search me-1" title="Review Failed"/>Review Failed
+                                    </button>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="view_payment_village_summary_list" model="ir.ui.view">
+            <field name="name">bhu.payment.village.summary.list</field>
+            <field name="model">bhu.payment.village.summary</field>
+            <field name="arch" type="xml">
+                <list create="false" edit="false" delete="false" decoration-danger="failed_count > 0" decoration-success="failed_count == 0 and total_count > 0">
+                    <field name="project_name"/>
+                    <field name="village_name"/>
+                    <field name="total_count" sum="Total"/>
+                    <field name="success_count" sum="Success"/>
+                    <field name="failed_count" sum="Failed"/>
+                    <field name="pending_count" sum="Pending"/>
+                    <field name="success_rate" widget="progressbar"/>
+                    <field name="total_amount" sum="Total Amount" optional="show"/>
+                    <field name="failed_amount" sum="Failed Amount" optional="show"/>
+                    <button name="action_open_failed_lines" type="object" string="Failed" icon="fa-exclamation-triangle" class="btn-link" invisible="failed_count == 0"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_payment_village_summary_search" model="ir.ui.view">
+            <field name="name">bhu.payment.village.summary.search</field>
+            <field name="model">bhu.payment.village.summary</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="project_name"/>
+                    <field name="village_name"/>
+                    <filter name="filter_has_failed" string="Has Failed" domain="[('failed_count', '>', 0)]"/>
+                    <filter name="filter_has_pending" string="Has Pending" domain="[('pending_count', '>', 0)]"/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_project" string="Project" context="{'group_by': 'project_name'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+    </data>
+</odoo>

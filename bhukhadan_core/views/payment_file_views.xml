@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Payment File List View -->
+    <record id="view_payment_file_list" model="ir.ui.view">
+        <field name="name">bhu.payment.file.list</field>
+        <field name="model">bhu.payment.file</field>
+        <field name="arch" type="xml">
+            <list string="Payment Files / भुगतान फ़ाइलें" delete="1">
+                <field name="name"/>
+                <field name="award_id"/>
+                <field name="village_id"/>
+                <field name="project_id"/>
+                <field name="total_net_payable" sum="Total Net Payable"/>
+                <field name="state" widget="badge" 
+                       decoration-success="state == 'generated'"
+                       decoration-muted="state == 'draft'"/>
+                <field name="generation_date"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Payment File Form View -->
+    <record id="view_payment_file_form" model="ir.ui.view">
+        <field name="name">bhu.payment.file.form</field>
+        <field name="model">bhu.payment.file</field>
+        <field name="arch" type="xml">
+            <form string="Payment File / भुगतान फ़ाइल">
+                <header>
+                    <button name="action_generate_file" string="Generate Payment File" type="object" class="btn-primary" icon="fa-file-excel-o"
+                            invisible="state == 'generated'"/>
+                    <button name="action_download_generated_file" string="Download Payment File" type="object" class="btn-secondary" icon="fa-download"
+                            invisible="state != 'generated' or not generated_file"/>
+                    <button name="action_open_bank_details_wizard" string="Update Beneficiary Bank Details" type="object" class="btn-secondary" icon="fa-address-card-o"
+                            invisible="state != 'generated'"/>
+                    <button name="action_bene_testing" string="Bene Testing" type="object" class="btn-secondary" icon="fa-check-circle-o"
+                            invisible="state != 'generated'"/>
+                    <button name="action_open_bank_reconciliation" string="Upload Bank Recon" type="object" class="btn-secondary" icon="fa-upload"
+                            invisible="state != 'generated'"/>
+                    <button name="action_online_sync" string="Online Sync" type="object" class="btn-danger" icon="fa-refresh"
+                            invisible="state != 'generated'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,generated"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <i class="fa fa-file-text-o text-primary" style="margin-right: 10px;"/>
+                            Payment File / भुगतान फ़ाइल
+                        </h1>
+                    </div>
+
+                    <div class="alert alert-warning mb-4 mt-2" role="alert" style="border-left: 5px solid #8B4513; background-color: #fcf8f2; color: #555; padding: 15px;">
+                        <i class="fa fa-info-circle mr-2"/>
+                        Generating Payment File for 
+                        <strong>Village:</strong> <field name="village_id" readonly="1" options="{'no_open': True}" class="text-primary"/>, 
+                        <strong>Project:</strong> <field name="project_id" readonly="1" options="{'no_open': True}" class="text-primary"/>
+                        <span invisible="not department_id">, <strong>Department:</strong> <field name="department_id" readonly="1" options="{'no_open': True}" class="text-primary"/></span>
+                    </div>
+
+                    <group>
+                        <group string="File Information">
+                            <field name="name" readonly="1" force_save="1"/>
+                            <field name="generation_date"/>
+                            <field name="project_id" options="{'no_open': True, 'no_create': True}" required="1"/>
+                            <field name="village_id" options="{'no_open': True, 'no_create': True}" required="1"
+                                   domain="[('project_ids', 'in', project_id)]"
+                                   context="{'default_project_id': project_id}"/>
+                        </group>
+                        
+                        <group string="Award &amp; Financials">
+                            <field name="award_id" options="{'no_create': True, 'no_open': True}"
+                                   context="{'default_village_id': village_id, 'default_project_id': project_id}"
+                                   domain="[('village_id', '=', village_id), ('state', 'in', ['approved', 'submitted'])]"
+                                   required="1" readonly="1" force_save="1"/>
+                            <field name="award_ref" readonly="1" string="Award No." style="font-weight: bold; font-size: 1.1em; color: #333;"/>
+                            
+                            <field name="debit_account_number" string="Debit account (for bank file)"/>
+                            <separator string="Total Amount"/>
+                            <field name="total_net_payable" widget="monetary" options="{'currency_field': 'currency_id'}" 
+                                   nolabel="0" class="oe_subtotal_footer_separator"
+                                   style="font-size: 1.5em; font-weight: bold; color: #28a745;"/>
+                            <field name="currency_id" invisible="1"/>
+                            
+                            <!-- Hidden fields -->
+                            <field name="department_id" invisible="1"/>
+                            <field name="district_id" invisible="1"/>
+                            <field name="tehsil_id" invisible="1"/>
+                        </group>
+                    </group>
+                    
+                    <div class="row mt-2 mb-4">
+                        <div class="col-12">
+                            <field name="total_net_payable_text" nolabel="1" readonly="1" 
+                                   style="font-style: italic; background-color: #fefefe; padding: 10px; border: 1px solid #eee; border-radius: 4px; display: block; width: 100%;"/>
+                        </div>
+                    </div>
+                    
+                    <div class="text-muted mb-2" style="font-size: 0.85em;">
+                        <i class="fa fa-info-circle"/> File Number will be generated automatically upon file generation.
+                    </div>
+
+                    <group string="Bank Reconciliation / बैंक समाधान" invisible="state != 'generated'">
+                        <div class="text-muted mb-2" style="font-size: 0.9em;">
+                            Upload one bank reconciliation file for the complete payment file.
+                        </div>
+                        <button name="action_open_bank_reconciliation" string="Open Upload Screen" type="object" class="btn-primary" icon="fa-upload"/>
+                    </group>
+                    
+                    <group string="Payment Lines (Auto-populated from Award)">
+                        <field name="payment_line_ids" nolabel="1" readonly="1">
+                            <list string="Payment Lines" create="0" delete="0" edit="0" decoration-danger="payment_status == 'failed'">
+                                <field name="serial_number" string="Serial Number"/>
+                                <field name="transaction_uuid" string="Transaction UUID"/>
+                                <field name="export_ref" string="Export ref" optional="show"/>
+                                <field name="khasra_number" string="Khasra" optional="show"/>
+                                <field name="award_serial_number" string="Award Serial Number"/>
+                                <field name="landowner_id" string="Landowner"/>
+                                <field name="bank_name" string="Bank Name"/>
+                                <field name="bank_branch" string="Bank Branch"/>
+                                <field name="account_number" string="Account Number"/>
+                                <field name="ifsc_code" string="IFSC Code"/>
+                                <field name="bene_status" string="Bene Status" widget="badge"
+                                       decoration-success="bene_status == 'pass'"
+                                       decoration-danger="bene_status == 'fail'"/>
+                                <field name="compensation_amount" sum="Total" string="Compensation Amount"/>
+                                <field name="net_payable_amount" sum="Total" string="Net Payable Amount" decoration-bf="1" decoration-success="1"/>
+                                <field name="payment_status" widget="badge"
+                                       string="Payment Status"
+                                       decoration-success="payment_status == 'settled'"
+                                       decoration-danger="payment_status == 'failed'"
+                                       decoration-muted="payment_status == 'pending'"/>
+                                <field name="utr_number" string="UTR Number"/>
+                                <field name="failure_reason_code" string="Failure Reason Code"/>
+                                <button name="action_online_sync_line" type="object" string="Online Sync" icon="fa-refresh" class="btn-link"/>
+                                <field name="remark" string="Remark"/>
+                            </list>
+                        </field>
+                    </group>
+                    
+                    <group string="Generated File" invisible="state == 'draft'">
+                         <field name="generated_file" filename="generated_file_filename" widget="binary"/>
+                        <field name="generated_file_filename" invisible="1"/>
+                        <field name="generation_date"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Payment File Search View -->
+    <record id="view_payment_file_search" model="ir.ui.view">
+        <field name="name">bhu.payment.file.search</field>
+        <field name="model">bhu.payment.file</field>
+        <field name="arch" type="xml">
+            <search string="Payment Files">
+                <field name="name"/>
+                <field name="award_id"/>
+                <field name="village_id"/>
+                <field name="project_id"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Generated" name="generated" domain="[('state', '=', 'generated')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="State" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Village" name="group_village" context="{'group_by': 'village_id'}"/>
+                    <filter string="Project" name="group_project" context="{'group_by': 'project_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Payment File Action (legacy — use R&R Payment Voucher from dashboard / award) -->
+    <record id="action_payment_file" model="ir.actions.act_window">
+        <field name="name">Payment Files / भुगतान फ़ाइलें</field>
+        <field name="res_model">bhu.payment.voucher</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'create': False}</field>
+        <field name="help" type="html">
+            <p>
+                Payment files are created from the <b>R&amp;R Payment Voucher</b>:
+                open Section 23 award → <b>Draft Payment Voucher</b> → add bank details →
+                <b>Generate Payment file</b>.
+            </p>
+        </field>
+    </record>
+
+    <!-- Payment Line List View -->
+    <record id="view_payment_file_line_list" model="ir.ui.view">
+        <field name="name">bhu.payment.file.line.list</field>
+        <field name="model">bhu.payment.file.line</field>
+        <field name="arch" type="xml">
+            <list string="Payment Lines" decoration-danger="payment_status == 'failed'">
+                <header>
+                    <button name="action_open_bank_details_wizard_bulk" type="object" string="Update Bank Details" class="btn-secondary"/>
+                    <button name="action_open_bank_reconciliation_bulk" type="object" string="Upload Recon File" class="btn-primary"/>
+                    <button name="action_download_recon_template" type="object" string="Download Recon Template" class="btn-secondary"/>
+                </header>
+                <field name="export_ref" string="Export ref" optional="show"/>
+                <field name="project_id" string="Project"/>
+                <field name="department_id" string="Department"/>
+                <field name="village_id" string="Village"/>
+                <field name="transaction_uuid" string="Transaction UUID"/>
+                <field name="khasra_number" string="Khasra" optional="show"/>
+                <field name="landowner_id" string="Landowner"/>
+                <field name="bank_name" string="Bank Name"/>
+                <field name="account_number" string="Account Number"/>
+                <field name="ifsc_code" string="IFSC Code"/>
+                <field name="bene_status" string="Bene Status" widget="badge"
+                       decoration-success="bene_status == 'pass'"
+                       decoration-danger="bene_status == 'fail'"/>
+                <field name="net_payable_amount" string="Net Payable Amount" sum="Total Net Payable"/>
+                <field name="payment_status" widget="badge"
+                       string="Payment Status"
+                       decoration-success="payment_status == 'settled'"
+                       decoration-danger="payment_status == 'failed'"
+                       decoration-muted="payment_status == 'pending'"/>
+                <field name="utr_number" string="UTR Number"/>
+                <button name="action_online_sync_line" type="object" string="Online Sync" icon="fa-refresh" class="btn-link"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_payment_line_upload_bank_recon" model="ir.actions.server">
+        <field name="name">Upload Bank Reconciliation</field>
+        <field name="model_id" ref="model_bhu_payment_file_line"/>
+        <field name="binding_model_id" ref="model_bhu_payment_file_line"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">action = records.action_open_bank_reconciliation_bulk()</field>
+    </record>
+
+    <!-- Payment Line Search View -->
+    <record id="view_payment_file_line_search" model="ir.ui.view">
+        <field name="name">bhu.payment.file.line.search</field>
+        <field name="model">bhu.payment.file.line</field>
+        <field name="arch" type="xml">
+            <search string="Payment Lines">
+                <field name="payment_file_id"/>
+                <field name="project_id"/>
+                <field name="department_id"/>
+                <field name="village_id"/>
+                <field name="transaction_uuid"/>
+                <field name="export_ref"/>
+                <field name="landowner_id"/>
+                <field name="khasra_number"/>
+                <field name="bank_name"/>
+                <field name="ifsc_code"/>
+                <group expand="0" string="Group By">
+                    <filter string="Payment File" name="group_payment_file" context="{'group_by': 'payment_file_id'}"/>
+                    <filter string="Project" name="group_project" context="{'group_by': 'project_id'}"/>
+                    <filter string="Department" name="group_department" context="{'group_by': 'department_id'}"/>
+                    <filter string="Village" name="group_village" context="{'group_by': 'village_id'}"/>
+                    <filter string="Landowner" name="group_landowner" context="{'group_by': 'landowner_id'}"/>
+                    <filter string="Bank" name="group_bank" context="{'group_by': 'bank_name'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Beneficiary Bank Details Update Wizard -->
+    <record id="view_payment_file_bank_details_wizard_form" model="ir.ui.view">
+        <field name="name">bhu.payment.file.bank.details.wizard.form</field>
+        <field name="model">bhu.payment.file.bank.details.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Update Beneficiary Bank Details">
+                <sheet>
+                    <style>
+                        .pf_bank_wizard .o_list_view .o_list_table thead th {
+                            background: #7a3b28 !important;
+                            color: #ffffff !important;
+                            font-weight: 700 !important;
+                        }
+                        .pf_bank_wizard .o_list_view .o_list_table thead th.o_column_sortable:hover {
+                            background: #6a3222 !important;
+                        }
+                        .pf_bank_wizard .o_list_view .o_list_table tbody tr td {
+                            padding-top: 4px !important;
+                            padding-bottom: 4px !important;
+                            line-height: 1.2 !important;
+                        }
+                        .pf_bank_wizard .o_list_view .o_data_row {
+                            height: 28px !important;
+                        }
+                        .pf_bank_wizard .o_list_view .o_field_widget {
+                            margin-bottom: 0 !important;
+                        }
+                        .pf_bank_wizard .o_list_view .badge {
+                            padding: 2px 6px !important;
+                            font-size: 11px !important;
+                        }
+                    </style>
+                    <div class="pf_bank_wizard">
+                    <field name="payment_file_id" invisible="1"/>
+                    <field name="update_landowner_bank" invisible="1"/>
+                    <separator string="Beneficiary Bank Details"/>
+                    <field name="line_ids" nolabel="1" options="{'limit': 10}">
+                        <list string="Beneficiary Bank Details" editable="bottom" create="0" delete="0" limit="10">
+                            <field name="serial_number" string="Sr."/>
+                            <field name="beneficiary_name" string="Beneficiary"/>
+                            <field name="bank_name" string="Bank Name"/>
+                            <field name="bank_branch" string="Bank Branch"/>
+                            <field name="account_number" string="Account Number"/>
+                            <field name="ifsc_code" string="IFSC Code"/>
+                            <field name="bene_test_sign" string="Sign"/>
+                            <field name="bene_test_status" string="Bene Test" widget="badge"
+                                   decoration-success="bene_test_status == 'pass'"
+                                   decoration-danger="bene_test_status == 'fail'"
+                                   decoration-muted="bene_test_status == 'na'"/>
+                        </list>
+                    </field>
+                    </div>
+                </sheet>
+                <footer>
+                    <button name="action_run_bene_testing" string="Bene Testing" type="object" class="btn-secondary"/>
+                    <button name="action_apply_updates" string="Apply Updates" type="object" class="btn-primary"/>
+                    <button string="Close" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Payment Line Action -->
+    <record id="action_payment_file_lines" model="ir.actions.act_window">
+        <field name="name">Payment Lines</field>
+        <field name="res_model">bhu.payment.file.line</field>
+        <field name="view_mode">list</field>
+        <field name="search_view_id" ref="view_payment_file_line_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Payment lines will appear here after payment file generation.
+            </p>
+        </field>
+    </record>
+
+</odoo>
+

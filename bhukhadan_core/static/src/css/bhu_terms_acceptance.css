@@ -1,0 +1,222 @@
+/* Full-screen mandatory terms gate (DOM overlay — always works) */
+
+.bhu-terms-gate-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 20000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+.bhu-terms-gate-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.72);
+    backdrop-filter: blur(4px);
+}
+
+.bhu-terms-gate-panel {
+    position: relative;
+    z-index: 1;
+    width: min(720px, 100%);
+    max-height: min(92vh, 880px);
+    overflow: auto;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 24px 64px rgba(15, 23, 42, 0.35);
+    padding: 24px 26px 22px;
+    border: 1px solid rgba(26, 39, 68, 0.08);
+}
+
+.bhu-terms-gate-panel-head {
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.bhu-terms-gate-kicker {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #c45a2a;
+    margin-bottom: 8px;
+}
+
+.bhu-terms-gate-panel-head h2 {
+    margin: 0 0 8px;
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #1a2744;
+}
+
+.bhu-terms-gate-lead {
+    margin: 0;
+    color: #5c6578;
+    line-height: 1.55;
+    font-size: 0.92rem;
+}
+
+.bhu-terms-gate-subtitle {
+    font-size: 0.98rem;
+    font-weight: 700;
+    margin: 0 0 10px;
+    color: #212529;
+}
+
+.bhu-terms-gate-scroll {
+    max-height: 38vh;
+    overflow-y: auto;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    background: #f8f9fa;
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: #343a40;
+}
+
+.bhu-terms-gate-scroll p {
+    margin: 0 0 12px;
+}
+
+.bhu-terms-gate-scroll p:last-child {
+    margin-bottom: 0;
+}
+
+.bhu-terms-gate-links {
+    margin: 0 0 14px;
+    font-size: 0.88rem;
+}
+
+.bhu-terms-gate-links a {
+    color: #2563eb;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.bhu-terms-gate-links a:hover {
+    text-decoration: underline;
+}
+
+.bhu-terms-gate-check {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0 0 16px;
+    color: #343a40;
+}
+
+.bhu-terms-gate-check input {
+    margin-top: 3px;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+}
+
+.bhu-terms-gate-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.bhu-terms-gate-actions .btn-primary {
+    background: #c45a2a;
+    border-color: #a8471f;
+    font-weight: 700;
+    padding: 10px 22px;
+    border-radius: 8px;
+}
+
+.bhu-terms-gate-actions .btn-primary:disabled {
+    opacity: 0.55;
+}
+
+@media (max-width: 640px) {
+    .bhu-terms-gate-panel {
+        padding: 18px 16px 16px;
+        border-radius: 12px;
+    }
+
+    .bhu-terms-gate-scroll {
+        max-height: 34vh;
+    }
+}
+
+/* Legacy OWL dialog styles (kept if dialog path is used elsewhere) */
+.bhu-terms-dialog .modal-header .btn-close {
+    display: none !important;
+}
+
+.bhu-terms-dialog .modal-content {
+    pointer-events: auto;
+}
+
+.bhu-terms-dialog .modal-body {
+    padding-top: 0;
+}
+
+.bhu-terms-dialog-lead {
+    margin-bottom: 1rem;
+    color: #495057;
+    line-height: 1.55;
+}
+
+.bhu-terms-dialog-heading {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0 0 0.75rem;
+    color: #212529;
+}
+
+.bhu-terms-dialog-scroll {
+    max-height: 42vh;
+    overflow-y: auto;
+    padding: 1rem 1.1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    background: #f8f9fa;
+    font-size: 0.92rem;
+    line-height: 1.65;
+    color: #343a40;
+}
+
+.bhu-terms-dialog-scroll p {
+    margin-bottom: 0.85rem;
+}
+
+.bhu-terms-dialog-scroll p:last-child {
+    margin-bottom: 0;
+}
+
+.bhu-terms-dialog-links {
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.bhu-terms-dialog-links a {
+    font-weight: 600;
+}
+
+.bhu-terms-dialog-check {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    cursor: pointer;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.bhu-terms-dialog-check input {
+    margin-top: 0.2rem;
+    flex-shrink: 0;
+}

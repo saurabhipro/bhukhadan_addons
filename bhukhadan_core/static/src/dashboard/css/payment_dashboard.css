@@ -1,0 +1,551 @@
+/* Payment Dashboard - Edge-to-edge layout */
+.o_payment_dashboard {
+    background: #f5f5f5;
+    min-height: 100vh;
+    padding: 0;
+}
+
+/* ---------- Hero header — identical to Group Dashboard ---------- */
+.o_payment_dashboard .o_group_hero {
+    background: linear-gradient(135deg, var(--bd-brand-900, #4A240B) 0%, var(--bd-brand-700, #8B4513) 55%, var(--bd-brand-500, #C87941) 100%) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: var(--bd-radius-md, 12px) !important;
+    padding: 12px 18px !important;
+    margin: 0 0 14px 0 !important;
+    width: 100% !important;
+    box-sizing: border-box;
+    box-shadow: var(--bd-shadow-md, 0 4px 12px rgba(74,36,11,.09));
+    position: relative;
+    overflow: hidden;
+}
+
+.o_payment_dashboard .o_group_hero::after {
+    content: "";
+    position: absolute;
+    top: 0; right: -80px;
+    width: 220px; height: 100%;
+    background: rgba(255,255,255,0.08);
+    transform: skewX(-20deg);
+    pointer-events: none;
+}
+
+.o_payment_dashboard .o_group_hero::before {
+    content: "";
+    position: absolute;
+    left: -40px; top: -40px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.10) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.o_payment_dashboard .o_group_hero h2 {
+    color: #fff !important;
+    font-weight: 700 !important;
+    font-size: 19px !important;
+    letter-spacing: 0.3px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    margin: 0 !important;
+}
+
+.o_payment_dashboard .o_group_hero h2 > i {
+    color: #ffd9b8 !important;
+    font-size: 20px;
+}
+
+.o_payment_dashboard .o_group_hero_pill {
+    background: rgba(255,255,255,0.14);
+    border: 1px solid rgba(255,255,255,0.28);
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    backdrop-filter: blur(4px);
+}
+
+.o_payment_dashboard .o_group_hero_pill i { color: #ffd9b8; font-size: 12px; }
+
+.o_payment_dashboard .o_group_hero_stats {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.o_payment_dashboard .o_group_hero_chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: 999px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 13px;
+    backdrop-filter: blur(4px);
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.o_payment_dashboard .o_group_hero_chip:hover {
+    background: rgba(255,255,255,0.22);
+    transform: translateY(-1px);
+}
+
+.o_payment_dashboard .o_group_hero_chip i  { color: #ffd9b8; font-size: 13px; }
+
+.o_payment_dashboard .o_group_hero_chip small {
+    font-size: 10.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    opacity: 0.85;
+}
+
+.o_payment_dashboard .dashboard-content {
+    padding: 1.25rem 0;
+}
+
+/* ---------- Statistics Cards ---------- */
+.o_payment_dashboard .stat-card {
+    border-radius: 12px;
+    padding: 1rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: none;
+    position: relative;
+    overflow: hidden;
+    min-height: 65px;
+    cursor: pointer;
+}
+
+.o_payment_dashboard .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.o_payment_dashboard .stat-card > * {
+    position: relative;
+    z-index: 1;
+}
+
+.o_payment_dashboard .stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.o_payment_dashboard .stat-icon {
+    font-size: 2.25rem;
+    color: white;
+    flex-shrink: 0;
+    opacity: 1;
+}
+
+.o_payment_dashboard .stat-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.o_payment_dashboard .stat-details h3 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0;
+    color: white;
+    line-height: 1.15;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.o_payment_dashboard .stat-details p {
+    margin: 0;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+/* Warning card has dark text */
+.o_payment_dashboard .stat-card.bg-warning .stat-details h3,
+.o_payment_dashboard .stat-card.bg-warning .stat-details p,
+.o_payment_dashboard .stat-card.bg-warning .stat-icon {
+    color: #333;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+/* ---------- Card color palette (Group Dashboard theme) ---------- */
+.o_payment_dashboard .bg-primary {
+    background: linear-gradient(135deg, #A0826D 0%, #8B6F47 100%);
+}
+.o_payment_dashboard .bg-success {
+    background: linear-gradient(135deg, #66BB6A 0%, #4CAF50 100%);
+}
+.o_payment_dashboard .bg-danger {
+    background: linear-gradient(135deg, #EF5350 0%, #F44336 100%);
+}
+.o_payment_dashboard .bg-info {
+    background: linear-gradient(135deg, #26C6DA 0%, #00BCD4 100%);
+}
+.o_payment_dashboard .bg-warning {
+    background: linear-gradient(135deg, #FFCA28 0%, #FFC107 100%);
+}
+.o_payment_dashboard .bg-village {
+    background: linear-gradient(135deg, #81C784 0%, #4CAF50 100%);
+}
+.o_payment_dashboard .bg-survey {
+    background: linear-gradient(135deg, #64B5F6 0%, #2196F3 100%);
+}
+.o_payment_dashboard .bg-landowner {
+    background: linear-gradient(135deg, #BA68C8 0%, #9C27B0 100%);
+}
+.o_payment_dashboard .bg-budget {
+    background: linear-gradient(135deg, #FFB74D 0%, #FF9800 100%);
+}
+.o_payment_dashboard .bg-patwari {
+    background: linear-gradient(135deg, #A1887F 0%, #795548 100%);
+}
+
+/* ---------- Projects Table ---------- */
+.o_payment_dashboard .card {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    background: white;
+    overflow: hidden;
+    margin-top: 0.75rem;
+}
+
+.o_payment_dashboard .card-header.custom-card-header {
+    background: linear-gradient(135deg, #8B4513 0%, #5D2E0C 100%);
+    color: white !important;
+    border-bottom: none;
+    padding: 0.75rem 1rem;
+}
+
+.o_payment_dashboard .card-header.custom-card-header h5 {
+    color: white !important;
+    font-weight: 700;
+}
+
+/* Search bar */
+.o_payment_dashboard .header-search-container {
+    display: flex;
+    align-items: center;
+    background: white;
+    width: 100%;
+    max-width: 500px;
+    height: 36px;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.o_payment_dashboard .header-search-container:focus-within {
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15) !important;
+    border-color: #8B4513;
+}
+
+.o_payment_dashboard .header-search-input {
+    width: 100%;
+    outline: none;
+    font-size: 0.9rem;
+    color: #333;
+    padding-left: 0.5rem;
+}
+
+.o_payment_dashboard .header-search-input::placeholder {
+    color: #adb5bd;
+    font-size: 0.85rem;
+}
+
+.o_payment_dashboard .header-search-container .input-group-text {
+    height: 100%;
+    background: transparent;
+    padding-right: 0;
+}
+
+/* Table */
+.o_payment_dashboard .table thead th {
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    letter-spacing: 0.6px;
+    color: #444;
+    border-bottom: 3px solid #dee2e6;
+    background-color: #f8f9fa;
+    padding: 0.7rem 0.5rem;
+    user-select: none;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.o_payment_dashboard .table tbody td {
+    vertical-align: middle;
+    padding: 0.6rem 0.5rem;
+    border-bottom: 3px solid #f0f0f0;
+    color: #333;
+    font-size: 0.9rem;
+}
+
+.o_payment_dashboard .table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(139, 69, 19, 0.015);
+}
+
+.o_payment_dashboard .project-row {
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    border-bottom: 3px solid #f5f5f5;
+}
+
+.o_payment_dashboard .project-row:hover {
+    background-color: rgba(139, 69, 19, 0.05) !important;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.01);
+}
+
+.o_payment_dashboard .clickable-cell {
+    cursor: pointer;
+}
+
+.o_payment_dashboard .dashboard-link {
+    color: #8B4513;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border-bottom: 2px solid transparent;
+}
+
+.o_payment_dashboard .dashboard-link:hover {
+    color: #5D2E0C;
+    border-bottom-color: #5D2E0C;
+}
+
+/* Badges */
+.o_payment_dashboard .badge {
+    font-size: 0.78rem;
+    padding: 0.4rem 0.7rem;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.o_payment_dashboard .badge.bg-primary {
+    background: #A0826D !important;
+    color: white !important;
+}
+
+.o_payment_dashboard .badge.bg-secondary {
+    background: #6c757d !important;
+    color: white;
+}
+
+.o_payment_dashboard .badge.bg-info {
+    background: #00BCD4 !important;
+    color: white;
+}
+
+.o_payment_dashboard .badge-success {
+    background: #4CAF50 !important;
+    color: white !important;
+}
+
+.o_payment_dashboard .badge-warning {
+    background: #FFC107 !important;
+    color: #333 !important;
+}
+
+.o_payment_dashboard .badge-danger {
+    background: #F44336 !important;
+    color: white !important;
+}
+
+/* Status badge */
+.o_payment_dashboard .stage-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    transition: all 0.2s ease;
+    min-width: 100px;
+}
+
+.o_payment_dashboard .pd-status-success { background: #C8E6C9; color: #1B5E20; }
+.o_payment_dashboard .pd-status-warning { background: #FFE0B2; color: #E65100; }
+.o_payment_dashboard .pd-status-danger  { background: #FFCDD2; color: #B71C1C; }
+.o_payment_dashboard .pd-status-none    { background: #ECEFF1; color: #455A64; }
+
+/* Rate pill */
+.o_payment_dashboard .rate-pill {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.78rem;
+}
+
+/* ---------- Scrollable dashboard ---------- */
+.o_payment_dashboard .scrollable-dashboard {
+    height: calc(100vh - 64px);
+    overflow-y: auto;
+    padding-bottom: 24px;
+    scrollbar-width: thin;
+    scrollbar-color: #8B4513 #f5f5f5;
+}
+
+.o_payment_dashboard .scrollable-dashboard::-webkit-scrollbar {
+    width: 8px;
+}
+
+.o_payment_dashboard .scrollable-dashboard::-webkit-scrollbar-track {
+    background: #f5f5f5;
+}
+
+.o_payment_dashboard .scrollable-dashboard::-webkit-scrollbar-thumb {
+    background-color: #8B4513;
+    border-radius: 20px;
+    border: 2px solid #f5f5f5;
+}
+
+/* ---------- Empty / Loading states ---------- */
+.o_payment_dashboard .no-projects-state {
+    background-color: #fafafa;
+}
+
+.o_payment_dashboard .empty-state-wrapper {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+
+.o_payment_dashboard .empty-state-wrapper i {
+    color: #8B4513 !important;
+    opacity: 0.2;
+}
+
+.o_payment_dashboard .loading-state-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    text-align: center;
+    background: #fff;
+}
+
+.o_payment_dashboard .loading-content {
+    max-width: 400px;
+}
+
+.o_payment_dashboard .text-primary-gradient {
+    background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 4px 6px rgba(139, 69, 19, 0.1));
+}
+
+.o_payment_dashboard .loading-title {
+    color: #5D2E0C;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.o_payment_dashboard .loading-subtitle {
+    font-size: 1rem;
+    color: #6c757d;
+}
+
+/* Coffee steam animation */
+.o_payment_dashboard .coffee-loader {
+    position: relative;
+    display: inline-block;
+}
+
+.o_payment_dashboard .steam {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+}
+
+.o_payment_dashboard .steam span {
+    width: 3px;
+    height: 15px;
+    background: #8B4513;
+    margin: 0 3px;
+    border-radius: 50%;
+    opacity: 0;
+    animation: pd-steam 1.5s infinite;
+}
+
+.o_payment_dashboard .steam span:nth-child(2) {
+    animation-delay: 0.5s;
+}
+
+.o_payment_dashboard .steam span:nth-child(3) {
+    animation-delay: 1s;
+}
+
+@keyframes pd-steam {
+    0%   { transform: translateY(0) scale(1);       opacity: 0; }
+    50%  { transform: translateY(-10px) scale(1.2); opacity: 0.3; }
+    100% { transform: translateY(-20px) scale(1.5); opacity: 0; }
+}
+
+.o_payment_dashboard .fa-spinner {
+    animation: pd-spin 1s linear infinite;
+}
+
+@keyframes pd-spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .o_payment_dashboard .stat-card {
+        margin-bottom: 1rem;
+    }
+
+    .o_payment_dashboard .stat-details h3 {
+        font-size: 1.4rem;
+    }
+
+    .o_payment_dashboard .table-responsive {
+        font-size: 0.85rem;
+    }
+
+    .o_payment_dashboard .dashboard-header h2 {
+        font-size: 1.2rem;
+    }
+}
+
+.o_payment_dashboard .container-fluid {
+    max-width: 1400px;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}

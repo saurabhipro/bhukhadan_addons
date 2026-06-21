@@ -1,0 +1,86 @@
+/* Premium Search View Styling */
+
+/* Main Search View Container */
+.o_control_panel .o_cp_searchview {
+    min-width: 300px;
+}
+
+/* The Search Input Container */
+.o_control_panel .o_searchview {
+    background-color: #ffffff !important;
+    border: 1px solid #e0e0e0 !important;
+    border-radius: 8px !important;
+    padding: 5px 10px !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05) !important;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+/* Hover State */
+.o_control_panel .o_searchview:hover {
+    border-color: #bbbbbb !important;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Focus State (when user clicks) */
+.o_control_panel .o_searchview:focus-within {
+    border-color: #8B4513 !important; /* Theme color */
+    box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.15) !important;
+}
+
+/* Start Icon (Search glass) */
+.o_control_panel .o_searchview .o_searchview_icon {
+    color: #888;
+    margin-right: 8px;
+    font-size: 1.1em;
+}
+
+/* The actual Input Field */
+.o_control_panel .o_searchview .o_searchview_input {
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+}
+
+/* Placeholder Text */
+.o_control_panel .o_searchview .o_searchview_input::placeholder {
+    color: #999;
+    opacity: 1; /* Firefox */
+    font-style: italic;
+}
+
+/* Facets (Selected Filters) */
+.o_control_panel .o_searchview .o_searchview_facet {
+    background: #f0f0f0 !important;
+    border: 1px solid #ddd !important;
+    border-radius: 20px !important; /* Rounded pills */
+    margin: 2px 4px 2px 0 !important;
+    overflow: hidden;
+}
+
+.o_control_panel .o_searchview .o_searchview_facet .o_searchview_facet_label {
+    background-color: #8B4513 !important; /* Theme color */
+    color: white !important;
+    border-top-left-radius: 20px !important;
+    border-bottom-left-radius: 20px !important;
+    padding: 0 10px !important;
+}
+
+.o_control_panel .o_searchview .o_searchview_facet .o_facet_values {
+    background-color: transparent !important;
+    color: #555 !important;
+    padding-right: 8px !important;
+}
+
+/* Dropdown/Autocomplete Suggestions */
+.o_searchview_autocomplete {
+    border-radius: 8px !important;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15) !important;
+    border: 1px solid #eee !important;
+    margin-top: 5px !important;
+}
+
+.o_searchview_autocomplete li.o_selection_focus {
+    background-color: rgba(139, 69, 19, 0.1) !important; /* Theme color opacity */
+}

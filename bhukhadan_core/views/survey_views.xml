@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Survey List View -->
+    <record id="view_bhu_survey_list" model="ir.ui.view">
+        <field name="name">bhu.survey.list</field>
+        <field name="model">bhu.survey</field>
+        <field name="arch" type="xml">
+            <list duplicate="0" string="Surveys" decoration-info="state == 'draft'" decoration-warning="state == 'submitted'" decoration-success="state == 'approved'" decoration-danger="state == 'rejected'" multi_edit="1" delete="1" default_order="create_date desc" create="groups='bhukhadan_core.group_bhuarjan_admin' or groups='base.group_system'">
+                <field name="name" string="Survey Number"/>
+                <field name="user_id" string="User"/>
+                <field name="department_id" string="Department" optional="show"/>
+                <field name="project_id" string="Project"/>
+                <field name="village_id" string="Village"/>
+                <field name="tehsil_id" string="Tehsil"/>
+                <field name="khasra_number" string="Khasra Number"/>
+                <field name="total_area" string="Total Area (Hectares)"/>
+                <field name="acquired_area" string="Acquired Area"/>
+                <field name="landowner_count" string="Landowners"/>
+                <field name="survey_date" string="Survey Date"/>
+                <field name="pending_since" string="Pending Since" invisible="state != 'submitted'"/>
+                <field name="pending_with" string="Pending With" invisible="state == 'approved' or state == 'rejected'"/>
+                <field name="state" widget="badge" string="Status"
+                       decoration-success="state == 'approved'"
+                       decoration-info="state == 'draft'"
+                       decoration-warning="state == 'submitted'"
+                       decoration-danger="state == 'rejected'"/>
+                
+            </list>
+        </field>
+    </record>
+
+    <!-- Survey Form View -->
+    <record id="view_bhu_survey_form" model="ir.ui.view">
+        <field name="name">bhu.survey.form</field>
+        <field name="model">bhu.survey</field>
+        <field name="arch" type="xml">
+            <form string="Survey / सर्वे" class="bhu_approved_form bhu_survey_form" duplicate="0" js_class="confirm_save_form" create="groups='bhukhadan_core.group_bhuarjan_admin' or groups='base.group_system'" edit="not groups='bhukhadan_core.group_bhuarjan_collector' and not groups='bhukhadan_core.group_bhuarjan_sdm' and state != 'approved' or groups='bhukhadan_core.group_bhuarjan_admin' or groups='base.group_system'">
+                <header>
+                    <!-- Submit button for Admin -->
+                    <button name="action_submit" string="Submit / प्रस्तुत करें" type="object" class="btn btn-primary" 
+                            invisible="state != 'draft'" 
+                            groups="bhukhadan_core.group_bhuarjan_admin"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved,rejected"/>
+                    <field name="is_notification_4_generated" widget="boolean_toggle" readonly="1" string="Is Noti 4 Generated / अधिसूचना 4 जेनरेट"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Approved" bg_color="text-bg-success" invisible="state != 'approved'"/>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_landowners"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-users">
+                            <field name="landowner_count"
+                                   string="Landowner"
+                                   widget="statinfo"/>
+                        </button>
+                        <button name="action_view_tree_details"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-tree">
+                            <field name="tree_detail_count"
+                                   string="Tree Details"
+                                   widget="statinfo"/>
+                        </button>
+                        <button name="action_view_award_structures"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-building">
+                            <field name="award_structure_count"
+                                   string="Award Structures"
+                                   widget="statinfo"/>
+                        </button>
+                        <button name="action_view_photos"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-camera">
+                            <field name="photo_count"
+                                   string="Photos"
+                                   widget="statinfo"/>
+                        </button>
+                    </div>
+                    <!-- Approve / Reject actions -->
+                    <div class="bhu_survey_action_bar">
+                        <button name="action_approve" string="Approve / अनुमोदित करें" type="object" class="btn btn-success bhu_survey_btn_approve" invisible="state == 'approved' or (state == 'rejected' and not is_admin)" groups="bhukhadan_core.group_bhuarjan_department_user,bhukhadan_core.group_bhuarjan_admin" confirm="Are you sure you want to approve this survey? / क्या आप इस सर्वे को अनुमोदित करना चाहते हैं?"/>
+                        <button name="action_reject" string="Reject / अस्वीकृत करें" type="object" class="btn btn-danger bhu_survey_btn_reject" invisible="state in ('approved', 'rejected')" groups="bhukhadan_core.group_bhuarjan_department_user,bhukhadan_core.group_bhuarjan_admin" confirm="Are you sure you want to reject this survey? / क्या आप इस सर्वे को अस्वीकृत करना चाहते हैं?"/>
+                        <button name="action_reset_to_submitted" string="Reset to Submitted / प्रस्तुत में रीसेट" type="object" class="btn btn-secondary" invisible="state != 'rejected'" groups="bhukhadan_core.group_bhuarjan_department_user,bhukhadan_core.group_bhuarjan_admin" confirm="Are you sure you want to reset this survey to submitted? / क्या आप इस सर्वे को प्रस्तुत में रीसेट करना चाहते हैं?"/>
+                    </div>
+
+                    <field name="is_approved_readonly" invisible="1"/>
+                    <field name="is_admin" invisible="1"/>
+
+                    <div class="bhu_survey_form_hero">
+                        <div class="bhu_survey_form_hero_icon" aria-hidden="true">
+                            <i class="fa fa-map-o"/>
+                        </div>
+                        <div class="bhu_survey_form_hero_body">
+                            <span class="bhu_survey_form_hero_kicker">Form 10 · Land Survey / भूमि सर्वे</span>
+                            <h1 class="bhu_survey_form_hero_title"><field name="name" readonly="1"/></h1>
+                            <div class="bhu_survey_form_hero_badges">
+                                <field name="state" widget="badge"
+                                       decoration-success="state == 'approved'"
+                                       decoration-info="state == 'draft'"
+                                       decoration-warning="state == 'submitted'"
+                                       decoration-danger="state == 'rejected'"
+                                       nolabel="1"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Compact summary strip (key context at a glance) -->
+                    <div class="bhu_survey_summary_strip">
+                        <div class="bhu_survey_summary_item bhu_summary_project">
+                            <span class="bhu_survey_summary_label">Project</span>
+                            <field name="bhu_summary_project" readonly="1" nolabel="1"/>
+                        </div>
+                        <div class="bhu_survey_summary_item bhu_summary_village">
+                            <span class="bhu_survey_summary_label">Village</span>
+                            <field name="bhu_summary_village" readonly="1" nolabel="1"/>
+                        </div>
+                        <div class="bhu_survey_summary_item bhu_summary_tehsil">
+                            <span class="bhu_survey_summary_label">Tehsil</span>
+                            <field name="bhu_summary_tehsil" readonly="1" nolabel="1"/>
+                        </div>
+                        <div class="bhu_survey_summary_item bhu_summary_khasra">
+                            <span class="bhu_survey_summary_label">Khasra</span>
+                            <field name="bhu_summary_khasra" readonly="1" nolabel="1"/>
+                        </div>
+                        <div class="bhu_survey_summary_item bhu_summary_date">
+                            <span class="bhu_survey_summary_label">Survey Date</span>
+                            <field name="bhu_summary_survey_date" readonly="1" nolabel="1" widget="date"/>
+                        </div>
+                        <div class="bhu_survey_summary_item bhu_summary_type">
+                            <span class="bhu_survey_summary_label">Type</span>
+                            <field name="bhu_summary_survey_type" readonly="1" nolabel="1"/>
+                        </div>
+                        <div class="bhu_survey_summary_item bhu_summary_payment">
+                            <span class="bhu_survey_summary_label">Payment</span>
+                            <field name="bhu_summary_payment" widget="badge" readonly="1" nolabel="1"/>
+                        </div>
+                        <div class="bhu_survey_summary_item bhu_summary_patwari">
+                            <span class="bhu_survey_summary_label">Patwari</span>
+                            <field name="bhu_summary_patwari" readonly="1" nolabel="1"/>
+                        </div>
+                    </div>
+                    <!-- Notification 4 Generated Warning -->
+                    <div class="alert alert-info" role="alert" invisible="not is_notification_4_generated" style="margin-bottom: 15px;">
+                        <strong>Notification 4 Generated / अधिसूचना 4 जेनरेट:</strong> This survey has been used to generate Notification 4. No further modifications are allowed.
+                        <br/>
+                        <strong>अधिसूचना 4 जेनरेट:</strong> इस सर्वे का उपयोग अधिसूचना 4 जेनरेट करने के लिए किया गया है। कोई और संशोधन की अनुमति नहीं है।
+                    </div>
+                    
+                    <field name="pending_with" invisible="1"/>
+                    <group string="Survey Controls / सर्वे नियंत्रण" col="2" class="survey-icon-controls bhu_survey_controls_card">
+                        <field name="survey_type" widget="radio" options="{'horizontal': true}"
+                               readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)"
+                               string="Survey Type * / सर्वे प्रकार *"/>
+                        <field name="payment_status" widget="badge" readonly="1" string="Payment Status"/>
+                    </group>
+                    <group class="bhu_survey_info_row">
+                        <group string="Project Information / परियोजना की जानकारी" class="survey-icon-project">
+                            <field name="project_id" widget="selection" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)" required="1" string="Project * / परियोजना *" options="{'no_create': True}"/>
+                            <field name="department_id" widget="selection" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)" required="1" string="Department * / विभाग *"/>
+                            <field name="survey_date" widget="date" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)" required="1" string="Survey Date * / सर्वे दिनाँक *" options="{'date_format': 'dd/mm/yyyy'}"/>
+                        </group>
+                        <group string="Location Information / स्थान की जानकारी" class="survey-icon-location">
+                            <field name="allowed_village_ids" invisible="1"/>
+                            <field name="company_id" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)" required="1" string="District"/>
+                            <field name="village_id" domain="[('id', 'in', allowed_village_ids)]" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)" required="1" string="Village * / ग्राम का नाम *" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="tehsil_id" widget="selection" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)" string="Tehsil / तहसील"/>
+                            <field name="district_name" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)"/>
+                            <field name="user_id" readonly="not is_admin and (is_collector_readonly or is_approved_readonly)"/>
+                            <field name="is_collector_readonly" invisible="1"/>
+                        </group>
+                    </group>
+                    
+                    <field name="survey_uuid" readonly="1" invisible="1"/>
+                    
+                    <notebook>
+                        <page string="Survey / सर्वे" name="survey_details">
+                            <group>
+                                <group string="Land Information / भूमि की जानकारी" class="survey-icon-land">
+                                    <field name="khasra_number" widget="char" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)" required="1" string="Khasra Number * / खसरा नंबर *"/>
+                                    <field name="total_area" widget="float" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)"/>
+                                    <field name="acquired_area" widget="float" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)" string="Acquired Area (Hectares) / अर्जन हेतु प्रस्तावित क्षेत्रफल (हेक्टेयर)"/>
+                                    <field name="has_traded_land" widget="radio" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)" options="{'horizontal': true}"/>
+                                    <field name="traded_land_area" widget="float" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)" 
+                                           invisible="has_traded_land != 'yes'" required="has_traded_land == 'yes'"/>
+                                    <field name="distance_from_main_road" widget="float"
+                                           readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)"
+                                           string="Distance from Main Road (m) / मुख्य मार्ग से दूरी (मीटर)"/>
+                                </group>
+                                <group string="Crop Information / फसल की जानकारी" class="survey-icon-crop">
+                                    <field name="crop_type_id" widget="selection" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)" options="{'no_create_edit': True}" string="Crop Type / फसल का प्रकार"/>
+                                    <field name="irrigation_type" widget="radio" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)" options="{'horizontal': true}"/>
+                                </group>
+                            </group>
+                            
+                            <group>
+                                <group string="House Information / घर की जानकारी" class="survey-icon-house">
+                                    <field name="has_house" widget="radio" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)" options="{'horizontal': true}"/>
+                                    <field name="house_type" widget="selection" invisible="has_house != 'yes'" required="has_house == 'yes'" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)"/>
+                                    <field name="house_area" widget="float" invisible="has_house != 'yes'" required="has_house == 'yes'" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)"/>
+                                    <field name="has_shed" widget="radio" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)" options="{'horizontal': true}"/>
+                                    <field name="shed_area" widget="float" invisible="has_shed != 'yes'" required="has_shed == 'yes'" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)"/>
+                                </group>
+                            </group>
+                            
+                            <group>
+                                <group string="Infrastructure / बुनियादी सुविधाएं" class="survey-icon-infrastructure">
+                                    <field name="has_well" widget="radio" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)" options="{'horizontal': true}"/>
+                                    <field name="well_type" widget="selection" invisible="has_well != 'yes'" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)"/>
+                                    <field name="well_count" invisible="has_well != 'yes'" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)"/>
+                                    <field name="has_tubewell" widget="radio" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)" options="{'horizontal': true}"/>
+                                    <field name="tubewell_count" invisible="has_tubewell != 'yes'" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)"/>
+                                    <field name="has_pond" widget="radio" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)" options="{'horizontal': true}"/>
+                                </group>
+                                <group string="Remarks / टिप्पणी" class="survey-icon-remarks">
+                                    <field name="remarks" placeholder="Enter any additional notes" readonly="not is_admin and (is_collector_readonly or is_approved_readonly)"/>
+                                </group>
+                            </group>
+                            
+                        </page>
+                        
+                        <page string="Landowner / भूमिस्वामी" name="landowners_details">
+                            <style>
+                                /* Enhanced landowner section styling */
+                                .landowner_custom_section .o_list_table {
+                                    border: 2px solid #8B4513 !important;
+                                    border-radius: 8px;
+                                    overflow: hidden;
+                                }
+                                .landowner_custom_section .o_list_table thead,
+                                .landowner_custom_section .o_list_table thead tr {
+                                    background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%) !important;
+                                }
+                                .landowner_custom_section .o_list_table thead th,
+                                .landowner_custom_section .o_list_table thead th * {
+                                    color: #FFFFFF !important;
+                                    font-weight: 600 !important;
+                                    border-bottom: 2px solid #6B3410 !important;
+                                }
+                                .landowner_custom_section .o_list_table tbody tr {
+                                    border-bottom: 1px solid #e0e0e0;
+                                }
+                                .landowner_custom_section .o_list_table tbody tr:hover {
+                                    background-color: #fff8f0 !important;
+                                }
+                            </style>
+                            <div class="landowner_custom_section" style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 10px 0; border: 2px solid #8B4513;">
+                                <h3 style="margin: 0 0 15px 0; color: #8B4513; font-size: 18px; font-weight: bold; border-bottom: 2px solid #8B4513; padding-bottom: 10px;">
+                                    <i class="fa fa-users" style="margin-right: 8px;"></i>
+                                    Manage Landowners
+                                </h3>
+                                <div style="margin-bottom: 15px; padding: 12px; background-color: #e3f2fd; border-left: 4px solid #2196f3; border-radius: 4px;">
+                                    <i class="fa fa-info-circle" style="color: #1976d2; margin-right: 8px;"/>
+                                    <span style="font-weight: 600; color: #1565c0;">Click "Add" to add new landowners or select existing ones. You can edit details inline.</span>
+                                </div>
+                                <field name="landowner_ids" 
+                                       widget="many2many"
+                                       options="{'no_create': False, 'create_edit': True}" 
+                                       context="{'default_company_id': company_id, 'default_village_id': village_id, 'default_tehsil_id': tehsil_id}"
+                                       readonly="not is_admin and (is_collector_readonly or is_approved_readonly)"
+                                       nolabel="1">
+                                    <list string="Landowners" editable="bottom" create="true" delete="true">
+                                        <field name="name" string="Name" required="1"/>
+                                        <field name="father_name" string="Father's Name"/>
+                                        <field name="spouse_name" string="Spouse's Name"/>
+                                        <field name="village_id" string="Village"/>
+                                        <field name="tehsil_id" string="Tehsil"/>
+                                        <field name="aadhar_number" string="Aadhar"/>
+                                        <field name="pan_number" string="PAN"/>
+                                        <field name="bank_name" string="Bank"/>
+                                        <field name="account_number" string="Account"/>
+                                    </list>
+                                </field>
+                            </div>
+                        </page>
+                        
+                        <page string="Tree Details / वृक्ष विवरण" name="tree_details">
+                            <group string="Trees / वृक्ष">
+                                <field name="tree_line_ids" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)" nolabel="1" 
+                                       context="{'default_development_stage': 'undeveloped'}">
+                                        <list string="Trees / वृक्ष" editable="bottom">
+                                            <field name="tree_master_id" options="{'no_create_edit': True}" required="1" string="Tree / वृक्ष" width="250"/>
+                                            <field name="tree_type" string="Tree Type / वृक्ष प्रकार" width="200" readonly="1"/>
+                                            <field name="development_stage" string="Development Stage / विकास स्तर" width="200"/>
+                                            <field name="girth_cm" string="Girth (cm) / छाती (से.मी.)" width="150" 
+                                                invisible="tree_type == 'fruit_bearing'"/>
+                                            <field name="quantity" required="1" string="Quantity / मात्रा" width="200"/>
+                                        </list>
+                                </field>
+                            </group>
+                        </page>
+
+                        <page string="Award Structures / अवार्ड परिसम्पत्ति" name="award_structure_details">
+                            <group string="Award Structure Entries / अवार्ड परिसम्पत्ति प्रविष्टियां">
+                                <field name="award_structure_ids"
+                                       readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)"
+                                       nolabel="1">
+                                    <list editable="bottom">
+                                        <field name="survey_id"
+                                               string="Khasra Number"
+                                               context="{'show_khasra': True}"
+                                               domain="[('village_id', '=', parent.village_id), ('khasra_number', '!=', False)]"
+                                               options="{'no_create_edit': True}"/>
+                                        <field name="structure_type" string="Structure Type"/>
+                                        <field name="construction_type" string="Construction Type"/>
+                                        <field name="description" string="Description"/>
+                                        <field name="asset_count" string="Count"/>
+                                        <field name="area_sqm" string="Area (Sq. Meter)" readonly="structure_type == 'well'"/>
+                                        <field name="market_rate_per_sqm" string="Rate" widget="monetary"/>
+                                        <field name="asset_value" string="Asset Value" widget="monetary" sum="Asset Value"/>
+                                    </list>
+                                </field>
+                            </group>
+                        </page>
+                        
+                        <page string="Photos / फोटो" name="survey_photos">
+                            <group string="Survey Photos / सर्वे फोटो">
+                                <field name="photo_ids" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)" nolabel="1">
+                                    <list string="Survey Photos / सर्वे फोटो">
+                                        <field name="display_name" string="Name / नाम"/>
+                                        <field name="photo_type_id" string="Photo Type / फोटो प्रकार"/>
+                                        <field name="image_preview" string="Preview" widget="html"/>
+                                        <field name="filename" string="Filename / फ़ाइल नाम" column_invisible="1"/>
+                                        <field name="s3_filename_display" string="S3 File / S3 फ़ाइल" column_invisible="1"/>
+                                        <field name="s3_url" widget="url" string="Open image" text="View"/>
+                                        <field name="latitude" optional="show"/>
+                                        <field name="longitude" optional="show"/>
+                                        <field name="google_maps_url" widget="url" string="Map Location" text="View on Map"/>
+                                        <field name="create_date" string="Survey Date Time / सर्वे दिनांक समय"/>
+                                    </list>
+                                </field>
+                            </group>
+                        </page>
+                    </notebook>
+                    
+                    <!-- Chatter removed -->
+                </sheet>
+                <chatter groups="bhukhadan_core.group_bhuarjan_ri,bhukhadan_core.group_bhuarjan_nayab_tahsildar,bhukhadan_core.group_bhuarjan_tahsildar,bhukhadan_core.group_bhuarjan_sdm,bhukhadan_core.group_bhuarjan_additional_collector,bhukhadan_core.group_bhuarjan_collector,bhukhadan_core.group_bhuarjan_admin"/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Survey Search View -->
+    <record id="view_bhu_survey_search" model="ir.ui.view">
+        <field name="name">bhu.survey.search</field>
+        <field name="model">bhu.survey</field>
+        <field name="arch" type="xml">
+            <search string="Search Surveys / सर्वे खोजें">
+                <field name="name"/>
+                <field name="landowner_ids"/>
+                <field name="project_id"/>
+                <field name="department_id"/>
+                <field name="village_id"/>
+                <field name="tehsil_id"/>
+                <field name="khasra_number"/>
+                <field name="survey_date"/>
+                <field name="survey_uuid"/>
+                
+                <field name="landowner_pan_numbers" string="Pan Number"/>
+                <field name="landowner_aadhar_numbers" string="Aadhar Number"/>
+            
+                <filter string="Draft / प्रारूप" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Submitted / प्रस्तुत" name="submitted" domain="[('state', '=', 'submitted')]"/>
+                <filter string="Approved / अनुमोदित" name="approved" domain="[('state', '=', 'approved')]"/>
+                <filter string="Rejected / अस्वीकृत" name="rejected" domain="[('state', '=', 'rejected')]"/>
+                
+                <separator/>
+                <filter string="This Month / इस महीने" name="this_month" domain="[('survey_date', '>=', (context_today() - relativedelta(months=1)).strftime('%Y-%m-01')), ('survey_date', '&lt;', (context_today() + relativedelta(months=1)).strftime('%Y-%m-01'))]"/>
+                <filter string="This Year / इस साल" name="this_year" domain="[('survey_date', '>=', context_today().strftime('%Y-01-01')), ('survey_date', '&lt;', (context_today() + relativedelta(years=1)).strftime('%Y-01-01'))]"/>
+                
+                <group expand="0" string="Group By / समूह बनाएं">
+                    <filter string="State / स्थिति" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Village / ग्राम" name="group_village" context="{'group_by': 'village_id'}"/>
+                    <filter string="Tehsil / तहसील" name="group_tehsil" context="{'group_by': 'tehsil_id'}"/>
+                    <filter string="Khasra Number / खसरा नंबर" name="group_khasra" context="{'group_by': 'khasra_number'}"/>
+                    <filter string="Project / परियोजना" name="group_project" context="{'group_by': 'project_id'}"/>
+                    <filter string="Department / विभाग" name="group_department" context="{'group_by': 'department_id'}"/>
+                    <filter string="Survey Date / सर्वे दिनाँक" name="group_survey_date" context="{'group_by': 'survey_date'}"/>
+                </group>
+                <searchpanel>
+                    <field name="department_id" icon="fa-building" string="Department" enable_counters="1"/>
+                    <field name="project_id" icon="fa-folder" string="Project" enable_counters="1"/>
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
+    <!-- Survey Graph View -->
+    <record id="view_bhu_survey_graph" model="ir.ui.view">
+        <field name="name">bhu.survey.graph</field>
+        <field name="model">bhu.survey</field>
+        <field name="arch" type="xml">
+            <graph string="Surveys Analysis" type="bar" sample="1">
+                <field name="village_id"/>
+                <field name="acquired_area" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Survey Pivot View -->
+    <record id="view_bhu_survey_pivot" model="ir.ui.view">
+        <field name="name">bhu.survey.pivot</field>
+        <field name="model">bhu.survey</field>
+        <field name="arch" type="xml">
+            <pivot string="Surveys Analysis" sample="1">
+                <field name="village_id" type="row"/>
+                <field name="project_id" type="col"/>
+                <field name="acquired_area" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Survey Action -->
+    <record id="action_bhu_survey" model="ir.actions.act_window">
+        <field name="name">Surveys</field>
+        <field name="res_model">bhu.survey</field>
+        <field name="view_mode">list,kanban,graph,pivot,form</field>
+        <field name="search_view_id" ref="view_bhu_survey_search"/>
+        <field name="context">{'create_name': 'नया सर्वे'}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Survey!
+            </p>
+            <p>
+                Survey is used for preliminary land acquisition surveys.
+                You can add multiple citizens/landowners in one survey.
+            </p>
+        </field>
+    </record>
+
+    <!-- Bulk Approval Server Action -->
+    <record id="action_survey_bulk_approval" model="ir.actions.server">
+        <field name="name">Bulk Approval / बल्क अनुमोदन</field>
+        <field name="model_id" ref="model_bhu_survey"/>
+        <field name="binding_model_id" ref="model_bhu_survey"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+# Get project and village from context (passed from dashboard)
+project_id = env.context.get('default_project_id') or env.context.get('active_project_id')
+village_id = env.context.get('default_village_id') or env.context.get('active_village_id')
+
+# If not in context, try to get from selected records
+if not project_id and records:
+    project_id = records[0].project_id.id if records[0].project_id else False
+if not village_id and records:
+    village_id = records[0].village_id.id if records[0].village_id else False
+
+# Build context with default values
+ctx = {
+    'default_project_id': project_id,
+    'default_village_id': village_id,
+}
+
+action = env['ir.actions.act_window']._for_xml_id('bhukhadan_core.action_survey_bulk_approval_wizard')
+action['context'] = ctx
+        </field>
+    </record>
+
+
+    <!-- Survey Kanban View -->
+    <record id="view_bhu_survey_kanban" model="ir.ui.view">
+        <field name="name">bhu.survey.kanban</field>
+        <field name="model">bhu.survey</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" class="o_kanban_small_column" create="groups='bhukhadan_core.group_bhuarjan_admin' or groups='base.group_system'">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="state"/>
+                <field name="project_id"/>
+                <field name="village_id"/>
+                <field name="khasra_number"/>
+                <field name="survey_date"/>
+                <field name="user_id"/>
+                <field name="is_notification_4_generated"/>
+                <progressbar field="state" colors='{"draft": "info", "submitted": "warning", "approved": "success", "rejected": "danger"}'/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_card oe_kanban_global_click">
+                            <div class="oe_kanban_content">
+                                <div class="o_kanban_record_top">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="name"/>
+                                        </strong>
+                                    </div>
+                                    <div class="o_kanban_record_top_right">
+                                        <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved,rejected"/>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_body">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div><strong>Project:</strong> <field name="project_id"/></div>
+                                            <div><strong>Village:</strong> <field name="village_id"/></div>
+                                            <div><strong>Khasra:</strong> <field name="khasra_number"/></div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div><strong>Survey Date:</strong> <field name="survey_date"/></div>
+                                            <div><strong>User:</strong> <field name="user_id"/></div>
+                                            <div t-if="is_notification_4_generated">
+                                                <span class="badge badge-info">Notification 4 Generated</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Survey Tree Line Views -->
+    <record id="view_bhu_survey_tree_line_tree" model="ir.ui.view">
+        <field name="name">bhu.survey.tree.line.tree</field>
+        <field name="model">bhu.survey.tree.line</field>
+        <field name="arch" type="xml">
+            <list string="Tree Details / वृक्ष विवरण">
+                <field name="tree_master_id" string="Tree / वृक्ष"/>
+                <field name="tree_type" string="Tree Type / वृक्ष प्रकार"/>
+                <field name="development_stage" string="Development Stage / विकास स्तर"/>
+                <field name="girth_cm" string="Girth (cm) / छाती (से.मी.)" invisible="tree_type == 'fruit_bearing'"/>
+                <field name="quantity" string="Quantity / मात्रा"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Survey Photo Views -->
+    <record id="view_bhu_survey_photo_list" model="ir.ui.view">
+        <field name="name">bhu.survey.photo.list</field>
+        <field name="model">bhu.survey.photo</field>
+        <field name="arch" type="xml">
+            <list string="Survey Photos / सर्वे फोटो">
+                <field name="display_name" string="Name / नाम"/>
+                <field name="photo_type_id" string="Photo Type / फोटो प्रकार"/>
+                <field name="image_preview" string="Preview" widget="html"/>
+                <field name="filename" string="Filename / फ़ाइल नाम" column_invisible="1"/>
+                <field name="s3_url" widget="url" string="Open image" text="View"/>
+                <field name="latitude" optional="show"/>
+                <field name="longitude" optional="show"/>
+                <field name="google_maps_url" widget="url" string="Map Location" text="View on Map"/>
+                <field name="create_date" string="Survey Date Time / सर्वे दिनांक समय" optional="show"/>
+                <field name="active" widget="boolean_toggle" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_bhu_survey_photo_form" model="ir.ui.view">
+        <field name="name">bhu.survey.photo.form</field>
+        <field name="model">bhu.survey.photo</field>
+        <field name="arch" type="xml">
+            <form string="Survey Photo / सर्वे फोटो">
+                <sheet>
+                    <group>
+                        <field name="display_name" string="Name / नाम" readonly="1"/>
+                        <field name="photo_type_id" string="Photo Type / फोटो प्रकार"/>
+                        <field name="filename" string="Filename / फ़ाइल नाम"/>
+                        <field name="s3_url" string="S3 URL / S3 यूआरएल"/>
+                        <field name="s3_filename_display" string="S3 File / S3 फ़ाइल" readonly="1"/>
+                        <field name="google_maps_url" widget="url" string="Map Location" text="View on Map"/>
+                        <field name="latitude" string="Latitude / अक्षांश" readonly="0"/>
+                        <field name="longitude" string="Longitude / देशांतर" readonly="0"/>
+                        <field name="file_size" string="File Size (bytes) / फ़ाइल आकार"/>
+                        <field name="sequence"/>
+                        <field name="active" widget="boolean_toggle"/>
+                        <field name="file_upload" string="Upload File / फ़ाइल अपलोड करें" widget="binary"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

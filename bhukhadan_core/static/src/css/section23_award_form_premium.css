@@ -1,0 +1,662 @@
+/* Section 23 Award form – same visual language as Award Simulator (scoped) */
+.bhu_s23_award_premium {
+    /* sheet breathing room for negative-margin header */
+    --bhu-s23-r: 10px;
+}
+.bhu_s23_award_premium .o_form_sheet {
+    padding-top: 8px;
+}
+.bhu_s23_award_premium .simulator_header {
+    background: linear-gradient(135deg, #7e4a39 0%, #a8674f 55%, #bf7b60 100%);
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: var(--bhu-s23-r) var(--bhu-s23-r) 0 0;
+    margin: 0 0 12px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(90, 42, 31, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+.bhu_s23_award_premium .simulator_header::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -60px;
+    width: 160px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: skewX(-20deg);
+    pointer-events: none;
+}
+.bhu_s23_award_premium .simulator_title_h1 {
+    color: #fff !important;
+    margin: 0 !important;
+    font-weight: 700 !important;
+    font-size: 1.35rem !important;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.16);
+}
+
+.bhu_s23_award_premium .top_totals_strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 14px;
+}
+.bhu_s23_award_premium .top_total_card {
+    position: relative;
+    border-radius: 14px;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    background: #fff;
+    padding: 12px 14px 12px 16px;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    overflow: hidden;
+    isolation: isolate;
+    transition: transform 0.2s ease, box-shadow 0.25s ease;
+}
+.bhu_s23_award_premium .top_total_card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    border-radius: 14px 0 0 14px;
+}
+.bhu_s23_award_premium .top_total_card::after {
+    content: "";
+    position: absolute;
+    right: -30px;
+    top: -40px;
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    opacity: 0.12;
+    z-index: -1;
+}
+.bhu_s23_award_premium .top_total_head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.bhu_s23_award_premium .top_total_icon {
+    font-size: 14px;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15), inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+    flex-shrink: 0;
+}
+.bhu_s23_award_premium .top_total_label {
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: #475569;
+    margin-bottom: 2px;
+    line-height: 1.2;
+}
+.bhu_s23_award_premium .top_total_value {
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin-top: 6px;
+    letter-spacing: 0.3px;
+    font-variant-numeric: tabular-nums;
+}
+.bhu_s23_award_premium .top_total_land { background: linear-gradient(135deg, #fff 0%, #fdf4ec 100%); }
+.bhu_s23_award_premium .top_total_land::before { background: linear-gradient(180deg, #6a2d1d, #c1703d); }
+.bhu_s23_award_premium .top_total_land::after { background: #c1703d; }
+.bhu_s23_award_premium .top_total_land .top_total_icon { background: linear-gradient(135deg, #6a2d1d, #c1703d); }
+.bhu_s23_award_premium .top_total_land .top_total_value { color: #6a2d1d; }
+.bhu_s23_award_premium .top_total_tree { background: linear-gradient(135deg, #fff 0%, #f1f9f4 100%); }
+.bhu_s23_award_premium .top_total_tree::before { background: linear-gradient(180deg, #1c5037, #5aa87a); }
+.bhu_s23_award_premium .top_total_tree::after { background: #5aa87a; }
+.bhu_s23_award_premium .top_total_tree .top_total_icon { background: linear-gradient(135deg, #1c5037, #5aa87a); }
+.bhu_s23_award_premium .top_total_tree .top_total_value { color: #1c5037; }
+.bhu_s23_award_premium .top_total_structure { background: linear-gradient(135deg, #fff 0%, #fdf1ea 100%); }
+.bhu_s23_award_premium .top_total_structure::before { background: linear-gradient(180deg, #5c3324, #c47a52); }
+.bhu_s23_award_premium .top_total_structure::after { background: #c47a52; }
+.bhu_s23_award_premium .top_total_structure .top_total_icon { background: linear-gradient(135deg, #5c3324, #c47a52); }
+.bhu_s23_award_premium .top_total_structure .top_total_value { color: #5c3324; }
+.bhu_s23_award_premium .top_total_grand {
+    background: linear-gradient(135deg, #f7efe9 0%, #fff 60%, #fdf4ec 100%);
+    border-color: rgba(90, 42, 31, 0.18);
+}
+.bhu_s23_award_premium .top_total_grand::before { background: linear-gradient(180deg, #3d1c12, #8a4531); }
+.bhu_s23_award_premium .top_total_grand::after { background: #8a4531; }
+.bhu_s23_award_premium .top_total_grand .top_total_icon { background: linear-gradient(135deg, #3d1c12, #8a4531); }
+.bhu_s23_award_premium .top_total_grand .top_total_label { color: #3d1c12; }
+.bhu_s23_award_premium .top_total_grand .top_total_value { color: #3d1c12; font-size: 1.2rem; }
+
+/* Premium cards (collapsible) */
+.bhu_s23_award_premium .premium_card {
+    background: #fff;
+    border: 1px solid #e0e6ed;
+    border-radius: 12px;
+    padding: 0 18px 16px 18px;
+    margin-bottom: 14px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+    scroll-margin-top: 10px;
+    position: relative;
+    overflow: hidden;
+}
+.bhu_s23_award_premium .premium_card.section-config { background: linear-gradient(180deg, #faf4ef 0%, #fff 55%); }
+.bhu_s23_award_premium .premium_card.section-land { background: linear-gradient(180deg, #fdf4ec 0%, #fff 55%); }
+.bhu_s23_award_premium .premium_card.section-tree { background: linear-gradient(180deg, #f1f9f4 0%, #fff 55%); }
+.bhu_s23_award_premium .premium_card.section-structure { background: linear-gradient(180deg, #fdf1ea 0%, #fff 55%); }
+.bhu_s23_award_premium .premium_card.section-consolidated { background: linear-gradient(180deg, #eef6ff 0%, #fff 55%); }
+.bhu_s23_award_premium .premium_card.section-rr { background: linear-gradient(180deg, #f4f0ff 0%, #fff 55%); }
+.bhu_s23_award_premium .section_banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    --s23-tick-start: #11a95b;
+    --s23-tick-end: #0d8f4c;
+    --s23-download-start: rgba(22, 132, 210, 0.95);
+    --s23-download-end: rgba(14, 102, 168, 0.95);
+    --s23-download-hover-start: rgba(30, 147, 231, 1);
+    --s23-download-hover-end: rgba(18, 113, 186, 1);
+    /* Match main award header (simulator_header) vertical rhythm — slimmer than before */
+    padding: 6px 14px;
+    min-height: 0;
+    margin: 0 -18px 10px -18px;
+    color: #fff;
+    border-radius: 12px 12px 0 0;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+    letter-spacing: 0.4px;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+.bhu_s23_award_premium .section_banner::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -50px;
+    width: 140px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.12);
+    transform: skewX(-20deg);
+    pointer-events: none;
+}
+.bhu_s23_award_premium .section_banner .sb_left { display: flex; align-items: center; gap: 8px; }
+.bhu_s23_award_premium .section_banner .sb_icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 7px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.22);
+    font-size: 12px;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3), 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+.bhu_s23_award_premium .section_banner .sb_title {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    margin: 0;
+    line-height: 1.2;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.bhu_s23_award_premium .section_banner .s23-stage-tick {
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--s23-tick-start) 0%, var(--s23-tick-end) 100%);
+    color: #fff !important;
+    font-size: 12px;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(8, 93, 49, 0.38), inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+    margin-left: 0;
+}
+.bhu_s23_award_premium .section_banner .s23-stage-tick i {
+    color: #fff !important;
+}
+.bhu_s23_award_premium .section_banner .s23_head_download_btn {
+    width: 26px;
+    height: 26px;
+    min-width: 26px;
+    border-radius: 999px;
+    margin-left: 0;
+    padding: 0 !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff !important;
+    background: linear-gradient(135deg, var(--s23-download-start) 0%, var(--s23-download-end) 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.6) !important;
+    box-shadow: 0 2px 8px rgba(0, 34, 68, 0.35), inset 0 0 0 1px rgba(255,255,255,.18);
+}
+.bhu_s23_award_premium .section_banner .s23_head_download_btn:hover {
+    background: linear-gradient(135deg, var(--s23-download-hover-start) 0%, var(--s23-download-hover-end) 100%) !important;
+    transform: translateY(-1px);
+}
+.bhu_s23_award_premium .section_banner .s23_head_download_btn i {
+    color: #fff !important;
+    font-size: 12px !important;
+    line-height: 1;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.28);
+}
+.bhu_s23_award_premium .section_banner .sb_sub { font-size: 0.72rem; opacity: 0.92; font-weight: 500; letter-spacing: 0.5px; }
+.bhu_s23_award_premium .section_banner .s23-count-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 26px;
+    width: 26px;
+    height: 26px;
+    margin-left: 0;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.26);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35), 0 2px 6px rgba(0, 0, 0, 0.15);
+    vertical-align: middle;
+}
+.bhu_s23_award_premium .section_banner .s23-count-circle .o_field_widget {
+    color: #fff !important;
+    font-weight: 800;
+    font-size: 0.72rem;
+    line-height: 1;
+    margin: 0;
+}
+.bhu_s23_award_premium .sb_config  { background: linear-gradient(135deg, #7a5c52 0%, #9e7265 100%); }
+.bhu_s23_award_premium .sb_land    { background: linear-gradient(135deg, #a0674e 0%, #c4896d 100%); }
+.bhu_s23_award_premium .sb_tree    { background: linear-gradient(135deg, #3a7a59 0%, #5aaa7a 100%); }
+.bhu_s23_award_premium .sb_structure { background: linear-gradient(135deg, #8a6355 0%, #b08070 100%); }
+.bhu_s23_award_premium .sb_consolidated { background: linear-gradient(135deg, #2f6798 0%, #4e8fc2 100%); }
+.bhu_s23_award_premium .sb_rr { background: linear-gradient(135deg, #66538f 0%, #8f73ba 100%); }
+.bhu_s23_award_premium .sb_land {
+    --s23-tick-start: #1ab162;
+    --s23-tick-end: #118746;
+    --s23-download-start: rgba(37, 136, 209, 0.95);
+    --s23-download-end: rgba(21, 95, 156, 0.95);
+    --s23-download-hover-start: rgba(52, 152, 226, 1);
+    --s23-download-hover-end: rgba(25, 108, 177, 1);
+}
+.bhu_s23_award_premium .sb_tree {
+    --s23-tick-start: #19a768;
+    --s23-tick-end: #0f7a4b;
+    --s23-download-start: rgba(26, 123, 178, 0.95);
+    --s23-download-end: rgba(16, 86, 130, 0.95);
+    --s23-download-hover-start: rgba(34, 139, 196, 1);
+    --s23-download-hover-end: rgba(18, 99, 147, 1);
+}
+.bhu_s23_award_premium .sb_structure {
+    --s23-tick-start: #1d9f74;
+    --s23-tick-end: #137456;
+    --s23-download-start: rgba(47, 128, 192, 0.95);
+    --s23-download-end: rgba(27, 92, 145, 0.95);
+    --s23-download-hover-start: rgba(62, 143, 208, 1);
+    --s23-download-hover-end: rgba(33, 104, 159, 1);
+}
+.bhu_s23_award_premium .sb_consolidated {
+    --s23-tick-start: #12a388;
+    --s23-tick-end: #0d7a66;
+    --s23-download-start: rgba(36, 118, 205, 0.95);
+    --s23-download-end: rgba(19, 82, 159, 0.95);
+    --s23-download-hover-start: rgba(49, 134, 223, 1);
+    --s23-download-hover-end: rgba(23, 95, 176, 1);
+}
+.bhu_s23_award_premium .sb_rr {
+    --s23-tick-start: #23a57a;
+    --s23-tick-end: #15815e;
+    --s23-download-start: rgba(61, 122, 203, 0.95);
+    --s23-download-end: rgba(39, 88, 157, 0.95);
+    --s23-download-hover-start: rgba(75, 138, 222, 1);
+    --s23-download-hover-end: rgba(47, 102, 176, 1);
+}
+.bhu_s23_award_premium .sb_right { display: flex; align-items: center; gap: 7px; text-align: right; }
+.bhu_s23_award_premium .sb_chevron {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.18);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    transition: transform 0.25s ease;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+}
+.bhu_s23_award_premium details.premium_card > summary.section_banner {
+    cursor: pointer;
+    list-style: none;
+}
+.bhu_s23_award_premium details.premium_card > summary.section_banner::-webkit-details-marker { display: none; }
+.bhu_s23_award_premium details.premium_card:not([open]) .sb_chevron { transform: rotate(-90deg); }
+.bhu_s23_award_premium details.premium_card:not([open]) > summary.section_banner {
+    margin-bottom: 0;
+    border-radius: 12px;
+}
+.bhu_s23_award_premium details.premium_card:not([open]) { padding-bottom: 0; }
+.bhu_s23_award_premium .impact_strip {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin: 0 0 12px 0;
+}
+@media (min-width: 768px) {
+    .bhu_s23_award_premium .impact_strip { grid-template-columns: repeat(4, 1fr); }
+}
+.bhu_s23_award_premium .impact_chip {
+    border-radius: 10px;
+    padding: 8px 10px;
+    background: #fff;
+    border: 1px solid rgba(122, 59, 40, 0.12);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.bhu_s23_award_premium .impact_chip .ic_icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #fdf4ec;
+    color: #7a3b28;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+.bhu_s23_award_premium .impact_chip .ic_label { font-size: 0.68rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.4px; }
+.bhu_s23_award_premium .impact_chip .ic_value { font-size: 0.85rem; font-weight: 800; line-height: 1.1; }
+.bhu_s23_award_premium .total_row {
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-top: 10px;
+    border-left: 6px solid #6a3425;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.bhu_s23_award_premium .total_label_large {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #3f2a22;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0;
+}
+.bhu_s23_award_premium .total_value_large { font-size: 1.35rem; font-weight: 800; letter-spacing: -0.5px; }
+
+/* SDM / workflow card */
+.bhu_s23_award_premium .s23_workflow_card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+.bhu_s23_award_premium .s23_workflow_title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #6a3425;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    border-bottom: 2px solid #8a4531;
+    padding-bottom: 8px;
+    margin-bottom: 14px;
+}
+.bhu_s23_award_premium .s23_btn_brown { background-color: #6a2d1d !important; border-color: #6a2d1d !important; color: #fff !important; }
+.bhu_s23_award_premium .s23_btn_teal { background-color: #0d5c5c !important; border-color: #0d5c5c !important; color: #fff !important; }
+.bhu_s23_award_premium .s23_btn_ok { background-color: #1e7a3e !important; border-color: #1e7a3e !important; color: #fff !important; }
+.bhu_s23_award_premium .s23_btn_danger { background-color: #c62828 !important; border-color: #c62828 !important; color: #fff !important; }
+.bhu_s23_award_premium .s23_note { font-size: 0.85rem; line-height: 1.4; }
+.bhu_s23_award_premium .s23_o2m_toolbar { margin: 0 0 8px 0; }
+.bhu_s23_award_premium .s23_section_anchor { scroll-margin-top: 12px; }
+.bhu_s23_award_premium .s23_section_toolbar {
+    width: 100%;
+    justify-content: flex-end !important;
+    text-align: right;
+}
+.bhu_s23_award_premium .s23_section_toolbar .o_field_widget,
+.bhu_s23_award_premium .s23_section_toolbar .btn {
+    flex: 0 0 auto;
+}
+.bhu_s23_award_premium .s23_section_toolbar .o_field_widget {
+    min-width: 220px;
+}
+
+/* Configuration: hide embedded list record count / pager ("N records", "1-5 of 8") */
+.bhu_s23_award_premium [name="award_survey_line_ids"] .o_pager,
+.bhu_s23_award_premium [name="award_survey_line_ids"] nav[role="navigation"],
+.bhu_s23_award_premium [name="award_survey_line_ids"] .o_pager_value,
+.bhu_s23_award_premium [name="award_survey_line_ids"] .o_data_pager,
+.bhu_s23_award_premium [name="award_survey_line_ids"] .o_list_selection_box .o_list_selection_info {
+    display: none !important;
+}
+/* Khasra O2M: hide optional fields / column picker (list chrome) */
+.bhu_s23_award_premium [name="award_survey_line_ids"] .o-dropdown.o_optional_columns,
+.bhu_s23_award_premium [name="award_survey_line_ids"] button.o_optional_columns,
+.bhu_s23_award_premium [name="award_survey_line_ids"] [data-tooltip="Optional Columns"],
+.bhu_s23_award_premium [name="award_survey_line_ids"] .o_list_renderer .o_list_controls .o_optional_columns {
+    display: none !important;
+}
+
+/* Land / tree preview tables (same data as PDF engine) */
+.bhu_s23_award_premium .s23-embed-preview {
+    margin-bottom: 10px;
+}
+.bhu_s23_award_premium .s23-preview-wrap {
+    margin-top: 6px;
+}
+.bhu_s23_award_premium .s23-sim-table {
+    width: 100%;
+    font-size: 0.78rem;
+    border-collapse: collapse;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    border-radius: 8px;
+    overflow: hidden;
+}
+.bhu_s23_award_premium .s23-sim-table th.s23-sim-th,
+.bhu_s23_award_premium .s23-sim-table td {
+    border: 1px solid #e2d5cd;
+    padding: 5px 8px;
+    vertical-align: middle;
+}
+.bhu_s23_award_premium .s23-sim-table thead {
+    background: linear-gradient(180deg, #fdf0e2 0%, #f7dcc1 100%);
+    color: #5a2a1f;
+    font-weight: 700;
+}
+.bhu_s23_award_premium .s23-sim-hint { margin-top: 6px; }
+.bhu_s23_award_premium .s23-sim-table .tabular-nums {
+    font-variant-numeric: tabular-nums;
+}
+.bhu_s23_award_premium .s23-land-sim-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 4px;
+}
+.bhu_s23_award_premium .s23-sim-table-land th.s23-sim-th,
+.bhu_s23_award_premium .s23-sim-table-land td {
+    font-size: 0.7rem;
+    white-space: nowrap;
+}
+/* Long owner / merged text: wrap in-cell + native tooltip on hover (title attr from Python) */
+.bhu_s23_award_premium .s23-sim-table-land td.s23-owner-cell,
+.bhu_s23_award_premium .s23-sim-table-land td.s23-wrap-cell {
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    vertical-align: top;
+    max-width: 15rem;
+    line-height: 1.35;
+}
+.bhu_s23_award_premium .s23-sim-table-land td.s23-owner-cell[title],
+.bhu_s23_award_premium .s23-sim-table-land td.s23-wrap-cell[title] {
+    cursor: help;
+}
+.bhu_s23_award_premium .s23-sim-table-land th.s23-sim-th {
+    min-width: 3.2rem;
+}
+
+/* Zebra stripes — land / tree / asset preview tables (matches payment voucher) */
+.bhu_s23_award_premium .s23-sim-table-land tbody tr.s23_row_even {
+    background: #fff;
+}
+
+.bhu_s23_award_premium .s23-sim-table-land tbody tr.s23_row_odd {
+    background: #faf7f4;
+}
+
+.bhu_s23_award_premium .s23-sim-table-land tbody tr.s23_row_even td.s23-owner-cell {
+    background: #fff;
+    border-left: 3px solid rgba(106, 45, 29, 0.1);
+}
+
+.bhu_s23_award_premium .s23-sim-table-land tbody tr.s23_row_odd td.s23-owner-cell {
+    background: #f3ebe3;
+    border-left: 3px solid rgba(106, 45, 29, 0.25);
+}
+
+.bhu_s23_award_premium .s23-sim-table-land tbody tr:hover {
+    background: #f5ebe3 !important;
+}
+
+.bhu_s23_award_premium .s23-sim-table-land tbody tr:hover td.s23-owner-cell {
+    background: #edd9cc !important;
+}
+
+.bhu_s23_award_premium .s23-sim-table th.s23-sortable-th {
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    padding-right: 16px;
+}
+.bhu_s23_award_premium .s23-sim-table th.s23-sortable-th .s23-sort-indicator {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.62rem;
+    color: #9a6f5e;
+}
+.bhu_s23_award_premium .s23-sim-table th.s23-sortable-th .s23-sort-indicator::before {
+    content: "↕";
+}
+.bhu_s23_award_premium .s23-sim-table th.s23-sortable-th.s23-sort-asc .s23-sort-indicator::before {
+    content: "▲";
+    color: #7a3b28;
+}
+.bhu_s23_award_premium .s23-sim-table th.s23-sortable-th.s23-sort-desc .s23-sort-indicator::before {
+    content: "▼";
+    color: #7a3b28;
+}
+.bhu_s23_award_premium .s23-sim-badge {
+    display: inline-block;
+    font-weight: 700;
+    font-size: 0.72rem;
+    padding: 0 0.2rem;
+}
+.bhu_s23_award_premium .s23-edit-link {
+    color: #7a3b28;
+    font-size: 0.86rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 3px;
+    border: 1px solid #d8c2b7;
+    background: #fffaf7;
+}
+.bhu_s23_award_premium .s23-edit-link:hover {
+    color: #5f2b1d;
+    background: #f8ece6;
+}
+
+/* Award meta panel (under top title) */
+.bhu_s23_award_premium .s23_award_meta_panel {
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    overflow: hidden;
+}
+
+.bhu_s23_award_premium .s23_award_meta_title {
+    background: linear-gradient(135deg, #7e4a39 0%, #a8674f 55%, #bf7b60 100%);
+    color: #fff;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.45px;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border-bottom: 1px solid #e3d3c9;
+}
+
+.bhu_s23_award_premium .s23_award_meta_grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    padding: 8px 10px;
+}
+
+.bhu_s23_award_premium .s23_meta_item {
+    flex: 1 1 calc(33.333% - 5px);
+    min-width: 220px;
+    padding: 10px 12px;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+}
+
+.bhu_s23_award_premium .s23_meta_label {
+    color: #6b3b2c;
+    font-size: 0.78rem;
+    line-height: 1.25;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.bhu_s23_award_premium .s23_meta_value .o_field_widget {
+    color: #2c1e18 !important;
+    font-weight: 700 !important;
+    line-height: 1.25;
+    font-size: 0.98rem;
+}
+
+.bhu_s23_award_premium .s23_meta_value .o_input {
+    background: #fff !important;
+    border-color: #d8c5ba !important;
+    color: #2c1e18 !important;
+}
+
+@media (max-width: 768px) {
+    .bhu_s23_award_premium .s23_section_toolbar {
+        justify-content: flex-start !important;
+        text-align: left;
+    }
+    .bhu_s23_award_premium .s23_section_toolbar .o_field_widget {
+        min-width: 0;
+        width: 100%;
+    }
+    .bhu_s23_award_premium .s23_award_meta_grid {
+        padding: 8px;
+        gap: 0;
+    }
+
+    .bhu_s23_award_premium .s23_meta_item {
+        flex: 1 1 100%;
+        min-width: 0;
+    }
+}

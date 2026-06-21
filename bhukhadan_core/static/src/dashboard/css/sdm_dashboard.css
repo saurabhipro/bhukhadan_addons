@@ -1,0 +1,2028 @@
+/* SDM Dashboard Styles - Reusing Admin Dashboard Styles */
+
+/* Icons: use Odoo 18 webclient font (do not force legacy "FontAwesome" — breaks fa-plus/check/times). */
+
+/* Import admin dashboard styles */
+.o_admin_dashboard {
+    padding: 10px;
+    background: #f5f5f5;
+    min-height: 100vh;
+    overflow-y: auto;
+    height: 100%;
+}
+
+.o_dashboard_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 10px 15px;
+    background: white;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex-wrap: nowrap;
+    gap: 12px;
+    min-height: 50px;
+}
+
+.o_dashboard_title_section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+    flex-shrink: 0;
+}
+
+.o_dashboard_header h2 {
+    margin: 0;
+    color: #8B4513;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 1.2;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.o_selected_project_inline {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 999px;
+    margin-left: 10px;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.o_scope_pill_project {
+    background: linear-gradient(135deg, #fef3c7 0%, #fbbf24 100%);
+    border: 1.5px solid #d97706;
+    color: #78350f !important;
+}
+
+.o_scope_pill_project .fa,
+.o_scope_pill_project .o_project_name_bold {
+    color: #92400e !important;
+}
+
+.o_scope_pill_village {
+    background: linear-gradient(135deg, #ccfbf1 0%, #2dd4bf 100%);
+    border: 1.5px solid #0d9488;
+    color: #134e4a !important;
+}
+
+.o_scope_pill_village .fa,
+.o_scope_pill_village .o_project_name_bold {
+    color: #115e59 !important;
+}
+
+.o_project_name_bold {
+    font-weight: 800 !important;
+    font-size: 15px !important;
+    letter-spacing: 0.2px;
+}
+
+.o_dashboard_actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: nowrap;
+    flex: 1;
+    justify-content: flex-end;
+    min-width: 0;
+}
+
+.o_dashboard_actions .btn {
+    padding: 6px 20px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.o_dashboard_content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    overflow-y: auto;
+    margin-bottom: 8rem;
+}
+
+/* Section Title with Legends - Same line layout */
+.o_section_title_with_legends {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+/* Status Legend Section - Between Card Grid and List View */
+.o_status_legend_section {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.o_status_legend_container {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 5px;
+    box-shadow: none;
+}
+
+.o_status_legend_title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+    color: #8B4513;
+    font-size: 14px;
+    flex-shrink: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.o_status_legend_title i {
+    font-size: 16px;
+    color: #8B4513;
+}
+
+.o_status_legend_items {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 7px;
+    flex: 1;
+    justify-content: flex-start;
+    margin: 0;
+    padding: 0;
+}
+
+.o_legend_title {
+    font-weight: 600;
+    color: #8B4513;
+    font-size: 13px;
+    margin-right: 3px;
+    white-space: nowrap;
+}
+
+.o_legend_item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    white-space: nowrap;
+    border: none !important;
+    padding: 0;
+    background: transparent !important;
+    border-radius: 0;
+    box-shadow: none !important;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.o_legend_icon_draft {
+    color: #6c757d;
+    font-size: 16px;
+}
+
+.o_legend_icon_submitted {
+    color: #007bff;
+    font-size: 16px;
+}
+
+.o_legend_icon_approved {
+    color: #28a745;
+    font-size: 16px;
+}
+
+.o_legend_icon_rejected {
+    color: #dc3545;
+    font-size: 16px;
+}
+
+.o_legend_label {
+    color: #495057;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.o_dashboard_section {
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Dashboard Footer */
+.o_dashboard_footer {
+    margin-top: 20px;
+    padding-bottom: 20px;
+}
+
+.o_section_title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    color: #8B4513;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.o_section_title i {
+    font-size: 18px;
+}
+
+.o_stats_grid {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 12px;
+    grid-auto-flow: row;
+    width: 100%;
+}
+
+.o_stat_card {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: 4px;
+    cursor: default;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+    height: 70px;
+    min-height: 70px;
+    max-height: 70px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.o_stat_card>* {
+    position: relative;
+    z-index: 1;
+}
+
+.o_stat_icon {
+    font-size: 32px;
+    margin-right: 8px;
+    opacity: 1;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+}
+
+.o_stat_icon i,
+.o_stat_icon .fa {
+    font-style: normal;
+    font-weight: normal;
+    display: inline-block;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1;
+    font-size: inherit;
+}
+
+.o_stat_content {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.o_stat_label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    opacity: 1;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+}
+
+.o_stat_value {
+    font-size: 22px;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 0;
+}
+
+/* State indicators in section cards */
+.o_stat_states {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+    font-size: 10px;
+    flex-wrap: wrap;
+}
+
+.o_stat_states span {
+    background: rgba(255, 255, 255, 0.3);
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-weight: 700;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.o_stat_states span i {
+    font-size: 9px;
+}
+
+/* Create button on cards */
+.o_create_btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.9) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+    opacity: 0.8;
+    transition: all 0.2s;
+}
+
+.o_create_btn:hover {
+    opacity: 1;
+    transform: scale(1.1);
+    background: white !important;
+}
+
+.o_create_btn i {
+    font-size: 12px;
+    color: #8B4513;
+}
+
+/* Card Background Images - using old dashboard patterns */
+.o_card_section4,
+.o_card_section11 {
+    background-image: url('/bhukhadan_core/static/src/dashboard/images/green_pattern.jpg');
+    color: #2c3e50;
+}
+
+.o_card_section19 {
+    background-image: url('/bhukhadan_core/static/src/dashboard/images/orange_pattern.jpg');
+    color: #2c3e50;
+}
+
+.o_card_section15 {
+    background-image: url('/bhukhadan_core/static/src/dashboard/images/pink_pattern.jpg');
+    color: #2c3e50;
+}
+
+.o_card_expert_committee {
+    background-image: url('/bhukhadan_core/static/src/dashboard/images/purple_pattern.jpg');
+    color: #2c3e50;
+}
+
+.o_card_sia {
+    background-image: url('/bhukhadan_core/static/src/dashboard/images/blue_pattern.jpg');
+    color: #2c3e50;
+}
+
+.o_card_survey {
+    background-image: url('/bhukhadan_core/static/src/dashboard/images/blue_pattern.jpg');
+    color: #2c3e50;
+}
+
+.o_card_draft_award {
+    background-image: url('/bhukhadan_core/static/src/dashboard/images/orange_pattern.jpg');
+    color: #2c3e50;
+}
+
+/* Railway Act Sections - Yellow pattern */
+.o_card_section20a_railways,
+.o_card_section20e_railways {
+    background-image: url('/bhukhadan_core/static/src/dashboard/images/yellow_pattern.jpg');
+    color: #2c3e50;
+}
+
+.o_card_section20d_railways,
+.o_card_section3c_nh,
+.o_card_section23_award {
+    background-image: url('/bhukhadan_core/static/src/dashboard/images/pink_pattern.jpg');
+    color: #2c3e50;
+}
+
+/* National Highway Act Sections - Green pattern */
+.o_card_section3a_nh,
+.o_card_section3d_nh {
+    background-image: url('/bhukhadan_core/static/src/dashboard/images/green_pattern.jpg');
+    color: #2c3e50;
+}
+
+/* Department, Project and Village selector styling */
+.o_dashboard_actions select.form-select,
+.o_dashboard_actions .o_department_selector,
+.o_dashboard_actions .o_project_selector,
+.o_dashboard_actions .o_village_selector {
+    padding: 8px 14px;
+    border: 2px solid #8B4513;
+    border-radius: 4px;
+    background: #f8f9fa;
+    font-size: 15px;
+    font-weight: 600;
+    height: 38px;
+    min-width: 150px;
+    flex-shrink: 0;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: auto;
+    margin: 0;
+    line-height: 22px;
+    box-sizing: border-box;
+    text-align: left;
+    color: #8B4513;
+    letter-spacing: 0.3px;
+    transition: all 0.2s ease;
+}
+
+.o_dashboard_actions select.form-select:hover {
+    background: #fff;
+    border-color: #6B3410;
+    box-shadow: 0 2px 4px rgba(139, 69, 19, 0.1);
+}
+
+.o_dashboard_actions select.form-select:focus {
+    outline: none;
+    background: #fff;
+    border-color: #6B3410;
+    box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.1);
+}
+
+.o_dashboard_actions select.form-select option {
+    background: white;
+    color: #333;
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.o_dashboard_actions .o_department_selector {
+    min-width: 180px;
+}
+
+.o_dashboard_actions .o_project_selector,
+.o_dashboard_actions .o_department_selector {
+    min-width: 140px;
+}
+
+.o_dashboard_actions .o_village_selector {
+    min-width: 120px;
+}
+
+.o_dashboard_actions .o_submit_filters {
+    background: linear-gradient(to bottom, #4dd0e1, #26a69a);
+    border: none;
+    color: white;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.o_dashboard_actions .o_submit_filters:hover {
+    background: linear-gradient(to bottom, #26a69a, #00897b);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.o_dashboard_actions select.form-select:disabled {
+    background-color: #f5f5f5;
+    border-color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+    color: #999;
+}
+
+/* Responsive Design */
+@media (max-width: 1600px) {
+    .o_stats_grid {
+        grid-template-columns: repeat(8, minmax(0, 1fr));
+        gap: 12px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .o_stats_grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+    }
+
+    .o_stat_card {
+        padding: 10px;
+        height: 85px;
+        min-height: 85px;
+        max-height: 85px;
+    }
+
+    .o_stat_icon {
+        font-size: 28px;
+        margin-right: 10px;
+    }
+
+    .o_stat_value {
+        font-size: 24px;
+    }
+
+    .o_stat_label {
+        font-size: 9px;
+    }
+}
+
+@media (max-width: 992px) {
+    .o_stats_grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+}
+
+@media (max-width: 768px) {
+    .o_admin_dashboard {
+        padding: 8px;
+    }
+
+    .o_dashboard_header {
+        padding: 8px 10px;
+        margin-bottom: 10px;
+        flex-wrap: wrap;
+    }
+
+    .o_dashboard_header h2 {
+        font-size: 16px;
+        width: 100%;
+        margin-bottom: 8px;
+    }
+
+    .o_dashboard_actions {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .o_stats_grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .o_stat_card {
+        padding: 8px;
+        height: 80px;
+        min-height: 80px;
+        max-height: 80px;
+    }
+
+    .o_stat_icon {
+        font-size: 24px;
+        margin-right: 8px;
+    }
+
+    .o_stat_value {
+        font-size: 20px;
+    }
+
+    .o_stat_label {
+        font-size: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .o_stats_grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* List View Section Styles */
+.o_sections_list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.o_sections_list_grid {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.o_sections_column {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 50%;
+}
+
+@media (max-width: 992px) {
+    .o_sections_list_grid {
+        flex-direction: column;
+    }
+
+    .o_sections_column {
+        width: 100%;
+    }
+}
+
+.o_section_list_item {
+    display: flex;
+    align-items: stretch;
+    padding: 10px 12px;
+    background: linear-gradient(135deg, #FFF8F0 0%, #FDF5E6 50%, #FAF0E6 100%);
+    border: 1px solid #E8DCC6;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    gap: 12px;
+    box-shadow: 0 1px 3px rgba(139, 69, 19, 0.08);
+    min-height: 60px;
+    height: auto;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Green corner status (no text), clipped inside the card */
+.o_section_list_item .o_status_ribbon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    margin: 0;
+    border: none;
+    background: none;
+    transform: none;
+    box-shadow: none;
+    font-size: 0;
+    line-height: 0;
+    z-index: 4;
+    pointer-events: none;
+    overflow: visible;
+}
+
+.o_section_list_item .o_status_ribbon::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-style: solid;
+    border-width: 0 34px 34px 0;
+    border-color: transparent #28a745 transparent transparent;
+}
+
+.o_section_list_item .o_status_ribbon::after {
+    content: '\f00c';
+    font-family: FontAwesome;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 900;
+    line-height: 1;
+    z-index: 1;
+}
+
+/* Step number badge - horizontal, contained within item height */
+.o_section_list_step {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    min-width: 60px;
+    width: 60px;
+    flex-shrink: 0;
+    margin: -10px 12px -10px -12px;
+    border-radius: 8px 0 0 8px;
+    overflow: hidden;
+    align-self: stretch;
+    max-height: 100%;
+}
+
+.o_step_number {
+    /* Background removed - use bg-primary class instead */
+    color: white;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 8px 6px;
+    border-radius: 0;
+    box-shadow: none;
+    text-transform: none;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.bg-primary {
+    background-color: #007bff !important;
+}
+
+.o_section_list_item:hover {
+    background: linear-gradient(135deg, #FFFFFF 0%, #FFF8F0 50%, #FDF5E6 100%);
+    border-color: #D4C4B0;
+    box-shadow: 0 3px 12px rgba(139, 69, 19, 0.12);
+    transform: translateY(-2px);
+}
+
+/* Disable hover and cursor for non-clickable cards */
+.o_section_list_item.o_card_no_click {
+    cursor: default !important;
+}
+
+.o_section_list_item.o_card_no_click:hover {
+    background: linear-gradient(135deg, #FFF8F0 0%, #FDF5E6 50%, #FAF0E6 100%);
+    border-color: #E8DCC6;
+    box-shadow: 0 1px 3px rgba(139, 69, 19, 0.08);
+    transform: none;
+}
+
+.o_section_list_icon {
+    font-size: 20px;
+    color: #8B4513;
+    width: 32px;
+    text-align: center;
+    flex-shrink: 0;
+    opacity: 0.9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.o_section_list_icon i,
+.o_section_list_icon .fa {
+    font-style: normal;
+    font-weight: normal;
+    display: inline-block;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1;
+}
+
+.o_section_list_content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 6px;
+    overflow: visible;
+    padding: 10px 0;
+}
+
+.o_section_list_title {
+    font-weight: 800;
+    font-size: 14px;
+    color: var(--bd-ink-900, #23150f);
+    margin-bottom: 0;
+    line-height: 1.35;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+    letter-spacing: 0.15px;
+}
+
+.o_section_list_title_label {
+    font-weight: inherit;
+    font-size: inherit;
+    color: inherit;
+}
+
+.o_section_list_context {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    vertical-align: middle;
+    margin-left: 6px;
+    padding: 0;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--bd-ink-500, #6a4a3c);
+    background: none;
+    border: none;
+    border-radius: 0;
+    white-space: nowrap;
+    line-height: 1.2;
+}
+
+.o_section_list_context::before {
+    content: "|";
+    margin-right: 6px;
+    color: rgba(106, 74, 60, 0.35);
+    font-weight: 300;
+    font-size: 12px;
+}
+
+.o_section_list_context .fa {
+    font-size: 10px;
+    opacity: 0.85;
+    color: var(--bd-brand-600, #8a4531);
+}
+
+.o_completion_tick {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    margin-left: 6px;
+    color: #28a745;
+    font-size: 13px;
+    animation: pulse 2s infinite;
+}
+
+.o_completion_tick i {
+    color: #28a745;
+    font-size: 14px;
+    text-shadow: 0 0 2px rgba(40, 167, 69, 0.4);
+}
+
+.o_section_list_count {
+    font-size: 11px;
+    color: #495057;
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-top: 2px;
+    align-items: center;
+    width: 100%;
+    min-width: 0;
+}
+
+.o_count_badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 0;
+    border-radius: 0;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+    white-space: nowrap;
+    margin: 0;
+    background: none;
+    border: none;
+    box-shadow: none;
+}
+
+.o_count_badge i,
+.o_count_badge .fa {
+    width: auto;
+    text-align: center;
+    font-size: 10px;
+    flex-shrink: 0;
+}
+
+.o_count_draft {
+    color: #5c4033;
+}
+
+.o_count_draft i,
+.o_count_draft .fa {
+    color: #8a7568;
+}
+
+.o_count_submitted {
+    color: #1e5088;
+}
+
+.o_count_submitted i,
+.o_count_submitted .fa {
+    color: #2f5f9a;
+}
+
+.o_count_approved {
+    color: #1d6b42;
+}
+
+.o_count_approved i,
+.o_count_approved .fa {
+    color: #2f7a52;
+}
+
+.o_count_rejected {
+    color: #9c3a3a;
+}
+
+.o_count_rejected i,
+.o_count_rejected .fa {
+    color: #b04a4a;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.8;
+        transform: scale(1.05);
+    }
+}
+
+/* Completion Percentage Widgets for Cards */
+.o_completion_widget {
+    margin: 6px 0;
+    padding: 4px 0;
+}
+
+.o_completion_percent {
+    font-size: 11px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 4px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 2px 6px;
+    border-radius: 3px;
+    display: inline-block;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.o_progress_bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    margin-top: 3px;
+}
+
+.o_progress_fill {
+    height: 100%;
+    background: linear-gradient(90deg, #28a745 0%, #20c997 50%, #17a2b8 100%);
+    border-radius: 3px;
+    transition: width 0.5s ease;
+    box-shadow: 0 1px 3px rgba(40, 167, 69, 0.4);
+    position: relative;
+}
+
+.o_progress_fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* Completion Percentage Widgets for List View */
+.o_completion_widget_list {
+    margin: 0;
+    padding: 0;
+}
+
+.o_completion_widget_list.o_completion_single_line {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0;
+    margin: 0;
+    padding: 5px 10px;
+    font-size: 11px;
+    line-height: 1.3;
+    color: var(--bd-ink-700, #3f2a22);
+    background: rgba(255, 255, 255, 0.42);
+    border: 1px solid rgba(180, 130, 90, 0.18);
+    border-radius: 8px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+    width: fit-content;
+    max-width: 100%;
+}
+
+.o_completion_single_line .o_section_list_count {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0;
+    margin: 0;
+    width: auto;
+    min-width: 0;
+}
+
+.o_completion_percent_list:has(+ .o_section_list_count)::after,
+.o_completion_single_line .o_section_list_count .o_count_badge:not(:last-child)::after {
+    content: "|";
+    margin: 0 10px;
+    color: rgba(106, 74, 60, 0.38);
+    font-weight: 300;
+    font-size: 12px;
+    pointer-events: none;
+}
+
+.o_completion_percent_list,
+.o_count_badge {
+    padding: 2px 1px;
+}
+
+.o_completion_percent_list {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 0;
+    border-radius: 0;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+    color: var(--bd-brand-700, #8a4531);
+    background: none;
+    border: none;
+    box-shadow: none;
+    margin-bottom: 0;
+    white-space: nowrap;
+    min-height: 0;
+    min-width: 0;
+}
+
+.o_completion_percent_list::before {
+    content: "\f201";
+    font-family: "FontAwesome";
+    font-size: 10px;
+    color: var(--bd-brand-500, #c1703d);
+    opacity: 0.9;
+}
+
+.o_progress_bar_list {
+    width: 100%;
+    height: 6px;
+    background: #e9ecef;
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08);
+    margin-top: 3px;
+}
+
+.o_progress_fill_list {
+    height: 100%;
+    background: linear-gradient(90deg, #28a745 0%, #20c997 50%, #17a2b8 100%);
+    border-radius: 3px;
+    transition: width 0.5s ease;
+    box-shadow: 0 1px 2px rgba(40, 167, 69, 0.3);
+    position: relative;
+}
+
+.o_progress_fill_list::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shimmer 2s infinite;
+}
+
+/* Make survey icon more visible in card */
+.o_card_survey .o_stat_icon {
+    font-size: 40px;
+    color: #2c3e50;
+    opacity: 0.9;
+}
+
+/* Make survey icon visible in list view */
+.o_section_list_item .o_section_list_icon .fa-clipboard {
+    font-size: 28px;
+    color: #8B4513;
+    opacity: 1;
+}
+
+.o_section_list_actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+    align-items: center;
+    align-self: flex-end;
+    flex-wrap: wrap;
+    padding: 0 10px 10px 0;
+}
+
+.o_section_list_actions .btn {
+    padding: 4px 10px;
+    font-size: 11px;
+    white-space: nowrap;
+    border-radius: 4px;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.o_section_list_actions .btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.o_section_list_actions .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.o_section_list_actions .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* =========================================================================
+ * ░░░ MODERN DASHBOARD OVERHAUL v2 ░░░
+ * Appended last so it overrides all legacy rules above.
+ * Theme: warm maroon / brown / cream (matching Odoo top nav)
+ * ========================================================================= */
+
+:root {
+    --bd-brand-900: #3d1c12;
+    --bd-brand-800: #5a2a1f;
+    --bd-brand-700: #6a2d1d;
+    --bd-brand-600: #8a4531;
+    --bd-brand-500: #a35433;
+    --bd-brand-400: #c1703d;
+    --bd-brand-soft: #fdf4ec;
+    --bd-brand-softer: #fbf0e4;
+    --bd-ink-900: #23150f;
+    --bd-ink-700: #3f2a22;
+    --bd-ink-500: #6a4a3c;
+    --bd-ink-300: #9c8a80;
+    --bd-border: #e0cdb8;
+    --bd-surface: #fff9f4;
+    --bd-surface-alt: #f7efe6;
+    --bd-card-bg: linear-gradient(145deg, #fffaf5 0%, #f8f0e6 48%, #f2e6d8 100%);
+    --bd-card-hover: linear-gradient(145deg, #fffcf8 0%, #faf3ea 50%, #f5e9dd 100%);
+    --bd-card-border: rgba(180, 130, 90, 0.28);
+    --bd-success: #2f6d4f;
+    --bd-success-soft: #e6f4ec;
+    --bd-warn: #c07a19;
+    --bd-warn-soft: #fbf1dc;
+    --bd-danger: #b64026;
+    --bd-danger-soft: #fbe7e1;
+    --bd-info: #2a5e8a;
+    --bd-info-soft: #e3edf5;
+    --bd-shadow-sm: 0 2px 6px rgba(61, 28, 18, 0.06);
+    --bd-shadow-md: 0 8px 24px -10px rgba(61, 28, 18, 0.18), 0 2px 6px rgba(61, 28, 18, 0.06);
+    --bd-shadow-lg: 0 20px 40px -20px rgba(61, 28, 18, 0.28), 0 6px 12px rgba(61, 28, 18, 0.08);
+}
+
+/* ── Page background ────────────────────────────────────────────────── */
+.o_admin_dashboard {
+    background:
+        radial-gradient(1200px 600px at 0% -10%, rgba(193, 112, 61, 0.08), transparent 60%),
+        radial-gradient(1000px 500px at 100% 0%, rgba(47, 109, 79, 0.05), transparent 60%),
+        #f6efe6;
+    padding: 14px 16px 40px 16px;
+}
+
+/* ── Header / Hero card ─────────────────────────────────────────────── */
+.o_admin_dashboard .o_dashboard_header {
+    background: linear-gradient(135deg, var(--bd-brand-900) 0%, var(--bd-brand-700) 55%, var(--bd-brand-500) 100%) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 14px !important;
+    padding: 12px 18px !important;
+    box-shadow: var(--bd-shadow-md) !important;
+    position: relative;
+    overflow: visible;
+    min-height: 56px;
+    gap: 14px;
+    margin-bottom: 14px !important;
+}
+
+.o_admin_dashboard .o_dashboard_header::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -80px;
+    width: 220px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.08);
+    transform: skewX(-20deg);
+    pointer-events: none;
+}
+
+.o_admin_dashboard .o_dashboard_header::before {
+    content: "";
+    position: absolute;
+    left: -40px;
+    top: -40px;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.10) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.o_admin_dashboard .o_dashboard_header h2,
+.o_admin_dashboard .o_dashboard_header h2 span,
+.o_admin_dashboard .o_dashboard_header .o_dashboard_title_section,
+.o_admin_dashboard .o_dashboard_title_section h2 {
+    color: #fff !important;
+}
+.o_admin_dashboard .o_dashboard_header h2 {
+    font-weight: 700 !important;
+    letter-spacing: 0.3px !important;
+    font-size: 19px !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    margin: 0 !important;
+}
+.o_admin_dashboard .o_dashboard_header h2 i,
+.o_admin_dashboard .o_dashboard_header h2 .fa {
+    color: #ffd9b8 !important;
+    font-size: 18px !important;
+}
+.o_admin_dashboard .o_dashboard_header h2 .o_selected_project_inline {
+    padding: 4px 12px !important;
+    border-radius: 999px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.22) !important;
+}
+
+.o_admin_dashboard .o_dashboard_header h2 .o_scope_pill_project {
+    background: linear-gradient(135deg, #fde68a 0%, #f59e0b 100%) !important;
+    border: 1.5px solid #fbbf24 !important;
+    color: #451a03 !important;
+}
+
+.o_admin_dashboard .o_dashboard_header h2 .o_scope_pill_project .fa,
+.o_admin_dashboard .o_dashboard_header h2 .o_scope_pill_project .o_project_name_bold {
+    color: #78350f !important;
+}
+
+.o_admin_dashboard .o_dashboard_header h2 .o_scope_pill_village {
+    background: linear-gradient(135deg, #5eead4 0%, #0d9488 100%) !important;
+    border: 1.5px solid #14b8a6 !important;
+    color: #042f2e !important;
+}
+
+.o_admin_dashboard .o_dashboard_header h2 .o_scope_pill_village .fa,
+.o_admin_dashboard .o_dashboard_header h2 .o_scope_pill_village .o_project_name_bold {
+    color: #134e4a !important;
+}
+
+.o_admin_dashboard .o_dashboard_header h2 .o_project_name_bold {
+    font-weight: 700 !important;
+}
+
+/* Filter selects → modern pill dropdowns */
+.o_admin_dashboard .o_dashboard_actions select.form-select,
+.o_admin_dashboard .o_dashboard_actions .o_department_selector,
+.o_admin_dashboard .o_dashboard_actions .o_project_selector,
+.o_admin_dashboard .o_dashboard_actions .o_village_selector {
+    height: 36px !important;
+    padding: 6px 32px 6px 14px !important;
+    border-radius: 10px !important;
+    border: 1px solid rgba(255, 255, 255, 0.45) !important;
+    background: rgba(255, 255, 255, 0.96) !important;
+    color: var(--bd-brand-800) !important;
+    font-weight: 600 !important;
+    font-size: 12.5px !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18) !important;
+    transition: all 0.18s ease;
+    width: auto !important;
+    min-width: 180px;
+}
+
+.o_admin_dashboard .o_dashboard_actions select.form-select:hover,
+.o_admin_dashboard .o_dashboard_actions .o_department_selector:hover,
+.o_admin_dashboard .o_dashboard_actions .o_project_selector:hover,
+.o_admin_dashboard .o_dashboard_actions .o_village_selector:hover {
+    background: #fff !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22) !important;
+    border-color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.o_admin_dashboard .o_dashboard_actions select.form-select:focus {
+    outline: none;
+    border-color: #ffd9b8;
+    box-shadow: 0 0 0 3px rgba(255, 217, 184, 0.35);
+}
+
+/* Last-updated label (sits above content, aligned right) */
+.o_admin_dashboard>div[style*="margin-top: -15px"] span {
+    background: #fff;
+    color: var(--bd-brand-700) !important;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11px !important;
+    font-weight: 600;
+    box-shadow: var(--bd-shadow-sm);
+    border: 1px solid var(--bd-border);
+    opacity: 1 !important;
+}
+
+/* ── Status Legend bar ──────────────────────────────────────────────── */
+.o_status_legend_section {
+    background: var(--bd-surface);
+    border-radius: 12px;
+    padding: 10px 14px;
+    box-shadow: var(--bd-shadow-sm);
+    border: 1px solid var(--bd-border);
+}
+
+.o_status_legend_title {
+    color: var(--bd-brand-800) !important;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.2px;
+}
+
+.o_status_legend_title i {
+    color: var(--bd-brand-500) !important;
+}
+
+.o_legend_item {
+    background: var(--bd-brand-soft) !important;
+    padding: 3px 9px !important;
+    border-radius: 999px !important;
+    font-size: 12px !important;
+}
+
+.o_legend_item+.o_legend_item {
+    margin-left: 4px;
+}
+
+.o_legend_label {
+    font-size: 12px !important;
+    color: var(--bd-ink-700) !important;
+}
+
+.o_legend_icon_draft {
+    color: #7a6257 !important;
+}
+
+.o_legend_icon_submitted {
+    color: var(--bd-info) !important;
+}
+
+.o_legend_icon_approved {
+    color: var(--bd-success) !important;
+}
+
+.o_legend_icon_rejected {
+    color: var(--bd-danger) !important;
+}
+
+/* Separator pipes → subtle dots */
+.o_status_legend_container span[style*="color: #ccc"] {
+    color: transparent !important;
+    position: relative;
+    width: 6px;
+    margin: 0 4px !important;
+}
+
+.o_status_legend_container span[style*="color: #ccc"]::after {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #d7c7b5;
+    font-size: 14px !important;
+}
+
+/* ── Dashboard section wrapper — invisible; step cards sit on page bg ─ */
+.o_admin_dashboard .o_dashboard_section {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+}
+
+/* Two-column workflow grid with a little more breathing room */
+.o_sections_list_grid {
+    gap: 14px 18px;
+}
+
+/* ── Step list item (main workflow card) ────────────────────────────── */
+.o_section_list_item {
+    background: var(--bd-card-bg) !important;
+    border: 1px solid var(--bd-card-border) !important;
+    border-radius: 12px !important;
+    padding: 0 0 0 0 !important;
+    gap: 12px !important;
+    box-shadow:
+        0 2px 10px rgba(61, 28, 18, 0.07),
+        inset 0 1px 0 rgba(255, 255, 255, 0.75) !important;
+    min-height: auto !important;
+    position: relative;
+    overflow: hidden !important;
+    align-items: flex-end !important;
+    transition: transform 0.18s ease, box-shadow 0.22s ease, border-color 0.2s ease, background 0.22s ease !important;
+}
+
+.o_section_list_item::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.42) 0%, transparent 42%);
+    pointer-events: none;
+    border-radius: inherit;
+    z-index: 0;
+}
+
+.o_section_list_item > * {
+    position: relative;
+    z-index: 1;
+}
+
+.o_section_list_item::before {
+    content: "";
+    position: absolute;
+    left: 58px;
+    top: 12px;
+    bottom: 12px;
+    width: 3px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, var(--bd-brand-400), var(--bd-brand-700));
+    opacity: 0.55;
+    z-index: 0;
+}
+
+.o_section_list_item:hover {
+    background: var(--bd-card-hover) !important;
+    border-color: rgba(163, 84, 51, 0.38) !important;
+    box-shadow:
+        0 10px 28px rgba(138, 69, 49, 0.14),
+        0 0 0 1px rgba(205, 132, 75, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.85) !important;
+    transform: translateY(-2px) !important;
+}
+
+.o_section_list_item.o_card_no_click:hover {
+    background: var(--bd-card-hover) !important;
+    border-color: rgba(163, 84, 51, 0.38) !important;
+    box-shadow:
+        0 10px 28px rgba(138, 69, 49, 0.14),
+        0 0 0 1px rgba(205, 132, 75, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.85) !important;
+    transform: translateY(-2px) !important;
+}
+
+.o_section_list_item:hover::before,
+.o_section_list_item.o_card_no_click:hover::before {
+    opacity: 0.95;
+}
+
+/* Step badge → clean side tab flush with card edges */
+.o_section_list_step {
+    min-width: 58px !important;
+    width: 58px !important;
+    margin: 0 !important;
+    background: linear-gradient(135deg, var(--bd-brand-900) 0%, var(--bd-brand-700) 60%, var(--bd-brand-500) 100%) !important;
+    color: #fff !important;
+    border-radius: 12px 0 0 12px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    align-self: stretch !important;
+    position: relative;
+    padding: 0 !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+}
+
+/* Soft highlight along the top of the step tile */
+.o_section_list_step::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 100%);
+    pointer-events: none;
+}
+
+.o_step_number,
+.o_step_number *,
+.o_section_list_step .o_step_number,
+.o_section_list_step .o_step_number * {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    color: #fff !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+.o_step_number {
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.6px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    text-transform: uppercase;
+    line-height: 1.15 !important;
+    text-align: center;
+    white-space: nowrap;
+    width: auto !important;
+    height: auto !important;
+    display: inline-block !important;
+}
+
+/* Override bootstrap bg-primary and any theme chip background on the step span */
+.o_section_list_step .bg-primary,
+.o_section_list_step span.o_step_number,
+.o_section_list_step .badge,
+.o_section_list_step [class*="bg-"] {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+}
+
+/* Section icon — soft tile */
+.o_section_list_icon {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    color: var(--bd-brand-700) !important;
+    box-shadow: none !important;
+    align-self: center !important;
+    margin-left: 2px !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    font-size: 22px !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: transform 0.16s ease !important;
+}
+
+.o_section_list_item:hover .o_section_list_icon {
+    transform: scale(1.04) !important;
+    box-shadow: none !important;
+}
+
+.o_section_list_item .o_section_list_icon .fa-clipboard {
+    font-size: 22px !important;
+    color: var(--bd-brand-700) !important;
+}
+
+/* Title and meta line — single inline row */
+.o_section_list_title {
+    font-weight: 800 !important;
+    font-size: 14.5px !important;
+    color: var(--bd-ink-900) !important;
+    letter-spacing: 0.2px;
+    line-height: 1.35 !important;
+    display: block !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    margin-bottom: 0 !important;
+    min-width: 0 !important;
+}
+
+.o_section_list_title_label {
+    font-weight: inherit !important;
+    font-size: inherit !important;
+    color: inherit !important;
+}
+
+.o_section_list_context {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    vertical-align: middle !important;
+    margin-left: 6px !important;
+    padding: 0 !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    color: var(--bd-ink-500) !important;
+    background: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    white-space: nowrap !important;
+    line-height: 1.2 !important;
+}
+
+.o_section_list_context::before {
+    content: "|" !important;
+    margin-right: 6px !important;
+    color: rgba(106, 74, 60, 0.35) !important;
+    font-weight: 300 !important;
+    font-size: 12px !important;
+}
+
+.o_section_list_context .fa {
+    font-size: 10px !important;
+    opacity: 0.85 !important;
+    color: var(--bd-brand-600) !important;
+}
+
+.o_section_list_icon {
+    align-self: center !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.o_completion_tick {
+    display: inline-flex !important;
+    align-items: center !important;
+    vertical-align: middle !important;
+    margin-left: 6px !important;
+    flex-shrink: 0 !important;
+}
+
+.o_section_list_content {
+    padding: 10px 0 10px !important;
+    justify-content: flex-end !important;
+    gap: 6px !important;
+}
+
+/* Hide the duplicated inline icon rendered inside title for Surveys */
+.o_section_list_title>i.fa-clipboard:first-child {
+    display: none;
+}
+
+.o_completion_widget_list.o_completion_single_line {
+    gap: 0 !important;
+    align-items: center !important;
+    margin: 0 !important;
+    padding: 5px 10px !important;
+    font-size: 11px !important;
+    line-height: 1.3 !important;
+    color: var(--bd-ink-700) !important;
+    background: rgba(255, 255, 255, 0.42) !important;
+    border: 1px solid rgba(180, 130, 90, 0.18) !important;
+    border-radius: 8px !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65) !important;
+    width: fit-content !important;
+    max-width: 100% !important;
+}
+
+.o_completion_single_line .o_section_list_count {
+    display: inline-flex !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 0 !important;
+    margin: 0 !important;
+    width: auto !important;
+    min-width: 0 !important;
+}
+
+.o_completion_percent_list:has(+ .o_section_list_count)::after,
+.o_completion_single_line .o_section_list_count .o_count_badge:not(:last-child)::after {
+    content: "|" !important;
+    margin: 0 10px !important;
+    color: rgba(106, 74, 60, 0.38) !important;
+    font-weight: 300 !important;
+    font-size: 12px !important;
+    pointer-events: none !important;
+}
+
+.o_completion_percent_list,
+.o_count_badge {
+    min-height: 0 !important;
+    min-width: 0 !important;
+    padding: 2px 1px !important;
+    border-radius: 0 !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    line-height: 1.2 !important;
+    font-variant-numeric: tabular-nums !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 3px !important;
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    white-space: nowrap !important;
+}
+
+.o_completion_percent_list {
+    color: var(--bd-brand-700) !important;
+    margin-bottom: 0 !important;
+}
+
+.o_completion_percent_list::before {
+    content: "\f201" !important;
+    font-family: "FontAwesome" !important;
+    font-size: 10px !important;
+    color: var(--bd-brand-500) !important;
+    opacity: 0.9 !important;
+}
+
+.o_count_badge i,
+.o_count_badge .fa {
+    width: auto !important;
+    text-align: center !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+    display: inline-block !important;
+    font-weight: normal !important;
+    flex-shrink: 0 !important;
+}
+
+.o_count_draft {
+    color: #5c4033 !important;
+}
+
+.o_count_draft i,
+.o_count_draft .fa {
+    color: #8a7568 !important;
+}
+
+.o_count_submitted {
+    color: #1e5088 !important;
+}
+
+.o_count_submitted i,
+.o_count_submitted .fa {
+    color: #2f5f9a !important;
+}
+
+.o_count_approved {
+    color: #1d6b42 !important;
+}
+
+.o_count_approved i,
+.o_count_approved .fa {
+    color: #2f7a52 !important;
+}
+
+.o_count_rejected {
+    color: #9c3a3a !important;
+}
+
+.o_count_rejected i,
+.o_count_rejected .fa {
+    color: #b04a4a !important;
+}
+
+/* ── Action buttons ─────────────────────────────────────────────────── */
+.o_section_list_actions {
+    gap: 6px !important;
+    padding: 0 10px 10px 0 !important;
+    margin-right: 2px !important;
+    align-self: flex-end !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    border-left: none !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+}
+
+.o_section_list_actions .btn {
+    padding: 6px 12px !important;
+    border-radius: 8px !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.15px;
+    border: 1px solid transparent !important;
+    box-shadow: 0 2px 4px rgba(61, 28, 18, 0.12);
+    transition: transform 0.12s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.o_section_list_actions .btn i,
+.o_section_list_actions .btn .fa {
+    margin-right: 4px;
+    font-size: 12px !important;
+    font-weight: normal !important;
+    line-height: 1 !important;
+    display: inline-block !important;
+    color: inherit !important;
+    vertical-align: middle;
+}
+
+.o_section_list_actions .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+    filter: brightness(1.04);
+}
+
+/* "Create" → brand maroon */
+.o_section_list_actions .btn.btn-primary,
+.o_section_list_actions .btn-warning[class*="Create"],
+.o_section_list_actions button:has(> i.fa-plus),
+.o_section_list_actions button:has(> i.fa-upload) {
+    background: linear-gradient(135deg, var(--bd-brand-700), var(--bd-brand-500)) !important;
+    color: #fff !important;
+    border-color: transparent !important;
+}
+
+/* "View / View/Edit" → info blue */
+.o_section_list_actions .btn-info,
+.o_section_list_actions button:has(> i.fa-eye),
+.o_section_list_actions button:has(> i.fa-pencil) {
+    background: linear-gradient(135deg, #2a5e8a, #3b7ab1) !important;
+    color: #fff !important;
+    border-color: transparent !important;
+}
+
+/* "Approve" → green gradient */
+.o_section_list_actions .btn-success,
+.o_section_list_actions button:has(> i.fa-check),
+.o_section_list_actions button:has(> i.fa-thumbs-up) {
+    background: linear-gradient(135deg, #2f6d4f, #4f9e73) !important;
+    color: #fff !important;
+    border-color: transparent !important;
+}
+
+/* "Return / Reject" → warm red */
+.o_section_list_actions .btn-danger,
+.o_section_list_actions button:has(> i.fa-times),
+.o_section_list_actions button:has(> i.fa-undo) {
+    background: linear-gradient(135deg, #9a2e1c, #c14b2d) !important;
+    color: #fff !important;
+    border-color: transparent !important;
+}
+
+/* "Action" grouped button (warning-ish) */
+.o_section_list_actions .btn-warning {
+    background: linear-gradient(135deg, #b06414, #d9892a) !important;
+    color: #fff !important;
+    border-color: transparent !important;
+}
+
+.o_section_list_actions .btn:disabled {
+    filter: grayscale(0.5);
+    opacity: 0.55 !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+/* ── Completion tick pulse on card title ────────────────────────────── */
+.o_completion_tick {
+    background: var(--bd-success-soft);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    justify-content: center;
+    border: 1px solid #c6deca;
+}
+
+.o_completion_tick i {
+    font-size: 11px !important;
+}
+
+/* ── Extra polish for scrollbar inside dashboard ─────────────────────── */
+.o_admin_dashboard .o_dashboard_content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.o_admin_dashboard .o_dashboard_content::-webkit-scrollbar-thumb {
+    background: rgba(138, 69, 49, 0.25);
+    border-radius: 6px;
+}
+
+.o_admin_dashboard .o_dashboard_content::-webkit-scrollbar-thumb:hover {
+    background: rgba(138, 69, 49, 0.45);
+}
+
+/* ── Responsive tweaks for modern layout ────────────────────────────── */
+@media (max-width: 1200px) {
+    .o_admin_dashboard {
+        padding: 12px;
+    }
+
+    .o_admin_dashboard .o_dashboard_header h2 {
+        font-size: 17px;
+    }
+
+    .o_section_list_step {
+        min-width: 56px !important;
+        width: 56px !important;
+    }
+
+    .o_step_number {
+        font-size: 22px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .o_admin_dashboard .o_dashboard_header {
+        flex-wrap: wrap !important;
+        padding: 10px 12px;
+    }
+
+    .o_admin_dashboard .o_dashboard_header h2 {
+        font-size: 15px;
+        width: 100%;
+    }
+
+    .o_section_list_item {
+        padding: 10px 10px 10px 0 !important;
+    }
+}
+
+/* Workflow step cards: stack action buttons below title/stats on narrow widths */
+@media (max-width: 992px) {
+    .o_section_list_item {
+        flex-wrap: wrap !important;
+    }
+
+    .o_section_list_actions {
+        flex: 1 1 100% !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        justify-content: flex-start !important;
+        padding: 10px 12px !important;
+        margin-top: 4px !important;
+        margin-right: 0 !important;
+        border-left: none !important;
+        border-top: 1px solid rgba(180, 130, 90, 0.22) !important;
+        border-radius: 0 0 11px 11px !important;
+        background: rgba(255, 255, 255, 0.22) !important;
+        box-sizing: border-box !important;
+    }
+
+    .o_section_list_actions .btn {
+        white-space: normal !important;
+        text-align: center !important;
+    }
+}
+
+/* Inline stats row — icon + number with pipe separators */
+.o_admin_dashboard .o_completion_widget_list.o_completion_single_line,
+.o_collector_dashboard .o_completion_widget_list.o_completion_single_line {
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 0 !important;
+    margin: 2px 0 0 !important;
+    padding: 4px 0 6px !important;
+}
+
+.o_admin_dashboard .o_completion_single_line .o_section_list_count,
+.o_collector_dashboard .o_completion_single_line .o_section_list_count {
+    display: inline-flex !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 0 !important;
+    width: auto !important;
+    font-size: inherit !important;
+}
+
+.o_admin_dashboard .o_completion_percent_list:has(+ .o_section_list_count)::after,
+.o_collector_dashboard .o_completion_percent_list:has(+ .o_section_list_count)::after,
+.o_admin_dashboard .o_completion_single_line .o_section_list_count .o_count_badge:not(:last-child)::after,
+.o_collector_dashboard .o_completion_single_line .o_section_list_count .o_count_badge:not(:last-child)::after {
+    content: "|" !important;
+    margin: 0 10px !important;
+    color: rgba(106, 74, 60, 0.38) !important;
+    font-weight: 300 !important;
+    font-size: 12px !important;
+}

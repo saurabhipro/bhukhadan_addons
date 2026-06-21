@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Template for the widget-->
+<templates xml:space="preserve">
+    <t t-name="CaptureImage">
+        <div class="o_image_capture_container">
+            <!-- Image/Video Preview Section -->
+            <div class="o_preview_section position-relative">
+                <!-- Image Preview (shown when saved image exists and canvas is not showing) -->
+                <img
+                    t-if="(props.value or (props.record and props.record.data and props.record.data[props.name])) and state.isValid"
+                    class="o_preview_img"
+                    alt="Survey Image"
+                    t-att-src="getUrl(props.previewImage or props.name)"
+                    t-att-name="props.name"
+                    t-att-height="props.height"
+                    t-att-width="props.width"
+                    t-att-style="sizeStyle"
+                    t-on-error.stop="onLoadFailed"
+                    t-att-data-tooltip-template="hasTooltip and tooltipAttributes.template"
+                    t-att-data-tooltip-info="hasTooltip and tooltipAttributes.info"
+                    t-att-data-tooltip-delay="hasTooltip and props.zoomDelay"/>
+                <div t-if="(props.value or (props.record and props.record.data and props.record.data[props.name])) and state.isValid" class="o_image_overlay_actions">
+                    <t t-if="!props.readonly">
+                        <FileUploader
+                            acceptedFileExtensions="props.acceptedFileExtensions"
+                            onUploaded.bind="onFileUploaded">
+                            <t t-set-slot="toggler">
+                                <button
+                                    class="o_edit_btn"
+                                    data-tooltip="Edit"
+                                    aria-label="Edit">
+                                    <i class="fa fa-pencil"/>
+                                </button>
+                            </t>
+                        </FileUploader>
+                        <button
+                            class="o_delete_btn"
+                            data-tooltip="Clear"
+                            aria-label="Clear"
+                            t-on-click="onFileRemove">
+                            <i class="fa fa-trash"/>
+                        </button>
+                    </t>
+                </div>
+                
+                <!-- Video Player (always rendered, shown when camera is active) -->
+                <video id="player" class="o_video_player d-none" t-ref="player"
+                       autoplay="true" playsinline="true"/>
+                
+                <!-- Snapshot Canvas Preview (shown immediately after capture) -->
+                <canvas class="o_snapshot_canvas d-none" id="snapshot" width="320" height="240" t-ref="snapshot_canvas"/>
+            </div>
+
+            <!-- Control Buttons Section -->
+            <t t-if="!props.readonly">
+                <div class="o_controls_section">
+                    <!-- Initial Camera Button -->
+                    <button
+                        id="camera" t-ref="camera"
+                        class="o_camera_btn"
+                        t-on-click="OnClickOpenCamera"
+                        aria-label="Open Camera">
+                        <i class="fa fa-camera"/>
+                        <span>Open Camera</span>
+                    </button>
+
+                    <!-- Capture Button (when camera is active) -->
+                    <button
+                        id="capture" t-ref="capture"
+                        type="button"
+                        class="o_capture_btn d-none"
+                        t-on-click="OnClickCaptureImage">
+                        <i class="fa fa-camera"/>
+                        <span>Capture</span>
+                    </button>
+
+                    <!-- Save Image Button -->
+                    <button
+                        id="save_image" t-ref="save_image"
+                        type="button"
+                        class="o_save_btn d-none"
+                        t-on-click="OnClickSaveImage">
+                        <i class="fa fa-check"/>
+                        <span>Save Image</span>
+                    </button>
+                </div>
+            </t>
+            <input type="hidden" name="image" id="image"/>
+        </div>
+    </t>
+</templates>

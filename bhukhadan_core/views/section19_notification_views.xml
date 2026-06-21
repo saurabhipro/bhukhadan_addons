@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Section 19 Notification List View -->
+    <record id="view_section19_notification_list" model="ir.ui.view">
+        <field name="name">bhu.section19.notification.list</field>
+        <field name="model">bhu.section19.notification</field>
+        <field name="arch" type="xml">
+            <list string="Section 19 Notifications" delete="1" create="not groups='bhukhadan_core.group_bhuarjan_collector'">
+                <field name="name" string="Notification Name"/>
+                <field name="project_id" string="Project"/>
+                <field name="village_id" string="Village"/>
+                <field name="khasra_numbers" string="Khasra Numbers"/>
+                <field name="khasra_count" string="Khasra Count"/>
+                <field name="state" widget="badge" string="Status" decoration-success="state == 'signed'" decoration-info="state == 'generated'" decoration-muted="state == 'draft'"/>
+                <field name="pending_with" string="Pending With" invisible="state == 'approved'"/>
+                <field name="signed_date" string="Signed Date"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Section 19 Notification Form View -->
+    <record id="view_section19_notification_form" model="ir.ui.view">
+        <field name="name">bhu.section19.notification.form</field>
+        <field name="model">bhu.section19.notification</field>
+        <field name="arch" type="xml">
+            <form string="Section 19 Notification" class="bhu_approved_form">
+                <field name="is_sdm" invisible="1"/>
+                <field name="is_collector" invisible="1"/>
+                <field name="is_admin" invisible="1"/>
+                <field name="is_approved_readonly" invisible="1"/>
+                <field name="can_sdm_edit" invisible="1"/>
+                <field name="can_collector_edit" invisible="1"/>
+                <!-- Loaded here so collector tab modifiers can read SDM file fields (SDM section is group-restricted) -->
+                <field name="sdm_signed_file" invisible="1"/>
+                <field name="sdm_signed_filename" invisible="1"/>
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved,send_back" options="{'clickable': True}"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Approved" bg_color="text-bg-success" invisible="state != 'approved'"/>
+                    <div class="oe_title" style="margin-bottom: 10px; padding-bottom: 8px;">
+                        <h1 style="font-size: 28px; font-weight: 700; color: #8B4513; margin: 0;">
+                            <i class="fa fa-bullhorn" style="margin-right: 10px;"></i>Section 19 Notification / धारा 19 अधिसूचना
+                        </h1>
+                    </div>
+                    
+                    <div invisible="not project_id or not village_id" class="mt-2 mb-3 p-2 rounded w-100" style="background-color: #e9ecef; border-left: 4px solid #8B4513; color: #495057; clear: both;">
+                         <i class="fa fa-info-circle me-1"></i>
+                         Creating Section 19 Notification for Village <field name="village_id" readonly="1" options="{'no_open': True}" class="fw-bold" style="color: #8B4513;"/>, 
+                         Project <field name="project_id" readonly="1" options="{'no_open': True}" class="fw-bold" style="color: #8B4513;"/>
+                    </div>
+                    <group>
+                        <field name="pending_with" string="Pending With / लंबित" readonly="1" invisible="1"/>
+                    </group>
+                    
+                    <group>
+                        <group>
+                            <field name="project_id" required="1"
+                                   options="{'no_create': True, 'no_open': True}"
+                                   readonly="1" force_save="1"/>
+                            <field name="village_id" required="1"
+                                   options="{'no_create_edit': True, 'no_open':True, 'no_create':True}"
+                                   placeholder="Village"
+                                   readonly="1" force_save="1"/>
+                        </group>
+                        <group>
+                             <field name="prakaran_kramank" string="Bhu-arjan Prakaran Kramank / भू-अर्जन प्रकरण क्रमांक"
+                                    readonly="is_approved_readonly or (state == 'submitted' and not can_collector_edit)"/>
+                        </group>
+                    </group>
+                    
+                    <!-- Hidden Fields -->
+                    <group invisible="1">
+                        <field name="district_id" readonly="1"/>
+                        <field name="tehsil_id" readonly="1"/>
+                    </group>
+                    
+                    <style>
+                        .section-card {
+                            background-color: #fff;
+                            padding: 20px;
+                            margin-bottom: 20px;
+                            border: 1px solid #e0e0e0;
+                            border-radius: 4px;
+                        }
+                        .section-header {
+                            font-size: 1.1rem;
+                            font-weight: 600;
+                            color: #6c757d;
+                            border-bottom: 2px solid #8B4513;
+                            padding-bottom: 10px;
+                            margin-bottom: 20px;
+                            text-transform: uppercase;
+                            letter-spacing: 0.5px;
+                        }
+                        .custom-btn-primary {
+                            background-color: #8B4513 !important;
+                            border-color: #8B4513 !important;
+                            color: white !important;
+                        }
+                        .custom-btn-success {
+                            background-color: #28a745 !important;
+                            border-color: #28a745 !important;
+                            color: white !important;
+                            border-radius: 5px !important;
+                            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                            font-weight: 600;
+                            transition: all 0.2s;
+                            margin-right: 15px !important;
+                        }
+                        .custom-btn-success:hover {
+                            background-color: #218838 !important;
+                            transform: translateY(-1px);
+                            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+                        }
+                        .custom-btn-danger {
+                            background-color: #dc3545 !important;
+                            border-color: #dc3545 !important;
+                            color: white !important;
+                            border-radius: 5px !important;
+                            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                            font-weight: 600;
+                            transition: all 0.2s;
+                        }
+                        .custom-btn-danger:hover {
+                            background-color: #c82333 !important;
+                            transform: translateY(-1px);
+                            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+                        }
+                        .custom-btn-teal {
+                            background-color: #008080 !important;
+                            border-color: #008080 !important;
+                            color: white !important;
+                        }
+                    </style>
+
+                    <notebook>
+                        <!-- SDM Tab -->
+                        <page string="SDM Section / SDM अनुभाग" name="sdm_tab">
+                            <!-- SDM Section / SDM अनुभाग -->
+                            <div class="section-card" groups="bhukhadan_core.group_bhuarjan_sdm,bhukhadan_core.group_bhuarjan_admin,base.group_system" 
+                                 invisible="(is_collector and not is_admin)">
+                                <div class="section-header">SDM Section / SDM अनुभाग</div>
+                        <div class="row">
+                            <!-- Left: Download Options -->
+                            <div class="col-md-6 border-right">
+                                <div style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Step 1: Download Proposal</div>
+                                <div class="mb-3">
+                                    <button name="action_download_unsigned_file" string="Section 19 Proposal" type="object" 
+                                            class="btn custom-btn-primary" icon="fa-download"
+                                            style="margin-bottom: 10px; padding: 10px 15px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"/>
+                                </div>
+                                
+                                <div invisible="not sdm_signed_file">
+                                    <div style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Signed Document</div>
+                                    <button name="action_download_sdm_signed_file" 
+                                            type="object" 
+                                            class="btn custom-btn-primary"
+                                            title="Download SDM Signed Section 19"
+                                            style="margin-bottom: 10px; padding: 10px 15px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                        <i class="fa fa-download" style="margin-right: 10px;"/>
+                                        <i class="fa fa-check-circle" style="margin-right: 5px;"/>
+                                        SDM Signed
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Right: Upload & Submit -->
+                            <div class="col-md-6">
+                                <div style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Step 2: Upload Signed Proposal</div>
+                                <div class="bg-light p-3 rounded">
+                                    <div class="mb-3">
+                                        <field name="sdm_signed_file" filename="sdm_signed_filename" 
+                                               options="{'accepted_file_extensions': '.pdf'}"
+                                               widget="binary" class="w-100"
+                                               string="Upload SDM Signed Section 19 / हस्ताक्षरित अधिसूचना अपलोड करें"
+                                               readonly="state != 'draft' and not is_admin"/>
+                                        <field name="sdm_signed_filename" invisible="1"/>
+                                    </div>
+
+                                    <div invisible="not sdm_signed_file or (state not in ('draft', 'send_back') and not is_admin)">
+                                         <button name="action_submit" string="Submit to Collector" type="object" 
+                                                 class="btn custom-btn-teal" icon="fa-paper-plane"
+                                                 invisible="state != 'draft'"/>
+                                         
+                                         <!-- Resubmit Button -->
+                                         <button name="action_draft" string="Resubmit / पुनः जमा करें" type="object" 
+                                                 class="btn custom-btn-primary w-100" icon="fa-refresh"
+                                                 invisible="state != 'send_back'"/>
+                                                 
+                                         <div class="text-muted small mt-1" invisible="state != 'draft'">
+                                             <i class="fa fa-info-circle"/> Click to submit for approval.
+                                         </div>
+                                    </div>
+                                    
+                                    <div class="alert alert-warning mt-2" role="alert" invisible="sdm_signed_file">
+                                        <i class="fa fa-exclamation-triangle me-2"></i>
+                                        Please upload the signed document to proceed.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                        </page>
+
+                        <!-- Collector Tab -->
+                        <page string="Collector Section / कलेक्टर अनुभाग" name="collector_tab" 
+                              groups="bhukhadan_core.group_bhuarjan_collector,bhukhadan_core.group_bhuarjan_admin">
+                            <!-- Collector Section / कलेक्टर अनुभाग -->
+                            <div class="section-card" invisible="not (is_collector or is_admin) or (is_admin and state in ('draft', 'send_back'))">
+                                <div class="section-header">Collector Section / कलेक्टर अनुभाग</div>
+                        <div class="row">
+                            <!-- Left: Download Options -->
+                            <div class="col-md-6 border-right">
+                                <div style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Step 1: Download Documents</div>
+                                <div class="d-flex flex-wrap mb-3">
+                                    <button name="action_download_sdm_signed_file" 
+                                            type="object" 
+                                            class="btn custom-btn-primary mr-2 mb-2"
+                                            title="Download SDM Signed Section 19"
+                                            invisible="not sdm_signed_file">
+                                        <i class="fa fa-download" style="margin-right: 5px;"/> SDM Signed
+                                    </button>
+                                    
+                                    <button name="action_download_latest_pdf" 
+                                            string="Section 19 Proposal" type="object" 
+                                            class="btn custom-btn-primary mb-2" icon="fa-download"
+                                            title="Download Latest PDF"/>
+                                </div>
+                                
+                                <div invisible="not collector_signed_file" class="mt-3">
+                                    <div style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Signed Document</div>
+                                    <button name="action_download_collector_signed_file"
+                                            type="object" 
+                                            class="btn custom-btn-primary"
+                                            title="Download Collector Signed Section 19">
+                                        <i class="fa fa-download" style="margin-right: 5px;"/>
+                                        <i class="fa fa-check-circle" style="margin-right: 5px;"/>
+                                        Collector Signed
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Right: Upload & Workflow -->
+                            <div class="col-md-6">
+                                <div style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Step 2: Upload &amp; Approve</div>
+                                <div class="bg-light p-3 rounded">
+                                    <div class="mb-3">
+                                        <field name="collector_signed_file" filename="collector_signed_filename" 
+                                               string="Upload Collector Signed Section 19 / हस्ताक्षरित आदेश अपलोड करें"
+                                               widget="binary"
+                                               options="{'accepted_file_extensions': '.pdf'}"
+                                               readonly="state != 'submitted'"
+                                               placeholder="Upload Section 19 Approval Letter"/>
+                                        <field name="collector_signed_filename" invisible="1"/>
+                                    </div>
+
+                                    <div class="alert alert-info mt-2" role="alert" invisible="state != 'draft'">
+                                        <i class="fa fa-info-circle me-2"></i>
+                                        Waiting for SDM to submit. Upload and approval will be available once the status is Submitted.
+                                    </div>
+                                    
+                                    <!-- Action Buttons -->
+                                    <div class="d-flex" invisible="state != 'submitted'" style="margin-top: 15px;">
+                                        <button name="action_approve" string="Approve / स्वीकृत करें" type="object" 
+                                                class="btn custom-btn-success flex-fill" 
+                                                icon="fa-check"
+                                                groups="bhukhadan_core.group_bhuarjan_collector,bhukhadan_core.group_bhuarjan_admin,base.group_system"
+                                                invisible="not collector_signed_file"
+                                                confirm="Are you sure want to approve this record."/>
+                                        
+                                        <button name="action_send_back" string="Send Back / वापस भेजें" type="object" 
+                                                class="btn custom-btn-danger flex-fill" 
+                                                icon="fa-times"
+                                                groups="bhukhadan_core.group_bhuarjan_collector,bhukhadan_core.group_bhuarjan_admin,base.group_system"
+                                                confirm="Are you sure want to send back this record."/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            </div>
+                        </page>
+
+                        <!-- Surveys Tab -->
+                        <page string="Surveys / सर्वे" name="surveys_tab">
+                            <style>
+                                .o_list_table thead {
+                                    background-color: #8B4513 !important;
+                                }
+                                .o_list_table thead th {
+                                    color: white !important;
+                                    font-weight: bold !important;
+                                }
+                                /* Highlight rows with approved objections with a light background */
+                                .o_list_table tr.text-danger {
+                                    background-color: #FFF5F5 !important;
+                                }
+                                .o_list_table tr.text-danger:hover {
+                                    background-color: #FFEBEB !important;
+                                }
+                            </style>
+                            <field name="survey_ids" readonly="1" nolabel="1">
+                                <list string="Surveys" decoration-danger="has_approved_objection">
+                                    <field name="has_approved_objection" invisible="1"/>
+                                    <field name="khasra_number" string="Khasra"/>
+                                    <field name="acquired_area" string="Area (Ha)"/>
+                                    <field name="state" widget="badge" string="Status"/>
+                                    <field name="landowner_ids" widget="many2many_tags" string="Landowners"/>
+                                    <field name="approved_objection_id" string="Objection Ref" widget="many2one" optional="show"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter groups="bhukhadan_core.group_bhuarjan_sdm,bhukhadan_core.group_bhuarjan_collector,bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Section 19 Notification Search View -->
+    <record id="view_section19_notification_search" model="ir.ui.view">
+        <field name="name">bhu.section19.notification.search</field>
+        <field name="model">bhu.section19.notification</field>
+        <field name="arch" type="xml">
+            <search string="Section 19 Notifications">
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="village_id"/>
+                <field name="district_id"/>
+                <field name="tehsil_id"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Generated" name="generated" domain="[('state', '=', 'generated')]"/>
+                <filter string="Signed" name="signed" domain="[('state', '=', 'signed')]"/>
+                <separator/>
+                <filter string="With Signed Document" name="has_signed" domain="[('has_signed_document', '=', True)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Project" name="group_project" context="{'group_by': 'project_id'}"/>
+                    <filter string="District" name="group_district" context="{'group_by': 'district_id'}"/>
+                    <filter string="Tehsil" name="group_tehsil" context="{'group_by': 'tehsil_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Section 19 Notification Graph View -->
+    <record id="view_section19_notification_graph" model="ir.ui.view">
+        <field name="name">bhu.section19.notification.graph</field>
+        <field name="model">bhu.section19.notification</field>
+        <field name="arch" type="xml">
+            <graph string="Section 19 Analysis" type="bar" sample="1">
+                <field name="village_id"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Section 19 Notification Pivot View -->
+    <record id="view_section19_notification_pivot" model="ir.ui.view">
+        <field name="name">bhu.section19.notification.pivot</field>
+        <field name="model">bhu.section19.notification</field>
+        <field name="arch" type="xml">
+            <pivot string="Section 19 Analysis" sample="1">
+                <field name="village_id" type="row"/>
+                <field name="project_id" type="col"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Section 19 Notification Wizard Form View -->
+    <record id="view_section19_notification_wizard_form" model="ir.ui.view">
+        <field name="name">bhu.section19.notification.wizard.form</field>
+        <field name="model">bhu.section19.notification.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate Section 19 Notification">
+                <group>
+                    <field name="project_id" required="1" options="{'no_create': True, 'no_open': True}"/>
+                    <field name="village_id" required="1" 
+                           options="{'no_create_edit': True, 'no_open':True, 'no_create':True}"
+                           placeholder="Select village from project..."/>
+                </group>
+                <footer>
+                    <button string="Generate Notification" name="action_generate_notification" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Section 19 Notification Action -->
+    <record id="action_section19_notification" model="ir.actions.act_window">
+        <field name="name">Section 19 Notifications</field>
+        <field name="res_model">bhu.section19.notification</field>
+        <field name="view_mode">list,graph,pivot,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Section 19 Notification
+            </p>
+            <p>
+                Section 19 Notification is issued by the Collector declaring that the land is required for public purpose.
+            </p>
+        </field>
+    </record>
+
+    <!-- Section 19 Notification Wizard Action -->
+    <record id="action_section19_notification_wizard" model="ir.actions.act_window">
+        <field name="name">Generate Section 19 Notification / धारा 19 अधिसूचना जेनरेट करें</field>
+        <field name="res_model">bhu.section19.notification.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>
+

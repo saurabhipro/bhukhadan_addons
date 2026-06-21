@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="acts_page" name="BhuKhadan – CBA Act">
+        <t t-call="website.layout">
+            <t t-set="additional_title">CBA(A&amp;D) Act 1957 — Stage Workflows</t>
+            <t t-set="meta_description">BhuKhadan supports Coal Bearing Areas (Acquisition &amp; Development) Act 1957 with section-wise digital tracking from Section 4(i) notification through award.</t>
+            <t t-set="bhu_page_keywords" t-value="'CBA Act 1957, Coal Bearing Areas, Section 4, Section 7, Section 11, SECL, coal acquisition, BhuKhadan'"/>
+            <t t-set="no_header" t-value="1"/>
+            <t t-set="no_footer" t-value="1"/>
+            <t t-set="head">
+                <t t-call="bhukhadan_web.seo_head"/>
+                <link rel="stylesheet" type="text/css"
+                      t-attf-href="/bhukhadan_web/static/src/css/bhuarjan_website.css?v=18.0.1.2.6"/>
+                <link rel="stylesheet"
+                      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+                <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap"
+                      rel="stylesheet"/>
+            </t>
+
+            <t t-call="bhukhadan_web.navbar"/>
+
+            <section class="bhu-acts-hero">
+                <span class="tag">CBA(A&amp;D) Act 1957</span>
+                <h1>Coal Bearing Areas — Stage Workflows</h1>
+                <p>
+                    BHUKHADAN digitises coal-bearing land acquisition under the CBA(A&amp;D) Act, 1957 —
+                    from Area Level Committee proposal through Gazette publication, land records, DRRC,
+                    asset survey, and award.
+                </p>
+            </section>
+
+            <section class="bhu-acts-wrap">
+                <div class="bhu-acts-head">
+                    <span class="tag">Statutory Pipeline</span>
+                    <h2>CBA sections covered in BhuKhadan</h2>
+                    <p>Sections 4, 7, 8, 9, and 11 — plus post-Gazette land records, DRRC, asset survey, and award.</p>
+                </div>
+
+                <div class="bhu-acts-grid">
+                    <article class="bhu-act-card">
+                        <div class="bhu-act-top">
+                            <div class="bhu-act-icon"><i class="fa fa-mountain"/></div>
+                            <div>
+                                <h3><a href="/features/cba" style="color:inherit;">CBA(A&amp;D) Act 1957</a></h3>
+                                <p>Coal bearing land acquisition for SECL and coal PSUs — from preliminary notification to acquisition order and award. <a href="/features/cba/section-4">Section 4 guide →</a></p>
+                            </div>
+                        </div>
+                        <div class="bhu-act-flow">
+                            <span>Sec 4(i) Notification</span>
+                            <span>Sec 7(i) Intention</span>
+                            <span>Sec 8 Objections</span>
+                            <span>Sec 9(i) Declaration</span>
+                            <span>Sec 11(i) Order</span>
+                            <span>Land Records</span>
+                            <span>DRRC</span>
+                            <span>Asset Survey</span>
+                            <span>Award</span>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section class="bhu-act-stage-wrap">
+                <div class="bhu-act-stage-inner">
+                    <div class="bhu-sec-head">
+                        <span class="tag">CBA Stage Journey</span>
+                        <h2>Coal bearing acquisition architecture</h2>
+                        <p>From Area Level Committee proposal through Gazette publication, land records, DRRC, and award.</p>
+                    </div>
+                    <div class="bhu-act-stage-line">
+                        <div class="bhu-act-stage"><span>1</span><p>Sec 4(i)</p></div>
+                        <div class="bhu-act-stage"><span>2</span><p>Sec 7(i)</p></div>
+                        <div class="bhu-act-stage"><span>3</span><p>Sec 8</p></div>
+                        <div class="bhu-act-stage"><span>4</span><p>Sec 9(i)</p></div>
+                        <div class="bhu-act-stage"><span>5</span><p>Sec 11(i)</p></div>
+                        <div class="bhu-act-stage"><span>6</span><p>Land Records</p></div>
+                        <div class="bhu-act-stage"><span>7</span><p>DRRC</p></div>
+                        <div class="bhu-act-stage"><span>8</span><p>Award</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <t t-call="bhukhadan_web.footer"/>
+        </t>
+    </template>
+
+</odoo>

@@ -1,0 +1,1659 @@
+/* R&R Payment Voucher — warm brown theme (matches Section 23 / app palette, no gradients) */
+
+.bhu_payment_voucher_premium {
+    --bhu-pv-brown: #6a2d1d;
+    --bhu-pv-brown-mid: #7e4a39;
+    --bhu-pv-brown-light: #8a4531;
+    --bhu-pv-brown-soft: #faf7f4;
+    --bhu-pv-brown-border: rgba(106, 45, 29, 0.14);
+}
+
+.bhu_payment_voucher_premium .o_form_sheet {
+    max-width: 1400px;
+}
+
+/* Unified header — compact stat grid + debit row */
+.bhu_payment_voucher_premium .bhu_pv_unified_banner {
+    margin: 0 0 12px 0;
+    border-radius: 10px;
+    background: linear-gradient(180deg, #faf4ef 0%, #f0e4da 100%);
+    border: 1px solid #e0cfc0;
+    box-shadow: 0 2px 10px rgba(106, 45, 29, 0.08);
+    padding: 12px 14px;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_banner_grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+}
+
+@media (max-width: 1200px) {
+    .bhu_payment_voucher_premium .bhu_pv_banner_grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+.bhu_payment_voucher_premium .bhu_pv_stat_card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    min-width: 0;
+    padding: 10px 12px;
+    background: #fff;
+    border: 1px solid #e8ddd4;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(59, 36, 20, 0.04);
+}
+
+.bhu_payment_voucher_premium .bhu_pv_stat_lbl {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #8b6f5c;
+    line-height: 1.2;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_stat_val {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    min-height: 1.35rem;
+    min-width: 0;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_stat_ref .bhu_pv_field,
+.bhu_payment_voucher_premium .bhu_pv_stat_ref .o_field_widget {
+    font-size: 0.88rem !important;
+    font-weight: 800 !important;
+    word-break: break-all;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_stat_money .bhu_pv_field,
+.bhu_payment_voucher_premium .bhu_pv_stat_money .o_field_widget {
+    font-size: 1rem !important;
+    font-weight: 800 !important;
+    color: #3b2414 !important;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_stat_project .bhu_pv_stat_val,
+.bhu_payment_voucher_premium .bhu_pv_stat_village .bhu_pv_stat_val,
+.bhu_payment_voucher_premium .bhu_pv_stat_award .bhu_pv_stat_val {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_banner_footer {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px 14px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #e0cfc0;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_debit_lbl {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #8b6f5c;
+    white-space: nowrap;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_banner_footer .bhu_pv_field_debit {
+    flex: 1 1 12rem;
+    max-width: 280px;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_status_wrap {
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_status_wrap .badge {
+    font-size: 0.78rem !important;
+    font-weight: 700 !important;
+    padding: 0.3em 0.65em !important;
+    line-height: 1.25 !important;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_progress {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #6a4a38;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_progress_sep,
+.bhu_payment_voucher_premium .bhu_pv_progress_hint {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: #9a7b6a;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_counts_val {
+    gap: 6px;
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: #3b2414;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_count_sep {
+    color: #c4a88a;
+    font-weight: 600;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_unified_banner .o_form_label,
+.bhu_payment_voucher_premium .bhu_pv_unified_banner label.o_form_label {
+    display: none !important;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_field,
+.bhu_payment_voucher_premium .bhu_pv_field .o_field_widget,
+.bhu_payment_voucher_premium .bhu_pv_field_num,
+.bhu_payment_voucher_premium .bhu_pv_field_num .o_field_widget {
+    font-size: 0.84rem !important;
+    font-weight: 600 !important;
+    color: #3b2414 !important;
+    line-height: 1.3 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    width: auto !important;
+    max-width: 100%;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_field_debit input {
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+    width: 100% !important;
+    max-width: 280px !important;
+    border: 1px solid #d4c4bc !important;
+    border-radius: 6px !important;
+    padding: 6px 10px !important;
+    background: #fff !important;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_field .o_field_many2one a {
+    color: #6a2d1d !important;
+    font-weight: 700;
+}
+
+
+/* No workflow statusbar — Pending / Completed only in banner badge */
+.bhu_payment_voucher_premium header .o_field_statusbar,
+.bhu_payment_voucher_premium header .o_statusbar_status {
+    display: none !important;
+}
+
+
+.bhu_payment_voucher_premium .bhu_pv_status_inline {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 5px;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_closure_pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_closure_pending {
+    background: #fff8e6;
+    color: #92400e;
+    border: 1px solid #fde68a;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_closure_completed {
+    background: #e8f5e9;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_closure_mini {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #8b6f5c;
+    white-space: nowrap;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_closure_mini_field,
+.bhu_payment_voucher_premium .bhu_pv_closure_mini_field .o_field_widget {
+    color: #6a2d1d !important;
+    font-weight: 800 !important;
+    font-size: 0.68rem !important;
+    width: auto !important;
+    min-width: 0 !important;
+    display: inline !important;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_section_title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 8px 0 12px 0;
+    font-weight: 800;
+    font-size: 1.05rem;
+    color: var(--bhu-pv-brown);
+}
+
+.bhu_payment_voucher_premium .bhu_pv_section_title .bhu_pv_badge {
+    background: var(--bhu-pv-brown-light);
+    color: #fff;
+    font-size: 0.7rem;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_line_kanban .o_kanban_record {
+    border-radius: 14px;
+    border: 1px solid var(--bhu-pv-brown-border);
+    box-shadow: 0 4px 14px rgba(106, 45, 29, 0.06);
+    background: #fff;
+    margin-bottom: 10px;
+    padding: 0 !important;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_line_kanban .o_kanban_record:hover {
+    border-color: rgba(106, 45, 29, 0.35);
+    box-shadow: 0 8px 22px rgba(106, 45, 29, 0.1);
+}
+
+.bhu_payment_voucher_premium .bhu_pv_kanban_inner {
+    padding: 12px 14px;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_kanban_top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_kanban_serial {
+    font-weight: 900;
+    font-size: 1.15rem;
+    color: var(--bhu-pv-brown);
+    min-width: 2rem;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_kanban_khasra {
+    font-weight: 800;
+    color: #334155;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_kanban_amt {
+    font-weight: 800;
+    color: var(--bhu-pv-brown);
+    font-variant-numeric: tabular-nums;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_kanban_owner {
+    font-size: 0.82rem;
+    color: #475569;
+    line-height: 1.35;
+    margin-bottom: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_kanban_foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(106, 45, 29, 0.18);
+    font-size: 0.78rem;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_mode_single {
+    background: #ecfdf5;
+    color: #047857;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-weight: 700;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_mode_split {
+    background: #fdf4ec;
+    color: var(--bhu-pv-brown);
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-weight: 700;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_hint_ok {
+    color: #047857;
+    font-weight: 600;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_hint_warn {
+    color: #b45309;
+    font-weight: 600;
+}
+
+/* Line editor (dialog) — compact layout, minimal whitespace */
+.o_dialog .modal-dialog:has(.bhu_payment_voucher_line_form) {
+    max-width: 920px;
+}
+
+.bhu_payment_voucher_line_form .o_form_sheet {
+    padding: 10px 14px 12px !important;
+    margin: 0 !important;
+    max-width: none;
+}
+
+.bhu_payment_voucher_line_form .o_form_sheet_bg {
+    padding: 0 !important;
+}
+
+.bhu_payment_voucher_line_form .o_inner_group {
+    margin-bottom: 0 !important;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_section_title {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.45px;
+    color: var(--bhu-pv-brown, #6a2d1d);
+    margin-bottom: 8px;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_payout_block {
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(106, 45, 29, 0.12);
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_payout_block .o_field_radio.o_horizontal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.75rem;
+    margin: 0;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_payout_block .o_field_radio.o_horizontal .o_radio_item {
+    display: inline-flex !important;
+    align-items: center;
+    margin: 0;
+    padding: 7px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--bhu-pv-brown-border, rgba(106, 45, 29, 0.2));
+    background: #fff;
+    cursor: pointer;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_payout_block .o_field_radio.o_horizontal .o_radio_item label,
+.bhu_payment_voucher_line_form .bhu_pv_payout_block .o_field_radio.o_horizontal .o_radio_item .o_form_label {
+    display: inline !important;
+    visibility: visible !important;
+    font-size: 0.88rem !important;
+    font-weight: 700 !important;
+    color: #334155 !important;
+    margin: 0 0 0 8px !important;
+    padding: 0 !important;
+    cursor: pointer;
+    opacity: 1 !important;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_payout_block .o_field_radio.o_horizontal .o_radio_item:has(input:checked) {
+    background: var(--bhu-pv-brown-soft, #faf7f4);
+    border-color: var(--bhu-pv-brown, #6a2d1d);
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_payout_block .o_field_radio.o_horizontal .o_radio_item:has(input:checked) label,
+.bhu_payment_voucher_line_form .bhu_pv_payout_block .o_field_radio.o_horizontal .o_radio_item:has(input:checked) .o_form_label {
+    color: var(--bhu-pv-brown, #6a2d1d) !important;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_input_label {
+    display: block !important;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #334155;
+    margin-bottom: 4px;
+    letter-spacing: 0.02em;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_labeled_field {
+    margin-bottom: 10px;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_labeled_field .o_field_widget {
+    width: 100%;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_bank_stacked {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_bank_row2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 14px;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_bank_panel {
+    background: var(--bhu-pv-brown-soft, #faf7f4);
+    border: 1px solid var(--bhu-pv-brown-border, rgba(106, 45, 29, 0.14));
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_locked_strip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: #fff8e6;
+    border: 1px solid #fde68a;
+    color: #92400e;
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_locked_strip .fa-lock {
+    color: #b45309;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_line_readonly_head .bhu_pv_line_owner_line {
+    margin-top: 8px;
+    font-size: 0.88rem;
+    line-height: 1.4;
+    opacity: 0.95;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_ro_export {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_ro_export .bhu_pv_line_label {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_ro_export .o_field_widget {
+    color: #fff !important;
+    font-weight: 800 !important;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_line_banner {
+    padding: 10px 12px 10px;
+    border-radius: 10px;
+    background: var(--bhu-pv-brown-mid, #7e4a39);
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_line_banner .o_field_widget,
+.bhu_payment_voucher_line_form .bhu_pv_line_banner .o_input,
+.bhu_payment_voucher_line_form .bhu_pv_line_banner input {
+    color: #fff !important;
+    background: transparent !important;
+    border: none !important;
+    font-weight: 800;
+    padding: 0 !important;
+    min-height: unset !important;
+    box-shadow: none !important;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_line_banner_top {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px 12px;
+    align-items: end;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_payable_hero {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_payable_hero .bhu_pv_metric_k {
+    display: block;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    opacity: 0.9;
+    margin-bottom: 2px;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_payable_amt,
+.bhu_payment_voucher_line_form .bhu_pv_payable_amt .o_field_widget,
+.bhu_payment_voucher_line_form .bhu_pv_payable_amt input {
+    font-size: 1.55rem !important;
+    font-weight: 900 !important;
+    line-height: 1.1 !important;
+    letter-spacing: -0.02em;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_line_status_row {
+    margin-top: 8px;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_line_status_row .badge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 6px;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_metric {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_metric_k {
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.55px;
+    opacity: 0.88;
+    line-height: 1.1;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_metric_v {
+    font-weight: 800;
+    font-size: 0.95rem;
+    line-height: 1.15;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_line_label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: #64748b;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_split_panel {
+    border: 1px solid var(--bhu-pv-brown-border, rgba(106, 45, 29, 0.14));
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+    padding: 10px 12px 0;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_split_panel .bhu_pv_section_title {
+    margin-bottom: 6px;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_micro_hint .fa {
+    margin-right: 4px;
+    opacity: 0.85;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_line_owner_line {
+    font-size: 0.78rem;
+    line-height: 1.3;
+    opacity: 0.95;
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_line_body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_micro_hint {
+    font-size: 0.75rem;
+    line-height: 1.35;
+    color: #334155;
+    background: #eef6ff;
+    border-radius: 8px;
+    padding: 6px 10px;
+    margin: 0;
+    border-left: 3px solid #64748b;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_split_hint_strip {
+    padding: 5px 10px;
+    border-radius: 0;
+    background: #fffbeb;
+    border-bottom: 1px solid #fcd34d;
+    color: #92400e;
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_split_hint_strip .o_field_widget {
+    margin: 0;
+    font-weight: 600;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_split_panel .o_list_view {
+    margin: 0;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_split_list .o_list_table thead th {
+    background: #6a2d1d !important;
+    color: #fff !important;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding-top: 0.4rem !important;
+    padding-bottom: 0.4rem !important;
+    white-space: nowrap;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_split_list .o_list_table tbody td {
+    padding-top: 0.3rem !important;
+    padding-bottom: 0.3rem !important;
+    vertical-align: middle;
+    font-size: 0.85rem;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_split_list .o_list_table td[name="percent_share"] {
+    max-width: 70px;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_split_list .o_list_table td[name="amount"] {
+    font-weight: 700;
+    color: var(--bhu-pv-brown, #6a2d1d);
+    font-variant-numeric: tabular-nums;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_split_list .o_handle_cell {
+    display: none !important;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_split_list .o_list_record_remove {
+    width: 28px;
+    padding: 0 !important;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_locked_msg {
+    margin-top: 8px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    color: #065f46;
+    font-size: 0.82rem;
+}
+
+@media (max-width: 768px) {
+    .bhu_payment_voucher_line_form .bhu_pv_line_banner_top,
+    .bhu_payment_voucher_line_form .bhu_pv_bank_row2 {
+        grid-template-columns: 1fr;
+    }
+}
+
+.bhu_payment_voucher_premium .bhu_pv_lines_wrap {
+    margin-top: 4px;
+    border: 1px solid var(--bhu-pv-brown-border, rgba(106, 45, 29, 0.14));
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_line_list tbody tr.o_data_row {
+    cursor: pointer;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_line_list tbody tr.o_data_row:hover {
+    background: #faf5f2 !important;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_line_list tbody tr.o_data_row td {
+    vertical-align: middle;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_lines_wrap .o_list_renderer,
+.bhu_payment_voucher_premium [name="line_ids"] .o_list_view {
+    border: none !important;
+    border-radius: 0 !important;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_lines_wrap .o_list_renderer {
+    overflow: visible;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_lines_wrap .o_list_renderer table.o_list_table thead > tr > th,
+.bhu_payment_voucher_premium .bhu_pv_line_list .o_list_table thead th,
+.bhu_payment_voucher_premium [name="line_ids"] .o_list_view thead th {
+    background: #6a2d1d !important;
+    color: #fff !important;
+    font-weight: 700;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.45px;
+    border-color: rgba(255, 255, 255, 0.14) !important;
+    vertical-align: middle;
+    padding-top: 0.55rem !important;
+    padding-bottom: 0.55rem !important;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_lines_wrap .o_list_renderer table.o_list_table thead > tr > th *,
+.bhu_payment_voucher_premium .bhu_pv_lines_wrap .o_list_renderer .o_optional_columns_dropdown_toggle,
+.bhu_payment_voucher_premium .bhu_pv_line_list .o_list_table thead th .o_list_number_th,
+.bhu_payment_voucher_premium .bhu_pv_line_list .o_list_table thead th *,
+.bhu_payment_voucher_premium [name="line_ids"] thead th * {
+    color: #fff !important;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_lines_wrap .o_list_renderer table.o_list_table thead > tr > th .o_list_sortable_caret {
+    color: #fff !important;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_line_list .o_list_table thead .o_list_record_selector input {
+    accent-color: #fff;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_lines_wrap .o_list_renderer table.o_list_table tbody td {
+    vertical-align: middle;
+    padding-top: 0.4rem !important;
+    padding-bottom: 0.4rem !important;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_lines_wrap .o_list_renderer table.o_list_table td[name='owner_count'] {
+    text-align: center;
+    font-weight: 700;
+    color: var(--bhu-pv-brown, #6a2d1d);
+    width: 4rem;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_line_list .o_list_table tbody td {
+    vertical-align: middle;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_line_list .o_data_row {
+    font-size: 0.9rem;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_line_list .o_list_table td[name='owner_display'] {
+    max-width: 420px;
+    white-space: normal;
+    word-break: break-word;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_owner_cell {
+    white-space: normal;
+    line-height: 1.4;
+    max-width: 360px;
+    min-width: 200px;
+    vertical-align: top;
+    word-break: break-word;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_lines_preview_wrap {
+    margin-top: 4px;
+    border: 1px solid var(--bhu-pv-brown-border, rgba(106, 45, 29, 0.14));
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_preview_wrap {
+    margin-bottom: 0;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_sim_table {
+    margin-bottom: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_sim_table thead {
+    background: linear-gradient(180deg, #fdf0e2 0%, #f7dcc1 100%);
+    color: #4a2418;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_sim_table th.s23-sim-th,
+.bhu_payment_voucher_premium .bhu_pv_pay_table th.s23-sim-th {
+    font-weight: 800 !important;
+    font-size: 0.78rem !important;
+    letter-spacing: 0.02em;
+    color: #4a2418;
+    text-transform: none;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_sim_table th,
+.bhu_payment_voucher_premium .bhu_pv_sim_table td {
+    text-align: left !important;
+    vertical-align: middle;
+}
+
+/* Narrow serial + khasra — free width for payee / payout */
+.bhu_payment_voucher_premium .bhu_pv_sim_table th.bhu_pv_th_serial,
+.bhu_payment_voucher_premium .bhu_pv_sim_table td.bhu_pv_td_serial {
+    width: 2.25rem;
+    max-width: 2.75rem;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+    text-align: center !important;
+    white-space: nowrap;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_sim_table th.bhu_pv_th_khasra,
+.bhu_payment_voucher_premium .bhu_pv_sim_table td.bhu_pv_td_khasra,
+.bhu_payment_voucher_premium .bhu_pv_sim_table thead th:nth-child(3),
+.bhu_payment_voucher_premium .bhu_pv_sim_table tbody td:nth-child(3) {
+    width: 1%;
+    max-width: 5.5rem;
+    min-width: 3.25rem;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+    text-align: center !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_sim_table tbody td {
+    font-weight: 600;
+    font-size: 0.76rem !important;
+    color: #1e293b;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_sim_table tbody td.tabular-nums,
+.bhu_payment_voucher_premium .bhu_pv_pay_table tbody td.tabular-nums {
+    font-weight: 700;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_sim_table tbody td.fw-bold {
+    font-weight: 800 !important;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_sim_table tbody tr.bhu_pv_line_row {
+    cursor: pointer;
+    transition: background-color 0.12s ease;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_sim_table tbody tr.bhu_pv_line_row_locked {
+    cursor: pointer;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_sim_table tbody tr.bhu_pv_row_even {
+    background: #fff;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_sim_table tbody tr.bhu_pv_row_odd {
+    background: #faf7f4;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_sim_table tbody tr.bhu_pv_row_even td.bhu_pv_owner_cell {
+    background: #fff;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_sim_table tbody tr.bhu_pv_row_odd td.bhu_pv_owner_cell {
+    background: #f3e8df;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_sim_table td.bhu_pv_owner_cell {
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    vertical-align: top;
+    max-width: 16rem;
+    line-height: 1.35;
+    font-size: 0.76rem !important;
+    font-weight: 600;
+    color: #1e293b;
+    border-left: 3px solid rgba(106, 45, 29, 0.12);
+}
+
+.bhu_payment_voucher_premium .bhu_pv_sim_table tbody tr.bhu_pv_row_odd td.bhu_pv_owner_cell {
+    border-left-color: rgba(106, 45, 29, 0.28);
+}
+
+.bhu_payment_voucher_premium .bhu_pv_sim_table tbody tr.bhu_pv_line_row:hover,
+.bhu_payment_voucher_premium .bhu_pv_sim_table tbody tr.bhu_pv_row_selected {
+    background: #f5ebe3 !important;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_sim_table tbody tr.bhu_pv_line_row:hover td.bhu_pv_owner_cell,
+.bhu_payment_voucher_premium .bhu_pv_sim_table tbody tr.bhu_pv_row_selected td.bhu_pv_owner_cell {
+    background: #edd9cc !important;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_th_actions,
+.bhu_payment_voucher_premium .bhu_pv_td_actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    white-space: nowrap;
+    min-width: 4.5rem;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_line_edit_btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    margin: 0;
+    border: none;
+    border-radius: 4px;
+    color: #714b67;
+    background: transparent;
+    line-height: 1;
+    vertical-align: middle;
+    text-decoration: none;
+    box-shadow: none;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_line_edit_btn:hover,
+.bhu_payment_voucher_premium .bhu_pv_line_edit_btn:focus {
+    color: #5a3d54;
+    background: rgba(113, 75, 103, 0.08);
+    text-decoration: none;
+    box-shadow: none;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_line_edit_btn .fa {
+    font-size: 15px;
+    pointer-events: none;
+    line-height: 1;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_line_remove_btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    margin: 0;
+    border: none;
+    border-radius: 4px;
+    color: #b91c1c;
+    background: transparent;
+    line-height: 1;
+    vertical-align: middle;
+    text-decoration: none;
+    box-shadow: none;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_line_remove_btn:hover,
+.bhu_payment_voucher_premium .bhu_pv_line_remove_btn:focus {
+    color: #991b1b;
+    background: rgba(185, 28, 28, 0.1);
+    text-decoration: none;
+    box-shadow: none;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_line_remove_btn .fa {
+    font-size: 15px;
+    pointer-events: none;
+    line-height: 1;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_line_action_btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border: none;
+    background: transparent;
+    color: var(--bhu-pv-brown-light, #8a4531);
+    font-weight: 700;
+    font-size: 0.82rem;
+    padding: 2px 6px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_line_action_btn:hover {
+    background: rgba(106, 45, 29, 0.08);
+    color: var(--bhu-pv-brown, #6a2d1d);
+}
+
+.bhu_payment_voucher_premium .bhu_pv_line_gen_btn {
+    color: #047857;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_line_dl_btn {
+    color: #475569;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_locked_tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #64748b;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_payout_cell {
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: #334155;
+    max-width: 220px;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_payout_chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    line-height: 1.35;
+    padding: 2px 0;
+    font-weight: 700;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_payout_chip i.fa {
+    flex-shrink: 0;
+    width: 14px;
+    text-align: center;
+    font-size: 12px;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_payout_empty {
+    color: #92400e;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_payout_empty i.fa {
+    color: #d97706;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_payout_bank {
+    color: #1e40af;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_payout_bank i.fa {
+    color: #2563eb;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_payout_split {
+    color: #6b21a8;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_payout_split i.fa {
+    color: #9333ea;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_o2many_triggers {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+.bhu_payment_voucher_premium .bhu_pv_status_pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+    white-space: nowrap;
+    line-height: 1.3;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_status_pill i.fa {
+    flex-shrink: 0;
+    font-size: 11px;
+    opacity: 0.92;
+}
+.bhu_payment_voucher_premium .bhu_pv_st_pending {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+.bhu_payment_voucher_premium .bhu_pv_st_account {
+    background: #cce5ff;
+    color: #004085;
+    border: 1px solid #b8daff;
+}
+.bhu_payment_voucher_premium .bhu_pv_st_file {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+.bhu_payment_voucher_premium .bhu_pv_st_failed {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+/* Tabs + khasra search + generate — one row */
+.bhu_payment_voucher_premium .bhu_pv_rr_header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 10px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e8ddd6;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_rr_header .bhu_pv_rr_subtabs {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+    flex: 0 0 auto;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_khasra_search_wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 1 1 160px;
+    min-width: 140px;
+    max-width: 280px;
+    margin-left: auto;
+}
+
+.bhu_payment_voucher_premium[data-active-rr-tab="pending"] .bhu_pv_khasra_search_wrap,
+.bhu_payment_voucher_premium[data-active-rr-tab="pending"] .bhu_pv_generate_btn {
+    display: none !important;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_khasra_search_label {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 700;
+    color: #4a3728;
+    white-space: nowrap;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_khasra_search {
+    min-width: 0;
+    border-color: #d4c4bc;
+    font-size: 12px;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_khasra_search:focus {
+    border-color: #2c5282;
+    box-shadow: 0 0 0 2px rgba(44, 82, 130, 0.15);
+}
+
+.bhu_payment_voucher_premium tr.bhu_pv_line_row.bhu_pv_row_hidden,
+.bhu_payment_voucher_premium tr[data-line-id].bhu_pv_row_hidden {
+    display: none !important;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_rr_subtabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.bhu_payment_voucher_premium .bhu_pv_rr_tab {
+    appearance: none;
+    border: 1px solid #d4c4bc;
+    background: #faf7f5;
+    color: #4a3728;
+    border-radius: 6px;
+    padding: 7px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    line-height: 1.3;
+    text-decoration: none;
+}
+.bhu_payment_voucher_premium .bhu_pv_rr_tab:hover {
+    background: #f0ebe8;
+    border-color: #b8a498;
+}
+.bhu_payment_voucher_premium .bhu_pv_rr_tab.active {
+    background: #2c5282;
+    border-color: #2c5282;
+    color: #fff;
+}
+.bhu_payment_voucher_premium .bhu_pv_tab_badge {
+    display: inline-flex;
+    min-width: 20px;
+    justify-content: center;
+    padding: 1px 6px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.12);
+    font-size: 11px;
+    font-weight: 800;
+}
+.bhu_payment_voucher_premium .bhu_pv_rr_tab.active .bhu_pv_tab_badge {
+    background: rgba(255, 255, 255, 0.22);
+}
+.bhu_payment_voucher_premium .bhu_pv_tab_badge .o_field_widget {
+    margin: 0;
+    padding: 0;
+    min-height: 0;
+    width: auto;
+}
+.bhu_payment_voucher_premium .bhu_pv_tab_badge .o_field_widget span {
+    font-size: 11px;
+    font-weight: 800;
+    color: inherit;
+}
+.bhu_payment_voucher_premium .bhu_pv_pay_empty_state {
+    padding: 2.25rem 1.5rem 2rem;
+    margin: 0.5rem 0 0.25rem;
+    background: linear-gradient(180deg, #faf8f6 0%, #f3f0eb 100%);
+    border: 1px dashed #c4b5a0;
+    border-radius: 10px;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_pay_empty_icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid #e8dfd4;
+    color: #8b6914;
+    font-size: 1.75rem;
+    box-shadow: 0 2px 8px rgba(74, 55, 40, 0.08);
+}
+
+.bhu_payment_voucher_premium .bhu_pv_pay_empty_title {
+    margin: 1rem 0 0.35rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #4a3728;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_pay_empty_hint {
+    max-width: 32rem;
+    margin: 0 auto;
+    font-size: 0.85rem;
+    line-height: 1.45;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_pay_files_title {
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #4a3728;
+    margin-bottom: 8px;
+}
+.bhu_payment_voucher_premium .bhu_pv_pay_table th,
+.bhu_payment_voucher_premium .bhu_pv_pay_table td {
+    text-align: left !important;
+    vertical-align: middle;
+}
+
+.bhu_payment_voucher_premium .bhu_pv_pay_table tbody td {
+    font-weight: 600;
+    font-size: 0.76rem !important;
+    color: #1e293b;
+}
+.bhu_payment_voucher_premium .bhu_pv_pay_table tbody tr.bhu_pv_row_even {
+    background: #faf8f6;
+}
+.bhu_payment_voucher_premium .bhu_pv_pay_table tbody tr.bhu_pv_row_odd {
+    background: #fff;
+}
+.bhu_payment_voucher_premium .bhu_pv_export_dl_btn {
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.bhu_payment_voucher_premium .bhu_pv_export_ref_link {
+    color: #2c5282;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.bhu_payment_voucher_premium .bhu_pv_export_ref_link:hover {
+    color: #1a365d;
+    text-decoration: underline;
+}
+.bhu_payment_voucher_premium .bhu_pv_export_ref_cell {
+    white-space: nowrap;
+}
+.bhu_payment_voucher_premium tr.bhu_pv_pay_highlight > td {
+    background: #dbeafe !important;
+    box-shadow: inset 0 0 0 2px #2c5282;
+}
+.bhu_payment_voucher_premium .bhu_pv_tx_uuid {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #334155;
+}
+.bhu_payment_voucher_premium .bhu_pv_section_card {
+    border: 1px solid #e0d5cf;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    overflow: hidden;
+}
+.bhu_payment_voucher_premium .bhu_pv_section_banner {
+    cursor: pointer;
+    padding: 10px 14px;
+    font-weight: 700;
+    list-style: none;
+}
+.bhu_payment_voucher_premium details.bhu_pv_section_card > summary::-webkit-details-marker {
+    display: none;
+}
+
+/* Generate Payment File wizard preview table */
+.bhu_pv_generate_wizard .bhu_pv_gen_preview_wrap {
+    margin-top: 4px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e2d5cd;
+}
+.bhu_pv_generate_wizard .bhu_pv_gen_preview_table {
+    margin-bottom: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+.bhu_pv_generate_wizard .bhu_pv_gen_preview_th {
+    background: linear-gradient(180deg, #fdf0e2 0%, #f7dcc1 100%) !important;
+    color: #4a2418 !important;
+    font-weight: 800 !important;
+    font-size: 0.78rem !important;
+    padding: 8px 10px !important;
+    border: 1px solid #e2d5cd !important;
+    text-align: left;
+    vertical-align: middle;
+}
+.bhu_pv_generate_wizard .bhu_pv_gen_preview_table td {
+    padding: 7px 10px !important;
+    border: 1px solid #e8ddd6 !important;
+    font-weight: 600;
+    font-size: 0.76rem;
+    color: #1e293b;
+    vertical-align: middle;
+}
+.bhu_pv_generate_wizard .bhu_pv_gen_preview_table tbody tr.bhu_pv_row_even {
+    background: #fff;
+}
+.bhu_pv_generate_wizard .bhu_pv_gen_preview_table tbody tr.bhu_pv_row_odd {
+    background: #faf7f4;
+}
+.bhu_pv_generate_wizard .bhu_pv_gen_preview_table tbody tr:hover {
+    background: #f5ebe3 !important;
+}
+.bhu_pv_generate_wizard .bhu_pv_gen_preview_table .bhu_pv_gen_acct,
+.bhu_pv_generate_wizard .bhu_pv_gen_preview_table .bhu_pv_gen_ifsc {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.72rem;
+    white-space: nowrap;
+    max-width: 11rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.bhu_pv_generate_wizard .bhu_pv_gen_preview_table .bhu_pv_gen_acct {
+    max-width: 14rem;
+}
+.bhu_pv_generate_wizard .bhu_pv_gen_preview_table .tabular-nums {
+    font-variant-numeric: tabular-nums;
+}
+
+/* HTML line editor (popup) — single Odoo dialog footer (no inline duplicate buttons) */
+.bhu_payment_voucher_line_form .bhu_pv_le_footer {
+    display: none !important;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_line_editor_field,
+.bhu_payment_voucher_line_form .bhu_pv_line_editor_field .o_readonly,
+.bhu_payment_voucher_line_form .bhu_pv_line_editor_field .o_field_html {
+    pointer-events: auto !important;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_line_editor {
+    font-size: 0.84rem;
+    color: #1e293b;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_le_config {
+    display: none !important;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_le_head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #7e4a39 0%, #6a2d1d 100%);
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_le_khasra {
+    font-size: 0.9rem;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_le_payable {
+    font-size: 1.05rem;
+    font-weight: 800;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_le_owner {
+    font-size: 0.8rem;
+    color: #475569;
+    margin-bottom: 8px;
+    line-height: 1.35;
+    max-height: 2.7em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_le_hint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    color: #1e40af;
+    font-size: 0.78rem;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_le_modes {
+    display: inline-flex;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_le_mode {
+    border: 1px solid #d4b8a4;
+    background: #fff;
+    color: #6a2d1d;
+    font-weight: 700;
+    font-size: 0.8rem;
+    padding: 6px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_le_mode.is-on {
+    background: #6a2d1d;
+    border-color: #6a2d1d;
+    color: #fff;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_le_mode:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_le_card {
+    border: 1px solid rgba(106, 45, 29, 0.14);
+    border-radius: 8px;
+    background: #faf7f4;
+    padding: 10px 12px;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_le_card_title {
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6a2d1d;
+    margin-bottom: 8px;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_le_lbl {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #64748b;
+    margin-bottom: 3px;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_le_input {
+    width: 100%;
+    font-size: 0.82rem;
+    padding: 5px 8px;
+    border: 1px solid #d4b8a4;
+    border-radius: 6px;
+    background: #fff;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_le_row2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_le_status {
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_le_status_ok {
+    background: #fff8e6;
+    border: 1px solid #fde68a;
+    color: #92400e;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_le_status_warn {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_le_table_wrap {
+    overflow-x: auto;
+    margin-top: 4px;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_le_table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.78rem;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_le_table th {
+    background: #f3e8df;
+    color: #4a2418;
+    font-weight: 800;
+    padding: 6px 8px;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_le_table td {
+    padding: 5px 6px;
+    border-bottom: 1px solid #ede4dc;
+    vertical-align: middle;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_le_payee {
+    max-width: 11rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 600;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_le_pct {
+    width: 4.5rem;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_le_pct_in {
+    text-align: right;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_le_amt {
+    white-space: nowrap;
+    font-weight: 700;
+    color: #6a2d1d;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_le_bank select {
+    min-width: 7rem;
+    max-width: 9rem;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_le_acct input,
+.bhu_payment_voucher_line_form .bhu_pv_le_ifsc input {
+    min-width: 5.5rem;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_le_actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px dashed #e0cfc0;
+}
+
+.bhu_payment_voucher_line_form .bhu_pv_le_clear_btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+}
+
+.o_dialog .modal-footer:has(.bhu_payment_voucher_line_form),
+.o_dialog:has(.bhu_payment_voucher_line_form) .modal-footer {
+    border-top: 1px solid #e7d5c4;
+}

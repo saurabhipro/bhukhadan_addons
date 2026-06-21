@@ -1,0 +1,11 @@
+// Subtle teal for villages palette (Bootstrap has no text-bg-teal)
+.o_web_client .text-bg-teal-soft {
+    color: #0c5460 !important;
+    background-color: #cceff4 !important;
+}
+
+.o_list_renderer .o_bhu_comma_pills .badge {
+    max-width: 100%;
+    white-space: normal;
+    text-align: start;
+}

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Sample Section 19 Notifications (2 records - one per village: Pandripani, Gopalpur) - Draft state -->
+        <!-- Only for villages that have Section 4 and Section 11 notifications -->
+        <!-- Names will be auto-generated using sequence: NOT19_{project_code} -->
+        <!-- Note: Jurda and Bhikharimal do not have Section 4 notifications, so no Section 19 notifications -->
+        <!-- These will auto-populate land parcels from approved khasras in Section 11 when Section 11 is generated -->
+        <record id="section19_notification_pandripani" model="bhu.section19.notification">
+            <field name="name">NOT19_RRR-001_PP</field>
+            <field name="project_id" ref="project_ring_road_raigarh"/>
+            <field name="village_ids" eval="[(6, 0, [ref('pandripani_village')])]"/>
+            <field name="state">draft</field>
+            <field name="notification_number">/अ-87/2024-25</field>
+            <field name="notification_date">2024-12-22</field>
+            <field name="public_purpose"><![CDATA[<p><strong>रिंग रोड रायगढ़</strong> परियोजना के लिए भूमि अर्जन। यह परियोजना शहर के यातायात को सुविधाजनक बनाने और आर्थिक विकास को बढ़ावा देने के लिए है।</p>]]></field>
+        </record>
+        
+        <record id="section19_notification_gopalpur" model="bhu.section19.notification">
+            <field name="name">NOT19_RRR-001_GL</field>
+            <field name="project_id" ref="project_ring_road_raigarh"/>
+            <field name="village_ids" eval="[(6, 0, [ref('gopalpur_village')])]"/>
+            <field name="state">draft</field>
+            <field name="notification_number">/अ-88/2024-25</field>
+            <field name="notification_date">2024-12-25</field>
+            <field name="public_purpose"><![CDATA[<p><strong>रिंग रोड रायगढ़</strong> परियोजना के लिए भूमि अर्जन। यह परियोजना शहर के यातायात को सुविधाजनक बनाने और आर्थिक विकास को बढ़ावा देने के लिए है।</p>]]></field>
+        </record>
+    </data>
+</odoo>
+

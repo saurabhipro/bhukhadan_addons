@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Expert Committee Proposal Report Action -->
+    <record id="action_report_expert_committee_proposal" model="ir.actions.report">
+        <field name="name">Expert Committee Proposal / विशेषज्ञ समिति प्रस्ताव</field>
+        <field name="model">bhu.expert.committee.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">bhukhadan_core.expert_committee_proposal_report</field>
+        <field name="report_file">bhukhadan_core.expert_committee_proposal_report</field>
+        <field name="paperformat_id" ref="bhukhadan_core.bhuarjan_sia_paper_format"/>
+        <field name="print_report_name">'Expert_Committee_Proposal_' + ((object and object.name) or (docs and docs[0] and docs[0].name) or 'All')</field>
+    </record>
+
+    <!-- Expert Committee Proposal Report Template -->
+    <template id="expert_committee_proposal_report">
+        <t t-call="web.html_container">
+            <meta charset="utf-8"/>
+            <t t-foreach="docs" t-as="report">
+                <t t-call="web.basic_layout">
+                <!-- Include centralized CSS styles -->
+                <t t-call="bhukhadan_core.report_common_styles"/>
+
+                <div class="container letter_space" style="border: 2px dotted #000; padding: 15px; margin: 10px; position: relative; min-height: calc(100vh - 20px); height: 100%;">
+                    <!-- Watermark with Logo - Centered on Page -->
+                    <div class="watermark">
+                        <div class="watermark-circle"></div>
+                        <t t-set="base_url" t-value="request.env['ir.config_parameter'].sudo().get_param('web.base.url')"/>
+                        <img t-att-src="base_url + '/bhukhadan_core/static/img/logo.png'" alt="Logo Watermark"/>
+                    </div>
+                    <!-- Header with Logo and QR Code -->
+                    <div style="margin-bottom: 15px; padding-bottom: 8px;">
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 8px;">
+                            <tr>
+                                <!-- Logo on Left -->
+                                <td rowspan="2" style="width: 12%; padding: 0; text-align: center; vertical-align: middle;">
+                                    <t t-set="base_url" t-value="request.env['ir.config_parameter'].sudo().get_param('web.base.url')"/>
+                                    <img t-att-src="base_url + '/bhukhadan_core/static/img/logo.png'" alt="Logo"
+                                         style="display: block; margin: 0 auto; object-fit: contain; width: 80px; height: 80px; max-width: 80px; max-height: 80px;"/>
+                                </td>
+                                <!-- Header Text - Line 1 -->
+                                <td colspan="2" style="text-align: center; vertical-align: middle; padding: 0 5px;">
+                                    <h3 class="hindi letter_space header-text" style="margin: 0; padding: 0; font-size: 26px; line-height: 0.95;">
+                                        <t t-set="header_subdivision_name" t-value="''"/>
+                                        <t t-if="report.project_id and report.project_id.sdm_ids and len(report.project_id.sdm_ids) > 0">
+                                            <t t-set="first_sdm_header" t-value="report.project_id.sdm_ids[0]"/>
+                                            <t t-set="sdm_sd_hdr_ec" t-value="env['bhu.sub.division'].sudo().search([('user_id', '=', first_sdm_header.id)], limit=1)"/>
+                                            <t t-if="sdm_sd_hdr_ec">
+                                                <t t-set="header_subdivision_name" t-value="sdm_sd_hdr_ec.name"/>
+                                            </t>
+                                        </t>
+                                        कार्यालय अनुविभागीय अधिकारी (राजस्व), <span t-esc="header_subdivision_name if header_subdivision_name else '........................'"/>
+                                    </h3>
+                                </td>
+                                <!-- QR Code on Right -->
+                                <td rowspan="2" style="width: 12%; padding: 0; text-align: center; vertical-align: middle;">
+                                    <t t-set="qr_code_img" t-value="report.get_qr_code_data()"/>
+                                    <t t-set="qr_download_url" t-value="'https://bhuarjan.com/bhuarjan/expert/' + str(report.expert_committee_uuid or '') + '/download'"/>
+                                    <t t-if="qr_code_img">
+                                        <a t-att-href="qr_download_url" style="display: block; width: 90%; margin: 0 auto; padding: 0; text-decoration: none;">
+                                            <img t-att-src="'data:image/png;base64,' + qr_code_img" 
+                                                 alt="QR Code - Click to download PDF" 
+                                                 style="width: 90%; max-width: 90%; height: auto; aspect-ratio: 1; border: none; display: block; margin: 0; padding: 0; object-fit: contain;"/>
+                                        </a>
+                                    </t>
+                                    <t t-if="not qr_code_img">
+                                        <a t-att-href="qr_download_url" style="display: block; width: 90%; margin: 0 auto; padding: 0; text-decoration: none;">
+                                            <div style="width: 90%; padding-top: 90%; position: relative; border: none; background: white; margin: 0;">
+                                                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                                                    <div style="text-align: center; font-size: 7px;">
+                                                        <div style="font-weight: bold;">QR Code</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <!-- Header Text - Line 2 -->
+                                <td colspan="2" style="text-align: center; vertical-align: middle; padding: 0 5px;">
+                                    <h3 class="hindi letter_space header-text" style="margin: 0; padding: 0; font-size: 26px; line-height: 0.95;">
+                                        जिला-रायगढ़ (छ.ग.)
+                                    </h3>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- Reference and Date -->
+                    <div class="date-reference-section" style="margin-bottom: 12px !important;">
+                        <span class="normal-text letter_space" style="font-weight: 500 !important; font-size: 18px !important; text-align: left !important;">
+                            <strong>क्रमांक /</strong>
+                            <span t-if="report.kramank" t-esc="report.kramank"/>
+                            <span t-if="not report.kramank"></span>
+                            /&#160;भू-अर्जन&#160;/&#160;वाचक&#160;/&#160;<span t-esc="context_timestamp(report.create_date or datetime.datetime.now()).strftime('%Y')"/>&#160;
+                        </span>
+                        <span class="normal-text letter_space" style="text-align: right !important; font-weight: 500 !important; font-size: 18px !important; margin-left: auto !important;">
+                            <strong>दिनांक /</strong>........../<span t-esc="context_timestamp(report.create_date or datetime.datetime.now()).strftime('%Y')"/>
+                        </span>
+                    </div>
+
+                    <!-- Recipient -->
+                    <div style="margin-bottom: 12px !important; margin-top: 5px !important;">
+                        <p class="normal-text letter_space" style="margin: 4px 0 !important; line-height: 1.5 !important; font-size: 18px !important;">
+                            <strong style="font-size: 18px !important;">प्रति,</strong>
+                        </p>
+                        <p class="normal-text letter_space" style="margin: 4px 0 !important; line-height: 1.5 !important; font-size: 18px !important;">
+                            <strong style="font-size: 18px !important;">कलेक्टर</strong><br/>
+                            <strong style="font-size: 18px !important;">(भू-अर्जन शाखा)</strong><br/>
+                            <strong style="font-size: 18px !important;">जिला-रायगढ़ (छ.ग.)</strong>
+                        </p>
+                    </div>
+
+                    <!-- Subject -->
+                    <div class="subject-section" style="margin-bottom: 15px !important; margin-top: 10px !important;">
+                        <p class="normal-text letter_space" style="margin: 5px 0 !important; text-align: justify !important; line-height: 1.5 !important; text-indent: 0 !important; font-size: 18px !important;">
+                            <strong>विषय:-</strong>
+                            <span style="padding-left: 20px !important; display: inline;">
+                                विभाग <span t-esc="report.requiring_body_id.name if report.requiring_body_id else '........................'"/> अंतर्गत परियोजना <span t-esc="report.project_id.name or '........................'"/> हेतु प्रभावित ग्राम 
+                            <t t-if="report.village_ids">
+                                <t t-foreach="report.village_ids" t-as="village">
+                                    <t t-if="village_index != 0">, </t><span t-esc="village.name or ''"/>
+                                </t>
+                            </t>
+                            <t t-if="not report.village_ids and report.project_id and report.project_id.village_ids">
+                                <t t-foreach="report.project_id.village_ids" t-as="village">
+                                    <t t-if="village_index != 0">, </t><span t-esc="village.name or ''"/>
+                                </t>
+                            </t>
+                            <t t-if="not report.village_ids and (not report.project_id or not report.project_id.village_ids)">
+                                ........................
+                            </t>
+                            तहसील 
+                            <t t-if="report.village_ids and len(report.village_ids) == 1 and report.village_ids[0].tehsil_id">
+                                <span t-esc="report.village_ids[0].tehsil_id.name or ''"/>
+                            </t>
+                            <t t-elif="report.village_ids and len(report.village_ids) > 1">
+                                <t t-set="tehsils" t-value="report.village_ids.mapped('tehsil_id')"/>
+                                <t t-foreach="tehsils" t-as="tehsil">
+                                    <t t-if="tehsil_index != 0">, </t><span t-esc="tehsil.name or ''"/>
+                                </t>
+                            </t>
+                            <t t-elif="report.project_id and report.project_id.village_ids and len(report.project_id.village_ids) > 0">
+                                <t t-set="tehsils" t-value="report.project_id.village_ids.mapped('tehsil_id')"/>
+                                <t t-foreach="tehsils" t-as="tehsil">
+                                    <t t-if="tehsil_index != 0">, </t><span t-esc="tehsil.name or ''"/>
+                                </t>
+                            </t>
+                            <t t-else="">
+                                ........................
+                            </t>
+                            जिला रायगढ़ (छ.ग.) में विशेषज्ञ समूह गठन का प्रस्ताव अनुमोदन बाबत।
+                            </span>
+                        </p>
+                    </div>
+
+                    
+                    <div style="text-align: center; margin: 10px 0;">
+                        <strong class="normal-text">--00--</strong>
+                    </div>
+
+                    <!-- New Paragraph -->
+                    <div class="body-section" style="margin-bottom: 15px !important; margin-top: 10px !important;">
+                        <p class="normal-text letter_space" style="margin: 5px 0 !important; text-align: justify !important; line-height: 1.5 !important; text-indent: 0 !important; font-size: 18px !important;">
+                            <strong>उपरोक्त विषयांतर्गत विभाग</strong> <span t-esc="report.requiring_body_id.name if report.requiring_body_id else '........................'"/>&#160;<strong>रायगढ़ (छ.ग.) अंतर्गत</strong> <strong>परियोजना</strong> <span t-esc="report.project_id.name or '........................'"/>&#160;<strong>हेतु प्रभावित ग्राम</strong> 
+                            <t t-if="report.village_ids">
+                                <t t-foreach="report.village_ids" t-as="village">
+                                    <t t-if="village_index != 0">, </t><span t-esc="village.name or ''"/>
+                                </t>
+                            </t>
+                            <t t-if="not report.village_ids and report.project_id and report.project_id.village_ids">
+                                <t t-foreach="report.project_id.village_ids" t-as="village">
+                                    <t t-if="village_index != 0">, </t><span t-esc="village.name or ''"/>
+                                </t>
+                            </t>
+                            <t t-if="not report.village_ids and (not report.project_id or not report.project_id.village_ids)">
+                                ........................
+                            </t>
+                            <strong>तहसील</strong> 
+                            <t t-if="report.village_ids and len(report.village_ids) == 1 and report.village_ids[0].tehsil_id">
+                                <span t-esc="report.village_ids[0].tehsil_id.name or ''"/>
+                            </t>
+                            <t t-elif="report.village_ids and len(report.village_ids) > 1">
+                                <t t-set="tehsils" t-value="report.village_ids.mapped('tehsil_id')"/>
+                                <t t-foreach="tehsils" t-as="tehsil">
+                                    <t t-if="tehsil_index != 0">, </t><span t-esc="tehsil.name or ''"/>
+                                </t>
+                            </t>
+                            <t t-elif="report.project_id and report.project_id.village_ids and len(report.project_id.village_ids) > 0">
+                                <t t-set="tehsils" t-value="report.project_id.village_ids.mapped('tehsil_id')"/>
+                                <t t-foreach="tehsils" t-as="tehsil">
+                                    <t t-if="tehsil_index != 0">, </t><span t-esc="tehsil.name or ''"/>
+                                </t>
+                            </t>
+                            <t t-else="">
+                                ........................
+                            </t>
+                            <strong>जिला</strong> 
+                            <t t-if="report.project_id and report.project_id.village_ids and len(report.project_id.village_ids) > 0">
+                                <span t-esc="report.project_id.village_ids[0].district_id.name if report.project_id.village_ids[0].district_id else 'रायगढ़'"/>
+                            </t>
+                            <t t-if="not (report.project_id and report.project_id.village_ids and len(report.project_id.village_ids) > 0)">
+                                रायगढ़
+                            </t>
+                            <strong>(छ.ग.) की निजी भूमि कुल रकबा</strong> 
+                            <t t-if="report.total_area_acquired and report.total_area_acquired > 0">
+                                <span t-esc="'{:,.4f}'.format(report.total_area_acquired)"/>
+                            </t>
+                            <t t-if="not report.total_area_acquired or report.total_area_acquired == 0">
+                                ........................
+                            </t>
+                            <strong>हेक्टेयर </strong>भूमि के भू-अर्जन प्रस्ताव पर गठित सामाजिक समाघात निर्धारण अध्ययन दल द्वारा सामाजिक समाघात निर्धारण रिपोर्ट प्रस्तुत किये जाने पर प्रकरण में आगामी कार्यवाही हेतु भू-अर्जन अधिनियम, 2013 अंतर्गत विशेषज्ञ समूह का गठन का प्रस्ताव अनुमोदन हेतु सादर प्रस्तुत है :-
+                        </p>
+                    </div>
+
+                    <!-- Expert Group Members Table -->
+                    <div style="margin-bottom: 15px; margin-top: 10px;">
+                        <table class="w-100" style="border-collapse: collapse; border: 2px solid #000; margin-top: 8px;">
+                            <thead>
+                                <tr>
+                                    <th class="table-header letter_space" style="border: 1px solid #000; padding: 6px; text-align: left; background-color: #f5f5f5; width: 45%;">                                    
+                                        विशेषज्ञ समूह का विवरण
+                                    </th>
+                                    <th class="table-header letter_space" style="border: 1px solid #000; padding: 6px; text-align: left; background-color: #f5f5f5; width: 55%;">
+                                        सदस्य का नाम / पता
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- (क) Non-Government Social Scientist -->
+                                <tr>
+                                    <td class="normal-text letter_space" style="border: 1px solid #000; padding: 4px; vertical-align: top; background-color: #fafafa; text-align: left;">
+                                        <strong>(क) गैर शासकीय सामाजिक वैज्ञानिक</strong>
+                                    </td>
+                                    <td class="normal-text letter_space" style="border: 1px solid #000; padding: 4px; text-align: left;">
+                                        <t t-if="report.non_govt_social_scientist_line_ids">
+                                            <t t-foreach="report.non_govt_social_scientist_line_ids" t-as="member">
+                                                <p style="margin: 1px 0; line-height: 1.3; text-align: left;">
+                                                    <span t-esc="member_index + 1"/>. 
+                                                    <span t-esc="member.name or ''"/>
+                                                    <t t-if="member.post">, <span t-esc="member.post"/></t>
+                                                    <t t-if="member.address">, <span t-esc="member.address"/></t>
+                                                </p>
+                                            </t>
+                                        </t>
+                                        <t t-if="not report.non_govt_social_scientist_line_ids">
+                                            <p style="margin: 1px 0; text-align: left;">........................</p>
+                                        </t>
+                                    </td>
+                                </tr>
+
+                                <!-- (ख) Representatives of Local Bodies -->
+                                <tr>
+                                    <td class="normal-text letter_space" style="border: 1px solid #000; padding: 4px; vertical-align: top; background-color: #fafafa; text-align: left;">
+                                        <strong>(ख) स्थानीय निकायों के प्रतिनिधि</strong>
+                                    </td>
+                                    <td class="normal-text letter_space" style="border: 1px solid #000; padding: 4px; text-align: left;">
+                                        <t t-if="report.local_bodies_representative_line_ids">
+                                            <t t-foreach="report.local_bodies_representative_line_ids" t-as="member">
+                                                <p style="margin: 1px 0; line-height: 1.3; text-align: left;">
+                                                    <span t-esc="member_index + 1"/>. 
+                                                    <span t-esc="member.name or ''"/>
+                                                    <t t-if="member.post">, <span t-esc="member.post"/></t>
+                                                    <t t-if="member.address">, <span t-esc="member.address"/></t>
+                                                </p>
+                                            </t>
+                                        </t>
+                                        <t t-if="not report.local_bodies_representative_line_ids">
+                                            <p style="margin: 1px 0; text-align: left;">........................</p>
+                                        </t>
+                                    </td>
+                                </tr>
+
+                                <!-- (ग) Resettlement Expert -->
+                                <tr>
+                                    <td class="normal-text letter_space" style="border: 1px solid #000; padding: 4px; vertical-align: top; background-color: #fafafa; text-align: left;">
+                                        <strong>(ग) पुनर्व्यवस्थापन विशेषज्ञ</strong>
+                                    </td>
+                                    <td class="normal-text letter_space" style="border: 1px solid #000; padding: 4px; text-align: left;">
+                                        <t t-if="report.resettlement_expert_line_ids">
+                                            <t t-foreach="report.resettlement_expert_line_ids" t-as="member">
+                                                <p style="margin: 1px 0; line-height: 1.3; text-align: left;">
+                                                    <span t-esc="member_index + 1"/>. 
+                                                    <span t-esc="member.name or ''"/>
+                                                    <t t-if="member.post">, <span t-esc="member.post"/></t>
+                                                    <t t-if="member.address">, <span t-esc="member.address"/></t>
+                                                </p>
+                                            </t>
+                                        </t>
+                                        <t t-if="not report.resettlement_expert_line_ids">
+                                            <p style="margin: 1px 0; text-align: left;">........................</p>
+                                        </t>
+                                    </td>
+                                </tr>
+
+                                <!-- (घ) Technical Expert -->
+                                <tr>
+                                    <td class="normal-text letter_space" style="border: 1px solid #000; padding: 4px; vertical-align: top; background-color: #fafafa; text-align: left;">
+                                        <strong>(घ) परियोजना से संबंधित विषय का तकनीकी विशेषज्ञ</strong>
+                                    </td>
+                                    <td class="normal-text letter_space" style="border: 1px solid #000; padding: 4px; text-align: left;">
+                                        <t t-if="report.technical_expert_line_ids">
+                                            <t t-foreach="report.technical_expert_line_ids" t-as="member">
+                                                <p style="margin: 1px 0; line-height: 1.3; text-align: left;">
+                                                    <span t-esc="member_index + 1"/>. 
+                                                    <span t-esc="member.name or ''"/>
+                                                    <t t-if="member.post">, <span t-esc="member.post"/></t>
+                                                    <t t-if="member.address">, <span t-esc="member.address"/></t>
+                                                </p>
+                                            </t>
+                                        </t>
+                                        <t t-if="not report.technical_expert_line_ids">
+                                            <p style="margin: 1px 0; text-align: left;">........................</p>
+                                        </t>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Issuing Authority -->
+                    <div class="footer-section" style="margin-top: 80px !important; margin-bottom: 15px !important;">
+                        <p class="normal-text letter_space" style="margin: 5px 0 !important; text-align: right !important; line-height: 1.5 !important; font-size: 18px !important;">
+                            <strong style="font-size: 18px !important;">अनुविभागीय अधिकारी (राजस्व)</strong><br/>
+                            <strong style="font-size: 18px !important;">सह भू-अर्जन अधिकारी,</strong> 
+                            <t t-set="subdivision_name" t-value="''"/>
+                            <t t-if="report.project_id and report.project_id.sdm_ids and len(report.project_id.sdm_ids) > 0">
+                                <t t-set="first_sdm" t-value="report.project_id.sdm_ids[0]"/>
+                                <t t-set="sdm_sd_mid_ec" t-value="env['bhu.sub.division'].sudo().search([('user_id', '=', first_sdm.id)], limit=1)"/>
+                                <t t-if="sdm_sd_mid_ec">
+                                    <t t-set="subdivision_name" t-value="sdm_sd_mid_ec.name"/>
+                                </t>
+                            </t>
+                            <span style="font-size: 18px !important;" t-esc="subdivision_name if subdivision_name else '........................'"/><br/>
+                            <strong style="font-size: 18px !important;">जिला रायगढ़ (छ.ग.)</strong>
+                        </p>
+                    </div>
+
+                    <!-- Copy Distribution -->
+                    <div style="margin-top: 20px; padding-top: 10px;">
+                        <!-- क्रमांक and दिनांक Section -->
+                        <div class="date-reference-section" style="margin-bottom: 10px !important;">
+                            <span class="normal-text letter_space" style="font-weight: bold !important; font-size: 18px !important; text-align: left !important;">
+                                <strong>क्रमांक /</strong><span t-if="report.kramank" t-esc="report.kramank"/><span t-if="not report.kramank"></span>/भू-अर्जन&#160;/&#160;वाचक&#160;/&#160;<span t-esc="context_timestamp(report.create_date or datetime.datetime.now()).strftime('%Y')"/>&#160;
+                            </span>
+                            <span class="normal-text letter_space" style="text-align: right !important; font-weight: bold !important; font-size: 18px !important; margin-left: auto !important;">
+                                <strong>दिनांक /</strong>........................./<span t-esc="context_timestamp(report.create_date or datetime.datetime.now()).strftime('%Y')"/>
+                            </span>
+                        </div>
+                        
+                        <!-- प्रतिलिपि Section -->
+                        <div style="margin-bottom: 10px !important;">
+                            <p class="normal-text letter_space" style="margin: 5px 0 !important; line-height: 1.5 !important; font-size: 18px !important;">
+                                <strong style="font-size: 18px !important;">प्रतिलिपिः-</strong>
+                            </p>
+                        </div>
+                        
+                        <!-- विभाग Section -->
+                        <div style="margin-bottom: 10px !important;">
+                            <p class="normal-text letter_space" style="margin: 5px 0 !important; line-height: 1.5 !important; font-size: 18px !important;">
+                                <strong style="font-size: 18px !important;">विभाग.</strong> <span style="font-size: 18px !important;" t-esc="report.requiring_body_id.name if report.requiring_body_id else '........................'"/> <strong style="font-size: 18px !important;">की ओर सूचनार्थ एवं आवश्यक कार्यवाही हेतु।</strong>
+                            </p>
+                        </div>
+                        
+                        <!-- Signature Block -->
+                        <p class="normal-text letter_space footer-section" style="margin: 10px 0 5px 0 !important; text-align: right !important; line-height: 1.5 !important; font-size: 18px !important;">
+                            <strong style="font-size: 18px !important;">अनुविभागीय अधिकारी (राजस्व)</strong><br/>
+                            <strong style="font-size: 18px !important;">सह भू-अर्जन अधिकारी,</strong> 
+                            <t t-set="subdivision_name_footer" t-value="''"/>
+                            <t t-if="report.project_id and report.project_id.sdm_ids and len(report.project_id.sdm_ids) > 0">
+                                <t t-set="first_sdm_footer" t-value="report.project_id.sdm_ids[0]"/>
+                                <t t-set="sdm_sd_ftr_ec" t-value="env['bhu.sub.division'].sudo().search([('user_id', '=', first_sdm_footer.id)], limit=1)"/>
+                                <t t-if="sdm_sd_ftr_ec">
+                                    <t t-set="subdivision_name_footer" t-value="sdm_sd_ftr_ec.name"/>
+                                </t>
+                            </t>
+                            <span style="font-size: 18px !important;" t-esc="subdivision_name_footer if subdivision_name_footer else '........................'"/><br/>
+                            <strong style="font-size: 18px !important;">जिला रायगढ़ (छ.ग.)</strong>
+                        </p>
+                    </div>
+                </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

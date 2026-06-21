@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Document Vault List View -->
+    <record id="view_document_vault_list" model="ir.ui.view">
+        <field name="name">bhu.document.vault.list</field>
+        <field name="model">bhu.document.vault</field>
+        <field name="arch" type="xml">
+            <list string="Documents / दस्तावेज़">
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="village_id"/>
+                <field name="document_type"/>
+                <field name="signed_date"/>
+                <field name="uploaded_by"/>
+                <field name="upload_date"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Document Vault Form View -->
+    <record id="view_document_vault_form" model="ir.ui.view">
+        <field name="name">bhu.document.vault.form</field>
+        <field name="model">bhu.document.vault</field>
+        <field name="arch" type="xml">
+            <form string="Document / दस्तावेज़">
+                <header>
+                    <button name="action_send_email" string="Send Email / ईमेल भेजें" type="object" class="btn-primary" icon="fa-envelope"/>
+                    <button name="action_download" string="Download / डाउनलोड" type="object" class="btn-secondary" icon="fa-download"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" required="1"/>
+                            <field name="project_id" required="1"/>
+                            <field name="village_id" required="1"/>
+                            <field name="document_type" required="1"/>
+                            <field name="signed_date" required="1"/>
+                        </group>
+                        <group>
+                            <field name="uploaded_by" readonly="1"/>
+                            <field name="upload_date" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="document_file" filename="document_filename" required="1"/>
+                        <field name="document_filename" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="description" placeholder="Enter description..."/>
+                        <field name="email_recipients" placeholder="email1@example.com, email2@example.com"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Document Vault Search View -->
+    <record id="view_document_vault_search" model="ir.ui.view">
+        <field name="name">bhu.document.vault.search</field>
+        <field name="model">bhu.document.vault</field>
+        <field name="arch" type="xml">
+            <search string="Search Documents">
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="village_id"/>
+                <field name="document_type"/>
+                <field name="signed_date"/>
+                <filter string="Section 4" name="sec4" domain="[('document_type', '=', 'sec4_signed_notification')]"/>
+                <filter string="SIA Reports" name="sia" domain="[('document_type', '=', 'sia_reports')]"/>
+                <filter string="Section 15" name="sec15" domain="[('document_type', '=', 'sec15_objections')]"/>
+                <filter string="Section 19" name="sec19" domain="[('document_type', '=', 'sec19_signed_notification')]"/>
+                <filter string="Payment Proof" name="payment" domain="[('document_type', '=', 'payment_signed_proof')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Project" name="group_project" context="{'group_by': 'project_id'}"/>
+                    <filter string="Village" name="group_village" context="{'group_by': 'village_id'}"/>
+                    <filter string="Document Type" name="group_document_type" context="{'group_by': 'document_type'}"/>
+                    <filter string="Signed Date" name="group_signed_date" context="{'group_by': 'signed_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Document Vault Action -->
+    <record id="action_document_vault" model="ir.actions.act_window">
+        <field name="name">Documents / दस्तावेज़</field>
+        <field name="res_model">bhu.document.vault</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_document_vault_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Upload your first document!
+            </p>
+            <p>
+                Document Vault allows you to store, manage, and share signed documents.
+            </p>
+        </field>
+    </record>
+</odoo>
+

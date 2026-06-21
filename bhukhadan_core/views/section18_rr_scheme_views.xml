@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Section 18 R and R Scheme List View -->
+    <record id="view_section18_rr_scheme_list" model="ir.ui.view">
+        <field name="name">bhu.section18.rr.scheme.list</field>
+        <field name="model">bhu.section18.rr.scheme</field>
+        <field name="arch" type="xml">
+            <list string="Section 18 R and R Scheme">
+                <field name="name" string="Scheme Name"/>
+                <field name="project_id" string="Project"/>
+                <field name="scheme_filename" string="Scheme File"/>
+                <field name="create_date" string="Created On"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Section 18 R and R Scheme Form View -->
+    <record id="view_section18_rr_scheme_form" model="ir.ui.view">
+        <field name="name">bhu.section18.rr.scheme.form</field>
+        <field name="model">bhu.section18.rr.scheme</field>
+        <field name="arch" type="xml">
+            <form string="Section 18 R and R Scheme / धारा 18 पुनर्वास और पुनर्स्थापना योजना">
+                <header>
+                    <button name="action_download_scheme" string="View / देखें" type="object" class="btn-primary" 
+                            icon="fa-download" invisible="not scheme_file"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" readonly="1"/>
+                            <field name="project_id" readonly="1" options="{'no_create': True, 'no_create_edit': True, 'no_open': True}"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="scheme_file" filename="scheme_filename" 
+                                   widget="binary" 
+                                   string="Upload R and R Scheme / पुनर्वास और पुनर्स्थापना योजना अपलोड करें"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="notes" placeholder="Enter any additional notes..."/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Section 18 R and R Scheme Search View -->
+    <record id="view_section18_rr_scheme_search" model="ir.ui.view">
+        <field name="name">bhu.section18.rr.scheme.search</field>
+        <field name="model">bhu.section18.rr.scheme</field>
+        <field name="arch" type="xml">
+            <search string="Section 18 R and R Scheme">
+                <field name="name"/>
+                <field name="project_id"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Section 18 R and R Scheme Action - Opens form directly (one per project) -->
+    <record id="action_section18_rr_scheme" model="ir.actions.act_window">
+        <field name="name">Section 18 R and R Scheme</field>
+        <field name="res_model">bhu.section18.rr.scheme</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+    </record>
+</odoo>

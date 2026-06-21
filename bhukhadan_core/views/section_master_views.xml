@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Section Master List View -->
+    <record id="view_bhu_section_master_list" model="ir.ui.view">
+        <field name="name">bhu.section.master.list</field>
+        <field name="model">bhu.section.master</field>
+        <field name="arch" type="xml">
+            <list string="Section Master">
+                <field name="name"/>
+                <field name="description" widget="text"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Section Master Form View -->
+    <record id="view_bhu_section_master_form" model="ir.ui.view">
+        <field name="name">bhu.section.master.form</field>
+        <field name="model">bhu.section.master</field>
+        <field name="arch" type="xml">
+            <form string="Section Master">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Enter section name"/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    
+                    <group>
+                        <field name="description" placeholder="Enter section description"/>
+                    </group>
+                    
+                    <!-- Laws using this section -->
+                    <group string="Laws / कानून" col="1">
+                        <field name="law_ids" nolabel="1" readonly="1">
+                            <list>
+                                <field name="name"/>
+                                <field name="active"/>
+                            </list>
+                        </field>
+                    </group>
+                </sheet>
+                <chatter groups="bhukhadan_core.group_bhuarjan_ri,bhukhadan_core.group_bhuarjan_nayab_tahsildar,bhukhadan_core.group_bhuarjan_tahsildar,bhukhadan_core.group_bhuarjan_sdm,bhukhadan_core.group_bhuarjan_additional_collector,bhukhadan_core.group_bhuarjan_collector,bhukhadan_core.group_bhuarjan_admin"/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Section Master Search View -->
+    <record id="view_bhu_section_master_search" model="ir.ui.view">
+        <field name="name">bhu.section.master.search</field>
+        <field name="model">bhu.section.master</field>
+        <field name="arch" type="xml">
+            <search string="Search Section Master">
+                <field name="name"/>
+                <field name="description"/>
+                <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Inactive" name="inactive" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Section Master Action -->
+    <record id="action_bhu_section_master" model="ir.actions.act_window">
+        <field name="name">Section Master</field>
+        <field name="res_model">bhu.section.master</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_bhu_section_master_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Section Master record!
+            </p>
+            <p>
+                Define sections that will be associated with laws.
+            </p>
+        </field>
+    </record>
+</odoo>
+

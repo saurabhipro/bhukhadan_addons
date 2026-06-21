@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Raipur District Villages -->
+        
+        <record id="village_bhatapara" model="bhu.village">
+            <field name="name">Jurda</field>
+            <field name="district_id" ref="district_raipur"/>
+            <field name="tehsil_id" ref="tehsil_raipur"/>
+            <field name="pincode">493118</field>
+            <field name="population">45000</field>
+            <field name="area_hectares">125.5</field>
+            <field name="village_code">CH_JR</field>
+
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Fruit trees: fixed flat rates (as per approved chart) -->
+        <record id="tree_master_chikoo" model="bhu.tree.master">
+            <field name="name">Chikoo / चीकू</field>
+            <field name="tree_type">fruit_bearing</field>
+            <field name="fruit_rate">500</field>
+        </record>
+        <record id="tree_master_lemon" model="bhu.tree.master">
+            <field name="name">Lemon / नींबू</field>
+            <field name="tree_type">fruit_bearing</field>
+            <field name="fruit_rate">500</field>
+        </record>
+        <record id="tree_master_orange" model="bhu.tree.master">
+            <field name="name">Orange / संतरा</field>
+            <field name="tree_type">fruit_bearing</field>
+            <field name="fruit_rate">500</field>
+        </record>
+        <record id="tree_master_other_fruit" model="bhu.tree.master">
+            <field name="name">Other Fruit Tree / अन्य फलदार वृक्ष</field>
+            <field name="tree_type">fruit_bearing</field>
+            <field name="fruit_rate">500</field>
+        </record>
+        <record id="tree_master_guava" model="bhu.tree.master">
+            <field name="name">Guava / अमरूद</field>
+            <field name="tree_type">fruit_bearing</field>
+            <field name="fruit_rate">500</field>
+        </record>
+        <record id="tree_master_jackfruit" model="bhu.tree.master">
+            <field name="name">Jackfruit / कटहल</field>
+            <field name="tree_type">fruit_bearing</field>
+            <field name="fruit_rate">2000</field>
+        </record>
+        <record id="tree_master_cashew" model="bhu.tree.master">
+            <field name="name">Cashew / काजू</field>
+            <field name="tree_type">fruit_bearing</field>
+            <field name="fruit_rate">500</field>
+        </record>
+        <record id="tree_master_jamun" model="bhu.tree.master">
+            <field name="name">Jamun / जामुन</field>
+            <field name="tree_type">fruit_bearing</field>
+            <field name="fruit_rate">2000</field>
+        </record>
+        <record id="tree_master_mahua" model="bhu.tree.master">
+            <field name="name">Mahua / महुआ</field>
+            <field name="tree_type">fruit_bearing</field>
+            <field name="fruit_rate">6000</field>
+        </record>
+
+        <!-- Non-fruit trees: girth + stage based -->
+        <record id="tree_master_sal" model="bhu.tree.master"><field name="name">Sal / साल</field><field name="tree_type">non_fruit_bearing</field></record>
+        <record id="tree_master_bija" model="bhu.tree.master"><field name="name">Bija / बीजा</field><field name="tree_type">non_fruit_bearing</field></record>
+        <record id="tree_master_sheesham" model="bhu.tree.master"><field name="name">Sheesham / शीशम</field><field name="tree_type">non_fruit_bearing</field></record>
+        <record id="tree_master_tinsa" model="bhu.tree.master"><field name="name">Tinsa / तिन्सा</field><field name="tree_type">non_fruit_bearing</field></record>
+        <record id="tree_master_saja" model="bhu.tree.master"><field name="name">Saja / साजा</field><field name="tree_type">non_fruit_bearing</field></record>
+        <record id="tree_master_dhawra" model="bhu.tree.master"><field name="name">Dhawra / धावड़ा</field><field name="tree_type">non_fruit_bearing</field></record>
+        <record id="tree_master_haldu_mundi" model="bhu.tree.master"><field name="name">Haldu Mundi / हल्दू मुण्डी</field><field name="tree_type">non_fruit_bearing</field></record>
+        <record id="tree_master_khamhar" model="bhu.tree.master"><field name="name">Khamhar / खम्हार</field><field name="tree_type">non_fruit_bearing</field></record>
+        <record id="tree_master_other_mixed" model="bhu.tree.master"><field name="name">Other Mixed / अन्य मिश्रित</field><field name="tree_type">non_fruit_bearing</field></record>
+        <record id="tree_master_teak" model="bhu.tree.master"><field name="name">Teak / सागौन</field><field name="tree_type">non_fruit_bearing</field></record>
+        
+        <!-- Seed chart rates -->
+        <function model="bhu.tree.master" name="seed_non_fruit_chart_rates"/>
+    </data>
+</odoo>

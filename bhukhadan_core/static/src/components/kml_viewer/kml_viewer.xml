@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="bhukhadan_core.KmlViewer" owl="1">
+        <div class="kml-viewer-root">
+
+            <!-- Error Banner -->
+            <div t-if="state.error" class="kml-error-bar">
+                <i class="fa fa-exclamation-circle" style="color:#e53935"/>
+                <span><t t-esc="state.error"/></span>
+            </div>
+
+            <!-- Loading Overlay -->
+            <div t-if="state.isLoading" class="kml-loading-overlay">
+                <div class="kml-spinner"/>
+                <p style="color:#8ab4f8; margin:0; font-size:0.88rem; letter-spacing:0.05em;">
+                    <t t-esc="state.status"/>
+                </p>
+            </div>
+
+            <!-- Google Map — fills entire width -->
+            <div t-ref="mapContainer" class="kml-map-el"/>
+
+            <!-- Status Bar -->
+            <div t-if="!state.isLoading" class="kml-status-bar">
+                <i class="fa fa-map-marker" style="color:#4285f4;"/>
+                <span><t t-esc="state.status"/></span>
+            </div>
+
+        </div>
+    </t>
+
+</templates>

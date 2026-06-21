@@ -1,0 +1,320 @@
+/* Main Container */
+.bhu_hierarchy_container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: #fdfdfd; 
+    overflow: hidden;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* -------------------------------------------------------------------------- */
+/* PREMIUM HEADER / RIBBON - FIX SQUEEZED BUTTONS                             */
+/* -------------------------------------------------------------------------- */
+.bhu_hierarchy_header {
+    background: #ffffff;
+    padding: 0 24px;
+    border-bottom: 1px solid #dfe3e8;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    height: 64px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+
+    .bhu_header_left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        .bhu_breadcrumb_nav {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #f4f6f8;
+            padding: 6px 14px;
+            border-radius: 6px;
+            border: 1px solid #e1e4e8;
+
+            .bhu_breadcrumb_item {
+                font-size: 13px;
+                font-weight: 600;
+                color: #454f5b;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                
+                &:hover { color: #00897b; }
+                &.active { color: #212b36; cursor: default; }
+                i { font-size: 14px; color: #00897b; }
+            }
+            .bhu_breadcrumb_sep { color: #919eab; font-size: 10px; }
+        }
+    }
+
+    .bhu_hierarchy_controls {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+
+        .bhu_toggle_group {
+            display: flex;
+            background: #f4f6f8;
+            padding: 3px;
+            border-radius: 8px;
+            border: 1px solid #dfe3e8;
+
+            .btn {
+                border: none;
+                background: transparent;
+                padding: 8px 16px;
+                min-width: 120px; /* Prevent squeezing */
+                font-size: 12px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                color: #637381;
+                border-radius: 6px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                transition: all 0.2s;
+                white-space: nowrap;
+
+                &.active {
+                    background: #ffffff;
+                    color: #212b36;
+                    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+                }
+            }
+        }
+
+        .bhu_district_select {
+            min-width: 160px;
+            height: 38px;
+            font-size: 14px;
+            border-radius: 6px;
+            border: 1px solid #c4cdd5;
+            padding: 0 12px;
+            background-color: #ffffff;
+            font-weight: 600;
+            color: #212b36;
+            &:focus { outline: none; border-color: #00897b; }
+        }
+        
+        .btn-action {
+            min-width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            border: 1px solid #dfe3e8;
+            background: #ffffff;
+            color: #637381;
+            cursor: pointer;
+            transition: all 0.2s;
+            &:hover { border-color: #00897b; color: #00897b; background: #f0fdfa; }
+        }
+
+        .btn-fullscreen {
+            background: #212b36;
+            color: #ffffff;
+            border: none;
+            &:hover { background: #454f5b; }
+        }
+    }
+}
+
+/* -------------------------------------------------------------------------- */
+/* CONNECTORS RE-ENGINEERED - NO GAPS                                         */
+/* -------------------------------------------------------------------------- */
+.bhu_hierarchy_canvas {
+    flex: 1;
+    overflow: auto;
+    background: #fdfdfd;
+    background-image: 
+        linear-gradient(rgba(224, 230, 237, 0.4) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(224, 230, 237, 0.4) 1px, transparent 1px);
+    background-size: 40px 40px;
+    padding: 80px;
+}
+
+.bhu_tree_wrapper {
+    display: inline-block;
+    min-width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+/* Base Card Styling */
+.bhu_tree_node {
+    padding: 0;
+    position: relative;
+    z-index: 100;
+}
+
+.bhu_node_card {
+    width: 220px;
+    background: #ffffff;
+    border-radius: 2px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    border: 1px solid #dfe3e8;
+    position: relative;
+    cursor: pointer;
+    z-index: 100;
+
+    &:hover {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        border-color: #00897b;
+    }
+
+    /* TYPE ACCENT */
+    .bhu_node_accent { position: absolute; left: -1px; top: -1px; bottom: -1px; width: 4px; }
+    
+    .bhu_node_icon {
+        width: 32px; height: 32px; border-radius: 2px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 14px; flex-shrink: 0;
+        background: #f4f6f8; color: #637381;
+    }
+
+    .bhu_node_content {
+        flex: 1; overflow: hidden;
+        .bhu_node_name { font-size: 14px; font-weight: 700; color: #212b36; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .bhu_type_label { font-size: 8px; font-weight: 800; color: #919eab; text-transform: uppercase; }
+        .bhu_role_badge { 
+            font-size: 10px; font-weight: 700; padding: 1px 6px; 
+            border-radius: 2px; background: #f4f6f8; color: #637381;
+        }
+    }
+
+    .bhu_node_actions {
+        display: flex; flex-direction: column; gap: 4px;
+        .focus_btn {
+            width: 22px; height: 22px; border-radius: 2px;
+            background: #f4f6f8; color: #919eab;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 10px;
+            &:hover { background: #00897b; color: white; }
+        }
+        .bhu_node_toggle { font-size: 16px; color: #c4cdd5; &:hover { color: #00897b; } }
+    }
+}
+
+/* Category Colors */
+.district { .bhu_node_accent { background: #00897b; } }
+.tehsil { .bhu_node_accent { background: #1e88e5; } }
+.village { .bhu_node_accent { background: #ffb300; } }
+.user { .bhu_node_accent { background: #7c4dff; } }
+
+/* -------------------------------------------------------------------------- */
+/* VERTICAL LAYOUT CONNECTORS                                                 */
+/* -------------------------------------------------------------------------- */
+.vertical {
+    .bhu_tree_node_group {
+        display: flex; flex-direction: column; align-items: center; position: relative;
+    }
+
+    .bhu_tree_node {
+        margin-bottom: 40px;
+        
+        /* Line going DOWN from parent */
+        &::after {
+            content: ""; position: absolute; 
+            top: 100%; left: 50%; width: 2px; height: 40px; 
+            background: #b0bec5; transform: translateX(-50%);
+            display: none;
+        }
+    }
+
+    /* Only show parent line if children expanded */
+    .bhu_tree_node_group:not(.is_collapsed):has(> .bhu_tree_children > .bhu_tree_node_group) > .bhu_tree_node::after {
+        display: block;
+    }
+
+    .bhu_tree_children {
+        display: flex; flex-direction: row; justify-content: center; position: relative;
+        padding-top: 20px;
+
+        /* Bridge line */
+        &::before {
+            content: ""; position: absolute; top: 0; left: 0; right: 0;
+            height: 2px; background: #b0bec5;
+        }
+
+        /* Feeder lines UP from children to bridge */
+        & > .bhu_tree_node_group::before {
+            content: ""; position: absolute; top: -20px; left: 50%;
+            width: 2px; height: 20px; background: #b0bec5; transform: translateX(-50%);
+        }
+
+        /* End masking */
+        & > .bhu_tree_node_group:first-child::after,
+        & > .bhu_tree_node_group:last-child::after {
+            content: ""; position: absolute; top: 0; height: 2px; background: #fdfdfd; width: 50%; z-index: 1;
+        }
+        & > .bhu_tree_node_group:first-child::after { left: -1px; }
+        & > .bhu_tree_node_group:last-child::after { right: -1px; }
+
+        &:only-child::before, & > .bhu_tree_node_group:only-child::after { display: none; }
+    }
+}
+
+/* -------------------------------------------------------------------------- */
+/* HORIZONTAL LAYOUT CONNECTORS - ABSOLUTELY NO GAPS                          */
+/* -------------------------------------------------------------------------- */
+.horizontal {
+    .bhu_tree_node_group {
+        display: flex; flex-direction: row; align-items: center; position: relative;
+    }
+
+    .bhu_tree_node {
+        margin-right: 60px; /* Exact gap to spine */
+        
+        /* Line going RIGHT from parent center-edge */
+        &::after {
+            content: ""; position: absolute; 
+            left: 100%; top: 50%; width: 60px; height: 2px; 
+            background: #b0bec5; transform: translateY(-50%);
+            display: none;
+        }
+    }
+
+    .bhu_tree_node_group:not(.is_collapsed):has(> .bhu_tree_children > .bhu_tree_node_group) > .bhu_tree_node::after {
+        display: block;
+    }
+
+    .bhu_tree_children {
+        display: flex; flex-direction: column; position: relative;
+        padding-left: 40px;
+
+        /* Vertical Spine */
+        &::before {
+            content: ""; position: absolute; left: 0; top: 0; bottom: 0;
+            width: 2px; background: #b0bec5;
+        }
+
+        /* Lines going LEFT from child to spine */
+        & > .bhu_tree_node_group::before {
+            content: ""; position: absolute; left: -40px; top: 50%;
+            width: 40px; height: 2px; background: #b0bec5; transform: translateY(-50%);
+        }
+
+        /* End masking for spine */
+        & > .bhu_tree_node_group:first-child::after,
+        & > .bhu_tree_node_group:last-child::after {
+            content: ""; position: absolute; left: 0; width: 2px; background: #fdfdfd; height: 50%; z-index: 1;
+        }
+        & > .bhu_tree_node_group:first-child::after { top: -1px; }
+        & > .bhu_tree_node_group:last-child::after { bottom: -1px; }
+
+        &:only-child::before, & > .bhu_tree_node_group:only-child::after { display: none; }
+    }
+}

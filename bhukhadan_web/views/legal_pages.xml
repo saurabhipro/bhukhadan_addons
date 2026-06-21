@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Shared head assets for legal pages -->
+    <template id="legal_page_head">
+        <t t-call="bhukhadan_web.seo_head"/>
+        <link rel="stylesheet" type="text/css"
+              t-attf-href="/bhukhadan_web/static/src/css/bhuarjan_website.css?v=18.0.1.2.3"/>
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap"
+              rel="stylesheet"/>
+    </template>
+
+    <!-- Paytm-style tab navigation -->
+    <template id="legal_nav_tabs" name="BhuKhadan Legal Navigation">
+        <nav class="bhu-legal-tabs" aria-label="Legal documents">
+            <a t-attf-class="bhu-legal-tab #{active_tab == 'terms' and 'active' or ''}"
+               href="/terms-and-conditions">Terms &amp; Conditions</a>
+            <a t-attf-class="bhu-legal-tab #{active_tab == 'privacy' and 'active' or ''}"
+               href="/privacy-policy">Privacy Policy</a>
+            <a t-attf-class="bhu-legal-tab #{active_tab == 'cookies' and 'active' or ''}"
+               href="/cookie-policy">Cookie Policy</a>
+        </nav>
+    </template>
+
+    <!-- Payment disclaimer (reused on privacy page) -->
+    <template id="payment_disclaimer_body" name="BhuKhadan Payment Disclaimer">
+        <h2 class="bhu-legal-subtitle">Disclaimer Regarding Payment Processing and Liability</h2>
+        <p>
+            The <strong>BhuKhadan</strong> application is a software platform developed and maintained by
+            <strong>REDMELON BUSINESS SOLUTIONS PRIVATE LIMITED</strong> (&quot;REDMELON&quot;) solely for the purpose of
+            facilitating digital processing, workflow management, record keeping, and payment administration
+            activities as configured by the concerned Department/Authority.
+        </p>
+        <p>
+            All payment-related information, including but not limited to beneficiary details, ownership records,
+            bank account information, compensation amounts, award calculations, approvals, and payment authorizations,
+            are entered, verified, approved, and processed by authorized officials of the concerned
+            Department/Authority.
+        </p>
+        <p>
+            REDMELON does not verify, validate, audit, certify, or guarantee the accuracy, completeness,
+            authenticity, or legality of any data entered into the system by users. The responsibility for ensuring
+            the correctness of beneficiary details, payment amounts, ownership records, and all related approvals
+            rests exclusively with the concerned Department/Authority and its authorized users.
+        </p>
+        <p>
+            REDMELON shall not be liable for any direct, indirect, incidental, consequential, financial, legal, or
+            administrative loss, damage, claim, dispute, recovery proceeding, excess payment, short payment,
+            duplicate payment, erroneous payment, fraudulent payment, or payment made to an incorrect beneficiary
+            arising from or related to the use of the application, incorrect data entry, improper verification,
+            unauthorized access, user error, or departmental decisions.
+        </p>
+        <p>
+            By using the BhuKhadan application, the Department/Authority acknowledges and agrees that all payment
+            approvals and disbursements are undertaken at its sole responsibility and risk. The Department/Authority
+            shall remain solely responsible for compliance with all applicable laws, rules, notifications, financial
+            regulations, audit requirements, and departmental procedures governing such payments.
+        </p>
+        <p>
+            REDMELON acts only as a technology service provider and shall not be considered a party to any payment
+            transaction, compensation determination, ownership verification process, or beneficiary entitlement
+            decision conducted through the application.
+        </p>
+    </template>
+
+    <!-- ============================================================
+         TERMS & CONDITIONS PAGE
+         ============================================================ -->
+    <template id="terms_and_conditions_page" name="BhuKhadan – Terms &amp; Conditions">
+        <t t-call="website.layout">
+            <t t-set="additional_title">Terms &amp; Conditions</t>
+            <t t-set="meta_description">BhuKhadan Terms &amp; Conditions — platform usage, responsibilities, and service terms for the land acquisition management system by REDMELON BUSINESS SOLUTIONS PRIVATE LIMITED.</t>
+            <t t-set="bhu_page_keywords" t-value="'BhuKhadan terms and conditions, REDMELON BUSINESS SOLUTIONS PRIVATE LIMITED, land acquisition platform, legal'"/>
+            <t t-set="no_header" t-value="1"/>
+            <t t-set="no_footer" t-value="1"/>
+            <t t-set="head">
+                <t t-call="bhukhadan_web.legal_page_head"/>
+            </t>
+
+            <t t-call="bhukhadan_web.navbar"/>
+
+            <div class="bhu-legal-page">
+                <t t-set="active_tab" t-value="'terms'"/>
+                <t t-call="bhukhadan_web.legal_nav_tabs"/>
+
+                <div class="bhu-legal-content">
+                    <h1 class="bhu-legal-title">BhuKhadan Terms &amp; Conditions</h1>
+
+                    <h2 class="bhu-legal-subtitle">Use of the BhuKhadan Platform</h2>
+                    <p>
+                        These Terms &amp; Conditions (&quot;Terms&quot;) govern access to and use of the
+                        <strong>BhuKhadan</strong> land acquisition management platform, website, and related services
+                        (collectively, the &quot;Platform&quot;) provided by
+                        <strong>REDMELON BUSINESS SOLUTIONS PRIVATE LIMITED</strong> (&quot;REDMELON&quot;, &quot;we&quot;, &quot;us&quot;).
+                    </p>
+                    <p>
+                        The Platform is licensed to and operated for the concerned <strong>Department/Authority</strong>
+                        and its authorized officials. By accessing or using the Platform, you confirm that you are an
+                        authorized user and agree to these Terms.
+                    </p>
+
+                    <h2 class="bhu-legal-subtitle">Platform Role &amp; Responsibilities</h2>
+                    <p>
+                        BhuKhadan is a technology platform for workflow management, documentation, approvals, and
+                        payment administration as configured by the Department/Authority. REDMELON provides software
+                        infrastructure, maintenance, and support as a <strong>technology service provider only</strong>.
+                    </p>
+                    <p>
+                        All statutory decisions, verifications, approvals, compensation determinations, and payment
+                        authorizations remain the sole responsibility of the Department/Authority and its designated
+                        officials. REDMELON does not act as a party to land acquisition proceedings or payment
+                        transactions.
+                    </p>
+
+                    <h2 class="bhu-legal-subtitle">User Obligations</h2>
+                    <p>
+                        Authorized users must maintain the confidentiality of login credentials, enter accurate data,
+                        follow applicable laws and departmental procedures, and use the Platform only for official
+                        purposes. Unauthorized access, data tampering, or misuse of the Platform is prohibited.
+                    </p>
+
+                    <h2 class="bhu-legal-subtitle">Payment Processing</h2>
+                    <p>
+                        Payment-related disclaimers and liability limitations are set out in our
+                        <a href="/privacy-policy">Privacy Policy</a>, including the
+                        <em>Disclaimer Regarding Payment Processing and Liability</em>. By using payment features of
+                        the Platform, you acknowledge those terms.
+                    </p>
+
+                    <h2 class="bhu-legal-subtitle">Intellectual Property</h2>
+                    <p>
+                        The Platform, including its software, design, documentation, and branding, is owned by REDMELON BUSINESS SOLUTIONS PRIVATE LIMITED
+                        or its licensors. No rights are granted except as necessary for authorized use under the
+                        applicable service agreement with the Department/Authority.
+                    </p>
+
+                    <h2 class="bhu-legal-subtitle">Limitation of Liability</h2>
+                    <p>
+                        To the fullest extent permitted by applicable law, REDMELON shall not be liable for losses
+                        arising from incorrect user data entry, departmental decisions, third-party integrations,
+                        network interruptions, or events beyond reasonable control. See the Privacy Policy for
+                        payment-specific liability terms.
+                    </p>
+
+                    <h2 class="bhu-legal-subtitle">Changes &amp; Contact</h2>
+                    <p>
+                        REDMELON may update these Terms from time to time. Continued use of the Platform after updates
+                        constitutes acceptance of the revised Terms. For questions, contact
+                        <a href="mailto:support@bhuarjan.com">support@bhuarjan.com</a>.
+                    </p>
+
+                    <p class="bhu-legal-meta">
+                        Platform developed and maintained by
+                        <a href="https://www.redmelon.co.in" target="_blank" rel="noopener noreferrer">REDMELON BUSINESS SOLUTIONS PRIVATE LIMITED</a>
+                        (REDMELON BUSINESS SOLUTIONS PRIVATE LIMITED).
+                    </p>
+                </div>
+            </div>
+
+            <t t-call="bhukhadan_web.footer"/>
+        </t>
+    </template>
+
+    <!-- ============================================================
+         PRIVACY POLICY PAGE
+         ============================================================ -->
+    <template id="privacy_policy_page" name="BhuKhadan – Privacy Policy">
+        <t t-call="website.layout">
+            <t t-set="additional_title">Privacy Policy</t>
+            <t t-set="meta_description">BhuKhadan Privacy Policy — data handling, payment processing disclaimer, and liability terms for the land acquisition platform by REDMELON BUSINESS SOLUTIONS PRIVATE LIMITED.</t>
+            <t t-set="bhu_page_keywords" t-value="'BhuKhadan privacy policy, payment disclaimer, REDMELON BUSINESS SOLUTIONS PRIVATE LIMITED, land acquisition'"/>
+            <t t-set="no_header" t-value="1"/>
+            <t t-set="no_footer" t-value="1"/>
+            <t t-set="head">
+                <t t-call="bhukhadan_web.legal_page_head"/>
+            </t>
+
+            <t t-call="bhukhadan_web.navbar"/>
+
+            <div class="bhu-legal-page">
+                <t t-set="active_tab" t-value="'privacy'"/>
+                <t t-call="bhukhadan_web.legal_nav_tabs"/>
+
+                <div class="bhu-legal-content">
+                    <h1 class="bhu-legal-title">BhuKhadan Privacy Policy</h1>
+
+                    <h2 class="bhu-legal-subtitle">Overview</h2>
+                    <p>
+                        This Privacy Policy describes how <strong>REDMELON BUSINESS SOLUTIONS PRIVATE LIMITED</strong>
+                        (&quot;REDMELON BUSINESS SOLUTIONS PRIVATE LIMITED&quot;, &quot;REDMELON&quot;, &quot;we&quot;) handles information in
+                        connection with the <strong>BhuKhadan</strong> platform operated for the concerned
+                        Department/Authority. Official land records, beneficiary data, and payment information are
+                        entered and controlled by authorized government users.
+                    </p>
+
+                    <t t-call="bhukhadan_web.payment_disclaimer_body"/>
+
+                    <h2 class="bhu-legal-subtitle">Data Security</h2>
+                    <p>
+                        We implement industry-standard technical and organizational measures to protect platform
+                        availability and security. Access is restricted to authenticated users authorized by the
+                        Department/Authority.
+                    </p>
+
+                    <h2 class="bhu-legal-subtitle">Contact</h2>
+                    <p>
+                        For privacy-related enquiries, email
+                        <a href="mailto:support@bhuarjan.com">support@bhuarjan.com</a>
+                        or visit our <a href="/contact">contact page</a>.
+                    </p>
+
+                    <p class="bhu-legal-meta">
+                        Platform developed and maintained by
+                        <a href="https://www.redmelon.co.in" target="_blank" rel="noopener noreferrer">REDMELON BUSINESS SOLUTIONS PRIVATE LIMITED</a>
+                        (REDMELON BUSINESS SOLUTIONS PRIVATE LIMITED).
+                    </p>
+                </div>
+            </div>
+
+            <t t-call="bhukhadan_web.footer"/>
+        </t>
+    </template>
+
+</odoo>

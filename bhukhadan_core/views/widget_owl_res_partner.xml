@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="view_res_partner_form_confirm_popup" model="ir.ui.view">
+        <field name="name">res.partner.form.confirm.popup</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="js_class">confirm_save_form</attribute>
+                <attribute name="popup_title">Confirm Partner Save</attribute>
+                <attribute name="popup_body">Do you want to save changes to this Partner?</attribute>
+                <attribute name="confirm_label">Yes, Save</attribute>
+                <attribute name="cancel_label">Cancel</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data noupdate="1">
+    <record id="bhu_bank_pv_axis_bank_ltd" model="res.bank">
+      <field name="name">Axis Bank Ltd.</field>
+      <field name="bhu_category">private_sector</field>
+    </record>
+    <record id="bhu_bank_pv_bandhan_bank_ltd" model="res.bank">
+      <field name="name">Bandhan Bank Ltd.</field>
+      <field name="bhu_category">private_sector</field>
+    </record>
+    <record id="bhu_bank_pv_csb_bank_limited" model="res.bank">
+      <field name="name">CSB Bank Limited</field>
+      <field name="bhu_category">private_sector</field>
+    </record>
+    <record id="bhu_bank_pv_city_union_bank_ltd" model="res.bank">
+      <field name="name">City Union Bank Ltd.</field>
+      <field name="bhu_category">private_sector</field>
+    </record>
+    <record id="bhu_bank_pv_dcb_bank_ltd" model="res.bank">
+      <field name="name">DCB Bank Ltd.</field>
+      <field name="bhu_category">private_sector</field>
+    </record>
+    <record id="bhu_bank_pv_dhanlaxmi_bank_ltd" model="res.bank">
+      <field name="name">Dhanlaxmi Bank Ltd.</field>
+      <field name="bhu_category">private_sector</field>
+    </record>
+    <record id="bhu_bank_pv_federal_bank_ltd" model="res.bank">
+      <field name="name">Federal Bank Ltd.</field>
+      <field name="bhu_category">private_sector</field>
+    </record>
+    <record id="bhu_bank_pv_hdfc_bank_ltd" model="res.bank">
+      <field name="name">HDFC Bank Ltd</field>
+      <field name="bhu_category">private_sector</field>
+    </record>
+    <record id="bhu_bank_pv_icici_bank_ltd" model="res.bank">
+      <field name="name">ICICI Bank Ltd.</field>
+      <field name="bhu_category">private_sector</field>
+    </record>
+    <record id="bhu_bank_pv_indusind_bank_ltd" model="res.bank">
+      <field name="name">IndusInd Bank Ltd</field>
+      <field name="bhu_category">private_sector</field>
+    </record>
+    <record id="bhu_bank_pv_idfc_first_bank_limited" model="res.bank">
+      <field name="name">IDFC FIRST Bank Limited</field>
+      <field name="bhu_category">private_sector</field>
+    </record>
+    <record id="bhu_bank_pv_jammu_kashmir_bank_ltd" model="res.bank">
+      <field name="name">Jammu &amp; Kashmir Bank Ltd.</field>
+      <field name="bhu_category">private_sector</field>
+    </record>
+    <record id="bhu_bank_pv_karnataka_bank_ltd" model="res.bank">
+      <field name="name">Karnataka Bank Ltd.</field>
+      <field name="bhu_category">private_sector</field>
+    </record>
+    <record id="bhu_bank_pv_karur_vysya_bank_ltd" model="res.bank">
+      <field name="name">Karur Vysya Bank Ltd.</field>
+      <field name="bhu_category">private_sector</field>
+    </record>
+    <record id="bhu_bank_pv_kotak_mahindra_bank_ltd" model="res.bank">
+      <field name="name">Kotak Mahindra Bank Ltd</field>
+      <field name="bhu_category">private_sector</field>
+    </record>
+    <record id="bhu_bank_pv_nainital_bank_ltd" model="res.bank">
+      <field name="name">Nainital bank Ltd.</field>
+      <field name="bhu_category">private_sector</field>
+    </record>
+    <record id="bhu_bank_pv_rbl_bank_ltd" model="res.bank">
+      <field name="name">RBL Bank Ltd.</field>
+      <field name="bhu_category">private_sector</field>
+    </record>
+    <record id="bhu_bank_pv_south_indian_bank_ltd" model="res.bank">
+      <field name="name">South Indian Bank Ltd.</field>
+      <field name="bhu_category">private_sector</field>
+    </record>
+    <record id="bhu_bank_pv_tamilnad_mercantile_bank_ltd" model="res.bank">
+      <field name="name">Tamilnad Mercantile Bank Ltd.</field>
+      <field name="bhu_category">private_sector</field>
+    </record>
+    <record id="bhu_bank_pv_yes_bank_ltd" model="res.bank">
+      <field name="name">YES Bank Ltd.</field>
+      <field name="bhu_category">private_sector</field>
+    </record>
+    <record id="bhu_bank_pv_idbi_bank_limited" model="res.bank">
+      <field name="name">IDBI Bank Limited</field>
+      <field name="bhu_category">private_sector</field>
+    </record>
+    <record id="bhu_bank_lab_coastal_local_area_bank_ltd" model="res.bank">
+      <field name="name">Coastal Local Area Bank Ltd</field>
+      <field name="bhu_category">local_area_bank</field>
+    </record>
+    <record id="bhu_bank_lab_krishna_bhima_samruddhi_lab_ltd" model="res.bank">
+      <field name="name">Krishna Bhima Samruddhi LAB Ltd</field>
+      <field name="bhu_category">local_area_bank</field>
+    </record>
+    <record id="bhu_bank_sfb_au_small_finance_bank_ltd" model="res.bank">
+      <field name="name">Au Small Finance Bank Ltd.</field>
+      <field name="bhu_category">small_finance_bank</field>
+    </record>
+    <record id="bhu_bank_sfb_capital_small_finance_bank_ltd" model="res.bank">
+      <field name="name">Capital Small Finance Bank Ltd.</field>
+      <field name="bhu_category">small_finance_bank</field>
+    </record>
+    <record id="bhu_bank_sfb_equitas_small_finance_bank_ltd" model="res.bank">
+      <field name="name">Equitas Small Finance Bank Ltd.</field>
+      <field name="bhu_category">small_finance_bank</field>
+    </record>
+    <record id="bhu_bank_sfb_esaf_small_finance_bank_ltd" model="res.bank">
+      <field name="name">ESAF Small Finance Bank Ltd.</field>
+      <field name="bhu_category">small_finance_bank</field>
+    </record>
+    <record id="bhu_bank_sfb_suryoday_small_finance_bank_ltd" model="res.bank">
+      <field name="name">Suryoday Small Finance Bank Ltd.</field>
+      <field name="bhu_category">small_finance_bank</field>
+    </record>
+    <record id="bhu_bank_sfb_ujjivan_small_finance_bank_ltd" model="res.bank">
+      <field name="name">Ujjivan Small Finance Bank Ltd.</field>
+      <field name="bhu_category">small_finance_bank</field>
+    </record>
+    <record id="bhu_bank_sfb_utkarsh_small_finance_bank_ltd" model="res.bank">
+      <field name="name">Utkarsh Small Finance Bank Ltd.</field>
+      <field name="bhu_category">small_finance_bank</field>
+    </record>
+    <record id="bhu_bank_sfb_north_east_small_finance_bank_ltd" model="res.bank">
+      <field name="name">North East Small finance Bank Ltd</field>
+      <field name="bhu_category">small_finance_bank</field>
+    </record>
+    <record id="bhu_bank_sfb_jana_small_finance_bank_ltd" model="res.bank">
+      <field name="name">Jana Small Finance Bank Ltd.</field>
+      <field name="bhu_category">small_finance_bank</field>
+    </record>
+    <record id="bhu_bank_sfb_shivalik_small_finance_bank_ltd" model="res.bank">
+      <field name="name">Shivalik Small Finance Bank Ltd.</field>
+      <field name="bhu_category">small_finance_bank</field>
+    </record>
+    <record id="bhu_bank_sfb_unity_small_finance_bank_ltd" model="res.bank">
+      <field name="name">Unity Small Finance Bank Ltd.</field>
+      <field name="bhu_category">small_finance_bank</field>
+    </record>
+    <record id="bhu_bank_pb_airtel_payments_bank_ltd" model="res.bank">
+      <field name="name">Airtel Payments Bank Ltd</field>
+      <field name="bhu_category">payments_bank</field>
+    </record>
+    <record id="bhu_bank_pb_india_post_payments_bank_ltd" model="res.bank">
+      <field name="name">India Post Payments Bank Ltd</field>
+      <field name="bhu_category">payments_bank</field>
+    </record>
+    <record id="bhu_bank_pb_fino_payments_bank_ltd" model="res.bank">
+      <field name="name">FINO Payments Bank Ltd</field>
+      <field name="bhu_category">payments_bank</field>
+    </record>
+    <record id="bhu_bank_pb_paytm_payments_bank_ltd" model="res.bank">
+      <field name="name">Paytm Payments Bank Ltd</field>
+      <field name="bhu_category">payments_bank</field>
+    </record>
+    <record id="bhu_bank_pb_jio_payments_bank_ltd" model="res.bank">
+      <field name="name">Jio Payments Bank Ltd</field>
+      <field name="bhu_category">payments_bank</field>
+    </record>
+    <record id="bhu_bank_pb_nsdl_payments_bank_limited" model="res.bank">
+      <field name="name">NSDL Payments Bank Limited</field>
+      <field name="bhu_category">payments_bank</field>
+    </record>
+    <record id="bhu_bank_pub_bank_of_baroda" model="res.bank">
+      <field name="name">Bank of Baroda</field>
+      <field name="bhu_category">public_sector</field>
+    </record>
+    <record id="bhu_bank_pub_bank_of_india" model="res.bank">
+      <field name="name">Bank of India</field>
+      <field name="bhu_category">public_sector</field>
+    </record>
+    <record id="bhu_bank_pub_bank_of_maharashtra" model="res.bank">
+      <field name="name">Bank of Maharashtra</field>
+      <field name="bhu_category">public_sector</field>
+    </record>
+    <record id="bhu_bank_pub_canara_bank" model="res.bank">
+      <field name="name">Canara Bank</field>
+      <field name="bhu_category">public_sector</field>
+    </record>
+    <record id="bhu_bank_pub_central_bank_of_india" model="res.bank">
+      <field name="name">Central Bank of India</field>
+      <field name="bhu_category">public_sector</field>
+    </record>
+    <record id="bhu_bank_pub_indian_bank" model="res.bank">
+      <field name="name">Indian Bank</field>
+      <field name="bhu_category">public_sector</field>
+    </record>
+    <record id="bhu_bank_pub_indian_overseas_bank" model="res.bank">
+      <field name="name">Indian Overseas Bank</field>
+      <field name="bhu_category">public_sector</field>
+    </record>
+    <record id="bhu_bank_pub_punjab_sind_bank" model="res.bank">
+      <field name="name">Punjab &amp; Sind Bank</field>
+      <field name="bhu_category">public_sector</field>
+    </record>
+    <record id="bhu_bank_pub_punjab_national_bank" model="res.bank">
+      <field name="name">Punjab National Bank</field>
+      <field name="bhu_category">public_sector</field>
+    </record>
+    <record id="bhu_bank_pub_state_bank_of_india" model="res.bank">
+      <field name="name">State Bank of India</field>
+      <field name="bhu_category">public_sector</field>
+    </record>
+    <record id="bhu_bank_pub_uco_bank" model="res.bank">
+      <field name="name">UCO Bank</field>
+      <field name="bhu_category">public_sector</field>
+    </record>
+    <record id="bhu_bank_pub_union_bank_of_india" model="res.bank">
+      <field name="name">Union Bank of India</field>
+      <field name="bhu_category">public_sector</field>
+    </record>
+    <record id="bhu_bank_fi_national_bank_for_agriculture_and_rural_development" model="res.bank">
+      <field name="name">National Bank for Agriculture and Rural Development</field>
+      <field name="bhu_category">financial_institution</field>
+    </record>
+    <record id="bhu_bank_fi_export_import_bank_of_india" model="res.bank">
+      <field name="name">Export-Import Bank of India</field>
+      <field name="bhu_category">financial_institution</field>
+    </record>
+    <record id="bhu_bank_fi_national_housing_bank" model="res.bank">
+      <field name="name">National Housing Bank</field>
+      <field name="bhu_category">financial_institution</field>
+    </record>
+    <record id="bhu_bank_fi_small_industries_development_bank_of_india" model="res.bank">
+      <field name="name">Small Industries Development Bank of India</field>
+      <field name="bhu_category">financial_institution</field>
+    </record>
+    <record id="bhu_bank_rrb_andhra_pradesh_grameena_bank" model="res.bank">
+      <field name="name">Andhra Pradesh Grameena Bank</field>
+      <field name="bhu_category">regional_rural_bank</field>
+    </record>
+    <record id="bhu_bank_rrb_assam_gramin_bank" model="res.bank">
+      <field name="name">Assam Gramin Bank</field>
+      <field name="bhu_category">regional_rural_bank</field>
+    </record>
+    <record id="bhu_bank_rrb_arunachal_pradesh_rural_bank" model="res.bank">
+      <field name="name">Arunachal Pradesh Rural Bank</field>
+      <field name="bhu_category">regional_rural_bank</field>
+    </record>
+    <record id="bhu_bank_rrb_bihar_gramin_bank" model="res.bank">
+      <field name="name">Bihar Gramin Bank</field>
+      <field name="bhu_category">regional_rural_bank</field>
+    </record>
+    <record id="bhu_bank_rrb_chhattisgarh_gramin_bank" model="res.bank">
+      <field name="name">Chhattisgarh Gramin Bank</field>
+      <field name="bhu_category">regional_rural_bank</field>
+    </record>
+    <record id="bhu_bank_rrb_gujarat_gramin_bank" model="res.bank">
+      <field name="name">Gujarat Gramin Bank</field>
+      <field name="bhu_category">regional_rural_bank</field>
+    </record>
+    <record id="bhu_bank_rrb_haryana_gramin_bank" model="res.bank">
+      <field name="name">Haryana Gramin Bank</field>
+      <field name="bhu_category">regional_rural_bank</field>
+    </record>
+    <record id="bhu_bank_rrb_himachal_pradesh_gramin_bank" model="res.bank">
+      <field name="name">Himachal Pradesh Gramin Bank</field>
+      <field name="bhu_category">regional_rural_bank</field>
+    </record>
+    <record id="bhu_bank_rrb_jharkhand_gramin_bank" model="res.bank">
+      <field name="name">Jharkhand Gramin Bank</field>
+      <field name="bhu_category">regional_rural_bank</field>
+    </record>
+    <record id="bhu_bank_rrb_jammu_and_kashmir_grameen_bank" model="res.bank">
+      <field name="name">Jammu and Kashmir Grameen Bank</field>
+      <field name="bhu_category">regional_rural_bank</field>
+    </record>
+    <record id="bhu_bank_rrb_karnataka_gramena_bank" model="res.bank">
+      <field name="name">Karnataka Gramena Bank</field>
+      <field name="bhu_category">regional_rural_bank</field>
+    </record>
+    <record id="bhu_bank_rrb_kerala_gramena_bank" model="res.bank">
+      <field name="name">Kerala Gramena Bank</field>
+      <field name="bhu_category">regional_rural_bank</field>
+    </record>
+    <record id="bhu_bank_rrb_maharashtra_gramin_bank" model="res.bank">
+      <field name="name">Maharashtra Gramin Bank</field>
+      <field name="bhu_category">regional_rural_bank</field>
+    </record>
+    <record id="bhu_bank_rrb_madhya_pradesh_gramin_bank" model="res.bank">
+      <field name="name">Madhya Pradesh Gramin Bank</field>
+      <field name="bhu_category">regional_rural_bank</field>
+    </record>
+    <record id="bhu_bank_rrb_manipur_rural_bank" model="res.bank">
+      <field name="name">Manipur Rural Bank</field>
+      <field name="bhu_category">regional_rural_bank</field>
+    </record>
+    <record id="bhu_bank_rrb_meghalaya_rural_bank" model="res.bank">
+      <field name="name">Meghalaya Rural Bank</field>
+      <field name="bhu_category">regional_rural_bank</field>
+    </record>
+    <record id="bhu_bank_rrb_mizoram_rural_bank" model="res.bank">
+      <field name="name">Mizoram Rural Bank</field>
+      <field name="bhu_category">regional_rural_bank</field>
+    </record>
+    <record id="bhu_bank_rrb_nagaland_rural_bank" model="res.bank">
+      <field name="name">Nagaland Rural Bank</field>
+      <field name="bhu_category">regional_rural_bank</field>
+    </record>
+    <record id="bhu_bank_rrb_odisha_grameen_bank" model="res.bank">
+      <field name="name">Odisha Grameen Bank</field>
+      <field name="bhu_category">regional_rural_bank</field>
+    </record>
+    <record id="bhu_bank_rrb_punjab_gramin_bank" model="res.bank">
+      <field name="name">Punjab Gramin Bank</field>
+      <field name="bhu_category">regional_rural_bank</field>
+    </record>
+    <record id="bhu_bank_rrb_puducherry_grama_bank" model="res.bank">
+      <field name="name">Puducherry Grama Bank</field>
+      <field name="bhu_category">regional_rural_bank</field>
+    </record>
+    <record id="bhu_bank_rrb_rajasthan_gramin_bank" model="res.bank">
+      <field name="name">Rajasthan Gramin Bank</field>
+      <field name="bhu_category">regional_rural_bank</field>
+    </record>
+    <record id="bhu_bank_rrb_tamil_nadu_grama_bank" model="res.bank">
+      <field name="name">Tamil Nadu Grama Bank</field>
+      <field name="bhu_category">regional_rural_bank</field>
+    </record>
+    <record id="bhu_bank_rrb_telangana_grameena_bank" model="res.bank">
+      <field name="name">Telangana Grameena Bank</field>
+      <field name="bhu_category">regional_rural_bank</field>
+    </record>
+    <record id="bhu_bank_rrb_tripura_gramin_bank" model="res.bank">
+      <field name="name">Tripura Gramin Bank</field>
+      <field name="bhu_category">regional_rural_bank</field>
+    </record>
+    <record id="bhu_bank_rrb_uttar_pradesh_gramin_bank" model="res.bank">
+      <field name="name">Uttar Pradesh Gramin Bank</field>
+      <field name="bhu_category">regional_rural_bank</field>
+    </record>
+    <record id="bhu_bank_rrb_uttarakhand_gramin_bank" model="res.bank">
+      <field name="name">Uttarakhand Gramin Bank</field>
+      <field name="bhu_category">regional_rural_bank</field>
+    </record>
+    <record id="bhu_bank_rrb_west_bengal_gramin_bank" model="res.bank">
+      <field name="name">West Bengal Gramin Bank</field>
+      <field name="bhu_category">regional_rural_bank</field>
+    </record>
+  </data>
+</odoo>

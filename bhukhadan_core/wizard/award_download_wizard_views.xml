@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_award_download_wizard_form" model="ir.ui.view">
+        <field name="name">bhu.award.download.wizard.form</field>
+        <field name="model">bhu.award.download.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Download Award Summary / अवार्ड सारांश डाउनलोड करें">
+                <group>
+                    <field name="res_model" invisible="1"/>
+                    <field name="res_id" invisible="1"/>
+                    <field name="report_xml_id" invisible="1"/>
+                    <field name="filename" invisible="1"/>
+                    <field name="section23_generate" invisible="1"/>
+                    <field name="simple_download_dialog" invisible="1"/>
+                    <field name="section23_sheet_variant"
+                           widget="radio"
+                           string="Sheet Type / पत्रक प्रकार"
+                           invisible="res_model != 'bhu.section23.award' or simple_download_dialog"/>
+                    <field name="export_scope" widget="radio" string="Award sections / अवार्ड पत्रक चुनें"
+                           invisible="simple_download_dialog or (res_model == 'bhu.section23.award' and section23_sheet_variant != 'standard')"/>
+                </group>
+                <group string="Download Type / डाउनलोड प्रकार"
+                       invisible="not simple_download_dialog or res_model != 'bhu.section23.award'">
+                    <field name="section23_download_copy" widget="radio"/>
+                </group>
+                <group string="PDF options / पीडीएफ विकल्प" invisible="simple_download_dialog or res_model != 'bhu.section23.award' or section23_generate">
+                    <field name="add_cover_letter"/>
+                </group>
+                <group>
+                    <field name="format" widget="radio" string="Select download format / डाउनलोड प्रारूप चुनें" invisible="section23_generate"/>
+                </group>
+                <footer>
+                    <button name="action_download" type="object" class="btn-primary" string="Generate / जेनरेट करें" invisible="not section23_generate"/>
+                    <button name="action_download" type="object" class="btn-primary" string="Download / डाउनलोड करें" invisible="section23_generate"/>
+                    <button string="Cancel / रद्द करें" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

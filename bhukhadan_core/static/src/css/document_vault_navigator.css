@@ -1,0 +1,735 @@
+/* Doc Vault Navigator — premium split viewer (matches BhuKhadan dashboard browns) */
+
+.o_docvault_navigator_form {
+    --dv-brown: #8b4513;
+    --dv-brown-dark: #5c2f12;
+    --dv-brown-soft: #a0522d;
+    --dv-cream: #fffaf5;
+    --dv-cream-2: #f8f0e6;
+    --dv-cream-3: #f2e6d8;
+    --dv-ink: #23150f;
+    --dv-muted: #7a5c48;
+    --dv-green: #1f7a45;
+    --dv-green-bg: rgba(237, 249, 241, 0.92);
+    --dv-shadow: 0 8px 28px rgba(61, 28, 18, 0.08);
+    --dv-radius: 14px;
+    font-family: "Segoe UI", "Noto Sans Devanagari", "Helvetica Neue", Arial, sans-serif;
+    background: linear-gradient(180deg, #f7f3ee 0%, #eef2f7 100%);
+    padding: 10px 12px 14px;
+}
+
+.o_docvault_navigator_form .o_form_sheet_bg,
+.o_docvault_navigator_form .o_form_sheet {
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+/* ── Top selector bar ── */
+.o_docvault_selector_bar {
+    display: grid;
+    grid-template-columns: minmax(150px, 190px) 1fr 1fr 1fr auto;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: var(--dv-radius);
+    margin-bottom: 14px;
+    background: linear-gradient(135deg, #6b3a1f 0%, #8b4513 48%, #a86532 100%);
+    box-shadow: var(--dv-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.o_docvault_selector_title {
+    color: #fff;
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.o_docvault_selector_title::before {
+    content: "\f07c";
+    font-family: FontAwesome;
+    font-size: 16px;
+    opacity: 0.92;
+}
+
+.o_docvault_selector_bar .o_field_widget {
+    margin-bottom: 0 !important;
+}
+
+.o_docvault_selector_bar .o_field_widget input,
+.o_docvault_selector_bar .o_field_widget .o_input_dropdown,
+.o_docvault_selector_bar .o_field_widget select {
+    background: #fff !important;
+    border-radius: 8px !important;
+    min-height: 36px;
+    border: 1.5px solid rgba(255, 255, 255, 0.35) !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    font-weight: 600;
+}
+
+.o_docvault_selector_bar .o_docvault_selector_department input,
+.o_docvault_selector_bar .o_docvault_selector_department .o_input_dropdown {
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%) !important;
+    border-color: #60a5fa !important;
+    color: #1e3a8a !important;
+}
+
+.o_docvault_selector_bar .o_docvault_selector_project input,
+.o_docvault_selector_bar .o_docvault_selector_project .o_input_dropdown {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%) !important;
+    border-color: #f59e0b !important;
+    color: #92400e !important;
+}
+
+.o_docvault_selector_bar .o_docvault_selector_village input,
+.o_docvault_selector_bar .o_docvault_selector_village .o_input_dropdown {
+    background: linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%) !important;
+    border-color: #14b8a6 !important;
+    color: #115e59 !important;
+}
+
+.o_docvault_refresh_btn {
+    white-space: nowrap;
+    border-radius: 8px !important;
+    min-height: 36px;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.16) !important;
+    border: 1px solid rgba(255, 255, 255, 0.35) !important;
+    color: #fff !important;
+}
+
+.o_docvault_refresh_btn:hover {
+    background: rgba(255, 255, 255, 0.28) !important;
+}
+
+/* ── Split layout ── */
+.o_docvault_split_area {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 14px;
+    align-items: stretch;
+}
+
+.o_docvault_split_area .o_docvault_left_panel {
+    flex: 0 0 38%;
+    max-width: 38%;
+}
+
+.o_docvault_split_area .o_docvault_right_panel {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.o_docvault_left_panel,
+.o_docvault_right_panel {
+    border: 1px solid rgba(180, 130, 90, 0.22);
+    border-radius: var(--dv-radius);
+    padding: 12px 12px 14px;
+    background: linear-gradient(145deg, var(--dv-cream) 0%, var(--dv-cream-2) 52%, var(--dv-cream-3) 100%);
+    min-height: 640px;
+    box-shadow: var(--dv-shadow);
+}
+
+.o_docvault_panel_title_row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(180, 130, 90, 0.2);
+}
+
+.o_docvault_panel_title_text {
+    font-weight: 800;
+    font-size: 14px;
+    color: var(--dv-brown-dark);
+    letter-spacing: 0.01em;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.o_docvault_title_icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, #6b3a1f, var(--dv-brown));
+    color: #fff !important;
+    font-size: 13px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.o_docvault_inline_toggle_btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 30px;
+    padding: 4px 12px !important;
+    border-radius: 999px;
+    border: 1px solid rgba(139, 69, 19, 0.22) !important;
+    background: rgba(255, 255, 255, 0.72) !important;
+    color: var(--dv-brown-dark) !important;
+    font-weight: 700;
+    font-size: 11px;
+}
+
+.o_docvault_inline_toggle_btn:hover {
+    background: #fff !important;
+    border-color: rgba(139, 69, 19, 0.45) !important;
+}
+
+/* ── Left step list (card rows) ── */
+.o_docvault_step_list .o_list_renderer,
+.o_docvault_step_list .o_list_view {
+    border: 0 !important;
+    background: transparent !important;
+}
+
+.o_docvault_step_list .o_list_table {
+    border-collapse: separate !important;
+    border-spacing: 0 8px !important;
+}
+
+.o_docvault_step_list thead {
+    display: none;
+}
+
+.o_docvault_step_list .o_data_row {
+    position: relative;
+    box-shadow: none !important;
+}
+
+.o_docvault_step_list .o_data_row td {
+    vertical-align: middle !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+}
+
+.o_docvault_step_list .o_data_row td[name="section_icon"],
+.o_docvault_step_list .o_data_row .o_docvault_icon_col {
+    width: 52px;
+    min-width: 52px;
+    max-width: 52px;
+    padding-left: 4px !important;
+}
+
+.o_docvault_step_list .o_data_row td[name="section_icon"] .o_field_widget,
+.o_docvault_step_list .o_data_row .o_docvault_icon_col .o_field_widget {
+    font-size: 0;
+    color: transparent;
+}
+
+.o_docvault_step_list .o_docvault_section_icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(61, 28, 18, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.o_docvault_step_list .o_data_row td[name="step_label"],
+.o_docvault_step_list .o_data_row .o_docvault_step_col {
+    width: 78px;
+    min-width: 78px;
+    max-width: 78px;
+    padding: 0 6px !important;
+}
+
+.o_docvault_step_list .o_data_row td[name="step_label"] span,
+.o_docvault_step_list .o_docvault_step_badge {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    min-width: 56px;
+    padding: 5px 8px;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #6b3a1f 0%, var(--dv-brown) 100%);
+    color: #fff !important;
+    font-size: 10px !important;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.o_docvault_step_list .o_data_row td[name="section_label"],
+.o_docvault_step_list .o_data_row .o_docvault_section_col {
+    padding: 12px 14px 12px 4px !important;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--dv-ink);
+    line-height: 1.35;
+}
+
+/* Card shell via JS class on row wrapper cells */
+.o_docvault_step_list .o_docvault_step_card td {
+    background: rgba(255, 255, 255, 0.78) !important;
+    border-top: 1px solid rgba(180, 130, 90, 0.14) !important;
+    border-bottom: 1px solid rgba(180, 130, 90, 0.14) !important;
+}
+
+.o_docvault_step_list .o_docvault_step_card td:first-child {
+    border-left: 1px solid rgba(180, 130, 90, 0.14) !important;
+    border-radius: 12px 0 0 12px;
+}
+
+.o_docvault_step_list .o_docvault_step_card td:last-child {
+    border-right: 1px solid rgba(180, 130, 90, 0.14) !important;
+    border-radius: 0 12px 12px 0;
+}
+
+.o_docvault_step_list .o_docvault_step_card:hover td {
+    background: rgba(255, 255, 255, 0.95) !important;
+    box-shadow: 0 4px 14px rgba(61, 28, 18, 0.08);
+}
+
+.o_docvault_step_list .o_docvault_step_card.o_docvault_step_card--active td {
+    background: var(--dv-green-bg) !important;
+    border-color: rgba(31, 122, 69, 0.22) !important;
+}
+
+.o_docvault_step_list .o_docvault_step_card.o_docvault_step_card--active td[name="section_label"] {
+    color: var(--dv-green);
+}
+
+.o_docvault_step_list .o_docvault_step_card.o_docvault_step_card--missing td {
+    opacity: 0.78;
+}
+
+.o_docvault_step_list .o_docvault_step_card.o_docvault_step_card--missing .o_docvault_section_icon {
+    filter: grayscale(0.35);
+    opacity: 0.75;
+}
+
+/* Theme colors for section icons */
+.o_docvault_step_list .theme-sia .o_docvault_section_icon { background: linear-gradient(135deg, #5b6ee1, #3f51b5); }
+.o_docvault_step_list .theme-sec4 .o_docvault_section_icon { background: linear-gradient(135deg, #e67e22, #d35400); }
+.o_docvault_step_list .theme-expert .o_docvault_section_icon { background: linear-gradient(135deg, #8e44ad, #6c3483); }
+.o_docvault_step_list .theme-sec8 .o_docvault_section_icon { background: linear-gradient(135deg, #16a085, #0e6655); }
+.o_docvault_step_list .theme-sec11 .o_docvault_section_icon { background: linear-gradient(135deg, #2980b9, #1f618d); }
+.o_docvault_step_list .theme-sec15 .o_docvault_section_icon { background: linear-gradient(135deg, #c0392b, #922b21); }
+.o_docvault_step_list .theme-sec18 .o_docvault_section_icon { background: linear-gradient(135deg, #27ae60, #1e8449); }
+.o_docvault_step_list .theme-sec19 .o_docvault_section_icon { background: linear-gradient(135deg, #d68910, #b9770e); }
+.o_docvault_step_list .theme-sec21 .o_docvault_section_icon { background: linear-gradient(135deg, #5dade2, #2e86c1); }
+.o_docvault_step_list .theme-award .o_docvault_section_icon { background: linear-gradient(135deg, #f1c40f, #d4ac0d); color: #5c4a03; }
+.o_docvault_step_list .theme-payment .o_docvault_section_icon { background: linear-gradient(135deg, #1abc9c, #148f77); }
+.o_docvault_step_list .theme-cglrc .o_docvault_section_icon { background: linear-gradient(135deg, #af601a, var(--dv-brown)); }
+.o_docvault_step_list .theme-rail .o_docvault_section_icon { background: linear-gradient(135deg, #566573, #34495e); }
+.o_docvault_step_list .theme-nh .o_docvault_section_icon { background: linear-gradient(135deg, #7f8c8d, #566573); }
+.o_docvault_step_list .theme-survey .o_docvault_section_icon { background: linear-gradient(135deg, #5499c7, #2874a6); }
+.o_docvault_step_list .theme-default .o_docvault_section_icon { background: linear-gradient(135deg, var(--dv-brown-soft), var(--dv-brown)); }
+
+.o_docvault_step_list .o_docvault_step_no_col,
+.o_docvault_step_list td[name="step_no"] {
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    overflow: hidden !important;
+    font-size: 0 !important;
+    line-height: 0 !important;
+    opacity: 0 !important;
+}
+
+/* Hide duplicate step rows (safety net) */
+.o_docvault_step_list .o_docvault_step_card.o_docvault_step_card--dup {
+    display: none !important;
+}
+
+/* ── Stats summary bar ── */
+.o_docvault_stats_wrap {
+    margin: -4px 0 12px;
+}
+
+.o_docvault_stats_bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 18px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(180, 130, 90, 0.18);
+    box-shadow: 0 4px 14px rgba(61, 28, 18, 0.05);
+}
+
+.o_docvault_stat {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--dv-muted);
+}
+
+.o_docvault_stat .fa {
+    color: var(--dv-brown);
+}
+
+.o_docvault_stat--ok {
+    color: var(--dv-green);
+}
+
+.o_docvault_stat--ok .fa {
+    color: var(--dv-green);
+}
+
+/* Doc count badge on step rows */
+.o_docvault_step_list .o_data_row td[name="doc_count_label"],
+.o_docvault_step_list .o_data_row .o_docvault_count_col {
+    width: 88px;
+    min-width: 88px;
+    max-width: 88px;
+    padding-right: 10px !important;
+    text-align: right;
+}
+
+.o_docvault_step_list .o_data_row td[name="doc_count_label"] span,
+.o_docvault_step_list .o_docvault_doc_badge {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    min-width: 64px;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: rgba(139, 69, 19, 0.08);
+    color: var(--dv-brown-dark) !important;
+    font-size: 10px !important;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.o_docvault_step_list .o_docvault_step_card--active .o_docvault_doc_badge,
+.o_docvault_step_list .o_docvault_step_card--active td[name="doc_count_label"] span {
+    background: rgba(31, 122, 69, 0.12);
+    color: var(--dv-green) !important;
+}
+
+.o_docvault_step_list .o_docvault_step_card--missing td[name="doc_count_label"] span {
+    opacity: 0.65;
+}
+
+/* Hide save button on viewer */
+.o_action_manager:has(.o_docvault_navigator_form) .o_form_button_save {
+    display: none !important;
+}
+
+/* ── Preview header: title + inline variant chips on one compact row ── */
+.o_docvault_preview_header {
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    gap: 0 !important;
+    min-height: 36px;
+    height: 36px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+
+.o_docvault_preview_header .o_docvault_panel_title_text {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    height: 28px;
+    line-height: 28px;
+}
+
+.o_docvault_title_en {
+    color: var(--dv-brown-dark);
+}
+
+.o_docvault_title_sep {
+    color: rgba(139, 69, 19, 0.35);
+    margin: 0 5px;
+    font-weight: 600;
+}
+
+.o_docvault_title_hi {
+    color: var(--dv-muted);
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.o_docvault_preview_header .o_docvault_inline_toggle_btn {
+    flex: 0 0 auto;
+    margin-left: auto;
+    min-height: 26px !important;
+    height: 26px !important;
+    padding: 2px 10px !important;
+    font-size: 10px !important;
+}
+
+/* ── Variant chips inline in header ── */
+.o_docvault_preview_header .o_docvault_variant_chips_wrap {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex !important;
+    align-items: center !important;
+    align-self: center !important;
+    height: 28px !important;
+    max-height: 28px !important;
+    margin: 0 0 0 12px;
+    padding: 0 0 0 12px;
+    border: 0;
+    border-left: 1px solid rgba(180, 130, 90, 0.22);
+    background: transparent;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+}
+
+.o_docvault_variant_chips_wrap {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.o_docvault_variant_chips_title {
+    display: none !important;
+}
+
+.o_docvault_variant_chips .o_list_renderer,
+.o_docvault_variant_chips .o_list_view {
+    border: 0 !important;
+    background: transparent !important;
+    overflow: visible !important;
+}
+
+.o_docvault_preview_header .o_docvault_variant_chips .o_field_widget,
+.o_docvault_preview_header .o_docvault_variant_chips .o_list_renderer,
+.o_docvault_preview_header .o_docvault_variant_chips .o_list_view,
+.o_docvault_preview_header .o_docvault_variant_chips .o_content,
+.o_docvault_preview_header .o_docvault_variant_chips .table-responsive,
+.o_docvault_preview_header .o_docvault_variant_chips .o_list_table {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: 28px !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.o_docvault_preview_header .o_docvault_variant_chips tbody {
+    max-height: 28px !important;
+}
+
+.o_docvault_variant_chips thead {
+    display: none !important;
+}
+
+.o_docvault_variant_chips .o_list_table,
+.o_docvault_variant_chips tbody {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    gap: 6px !important;
+    border-spacing: 0 !important;
+    width: auto !important;
+}
+
+.o_docvault_variant_chips .o_data_row {
+    display: inline-flex !important;
+    width: auto !important;
+    cursor: pointer;
+}
+
+.o_docvault_variant_chips .o_data_row td {
+    border: 0 !important;
+    background: transparent !important;
+    vertical-align: middle !important;
+    padding: 0 !important;
+    width: auto !important;
+    display: inline-flex !important;
+}
+
+.o_docvault_variant_chips .o_docvault_variant_chip_row td {
+    padding-right: 0 !important;
+}
+
+.o_docvault_variant_chips .o_docvault_variant_chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(139, 69, 19, 0.18);
+    background: #fff;
+    color: var(--dv-ink);
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+    box-shadow: none;
+    white-space: nowrap;
+}
+
+.o_docvault_preview_header .o_docvault_variant_chips .o_docvault_variant_chip {
+    padding: 2px 10px;
+    height: 24px;
+    min-height: 24px;
+    max-height: 24px;
+    font-size: 10px;
+    line-height: 1;
+}
+
+.o_docvault_preview_header .o_docvault_variant_chips .o_data_row,
+.o_docvault_preview_header .o_docvault_variant_chips .o_data_row td {
+    height: 24px !important;
+    max-height: 24px !important;
+    align-items: center !important;
+}
+
+.o_docvault_variant_chips .o_docvault_variant_chip:hover {
+    border-color: rgba(139, 69, 19, 0.45);
+}
+
+.o_docvault_preview_header .o_docvault_variant_chips .o_docvault_variant_chip:hover {
+    transform: none;
+}
+
+.o_docvault_variant_chips .o_docvault_variant_chip--active {
+    background: linear-gradient(180deg, #6b3a1f 0%, var(--dv-brown) 100%);
+    border-color: var(--dv-brown);
+    color: #fff;
+}
+
+.o_docvault_variant_chips .o_docvault_variant_chip--missing {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.o_docvault_variant_chips .o_docvault_variant_chip_btn {
+    display: none !important;
+}
+
+.o_docvault_variant_chips td:has(.o_docvault_variant_chip_btn) {
+    display: none !important;
+    width: 0 !important;
+    padding: 0 !important;
+}
+
+.o_docvault_variant_chips .o_list_record_selector,
+.o_docvault_variant_chips .form-check,
+.o_docvault_variant_chips input[type="radio"] {
+    display: none !important;
+}
+
+/* Legacy radio bar hidden */
+.o_docvault_variant_bar {
+    display: none !important;
+}
+
+/* ── PDF preview panel ── */
+.o_docvault_preview_shell {
+    min-height: 560px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(180, 130, 90, 0.16);
+    overflow: hidden;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+
+.o_docvault_pdf_viewer,
+.o_docvault_preview_shell .o_field_pdfviewer,
+.o_docvault_preview_shell iframe {
+    min-height: 560px !important;
+    border-radius: 0 0 12px 12px;
+}
+
+.o_docvault_empty_hint {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 520px;
+    padding: 36px 28px;
+    text-align: center;
+    background:
+        radial-gradient(circle at 50% 0%, rgba(139, 69, 19, 0.06), transparent 55%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(248, 240, 230, 0.85));
+    color: var(--dv-muted);
+}
+
+.o_docvault_empty_icon {
+    width: 88px;
+    height: 88px;
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+    background: linear-gradient(145deg, #fff, var(--dv-cream-2));
+    border: 1px solid rgba(180, 130, 90, 0.2);
+    box-shadow: 0 10px 24px rgba(61, 28, 18, 0.08);
+}
+
+.o_docvault_empty_icon .fa {
+    font-size: 36px;
+    color: var(--dv-brown);
+    opacity: 0.85;
+}
+
+.o_docvault_empty_hint h3 {
+    margin: 0 0 8px;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--dv-brown-dark);
+}
+
+.o_docvault_empty_hint p {
+    margin: 0;
+    max-width: 360px;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--dv-muted);
+}
+
+.o_docvault_empty_tip {
+    margin-top: 18px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(139, 69, 19, 0.08);
+    color: var(--dv-brown);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.o_docvault_empty_tip .fa {
+    margin-right: 6px;
+}
+
+@media (max-width: 1200px) {
+    .o_docvault_selector_bar {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .o_docvault_split_area {
+        flex-direction: column;
+    }
+
+    .o_docvault_split_area .o_docvault_left_panel {
+        max-width: 100%;
+        flex-basis: auto;
+    }
+}

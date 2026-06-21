@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Landowner List View -->
+    <record id="view_bhu_landowner_list" model="ir.ui.view">
+        <field name="name">bhu.landowner.list</field>
+        <field name="model">bhu.landowner</field>
+        <field name="arch" type="xml">
+            <list string="Landowners" multi_edit="1">
+                <field name="name"/>
+                <field name="company_id"/>
+                <field name="father_name"/>
+                <field name="village_id"/>
+                <field name="tehsil_id"/>
+                <field name="district_id"/>
+                <field name="aadhar_number"/>
+                <field name="pan_number"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Landowner Form View -->
+    <record id="view_bhu_landowner_form" model="ir.ui.view">
+        <field name="name">bhu.landowner.form</field>
+        <field name="model">bhu.landowner</field>
+        <field name="arch" type="xml">
+            <form string="Landowner" js_class="confirm_save_form">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_surveys" type="object" class="oe_stat_button" icon="fa-search">
+                            <field name="survey_ids" widget="statinfo" string="Surveys"/>
+                        </button>
+                    </div>
+                    
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Enter full name..." required="1"/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group string="Personal Information">
+                            <field name="father_name" widget="char"/>
+                            <field name="mother_name" widget="char"/>
+                            <field name="spouse_name" widget="char"/>
+                        </group>
+                        <group string="Contact Information">
+                            <field name="company_id" widget="selection"/>
+                            <field name="phone" widget="phone"/>
+                        </group>
+                    </group>
+                    
+                    <group>
+                        <group string="Address Information">
+                            <field name="village_id" widget="selection"/>
+                            <field name="tehsil_id" widget="selection"/>
+                            <field name="district_id" widget="selection"/>
+                            <field name="state" widget="char"/>
+                            <field name="owner_address" widget="text" placeholder="Enter complete address of the landowner"/>
+                        </group>
+                        <group string="Identity Documents">
+                            <field name="aadhar_number" widget="char"/>
+                            <field name="pan_number" widget="char"/>
+                        </group>
+                    </group>
+                    
+                    <group>
+                        <group string="Bank Details">
+                            <field name="bank_name" widget="char"/>
+                            <field name="bank_branch" widget="char"/>
+                            <field name="account_number" widget="char"/>
+                            <field name="ifsc_code" widget="char"/>
+                            <field name="account_holder_name" widget="char"/>
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Documents" name="documents">
+                            <group class="o_document_groups">
+                                <group string="AADHAR CARD" class="o_document_group">
+                                    <field name="aadhar_card" widget="capture_image"/>
+                                </group>
+                                <group string="PAN CARD" class="o_document_group">
+                                    <field name="pan_card" widget="capture_image"/>
+                                </group>
+                            </group>
+                        </page>
+                        
+                        <page string="Related Surveys" name="surveys">
+                            <field name="survey_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="project_id"/>
+                                    <field name="village_id"/>
+                                    <field name="survey_date"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Payment Status / भुगतान की स्थिति" name="payment_status">
+                            <field name="payment_status_ids" readonly="1">
+                                <list>
+                                    <field name="survey_id"/>
+                                    <field name="village_id"/>
+                                    <field name="project_id"/>
+                                    <field name="transaction_date"/>
+                                    <field name="utr_number"/>
+                                    <field name="amount"/>
+                                    <field name="status" widget="badge" decoration-success="status == 'paid'" decoration-danger="status == 'failed'" decoration-info="status == 'pending'"/>
+                                    <field name="remarks"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <button string="Save &amp; Close" special="save" class="btn-primary"/>
+                    <button string="Close" special="cancel" class="btn-secondary"/>
+                </footer>
+                <chatter groups="bhukhadan_core.group_bhuarjan_ri,bhukhadan_core.group_bhuarjan_nayab_tahsildar,bhukhadan_core.group_bhuarjan_tahsildar,bhukhadan_core.group_bhuarjan_sdm,bhukhadan_core.group_bhuarjan_additional_collector,bhukhadan_core.group_bhuarjan_collector,bhukhadan_core.group_bhuarjan_admin"/>
+
+            </form>
+        </field>
+    </record>
+
+    <!-- Landowner Search View -->
+    <record id="view_bhu_landowner_search" model="ir.ui.view">
+        <field name="name">bhu.landowner.search</field>
+        <field name="model">bhu.landowner</field>
+        <field name="arch" type="xml">
+            <search string="Search Landowners">
+                <field name="name"/>
+                <field name="father_name"/>
+                <field name="aadhar_number"/>
+                <field name="pan_number"/>
+                <field name="village_id"/>
+                <field name="tehsil_id"/>
+                <field name="district_id"/>
+                
+                <filter string="With Bank Details" name="with_bank" domain="[('bank_name', '!=', False)]"/>
+                <filter string="With Aadhar" name="with_aadhar" domain="[('aadhar_number', '!=', False)]"/>
+                <filter string="With PAN" name="with_pan" domain="[('pan_number', '!=', False)]"/>
+                
+                <group expand="0" string="Group By">
+                    <filter string="District" name="group_district" context="{'group_by': 'district_id'}"/>
+                    <filter string="Tehsil" name="group_tehsil" context="{'group_by': 'tehsil_id'}"/>
+                    <filter string="Village" name="group_village" context="{'group_by': 'village_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Landowner Kanban View -->
+    <record id="view_bhu_landowner_kanban" model="ir.ui.view">
+        <field name="name">bhu.landowner.kanban</field>
+        <field name="model">bhu.landowner</field>
+        <field name="arch" type="xml">
+            <kanban string="Landowners" class="o_kanban_large_column o_kanban_mobile">
+                <field name="name"/>
+                <field name="father_name"/>
+                <field name="spouse_name"/>
+                <field name="village_id"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_card o_kanban_record" style="background: #ffffff; border: 2px solid #20bf6b; border-radius: 8px; transition: all 0.3s ease; min-height: auto; margin-bottom: 12px; width: 100%; max-width: 100%;">
+                            <div class="oe_kanban_content" style="padding: 10px 12px;">
+                                <div class="d-flex justify-content-between align-items-start" style="gap: 8px;">
+                                    <div class="flex-grow-1" style="min-width: 0;">
+                                        <div class="mb-1">
+                                            <h6 class="mb-0 text-dark font-weight-bold" style="font-size: 0.95rem; font-weight: 700; line-height: 1.3;">
+                                                <field name="name"/>
+                                            </h6>
+                                        </div>
+                                        <div class="mb-1" style="font-size: 0.85rem; color: #6c757d;">
+                                            <t t-if="record.spouse_name.raw_value">
+                                                <i class="fa fa-heart mr-1" style="font-size: 0.75rem;" title="Spouse"></i>
+                                                <field name="spouse_name"/>
+                                            </t>
+                                            <t t-else="">
+                                                <i class="fa fa-user mr-1" style="font-size: 0.75rem;" title="Father"></i>
+                                                <field name="father_name"/>
+                                            </t>
+                                        </div>
+                                        <div style="font-size: 0.85rem; color: #495057;">
+                                            <i class="fa fa-map-marker mr-1 text-primary" style="font-size: 0.75rem;" title="Village"></i>
+                                            <field name="village_id"/>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle text-muted" data-toggle="dropdown" href="#" title="Actions" style="font-size: 0.85rem; padding: 4px;">
+                                            <i class="fa fa-ellipsis-v"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                            <a role="menuitem" type="edit" class="dropdown-item">
+                                                <i class="fa fa-pencil-alt mr-2 text-primary"></i> Edit
+                                            </a>
+                                            <a role="menuitem" type="delete" class="dropdown-item text-danger">
+                                                <i class="fa fa-trash mr-2"></i> Delete
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Landowner Graph View -->
+    <record id="view_bhu_landowner_graph" model="ir.ui.view">
+        <field name="name">bhu.landowner.graph</field>
+        <field name="model">bhu.landowner</field>
+        <field name="arch" type="xml">
+            <graph string="Landowners Analysis" type="bar" sample="1">
+                <field name="village_id"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Landowner Pivot View -->
+    <record id="view_bhu_landowner_pivot" model="ir.ui.view">
+        <field name="name">bhu.landowner.pivot</field>
+        <field name="model">bhu.landowner</field>
+        <field name="arch" type="xml">
+            <pivot string="Landowners Analysis" sample="1">
+                <field name="village_id" type="row"/>
+                <field name="district_id" type="col"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Landowner Action -->
+    <record id="action_bhu_landowner" model="ir.actions.act_window">
+        <field name="name">Landowners</field>
+        <field name="res_model">bhu.landowner</field>
+        <field name="view_mode">list,kanban,graph,pivot,form</field>
+        <!-- <field name="search_view_id" ref="view_bhu_landowner_search"/> -->
+    </record>
+
+</odoo>

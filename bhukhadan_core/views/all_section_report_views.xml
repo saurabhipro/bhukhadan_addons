@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- All Sections Report List View -->
+        <record id="view_all_sections_report_list" model="ir.ui.view">
+            <field name="name">bhu.all.section.report.list</field>
+            <field name="model">bhu.all.section.report</field>
+            <field name="arch" type="xml">
+                <list string="All Sections Report" create="0" delete="0" edit="0" expand="1">
+                    <button name="action_open_record" string="Open" type="object" icon="fa-external-link" class="btn-primary" title="Open Actual Record"/>
+                    <field name="section_type" widget="badge" 
+                           decoration-info="section_type == 'sec4'" 
+                           decoration-warning="section_type == 'sec11'" 
+                           decoration-success="section_type in ('sec21', 'sec23')"
+                           decoration-danger="section_type == 'expert'"
+                           decoration-muted="section_type == 'sia'"/>
+                    <field name="name" decoration-bf="1"/>
+                    <field name="project_id"/>
+                    <field name="village_id"/>
+                    <field name="department_id" optional="show"/>
+                    <field name="status" widget="badge" 
+                           decoration-success="status == 'approved' or status == 'sdm_signed' or status == 'collector_signed' or status == 'signed'" 
+                           decoration-warning="status == 'submitted' or status == 'generated'"
+                           decoration-info="status == 'draft'"
+                           decoration-danger="status == 'rejected' or status == 'sent_back'"/>
+                    <field name="create_date" widget="datetime"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- All Sections Report Search View -->
+        <record id="view_all_sections_report_search" model="ir.ui.view">
+            <field name="name">bhu.all.section.report.search</field>
+            <field name="model">bhu.all.section.report</field>
+            <field name="arch" type="xml">
+                <search string="Search All Sections Report">
+                    <field name="name"/>
+                    <field name="section_type"/>
+                    <field name="project_id"/>
+                    <field name="village_id"/>
+                    <field name="department_id"/>
+                    <field name="status"/>
+                    <group expand="1" string="Group By">
+                        <filter string="Department" name="group_department" context="{'group_by': 'department_id'}"/>
+                        <filter string="Project" name="group_project" context="{'group_by': 'project_id'}"/>
+                        <filter string="Section Type" name="group_section_type" context="{'group_by': 'section_type'}"/>
+                        <filter string="Village" name="group_village" context="{'group_by': 'village_id'}"/>
+                        <filter string="Status" name="group_status" context="{'group_by': 'status'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- All Sections Report Action -->
+        <record id="action_all_sections_report" model="ir.actions.act_window">
+            <field name="name">All Sections List</field>
+            <field name="res_model">bhu.all.section.report</field>
+            <field name="view_mode">list</field>
+            <field name="search_view_id" ref="view_all_sections_report_search"/>
+            <field name="context">{'search_default_group_department': 1, 'search_default_group_project': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No records found in the combined report.
+                </p>
+                <p>
+                    This view consolidates records from Sections 4, 11, 19, 21, 23, SIA, and Expert Committee.
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

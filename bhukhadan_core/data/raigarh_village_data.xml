@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Jurda Village -->
+        <record id="jurda_village" model="bhu.village">
+            <field name="name">जुर्दा</field>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="sub_division_id" ref="raigarh_sub_division"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="state_id" ref="base.state_in_cg"/>
+            <field name="village_code">JR</field>
+        </record>
+
+        <!-- Pandripani Village -->
+        <record id="pandripani_village" model="bhu.village">
+            <field name="name">पंडरीपानी</field>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="sub_division_id" ref="raigarh_sub_division"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="state_id" ref="base.state_in_cg"/>
+            <field name="village_code">PP</field>
+        </record>
+
+        <!-- Gopalpur Village -->
+        <record id="gopalpur_village" model="bhu.village">
+            <field name="name">गोपालपुर</field>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="sub_division_id" ref="raigarh_sub_division"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="state_id" ref="base.state_in_cg"/>
+            <field name="village_code">GL</field>
+        </record>
+
+        <!-- Bhikharimal Village -->
+        <record id="bhikharimal_village" model="bhu.village">
+            <field name="name">भिखारीमल</field>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="sub_division_id" ref="raigarh_sub_division"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="state_id" ref="base.state_in_cg"/>
+            <field name="village_code">BM</field>
+        </record>
+    </data>
+</odoo>
+
+

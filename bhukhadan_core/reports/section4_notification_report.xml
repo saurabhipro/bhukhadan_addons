@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Section 4 Notification Report -->
+    <record id="action_report_section4_notification" model="ir.actions.report">
+        <field name="name">Section 4 Notification / धारा 4 अधिसूचना</field>
+        <field name="model">bhu.section4.notification</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">bhukhadan_core.section4_notification_report</field>
+        <field name="report_file">bhukhadan_core.section4_notification_report</field>
+        <field name="paperformat_id" ref="bhukhadan_core.bhuarjan_sia_paper_format"/>
+        <field name="print_report_name">'Section4_Notification_' + ((object and object.project_id and object.project_id.name) or (docs and docs[0] and docs[0].project_id and docs[0].project_id.name) or 'All')</field>
+    </record>
+
+    <!-- Section 4 Notification Report Template -->
+    <template id="section4_notification_report">
+        <t t-call="web.html_container">
+            <meta charset="utf-8"/>
+            <t t-set="notification" t-value="object or (docs and docs[0]) or None"/>
+            <t t-set="consolidated_data" t-value="consolidated_data or []"/>
+            <t t-set="surveys_data" t-value="surveys_data or []"/>
+            <t t-if="notification and not consolidated_data">
+                <t t-set="consolidated_data" t-value="notification.sudo().get_consolidated_village_data()"/>
+            </t>
+            <t t-if="notification and not surveys_data">
+                <t t-set="surveys_data" t-value="notification.sudo().get_approved_surveys_for_report()"/>
+            </t>
+            <t t-if="notification">
+                <t t-call="web.basic_layout">
+                <!-- Include centralized CSS styles -->
+                <t t-call="bhukhadan_core.report_common_styles"/>
+
+                <div class="container letter_space" style="border: 2px dotted #000; padding: 15px; margin: 10px; position: relative; min-height: calc(100vh - 20px); height: 100%;">
+                    <!-- Watermark with Logo - Centered on Page -->
+                    <div class="watermark">
+                        <div class="watermark-circle"></div>
+                        <t t-set="base_url" t-value="request.env['ir.config_parameter'].sudo().get_param('web.base.url')"/>
+                        <img t-att-src="base_url + '/bhukhadan_core/static/img/logo.png'" alt="Logo Watermark"/>
+                    </div>
+                    
+                    <!-- Form Title -->
+                    <div style="text-align: center; margin-bottom: 12px;">
+                        <!-- Form Title - Line 1 -->
+                        <div style="margin-bottom: 8px;">
+                            <h2 style="margin: 0; padding: 0; font-size: 25px; font-weight: bold; font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif !important;">
+                                <strong>प्ररूप-एक</strong>
+                            </h2>
+                        </div>
+                        <!-- Form Title - Line 2 (Rule reference) -->
+                        <div style="margin-bottom: 12px;">
+                            <p style="margin: 0; padding: 0; font-size: 18px; font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif !important;">
+                                (नियम 11 देखिये)
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Header with Logo and QR Code -->
+                    <div style="margin-bottom: 15px; padding-bottom: 8px;">
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 8px;">
+                            <tr>
+                                <!-- Logo on Left -->
+                                <td rowspan="2" style="width: 12%; padding: 0; text-align: center; vertical-align: middle;">
+                                    <t t-set="base_url" t-value="request.env['ir.config_parameter'].sudo().get_param('web.base.url')"/>
+                                    <img t-att-src="base_url + '/bhukhadan_core/static/img/logo.png'" alt="Logo"
+                                         style="display: block; margin: 0 auto; object-fit: contain; width: 80px; height: 80px; max-width: 80px; max-height: 80px;"/>
+                                </td>
+                                <!-- Header Text - Line 1 -->
+                                <td colspan="2" style="text-align: center; vertical-align: middle; padding: 0 5px;">
+                                    <h3 class="hindi letter_space header-text" style="margin: 0; padding: 0; font-size: 21px; line-height: 1.2; font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif !important;">
+                                        कार्यालय कलेक्टर एवं पदेन उप सचिव,
+                                    </h3>
+                                </td>
+                                <!-- QR Code on Right -->
+                                <td rowspan="2" style="width: 12%; padding: 0; text-align: center; vertical-align: middle;">
+                                    <t t-set="notification_record" t-value="None"/>
+                                    <t t-if="notification and notification.project_id and notification.village_id">
+                                        <t t-set="notification_record" t-value="notification if notification._name == 'bhu.section4.notification' else notification.env['bhu.section4.notification'].sudo().search([('project_id', '=', notification.project_id.id), ('village_id', '=', notification.village_id.id)], limit=1, order='create_date desc')"/>
+                                    </t>
+                                    <t t-set="qr_code_img" t-value="notification_record.get_qr_code_data() if notification_record else None"/>
+                                    <t t-set="qr_download_url" t-value="'https://bhuarjan.com/bhuarjan/section4/' + str(notification_record.notification_uuid or '') + '/download' if notification_record else '#'"/>
+                                    <t t-if="qr_code_img">
+                                        <a t-att-href="qr_download_url" style="display: block; width: 90%; margin: 0 auto; padding: 0; text-decoration: none;">
+                                            <img t-att-src="'data:image/png;base64,' + qr_code_img" 
+                                                 alt="QR Code - Click to download PDF" 
+                                                 style="width: 90%; max-width: 90%; height: auto; aspect-ratio: 1; border: none; display: block; margin: 0; padding: 0; object-fit: contain;"/>
+                                        </a>
+                                    </t>
+                                    <t t-if="not qr_code_img">
+                                        <a t-att-href="qr_download_url" style="display: block; width: 90%; margin: 0 auto; padding: 0; text-decoration: none;">
+                                            <div style="width: 90%; padding-top: 90%; position: relative; border: none; background: white; margin: 0;">
+                                                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                                                    <div style="text-align: center; font-size: 7px;">
+                                                        <div style="font-weight: bold;">QR Code</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <!-- Header Text - Line 2 -->
+                                <td colspan="2" style="text-align: center; vertical-align: middle; padding: 0 5px;">
+                                    <h3 class="hindi letter_space header-text" style="margin: 0; padding: 0; font-size: 21px; line-height: 1.2; font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif !important;">
+                                        राजस्व एवं आपदा प्रबंधन विभाग
+                                    </h3>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- Notification Title -->
+                    <div style="text-align: center; margin-bottom: 12px;">
+                        <h2 style="text-decoration: underline; margin: 0; padding: 0; font-size: 21px; font-weight: bold; font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif !important;">
+                            <strong>अधिसूचना</strong>
+                        </h2>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="content" style="font-size: 16px !important; line-height: 1.6 !important;">
+                        <div class="intro-section" style="margin: 20px 0 !important; padding: 0 !important;">
+                            <p style="text-align: justify; margin-bottom: 12px; font-size: 16px !important; line-height: 1.6 !important;">
+                                भूमि अर्जन, पुनर्वासन एवं पुनर्व्यवस्थापन में उचित प्रतिकर तथा पारदर्शिता का अधिकार अधिनियम, 2013 की धारा 4 सहपठित नियम 7 के अंतर्गत
+                                नीचे अनुसूची में उल्लिखित भूमि का अर्जन लोक प्रयोजन हेतु राज्य सरकार द्वारा आशयित है, अर्थात् :-
+                            </p>
+                        </div>
+                        
+                        <table class="notification-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 10%;">जिला</th>
+                                    <th style="width: 15%;">तहसील</th>
+                                    <th style="width: 20%;">ग्राम/शहर</th>
+                                    <th style="width: 15%;">क्षेत्रफल (हेक्टेयर)</th>
+                                    <th style="width: 40%;">लोक प्रयोजन का विवरण</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Always use project name in the last column -->
+                                <t t-set="project_name" t-value="notification.project_id.name if notification and notification.project_id and notification.project_id.name else '........................'"/>
+                                <t t-if="consolidated_data">
+                                    <t t-foreach="consolidated_data" t-as="v_data">
+                                        <tr>
+                                            <td style="font-size: 16px !important;"><t t-esc="v_data.get('district', 'Raigarh (Chhattisgarh)')"/></td>
+                                            <td style="font-size: 16px !important;"><t t-esc="v_data.get('tehsil', '')"/></td>
+                                            <td style="font-size: 16px !important;"><t t-esc="v_data.get('village_name', '')"/></td>
+                                            <td style="font-size: 16px !important;"><t t-esc="'{:.4f}'.format(v_data.get('total_area', 0.0))"/></td>
+                                            <td style="font-size: 16px !important; text-align: left !important;"><t t-esc="project_name"/></td>
+                                        </tr>
+                                    </t>
+                                </t>
+                                <t t-if="not consolidated_data">
+                                    <tr>
+                                        <td colspan="5" style="text-align: center; padding: 20px; color: #999; font-size: 16px !important;">
+                                            No survey data available for the selected villages.
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <table class="notification-table" style="margin-top: 16px;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50%;">खसरा नम्बर</th>
+                                    <th style="width: 50%;">अर्जित रकबा (हेक्टेयर में)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-if="surveys_data">
+                                    <t t-foreach="surveys_data" t-as="item">
+                                        <tr>
+                                            <td style="font-size: 16px !important; text-align: center;">
+                                                <t t-esc="item['khasra_number']"/>
+                                            </td>
+                                            <td style="font-size: 16px !important; text-align: center;">
+                                                <t t-if="item['area'] > 0" t-esc="'{:.4f}'.format(item['area'])"/>
+                                                <t t-if="item['area'] == 0">........................</t>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </t>
+                                <t t-if="not surveys_data">
+                                    <tr>
+                                        <td colspan="2" style="text-align: center; padding: 12px; color: #999; font-size: 16px !important;">
+                                            No khasra-wise survey data available.
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        
+                        <div class="hearing-info" style="margin: 20px 0 !important; padding: 0 !important; font-size: 16px !important; line-height: 1.6 !important;">
+                            <p style="text-align: justify; margin-bottom: 0; font-size: 16px !important; line-height: 1.6 !important; word-wrap: break-word; overflow-wrap: break-word;">
+                                उपरोक्त उल्लिखित भूमि के अर्जन हेतु सामाजिक समाघात निर्धारण के अध्ययन हेतु जन सुनवाई (दिनांक) 
+                                <strong><t t-esc="notification.get_formatted_hearing_date_only()"/></strong> को 
+                                (समय) <strong><t t-esc="notification.get_formatted_hearing_time_only() or '........................'"/></strong> बजे 
+                                (स्थान) <strong><t t-esc="notification.public_hearing_place or '........................'"/></strong> पर नियत की गई है। 
+                                प्रस्तावित भूमि अर्जन का अन्य विवरण निम्नानुसार है :-
+                            </p>
+                        </div>
+                        
+                        <!-- Project name for reuse -->
+                        <t t-set="project_name" t-value="notification.project_id.name if notification and notification.project_id and notification.project_id.name else '........................'"/>
+
+                        <div class="questions-section" style="margin-top: 10px !important;">
+                            <div class="question-item">
+                                <span class="question-label">(एक) लोक प्रयोजन का संक्षिप्त विवरण :-</span>
+                                <span class="question-answer"><t t-esc="project_name"/></span>
+                            </div>
+                            
+                            <div class="question-item">
+                                <span class="question-label">(दो) प्रत्यक्ष रूप से प्रभावित परिवारों की संख्या :-</span>
+                                <span class="question-answer"><t t-esc="(notification.directly_affected if notification and notification.directly_affected else (notification.project_id.directly_affected if notification and notification.project_id and notification.project_id.directly_affected else '........................'))"/></span>
+                            </div>
+                            
+                            <div class="question-item">
+                                <span class="question-label">(तीन) अप्रत्यक्ष रूप से प्रभावित परिवारों की संख्या।</span>
+                                <span class="question-answer"><t t-esc="(notification.indirectly_affected if notification and notification.indirectly_affected else (notification.project_id.indirectly_affected if notification and notification.project_id and notification.project_id.indirectly_affected else '........................'))"/></span>
+                            </div>
+                            
+                            <div class="question-item">
+                                <span class="question-label">(चार) प्रभावित क्षेत्र में निजी मकानों तथा अन्य परिसंपत्तियों की अनुमानित संख्या।</span>
+                                <span class="question-answer"><t t-esc="(notification.private_assets if notification and notification.private_assets else (notification.project_id.private_assets if notification and notification.project_id and notification.project_id.private_assets else '........................'))"/></span>
+                            </div>
+                            
+                            <div class="question-item"></div>
+                                <span class="question-label">(पाँच) प्रभावित क्षेत्र में शासकीय मकान तथा अन्य परिसंपत्तियों की अनुमानित संख्या।</span>
+                                <span class="question-answer"><t t-esc="(notification.government_assets if notification and notification.government_assets else (notification.project_id.government_assets if notification and notification.project_id and notification.project_id.government_assets else '........................'))"/></span>
+                            </div>
+                            
+                            <div class="question-item">
+                                <span class="question-label">(छः) क्या प्रस्तावित अर्जन न्यूनतम है ?</span>
+                                <span class="question-answer">हाँ / Yes</span>
+                            </div>
+                            
+                            <div class="question-item">
+                                <span class="question-label">(सात) क्या संभव विकल्पों और इसकी साध्यता पर विचार कर लिया गया है ?</span>
+                                <span class="question-answer">हाँ / Yes</span>
+                            </div>
+                            
+                            <div class="question-item">
+                                <span class="question-label">(आठ) परियोजना की कुल लागत।</span>
+                                <span class="question-answer"><t t-esc="(notification.total_cost if notification and notification.total_cost else (notification.project_id.total_cost if notification and notification.project_id and notification.project_id.total_cost else '........................'))"/></span>
+                            </div>
+                            
+                            <div class="question-item">
+                                <span class="question-label">(नौ) परियोजना से होने वाला लाभ।</span>
+                                <t t-set="q9_value" t-value="(notification.project_benefits if notification and notification.project_benefits else (notification.project_id.project_benefits if notification and notification.project_id and notification.project_id.project_benefits else None))"/>
+                                <t t-if="q9_value">
+                                    <span class="question-answer"><t t-out="q9_value"/></span>
+                                </t>
+                                <t t-if="not q9_value">
+                                    <span class="question-answer">........................</span>
+                                </t>
+                            </div>
+                            
+                            <div class="question-item" style="display: flex; align-items: baseline; flex-wrap: nowrap;">
+                                <span class="question-label" style="white-space: nowrap; flex-shrink: 0;">(दस) प्रस्तावित सामाजिक समाघात की प्रतिपूर्ति के लिये उपाय तथा उस पर होने वाला संभावित व्यय।</span>
+                                <t t-set="q10_value" t-value="(notification.compensation_measures if notification and notification.compensation_measures else (notification.project_id.compensation_measures if notification and notification.project_id and notification.project_id.compensation_measures else None))"/>
+                                <t t-if="q10_value">
+                                    <span class="question-answer" style="display: inline; margin-left: 8px;"><t t-out="q10_value"/></span>
+                                </t>
+                                <t t-if="not q10_value">
+                                    <span class="question-answer" style="display: inline; margin-left: 8px;">........................</span>
+                                </t>
+                            </div>
+                            
+                            <div class="question-item" style="display: flex; align-items: baseline; flex-wrap: nowrap;">
+                                <span class="question-label" style="white-space: nowrap; flex-shrink: 0;">(ग्यारह) परियोजना द्वारा प्रभावित होने वाले अन्य घटक।</span>
+                                <t t-set="q11_value" t-value="(notification.other_components if notification and notification.other_components else (notification.project_id.other_components if notification and notification.project_id and notification.project_id.other_components else None))"/>
+                                <t t-if="q11_value">
+                                    <span class="question-answer" style="display: inline; margin-left: 8px;"><t t-out="q11_value"/></span>
+                                </t>
+                                <t t-if="not q11_value">
+                                    <span class="question-answer" style="display: inline; margin-left: 8px;">........................</span>
+                                </t>
+                            </div>
+                        </div>
+                        
+                        <div class="intro-section" style="margin-top: 10px !important; margin-bottom: 20px !important;">
+                            <p style="text-align: justify; margin-bottom: 0; font-size: 16px !important; line-height: 1.6 !important;">
+                                उपरोक्त भूमि अर्जन के संबंध में किसी व्यक्ति/संस्था या अन्य किसी व्यक्ति को कोई जानकारी / सुझाव देना हो, तो विहित तिथि/समय एवं स्थान पर दी जा सकेगी।
+                            </p>
+                        </div>
+                        
+                        <div class="signature-block">
+                            <div style="text-align: right; margin-top: 30px; margin-right: 0;">
+                                <div style="margin-bottom: 10px;">
+                                    <p style="text-align: right; margin-bottom: 0; font-size: 18px; font-weight: bold; font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif !important;">कलेक्टर</p>
+                                </div>
+                                <div>
+                                    <p style="text-align: right; margin-bottom: 0; font-size: 18px; font-weight: bold; font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif !important;">जिला-रायगढ़</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

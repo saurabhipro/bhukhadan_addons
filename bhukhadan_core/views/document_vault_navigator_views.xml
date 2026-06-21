@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_document_vault_navigator_form" model="ir.ui.view">
+        <field name="name">bhu.document.vault.navigator.form</field>
+        <field name="model">bhu.document.vault.navigator</field>
+        <field name="arch" type="xml">
+            <form string="Document Vault Navigator / दस्तावेज़ नेविगेटर"
+                  create="0" edit="1" delete="0"
+                  js_class="docvault_navigator_form">
+                <sheet class="o_docvault_navigator_form">
+                    <div class="o_docvault_selector_bar">
+                        <div class="o_docvault_selector_title">Doc Vault Viewer</div>
+                        <field name="department_id" class="o_docvault_selector_field o_docvault_selector_department" readonly="0"
+                               force_save="1"
+                               options="{'no_create': True, 'no_create_edit': True}"/>
+                        <field name="project_id" class="o_docvault_selector_field o_docvault_selector_project"
+                               readonly="0" force_save="1"
+                               domain="[('department_id', '=', department_id)]"
+                               options="{'no_create': True, 'no_create_edit': True}"/>
+                        <field name="village_id" class="o_docvault_selector_field o_docvault_selector_village"
+                               readonly="0" force_save="1"
+                               domain="[('project_ids', 'in', project_id)]"
+                               options="{'no_create': True, 'no_create_edit': True}"/>
+                        <button name="action_refresh_sections" type="object" string="Refresh"
+                                class="btn btn-secondary o_docvault_refresh_btn" icon="fa-refresh"/>
+                    </div>
+                    <field name="nav_stats_html" widget="html" readonly="1" nolabel="1" class="o_docvault_stats_wrap"/>
+                    <div class="o_docvault_split_area">
+                        <field name="show_left_panel" invisible="1"/>
+                        <field name="focused_step_no" invisible="1"/>
+                        <field name="selected_preview_revision" invisible="1"/>
+                        <field name="show_variant_bar" invisible="1"/>
+                        <field name="active_variant_line_id" invisible="1"/>
+                        <div class="o_docvault_left_panel" invisible="not show_left_panel">
+                            <div class="o_docvault_panel_title o_docvault_panel_title_row">
+                                <span class="o_docvault_panel_title_text">
+                                    <i class="fa fa-th-list o_docvault_title_icon" title="Sections"/>
+                                    Sections / अनुभाग
+                                </span>
+                                <button type="object" name="action_toggle_left_panel"
+                                        string="Hide Sections"
+                                        class="btn btn-sm o_docvault_inline_toggle_btn"
+                                        icon="fa-eye-slash"
+                                        title="Hide sections panel"/>
+                            </div>
+                            <field name="step_display_line_ids" nolabel="1" readonly="1"
+                                   class="o_docvault_step_list"
+                                   options="{'no_open': True}">
+                                <list create="0" delete="0" no_open="1"
+                                      class="o_docvault_step_table"
+                                      decoration-success="is_available and is_focused_step"
+                                      decoration-muted="not is_available"
+                                      default_order="step_no asc">
+                                    <field name="section_icon" string="" readonly="1" class="o_docvault_icon_col"/>
+                                    <field name="step_label" string="Step" readonly="1" class="o_docvault_step_col"/>
+                                    <field name="section_label" string="Section" readonly="1" class="o_docvault_section_col"/>
+                                    <field name="doc_count_label" string="Docs" readonly="1" class="o_docvault_count_col"/>
+                                    <field name="section_theme" column_invisible="1"/>
+                                    <field name="step_no" string="" readonly="1" class="o_docvault_step_no_col"/>
+                                    <field name="is_available" column_invisible="1"/>
+                                    <field name="is_focused_step" column_invisible="1"/>
+                                    <field name="available_doc_count" column_invisible="1"/>
+                                    <field name="total_doc_count" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </div>
+                        <div class="o_docvault_right_panel">
+                            <div class="o_docvault_panel_title o_docvault_panel_title_row o_docvault_preview_header">
+                                <span class="o_docvault_panel_title_text">
+                                    <i class="fa fa-file-pdf-o o_docvault_title_icon" title="PDF Preview"/>
+                                    <span class="o_docvault_title_en">PDF Preview</span>
+                                    <span class="o_docvault_title_sep">/</span>
+                                    <span class="o_docvault_title_hi">पीडीएफ पूर्वावलोकन</span>
+                                </span>
+                                <div class="o_docvault_variant_chips_wrap" invisible="not show_variant_bar">
+                                    <field name="focused_variant_line_ids" nolabel="1" readonly="1"
+                                           class="o_docvault_variant_chips">
+                                        <list create="0" delete="0" no_open="1"
+                                              class="o_docvault_variant_chip_table"
+                                              decoration-success="is_active_variant"
+                                              decoration-muted="not is_available">
+                                            <field name="variant_label" string="Document"/>
+                                            <field name="step_no" column_invisible="1"/>
+                                            <field name="is_available" column_invisible="1"/>
+                                            <field name="is_active_variant" column_invisible="1"/>
+                                        </list>
+                                    </field>
+                                </div>
+                                <button type="object" name="action_toggle_left_panel"
+                                        string="Show Sections"
+                                        class="btn btn-sm o_docvault_inline_toggle_btn"
+                                        icon="fa-columns"
+                                        title="Show sections panel"
+                                        invisible="show_left_panel"/>
+                            </div>
+                            <div class="o_docvault_preview_shell">
+                                <field name="selected_document_hint" widget="html" readonly="1"
+                                       invisible="selected_document_id or selected_attachment_id or selected_source_model"/>
+                                <field name="selected_document_file" filename="selected_document_filename" widget="pdf_viewer"
+                                       readonly="1" class="o_docvault_pdf_viewer"
+                                       invisible="not selected_document_id and not selected_attachment_id and not selected_source_model"/>
+                            </div>
+                        </div>
+                    </div>
+                    <field name="selected_document_id" invisible="1"/>
+                    <field name="selected_attachment_id" invisible="1"/>
+                    <field name="selected_source_model" invisible="1"/>
+                    <field name="selected_source_record_id" invisible="1"/>
+                    <field name="selected_source_file_field" invisible="1"/>
+                    <field name="selected_source_filename_field" invisible="1"/>
+                    <field name="user_id" invisible="1"/>
+                    <field name="section_line_ids" invisible="1"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_document_vault_navigator_window" model="ir.actions.act_window">
+        <field name="name">Document Vault Navigator</field>
+        <field name="res_model">bhu.document.vault.navigator</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_document_vault_navigator_form"/>
+        <field name="target">current</field>
+        <field name="context">{'create': False, 'delete': False}</field>
+    </record>
+
+    <record id="action_document_vault_navigator" model="ir.actions.server">
+        <field name="name">Document Vault Navigator</field>
+        <field name="model_id" ref="model_bhu_document_vault_navigator"/>
+        <field name="state">code</field>
+        <field name="code">action = env['bhu.document.vault.navigator'].action_open_navigator()</field>
+    </record>
+</odoo>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Parent menu shells — must load before view files that attach child menuitems -->
+    <menuitem id="menu_bhu_root" name="BhuKhadan" sequence="1"
+              web_icon="bhuarjan,static/description/icon.png"/>
+    <menuitem id="menu_bhu_surveys" name="Surveys" parent="menu_bhu_root" sequence="2"
+              groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_sdm,bhukhadan_core.group_bhuarjan_department_user"/>
+    <menuitem id="menu_bhu_master" name="Master Data" parent="menu_bhu_root" sequence="3"
+              groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_district_administrator"/>
+    <menuitem id="menu_bhu_process" name="Process" parent="menu_bhu_root" sequence="5"
+              groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+    <menuitem id="menu_bhu_payment" name="Payment" parent="menu_bhu_root" sequence="6"
+              groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_collector,bhukhadan_core.group_bhuarjan_additional_collector,bhukhadan_core.group_bhuarjan_sdm"/>
+    <menuitem id="menu_bhu_users_maai_menu" name="Users" parent="menu_bhu_root" sequence="7"
+              groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_district_administrator"/>
+    <menuitem id="menu_bhu_reporting" name="Reporting Section" parent="menu_bhu_root" sequence="8"
+              groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+    <menuitem id="menu_process_report" name="Reports" parent="menu_bhu_root" sequence="11"
+              groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_district_administrator"/>
+    <menuitem id="menu_document_vault_list" name="Document Vault" parent="menu_bhu_process" sequence="14"
+              groups="bhukhadan_core.group_bhuarjan_admin,base.group_system" active="0"/>
+</odoo>

@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Award Letter Report -->
+        <record id="action_report_award_letter" model="ir.actions.report">
+            <field name="name">Award Letter / पुरस्कार पत्र</field>
+            <field name="model">bhu.survey</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">bhukhadan_core.award_letter_report</field>
+            <field name="report_file">bhukhadan_core.award_letter_report</field>
+            <field name="paperformat_id" ref="base.paperformat_euro"/>
+        </record>
+
+        <!-- Award Letter Report Template -->
+        <template id="award_letter_report">
+            <t t-call="web.html_container">
+                <meta charset="utf-8"/>
+                <style>
+                    @page {
+                        margin: 1cm;
+                        font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif;
+                    }
+                    body {
+                        font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif;
+                        direction: ltr;
+                        font-size: 12px;
+                        line-height: 1.4;
+                        position: relative;
+                    }
+                    .hindi-text {
+                        font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif;
+                        font-size: 12px;
+                        line-height: 1.4;
+                        unicode-bidi: embed;
+                        direction: ltr;
+                    }
+                    .table th, .table td {
+                        font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif;
+                        font-size: 9px;
+                        padding: 3px;
+                        unicode-bidi: embed;
+                        direction: ltr;
+                        border: 1px solid #000;
+                        vertical-align: middle;
+                        word-wrap: break-word;
+                        overflow: hidden;
+                    }
+                    .table th {
+                        font-size: 11px; /* Increased by 20% from 9px to 11px */
+                        font-weight: bold;
+                    }
+                    .table {
+                        font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif;
+                        unicode-bidi: embed;
+                        font-size: 10px;
+                        direction: ltr;
+                        border-collapse: collapse;
+                        width: 100%;
+                    }
+                    
+                    h1, h2, h3, h4, h5, h6 {
+                        font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif;
+                        unicode-bidi: embed;
+                        direction: ltr;
+                    }
+
+                    p, div, span {
+                        font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif;
+                        unicode-bidi: embed;
+                        direction: ltr;
+                    }
+                    
+                    .text-center {
+                        text-align: center;
+                    }
+                    
+                    .text-right {
+                        text-align: right;
+                    }
+                    
+                    .font-bold {
+                        font-weight: bold;
+                    }
+                    /* Word-like washout: near-transparent; no print-color-adjust:exact on mark */
+                    body > *:not(.watermark) {
+                        position: relative !important;
+                        z-index: 1 !important;
+                    }
+                    .watermark {
+                        position: fixed !important;
+                        top: 0 !important;
+                        left: 0 !important;
+                        right: 0 !important;
+                        bottom: 0 !important;
+                        width: 400px;
+                        height: 400px;
+                        max-width: 72% !important;
+                        max-height: 58% !important;
+                        margin: auto !important;
+                        transform: none !important;
+                        opacity: 0.008 !important;
+                        z-index: 0;
+                        pointer-events: none;
+                        padding: 0;
+                        display: flex !important;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        overflow: hidden;
+                    }
+                    .watermark .watermark-circle {
+                        display: none !important;
+                    }
+                    .watermark img {
+                        max-width: 100% !important;
+                        max-height: 100% !important;
+                        width: auto !important;
+                        height: auto !important;
+                        object-fit: contain;
+                        opacity: 0.12 !important;
+                        -webkit-filter: grayscale(100%) contrast(0.75) !important;
+                        filter: grayscale(100%) contrast(0.75) !important;
+                    }
+                </style>
+                
+                <!-- Watermark with Logo - Centered on Page -->
+                <div class="watermark">
+                    <div class="watermark-circle"></div>
+                    <t t-set="base_url" t-value="request.env['ir.config_parameter'].sudo().get_param('web.base.url')"/>
+                    <img t-att-src="base_url + '/bhukhadan_core/static/img/logo.png'" alt="Logo Watermark"/>
+                </div>
+                
+                <!-- Header -->
+                <div style="text-align: center; margin-bottom: 20px; position: relative; z-index: 1;">
+                    <h2 class="hindi-text font-bold" style="text-decoration: underline; font-size: 16px;">
+                        भू-अर्जन पुरस्कार पत्र
+                    </h2>
+                </div>
+
+                <!-- Project Information -->
+                <div style="margin-bottom: 15px;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <tr>
+                            <td style="padding: 5px; border: 1px solid #000;">
+                                <strong class="hindi-text">परियोजना का नाम:</strong>
+                            </td>
+                            <td style="padding: 5px; border: 1px solid #000;">
+                                <span class="hindi-text" t-field="docs[0].project_id.name"/>
+                            </td>
+                            <td style="padding: 5px; border: 1px solid #000;">
+                                <strong class="hindi-text">विभाग:</strong>
+                            </td>
+                            <td style="padding: 5px; border: 1px solid #000;">
+                                <span class="hindi-text" t-field="docs[0].department_id.name"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 5px; border: 1px solid #000;">
+                                <strong class="hindi-text">ग्राम:</strong>
+                            </td>
+                            <td style="padding: 5px; border: 1px solid #000;">
+                                <span class="hindi-text" t-field="docs[0].village_id.name"/>
+                            </td>
+                            <td style="padding: 5px; border: 1px solid #000;">
+                                <strong class="hindi-text">तहसील:</strong>
+                            </td>
+                            <td style="padding: 5px; border: 1px solid #000;">
+                                <span class="hindi-text" t-field="docs[0].tehsil_id.name"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 5px; border: 1px solid #000;">
+                                <strong class="hindi-text">जिला:</strong>
+                            </td>
+                            <td style="padding: 5px; border: 1px solid #000;">
+                                <span class="hindi-text" t-field="docs[0].district_name"/>
+                            </td>
+                            <td style="padding: 5px; border: 1px solid #000;">
+                                <strong class="hindi-text">दिनाँक:</strong>
+                            </td>
+                            <td style="padding: 5px; border: 1px solid #000;">
+                                <span class="hindi-text" t-field="docs[0].survey_date"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- Main Award Table -->
+                <table class="table" style="table-layout: fixed; width: 100%;">
+                    <colgroup>
+                        <col style="width: 4%;" />  <!-- 1. क. -->
+                        <col style="width: 12%;" /> <!-- 2. भूमिस्वामी का नाम -->
+                        <col style="width: 6%;" />  <!-- 3. कुल धारित भूमि - ख.न. -->
+                        <col style="width: 5%;" />  <!-- 4. कुल धारित भूमि - रकबा -->
+                        <col style="width: 5%;" />  <!-- 5. कुल धारित भूमि - लगान -->
+                        <col style="width: 6%;" />  <!-- 6. अर्जित भूमि का विवरण - ख.न. -->
+                        <col style="width: 5%;" />  <!-- 7. अर्जित भूमि का विवरण - रकबा -->
+                        <col style="width: 5%;" />  <!-- 8. अर्जित भूमि का विवरण - लगान -->
+                        <col style="width: 5%;" />  <!-- 9. पड़त भूमि का प्रकार - पड़त -->
+                        <col style="width: 5%;" />  <!-- 10. पड़त भूमि का प्रकार - एक फसली -->
+                        <col style="width: 5%;" />  <!-- 11. पड़त भूमि का प्रकार - दो फसली -->
+                        <col style="width: 8%;" />  <!-- 12. अर्जित भूमि का मूल्य - दर -->
+                        <col style="width: 6%;" />  <!-- 13. अर्जित भूमि का मूल्य - मूल्य -->
+                        <col style="width: 7%;" />  <!-- 14. 100% सोलेशियम -->
+                        <col style="width: 7%;" />  <!-- 15. 12% ब्याज -->
+                        <col style="width: 7%;" />  <!-- 16. कुल निर्धारित मुआवजा -->
+                        <col style="width: 8%;" />  <!-- 17. मुआवजा राशि यदि 6,8,10 लाख से कम -->
+                        <col style="width: 6%;" />  <!-- 18. रिमार्क -->
+                    </colgroup>
+                    <thead>
+                        <!-- Column Numbers Row -->
+                        <tr>
+                            <th class="text-center hindi-text font-bold">1</th>
+                            <th class="text-center hindi-text font-bold">2</th>
+                            <th class="text-center hindi-text font-bold">3</th>
+                            <th class="text-center hindi-text font-bold">4</th>
+                            <th class="text-center hindi-text font-bold">5</th>
+                            <th class="text-center hindi-text font-bold">6</th>
+                            <th class="text-center hindi-text font-bold">7</th>
+                            <th class="text-center hindi-text font-bold">8</th>
+                            <th class="text-center hindi-text font-bold">9</th>
+                            <th class="text-center hindi-text font-bold">10</th>
+                            <th class="text-center hindi-text font-bold">11</th>
+                            <th class="text-center hindi-text font-bold">12</th>
+                            <th class="text-center hindi-text font-bold">13</th>
+                            <th class="text-center hindi-text font-bold">14</th>
+                            <th class="text-center hindi-text font-bold">15</th>
+                            <th class="text-center hindi-text font-bold">16</th>
+                            <th class="text-center hindi-text font-bold">17</th>
+                            <th class="text-center hindi-text font-bold">18</th>
+                        </tr>
+                        <tr>
+                            <th rowspan="2" class="text-center hindi-text font-bold">क.</th>
+                            <th rowspan="2" class="text-center hindi-text font-bold">भूमिस्वामी का नाम पिता/पति का नाम, जाति</th>
+                            <th colspan="3" class="text-center hindi-text font-bold">कुल धारित भूमि</th>
+                            <th colspan="3" class="text-center hindi-text font-bold">अर्जित भूमि का विवरण</th>
+                            <th colspan="3" class="text-center hindi-text font-bold">पड़त भूमि का प्रकार</th>
+                            <th colspan="2" class="text-center hindi-text font-bold">अर्जित भूमि का मूल्य</th>
+                            <th class="text-center hindi-text font-bold">100% सोलेशियम की राशि</th>
+                            <th class="text-center hindi-text font-bold">बाजार मूल्य पर धारा 30(3) के अनुसार 12% ब्याज की राशि</th>
+                            <th class="text-center hindi-text font-bold">कुल निर्धारित मुआवजा</th>
+                            <th class="text-center hindi-text font-bold">मुआवजा राशि यदि 6,8,10 लाख से कम है तो देय मुआवजा राशि</th>
+                            <th class="text-center hindi-text font-bold">रिमार्क</th>
+                        </tr>
+                        <tr>
+                            <th class="text-center hindi-text font-bold">ख.न.</th>
+                            <th class="text-center hindi-text font-bold">रकबा</th>
+                            <th class="text-center hindi-text font-bold">लगान</th>
+                            <th class="text-center hindi-text font-bold">ख.न.</th>
+                            <th class="text-center hindi-text font-bold">रकबा</th>
+                            <th class="text-center hindi-text font-bold">लगान</th>
+                            <th class="text-center hindi-text font-bold">पड़त</th>
+                            <th class="text-center hindi-text font-bold">एक फसली</th>
+                            <th class="text-center hindi-text font-bold">दो फसली</th>
+                            <th class="text-center hindi-text font-bold">दर वर्तमान गाईड लाईन वर्ष 2019-20 अनुसार कीमत (प्रति हे० / प्रति वर्ग मीटर)</th>
+                            <th class="text-center hindi-text font-bold">मूल्य</th>
+                            <th class="text-center hindi-text font-bold">राशि</th>
+                            <th class="text-center hindi-text font-bold">राशि</th>
+                            <th class="text-center hindi-text font-bold">राशि</th>
+                            <th class="text-center hindi-text font-bold">राशि</th>
+                            <th class="text-center hindi-text font-bold">रिमार्क</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="docs" t-as="survey">
+                            <tr>
+                                <td class="text-center hindi-text">
+                                    <t t-esc="survey_index + 1"/>
+                                </td>
+                                <td class="hindi-text">
+                                    <t t-foreach="survey.landowner_ids" t-as="landowner">
+                                        <span t-field="landowner.name"/>
+                                        <t t-if="not landowner_last">, </t>
+                                    </t>
+                                    <br/>
+                                    <t t-if="survey.landowner_ids and survey.landowner_ids[0].father_name">
+                                        <span t-field="survey.landowner_ids[0].father_name"/>
+                                    </t>
+                                </td>
+                                <td class="text-center hindi-text">
+                                    <span t-field="survey.khasra_number"/>
+                                </td>
+                                <td class="text-center hindi-text">
+                                    <span t-field="survey.total_area"/>
+                                </td>
+                                <td class="text-center hindi-text">
+                                    <!-- Add land revenue field if available -->
+                                </td>
+                                <td class="text-center hindi-text">
+                                    <span t-field="survey.khasra_number"/>
+                                </td>
+                                <td class="text-center hindi-text">
+                                    <span t-field="survey.acquired_area"/>
+                                </td>
+                                <td class="text-center hindi-text">
+                                    <!-- Add land revenue field if available -->
+                                </td>
+                                <td class="text-center hindi-text">
+                                    <!-- Fallow land type -->
+                                </td>
+                                <td class="text-center hindi-text">
+                                    <span t-if="survey.is_single_crop">एक फसली</span>
+                                </td>
+                                <td class="text-center hindi-text">
+                                    <span t-if="survey.is_double_crop">दो फसली</span>
+                                </td>
+                                <td class="text-center hindi-text">
+                                    <!-- Add guideline rate field -->
+                                    1693000
+                                </td>
+                                <td class="text-center hindi-text">
+                                    <!-- Calculate value based on area and rate -->
+                                    <t t-set="acquired_area" t-value="survey.acquired_area or 0"/>
+                                    <t t-set="calculated_value" t-value="acquired_area * 1693000"/>
+                                    <span t-esc="calculated_value"/>
+                                </td>
+                                <td class="text-center hindi-text">
+                                    <!-- 100% solatium -->
+                                    <t t-set="solatium" t-value="acquired_area * 1693000"/>
+                                    <span t-esc="solatium"/>
+                                </td>
+                                <td class="text-center hindi-text">
+                                    <!-- 12% interest -->
+                                    <t t-set="interest" t-value="acquired_area * 1693000 * 0.12"/>
+                                    <span t-esc="interest"/>
+                                </td>
+                                <td class="text-center hindi-text">
+                                    <!-- Total determined compensation -->
+                                    <t t-set="total_compensation" t-value="calculated_value + solatium + interest"/>
+                                    <span t-esc="total_compensation"/>
+                                </td>
+                                <td class="text-center hindi-text">
+                                    <!-- Compensation if less than 6,8,10 lakhs -->
+                                    <t t-set="payable_compensation" t-value="total_compensation"/>
+                                    <span t-esc="payable_compensation"/>
+                                </td>
+                                <td class="text-center hindi-text">
+                                    <!-- Remarks -->
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" class="text-center hindi-text font-bold">योग</td>
+                            <td class="text-center hindi-text font-bold">
+                                <t t-set="total_area" t-value="sum([d.total_area or 0 for d in docs])"/>
+                                <span t-esc="total_area"/>
+                            </td>
+                            <td></td>
+                            <td class="text-center hindi-text font-bold">योग</td>
+                            <td class="text-center hindi-text font-bold">
+                                <t t-set="total_acquired_area" t-value="sum([d.acquired_area or 0 for d in docs])"/>
+                                <span t-esc="total_acquired_area"/>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="text-center hindi-text font-bold">योग</td>
+                            <td class="text-center hindi-text font-bold">
+                                <t t-set="total_value" t-value="total_acquired_area * 1693000"/>
+                                <span t-esc="total_value"/>
+                            </td>
+                            <td class="text-center hindi-text font-bold">
+                                <t t-set="total_solatium" t-value="total_acquired_area * 1693000"/>
+                                <span t-esc="total_solatium"/>
+                            </td>
+                            <td class="text-center hindi-text font-bold">
+                                <t t-set="total_interest" t-value="total_acquired_area * 1693000 * 0.12"/>
+                                <span t-esc="total_interest"/>
+                            </td>
+                            <td class="text-center hindi-text font-bold">
+                                <t t-set="total_compensation" t-value="total_value + total_solatium + total_interest"/>
+                                <span t-esc="total_compensation"/>
+                            </td>
+                            <td class="text-center hindi-text font-bold">
+                                <t t-set="total_payable" t-value="total_compensation"/>
+                                <span t-esc="total_payable"/>
+                            </td>
+                            <td class="text-center hindi-text font-bold">
+                                <!-- Total remarks -->
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <!-- Footer Information -->
+                <div style="margin-top: 30px;">
+                    <p class="hindi-text font-bold">संलग्न :- प्रभावित भूमियों का बी-1, खसरा एवं नक्शा</p>
+                </div>
+
+                <!-- Signature Section -->
+                <div style="margin-top: 50px;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <tr>
+                            <td style="width: 25%; text-align: center; padding: 20px;">
+                                <p class="hindi-text font-bold">(हस्ताक्षर)</p>
+                                <p class="hindi-text font-bold">अपेक्षक निकाय के</p>
+                                <p class="hindi-text font-bold">अधिकृत प्रतिनिधि</p>
+                                <p class="hindi-text">नाम -</p>
+                                <p class="hindi-text">पदनाम -</p>
+                            </td>
+                            <td style="width: 25%; text-align: center; padding: 20px;">
+                                <p class="hindi-text font-bold">(हस्ताक्षर)</p>
+                                <p class="hindi-text font-bold">तहसीलदार</p>
+                                <p class="hindi-text">नाम -</p>
+                            </td>
+                            <td style="width: 25%; text-align: center; padding: 20px;">
+                                <p class="hindi-text font-bold">(हस्ताक्षर)</p>
+                                <p class="hindi-text font-bold">नायब तहसीलदार</p>
+                                <p class="hindi-text">नाम -</p>
+                            </td>
+                            <td style="width: 25%; text-align: center; padding: 20px;">
+                                <p class="hindi-text font-bold">(हस्ताक्षर)</p>
+                                <p class="hindi-text font-bold">राजस्व निरीक्षक</p>
+                                <p class="hindi-text">नाम -</p>
+                                <p class="hindi-text">रा.नि.मं. -</p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

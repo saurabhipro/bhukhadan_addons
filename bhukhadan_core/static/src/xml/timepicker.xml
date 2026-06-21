@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="FieldTimePicker">
+        <div class="o_field_timepicker" t-attf-class="{{ props.editMode ? 'o_edit_mode' : '' }}" style="position: relative;">
+            <input
+                type="text"
+                t-ref="input_time"
+                t-att-value="props.record.data[props.name] || ''"
+                t-on-click="_onClickTimeField"
+                class="o_input o_field_time_input"
+                t-att-placeholder="props.placeholder || '⏰ Select time / समय चुनें (HH:MM:SS)'"
+                readonly="readonly"
+                style="padding-right: 30px;"
+            />
+            <i class="fa fa-clock-o" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #666; pointer-events: none;"/>
+        </div>
+    </t>
+</templates>

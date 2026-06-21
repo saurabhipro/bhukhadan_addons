@@ -1,0 +1,124 @@
+.o_cba_bpmn_viewer_wrapper {
+    border: 1px solid var(--border-color, #dee2e6);
+    border-radius: 8px;
+    background: #fafafa;
+    min-height: 480px;
+    overflow: hidden;
+}
+
+.o_cba_bpmn_canvas {
+    height: calc(100vh - 320px);
+    min-height: 520px;
+    width: 100%;
+    background: #fff;
+    cursor: grab;
+}
+
+.o_cba_bpmn_canvas:active {
+    cursor: grabbing;
+}
+
+.o_cba_bpmn_canvas .djs-container {
+    outline: none;
+}
+
+/* Readable BPMN labels at normal zoom */
+.o_cba_bpmn_canvas .djs-label,
+.o_cba_bpmn_modeler_canvas .djs-label {
+    font-family: Arial, sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 500;
+}
+
+.o_cba_bpmn_zoom_label {
+    min-width: 3rem;
+    text-align: center;
+}
+
+.o_cba_bpmn_viewer_tab .o_group,
+.o_cba_bpmn_viewer_tab .o_inner_group {
+    grid-template-columns: minmax(0, 1fr) !important;
+    width: 100%;
+}
+
+.o_cba_bpmn_viewer_tab .o_field_cba_bpmn_viewer {
+    grid-column: 1 / -1;
+    width: 100%;
+}
+
+.o_cba_bpmn_viewer_tab .o_field_cba_bpmn_viewer textarea,
+.o_cba_bpmn_viewer_tab .o_field_cba_bpmn_viewer input.o_input {
+    display: none !important;
+}
+
+.o_cba_bpmn_modeler_canvas {
+    height: calc(100vh - 280px);
+    min-height: 600px;
+    width: 100%;
+    background: #fff;
+    cursor: default;
+}
+
+.o_cba_bpmn_modeler_canvas .djs-container {
+    outline: none;
+}
+
+/* Completed BPMN nodes */
+.o_cba_bpmn_canvas .cba-done:not(.djs-connection) .djs-visual > :nth-child(1) {
+    fill: #c8e6c9 !important;
+    stroke: #2e7d32 !important;
+}
+
+/* Current BPMN node */
+.o_cba_bpmn_canvas .cba-current:not(.djs-connection) .djs-visual > :nth-child(1) {
+    fill: #fff59d !important;
+    stroke: #f57f17 !important;
+    stroke-width: 3px !important;
+}
+
+.o_cba_bpmn_legend {
+    border-bottom: 1px solid #eee;
+    background: #f8f9fa;
+}
+
+.o_cba_bpmn_modeler_wrapper {
+    border: 1px solid var(--border-color, #dee2e6);
+    border-radius: 8px;
+    background: #fafafa;
+    min-height: 680px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.o_cba_bpmn_toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+/* Full-width BPMN designer tab — hide default text field chrome */
+.o_cba_bpmn_designer_tab .o_cba_bpmn_designer_group {
+    width: 100%;
+    max-width: 100%;
+}
+
+.o_cba_bpmn_designer_tab .o_group {
+    grid-template-columns: minmax(0, 1fr) !important;
+    width: 100%;
+}
+
+.o_cba_bpmn_designer_tab .o_inner_group {
+    grid-template-columns: minmax(0, 1fr) !important;
+    width: 100%;
+}
+
+.o_cba_bpmn_designer_tab .o_field_cba_bpmn_modeler {
+    grid-column: 1 / -1;
+    width: 100%;
+    max-width: 100%;
+}
+
+.o_cba_bpmn_designer_tab .o_field_cba_bpmn_modeler textarea,
+.o_cba_bpmn_designer_tab .o_field_cba_bpmn_modeler input.o_input {
+    display: none !important;
+}

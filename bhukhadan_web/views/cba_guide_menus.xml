@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- CBA guide sub-menus under Features -->
+    <record id="menu_cba_overview" model="website.menu">
+        <field name="name">CBA Act Overview</field>
+        <field name="url">/features/cba</field>
+        <field name="parent_id" ref="bhukhadan_web.menu_features"/>
+        <field name="sequence">1</field>
+        <field name="website_id" ref="website.default_website"/>
+    </record>
+    <record id="menu_cba_s4" model="website.menu">
+        <field name="name">Section 4(i) Notification</field>
+        <field name="url">/features/cba/section-4</field>
+        <field name="parent_id" ref="bhukhadan_web.menu_features"/>
+        <field name="sequence">2</field>
+        <field name="website_id" ref="website.default_website"/>
+    </record>
+    <record id="menu_cba_s7" model="website.menu">
+        <field name="name">Section 7(i) Intention</field>
+        <field name="url">/features/cba/section-7</field>
+        <field name="parent_id" ref="bhukhadan_web.menu_features"/>
+        <field name="sequence">3</field>
+        <field name="website_id" ref="website.default_website"/>
+    </record>
+    <record id="menu_cba_s8" model="website.menu">
+        <field name="name">Section 8 Objections</field>
+        <field name="url">/features/cba/section-8</field>
+        <field name="parent_id" ref="bhukhadan_web.menu_features"/>
+        <field name="sequence">4</field>
+        <field name="website_id" ref="website.default_website"/>
+    </record>
+    <record id="menu_cba_s9" model="website.menu">
+        <field name="name">Section 9(i) Declaration</field>
+        <field name="url">/features/cba/section-9</field>
+        <field name="parent_id" ref="bhukhadan_web.menu_features"/>
+        <field name="sequence">5</field>
+        <field name="website_id" ref="website.default_website"/>
+    </record>
+    <record id="menu_cba_s11" model="website.menu">
+        <field name="name">Section 11(i) Order</field>
+        <field name="url">/features/cba/section-11</field>
+        <field name="parent_id" ref="bhukhadan_web.menu_features"/>
+        <field name="sequence">6</field>
+        <field name="website_id" ref="website.default_website"/>
+    </record>
+</odoo>

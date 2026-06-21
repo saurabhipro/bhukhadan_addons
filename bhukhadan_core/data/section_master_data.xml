@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Sections from RFCTLARR Act, 2013 -->
+        <record id="section_surveys" model="bhu.section.master">
+            <field name="name">Surveys</field>
+            <field name="description">Survey process for land acquisition</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="section_4_create_sia_team" model="bhu.section.master">
+            <field name="name">(Sec 4) Create SIA Team</field>
+            <field name="description">Section 4 - Create Social Impact Assessment (SIA) Team</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="section_4_notifications" model="bhu.section.master">
+            <field name="name">(Sec 4) Section 4 Notifications</field>
+            <field name="description">Section 4 - Notifications for land acquisition</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="section_expert_group" model="bhu.section.master">
+            <field name="name">Expert Group</field>
+            <field name="description">Expert Group / Committee for assessment</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="section_8" model="bhu.section.master">
+            <field name="name">Section 8</field>
+            <field name="description">धारा 8 — कलेक्टर का आदेश व विशेषज्ञ समूह रिपोर्ट पर संतुष्टि</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="section_11_notifications" model="bhu.section.master">
+            <field name="name">Section 11 Notifications</field>
+            <field name="description">Section 11 - Preliminary notification and preliminary report</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="section_15_objections" model="bhu.section.master">
+            <field name="name">(Sec 15) Objections</field>
+            <field name="description">Section 15 - Hearing of objections</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="section_18_rr_scheme" model="bhu.section.master">
+            <field name="name">Section 18 R and R Scheme</field>
+            <field name="description">Section 18 - Rehabilitation and Resettlement Scheme</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="section_19_notifications" model="bhu.section.master">
+            <field name="name">(Sec 19) Section 19 Notifications</field>
+            <field name="description">Section 19 - Publication of declaration and summary of Rehabilitation and Resettlement</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="section_21_notice" model="bhu.section.master">
+            <field name="name">Sec 21 notice</field>
+            <field name="description">Section 21 - Notice to persons interested</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="section_23_award" model="bhu.section.master">
+            <field name="name">Section 23 Award</field>
+            <field name="description">Section 23 - Award by Collector</field>
+            <field name="active">True</field>
+        </record>
+
+        <!-- Sections from Railways Act -->
+        <record id="section_20_a_railways" model="bhu.section.master">
+            <field name="name">Sec 20 A (Railways)</field>
+            <field name="description">Section 20 A - Railways Act</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="section_20_d_objection_railways" model="bhu.section.master">
+            <field name="name">Sec 20 D (Objection) (Railways)</field>
+            <field name="description">Section 20 D - Objection process under Railways Act</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="section_20_e_railways" model="bhu.section.master">
+            <field name="name">Sec 20 E (Railways)</field>
+            <field name="description">Section 20 E - Railways Act</field>
+            <field name="active">True</field>
+        </record>
+
+        <!-- Sections from National Highway Act -->
+        <record id="section_3a_nh" model="bhu.section.master">
+            <field name="name">Sec 3A (NH)</field>
+            <field name="description">Section 3A - National Highway Act</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="section_3c_objection_nh" model="bhu.section.master">
+            <field name="name">Sec 3C (Objection) (NH)</field>
+            <field name="description">Section 3C - Objection process under National Highway Act</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="section_3d_nh" model="bhu.section.master">
+            <field name="name">Sec 3D (NH)</field>
+            <field name="description">Section 3D - National Highway Act</field>
+            <field name="active">True</field>
+        </record>
+
+    </data>
+</odoo>
+

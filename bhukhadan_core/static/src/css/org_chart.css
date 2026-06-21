@@ -1,0 +1,58 @@
+.org-chart-card.colored-card {
+    background: linear-gradient(145deg, #f0f4ff, #ffffff);
+    border: 1px solid #d1d9f0;
+    border-radius: 10px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
+    padding: 12px 10px;
+    text-align: center;
+    width: 180px;
+    transition: all 0.25s ease;
+}
+
+/* Add hover lift and subtle color pop */
+.org-chart-card.colored-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+    background: linear-gradient(145deg, #e6edff, #ffffff);
+}
+
+/* Avatar styling */
+.org-chart-avatar {
+    margin-bottom: 8px;
+}
+
+.avatar-img {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #4c7cf3;
+}
+
+.avatar-placeholder {
+    font-size: 60px;
+    color: #4c7cf3;
+}
+
+/* Text styling */
+.org-chart-name {
+    font-weight: 600;
+    font-size: 14px;
+    color: #2a2a2a;
+}
+
+.org-chart-role {
+    font-size: 12px;
+    color: #5a6d9a;
+}
+
+/* Add optional accent line under each box */
+.org-chart-card.colored-card::after {
+    content: "";
+    display: block;
+    margin: 8px auto 0;
+    width: 40%;
+    height: 2px;
+    background-color: #4c7cf3;
+    border-radius: 2px;
+}

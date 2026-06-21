@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- User Report Wizard Form View -->
+        <record id="view_user_report_wizard_form" model="ir.ui.view">
+            <field name="name">user.report.wizard.form</field>
+            <field name="model">user.report.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Export Patwari Users Report">
+                    <sheet>
+                        <group>
+                            <div class="alert alert-info" role="alert">
+                                <p><strong>Patwari users only</strong> — Excel matches the standard roster layout: one row per affected <strong>village</strong> × <strong>project</strong> where that Patwari is assigned on the village master.</p>
+                                <p><strong>Columns (Hindi + Email):</strong> स. क्र., तहसील, तहसीलदार, Sub Division, SDM, विभाग / department, परियोजना (with <strong>project code</strong> if set), ग्राम (with <strong>village code</strong> if set), पटवारी, मोबाइल, Email, Status (<em>DONE</em>).</p>
+                                <p>Rows are <strong>sorted by department</strong> (then project, तहसील, ग्राम, पटवारी) so the same विभाग sits together before cells merge.</p>
+                                <p><strong>Unmapped-looking rows?</strong> A Patwari with <strong>no villages linked on the user record</strong> exports as contact-only (blank geography/project columns). Leave the checkbox below <strong>off</strong> (default) to omit them from the file, or enable it to audit who still needs villages assigned.</p>
+                                <p>Open from the main menu: <strong>Reports → Export Patwari Users Report</strong>.</p>
+                                <p groups="bhukhadan_core.group_bhuarjan_district_administrator">District Administrators only see Patwaris in their district.</p>
+                            </div>
+                        </group>
+                        <group>
+                            <field name="include_patwaris_without_villages"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_export_excel" string="Export to Excel" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- User Report Wizard Window Action -->
+        <record id="action_user_report_wizard_window" model="ir.actions.act_window">
+            <field name="name">Export Patwari Users Report</field>
+            <field name="res_model">user.report.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>
+

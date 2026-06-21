@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+    <!-- Surveys menu - NOT visible to Collector (bhukhadan_core.group_bhuarjan_collector or bhukhadan_core.group_bhuarjan_additional_collector) -->
+    <menuitem id="menu_bhu_surveys" name="Surveys" parent="menu_bhu_root" sequence="2" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_sdm,bhukhadan_core.group_bhuarjan_department_user"/>
+    <menuitem id="menu_bhu_survey" name="Survey" action="action_bhu_survey" parent="menu_bhu_surveys" sequence="1" />
+    <menuitem id="menu_report_wizard" name="Form 10 Download" parent="menu_bhu_surveys" action="action_report_wizard" sequence="2" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+    <record id="menu_report_wizard" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('bhukhadan_core.group_bhuarjan_admin'), ref('base.group_system')])]"/>
+    </record>
+
+    <!-- Master Data menu - visible to Admin, System, and District Administrator (NOT Collector, NOT Settings Master/Sequence Settings/Users for District Admin) -->
+    <menuitem id="menu_bhu_master" name="Master Data" parent="menu_bhu_root" sequence="3" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_district_administrator"/>
+    <menuitem id="menu_bhu_land_type" name="Land Types" action="action_bhu_land_type" parent="menu_bhu_master" sequence="1" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_district_administrator"/>
+    <menuitem id="menu_bhu_tree_master" name="Tree Rate Master" action="action_bhu_tree_master" parent="menu_bhu_master" sequence="2" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_district_administrator"/>
+    <menuitem id="menu_bhu_section_master" name="Section Master" action="action_bhu_section_master" parent="menu_bhu_master" sequence="4" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_district_administrator"/>
+    <menuitem id="menu_bhu_photo_type_master" name="Photo Type Master" action="action_bhu_photo_type" parent="menu_bhu_master" sequence="3" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_district_administrator"/>
+    <menuitem id="menu_bhu_law_master" name="Law Master" action="action_bhu_law_master" parent="menu_bhu_master" sequence="5" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_district_administrator"/>
+    <menuitem id="menu_bhu_rate_master" name="Land Rate Master" action="action_bhu_land_rate_master" parent="menu_bhu_master" sequence="6" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_district_administrator"/>
+    <menuitem id="menu_bhu_district" name="Districts" action="action_bhu_district" parent="menu_bhu_master" sequence="7" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+    <menuitem id="menu_bhu_sub_division" name="Sub Division" action="action_bhu_sub_division" parent="menu_bhu_master" sequence="8" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+    <menuitem id="menu_bhu_tehsil" name="Tehsils" action="action_bhu_tehsil" parent="menu_bhu_master" sequence="9" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_district_administrator"/>
+    <menuitem id="menu_bhu_village" name="Villages" action="action_bhu_village" parent="menu_bhu_master" sequence="10" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_district_administrator"/>
+    <menuitem id="menu_bhu_project" name="Projects" action="action_bhu_project" parent="menu_bhu_master" sequence="11" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_district_administrator"/>
+    <menuitem id="menu_bhu_department" name="Departments" action="action_bhu_department" parent="menu_bhu_master" sequence="13" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_district_administrator"/>
+
+    <menuitem id="menu_bhu_landowner" name="Landowners" action="action_bhu_landowner" parent="menu_bhu_root" sequence="4"  groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_district_administrator"/>
+    
+    <!-- Process Menu -->
+    <menuitem id="menu_bhu_process" name="Process" parent="menu_bhu_root" sequence="5" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+    <record id="menu_bhu_process" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('bhukhadan_core.group_bhuarjan_admin'), ref('base.group_system')])]"/>
+    </record>
+
+    <menuitem id="menu_sec4_create_sia_team" name="(Sec 4) Create SIA Team" action="action_create_sia_team" parent="menu_bhu_process" sequence="1" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+    <record id="menu_sec4_create_sia_team" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('bhukhadan_core.group_bhuarjan_admin'), ref('base.group_system')])]"/>
+    </record>
+
+    <menuitem id="menu_sec4_notifications" name="(Sec 4) Section 4 Notifications" action="action_section4_notification" parent="menu_bhu_process" sequence="2" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+    <record id="menu_sec4_notifications" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('bhukhadan_core.group_bhuarjan_admin'), ref('base.group_system')])]"/>
+    </record>
+
+    <menuitem id="menu_sec7_expert_committee" name="(Sec 7) Expert Committee Reports" action="action_expert_committee_report" parent="menu_bhu_process" sequence="4" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+    <record id="menu_sec7_expert_committee" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('bhukhadan_core.group_bhuarjan_admin'), ref('base.group_system')])]"/>
+    </record>
+
+    <menuitem id="menu_sec11_preliminary_reports" name="(Sec 11) Section 11 Preliminary Reports" action="action_section11_preliminary_report" parent="menu_bhu_process" sequence="6" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+    <record id="menu_sec11_preliminary_reports" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('bhukhadan_core.group_bhuarjan_admin'), ref('base.group_system')])]"/>
+    </record>
+
+    <menuitem id="menu_sec15_objections" name="(Sec 15) Objections" action="action_section15_objections" parent="menu_bhu_process" sequence="8" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+    <record id="menu_sec15_objections" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('bhukhadan_core.group_bhuarjan_admin'), ref('base.group_system')])]"/>
+    </record>
+
+    <menuitem id="menu_sec18_rr_scheme" name="(Sec 18) R and R Scheme" action="action_section18_rr_scheme" parent="menu_bhu_process" sequence="9" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+    <record id="menu_sec18_rr_scheme" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('bhukhadan_core.group_bhuarjan_admin'), ref('base.group_system')])]"/>
+    </record>
+
+    <menuitem id="menu_sec19_notifications" name="(Sec 19) Section 19 Notifications" action="action_section19_notification" parent="menu_bhu_process" sequence="10" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+    <record id="menu_sec19_notifications" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('bhukhadan_core.group_bhuarjan_admin'), ref('base.group_system')])]"/>
+    </record>
+
+    <menuitem id="menu_sec8" name="(Sec 8) Section 8" action="action_section8" parent="menu_bhu_process" sequence="11" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+    <record id="menu_sec8" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('bhukhadan_core.group_bhuarjan_admin'), ref('base.group_system')])]"/>
+    </record>
+
+    <menuitem id="menu_sec21_draft_award" name="(Sec 21) Section 21 Notifications" action="action_section21_notification" parent="menu_bhu_process" sequence="12" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+    <record id="menu_sec21_draft_award" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('bhukhadan_core.group_bhuarjan_admin'), ref('base.group_system')])]"/>
+    </record>
+
+    <menuitem id="menu_sec23_award" name="(Sec 23) Section 23 Award" action="action_section23_award" parent="menu_bhu_process" sequence="13" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+    <record id="menu_sec23_award" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('bhukhadan_core.group_bhuarjan_admin'), ref('base.group_system')])]"/>
+    </record>
+
+    <!-- Railway Act Sections -->
+    <menuitem id="menu_sec20a_railways" name="(Sec 20 A) Railways" action="action_section20a_railways" parent="menu_bhu_process" sequence="14" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+    <record id="menu_sec20a_railways" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('bhukhadan_core.group_bhuarjan_admin'), ref('base.group_system')])]"/>
+    </record>
+
+    <menuitem id="menu_sec20d_railways" name="(Sec 20 D) Railways (Objection)" action="action_section20d_railways" parent="menu_bhu_process" sequence="15" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+    <record id="menu_sec20d_railways" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('bhukhadan_core.group_bhuarjan_admin'), ref('base.group_system')])]"/>
+    </record>
+
+    <menuitem id="menu_sec20e_railways" name="(Sec 20 E) Railways" action="action_section20e_railways" parent="menu_bhu_process" sequence="16" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+    <record id="menu_sec20e_railways" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('bhukhadan_core.group_bhuarjan_admin'), ref('base.group_system')])]"/>
+    </record>
+
+    <!-- National Highway Act Sections -->
+    <menuitem id="menu_sec3a_nh" name="(Sec 3A) National Highway" action="action_section3a_nh" parent="menu_bhu_process" sequence="17" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+    <record id="menu_sec3a_nh" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('bhukhadan_core.group_bhuarjan_admin'), ref('base.group_system')])]"/>
+    </record>
+
+    <menuitem id="menu_sec3c_nh" name="(Sec 3C) National Highway (Objection)" action="action_section3c_nh" parent="menu_bhu_process" sequence="18" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+    <record id="menu_sec3c_nh" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('bhukhadan_core.group_bhuarjan_admin'), ref('base.group_system')])]"/>
+    </record>
+
+    <menuitem id="menu_sec3d_nh" name="(Sec 3D) National Highway" action="action_section3d_nh" parent="menu_bhu_process" sequence="19" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+    <record id="menu_sec3d_nh" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('bhukhadan_core.group_bhuarjan_admin'), ref('base.group_system')])]"/>
+    </record>
+
+    <menuitem id="menu_process_report" name="Reports" parent="menu_bhu_root" sequence="11" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_district_administrator"/>
+    <record id="menu_process_report" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [
+            ref('bhukhadan_core.group_bhuarjan_admin'),
+            ref('base.group_system'),
+            ref('bhukhadan_core.group_bhuarjan_district_administrator'),
+        ])]"/>
+    </record>
+
+    <menuitem id="menu_export_patwari_users_report" name="Export Patwari Users Report" action="action_user_report_wizard_window" parent="menu_process_report" sequence="0" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_district_administrator"/>
+    <record id="menu_export_patwari_users_report" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [
+            ref('bhukhadan_core.group_bhuarjan_admin'),
+            ref('base.group_system'),
+            ref('bhukhadan_core.group_bhuarjan_district_administrator'),
+        ])]"/>
+    </record>
+    
+    <menuitem id="menu_process_report_wizard" name="Process Report" action="action_process_report_wizard" parent="menu_process_report" sequence="1" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+    <record id="menu_process_report_wizard" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('bhukhadan_core.group_bhuarjan_admin'), ref('base.group_system')])]"/>
+    </record>
+
+    <menuitem id="menu_bhu_time_savings_report" name="Time Savings Report"
+              action="action_bhu_time_savings_report_wizard"
+              parent="menu_process_report" sequence="5"
+              groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+    <record id="menu_bhu_time_savings_report" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [
+            ref('bhukhadan_core.group_bhuarjan_admin'),
+            ref('base.group_system'),
+        ])]"/>
+    </record>
+
+    <menuitem id="menu_all_sections_report" name="All Sections List" action="action_all_sections_report" parent="menu_process_report" sequence="2" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+    <record id="menu_all_sections_report" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('bhukhadan_core.group_bhuarjan_admin'), ref('base.group_system')])]"/>
+    </record>
+    
+    <!-- Payment Menu - Admin, Collector, and SDM (scoped to assigned projects) -->
+    <menuitem id="menu_bhu_payment" name="Payment" parent="menu_bhu_root" sequence="6" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_collector,bhukhadan_core.group_bhuarjan_additional_collector,bhukhadan_core.group_bhuarjan_sdm"/>
+    <menuitem id="menu_payment_dashboard" name="Payment Dashboard" action="action_payment_dashboard_owl" parent="menu_bhu_payment" sequence="0" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_collector,bhukhadan_core.group_bhuarjan_additional_collector,bhukhadan_core.group_bhuarjan_sdm"/>
+    <menuitem id="menu_payment_view_awards" name="View Awards" action="action_section23_award" parent="menu_bhu_payment" sequence="2" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_sdm"/>
+    <menuitem id="menu_payment_rr_voucher" name="Payment Vouchers" action="action_bhu_payment_voucher" parent="menu_bhu_payment" sequence="3" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_collector,bhukhadan_core.group_bhuarjan_additional_collector,bhukhadan_core.group_bhuarjan_sdm"/>
+    <menuitem id="menu_payment_view_lines" name="Pending Payments" action="action_payment_file_lines" parent="menu_bhu_payment" sequence="4" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_sdm"/>
+    <menuitem id="menu_success_payments" name="Success Payments" action="action_success_payment_lines" parent="menu_bhu_payment" sequence="6" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_sdm"/>
+    <menuitem id="menu_failed_payments" name="Failed Payments" action="action_failed_payment_lines" parent="menu_bhu_payment" sequence="7" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_sdm"/>
+    
+    <!-- Document Vault Menu - hidden from Process (active=False) -->
+    <menuitem id="menu_document_vault_list" name="Document Vault" action="action_document_vault_navigator_window" parent="menu_bhu_process" sequence="14" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system" active="0"/>
+    <menuitem id="menu_document_vault_navigator_quick" name="Doc Vault Viewer" action="action_document_vault_navigator" parent="menu_document_vault_list" sequence="0" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+    <menuitem id="menu_document_vault_repository" name="Document Repository" action="action_document_vault" parent="menu_document_vault_list" sequence="1" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+    <record id="menu_document_vault_list" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('bhukhadan_core.group_bhuarjan_admin'), ref('base.group_system')])]"/>
+    </record>   
+    <!-- Users Menu - visible to Admin, System, and District Administrator -->
+    <menuitem id="menu_bhu_users_maai_menu" name="Users" action="action_accres_users_bhuarjan_view_form_action" parent="menu_bhu_root" sequence="7"  groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_district_administrator"/>
+    <menuitem id="menu_bhu_users" name="Users" action="action_accres_users_bhuarjan_view_form_action" parent="menu_bhu_users_maai_menu" sequence="7"  groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_district_administrator"/>
+    <menuitem id="menu_sia_team_members" name="SIA Team Members" action="action_sia_team_member" parent="menu_bhu_users_maai_menu" sequence="8" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+    <menuitem id="jwt_token_menu_item" name="JWT Token List" parent="menu_bhu_users_maai_menu" action="jwt_token_action" />
+    <menuitem id="mobile_otp_menu_item" name="Mobile OTP List" parent="menu_bhu_users_maai_menu" action="mobile_otp_action" />
+    <menuitem id="menu_bhu_reporting" name="Reporting Section" parent="menu_bhu_root" sequence="8" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+    <record id="menu_bhu_reporting" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('bhukhadan_core.group_bhuarjan_admin'), ref('base.group_system')])]"/>
+    </record>
+
+    <!-- Dashboard menus - first top-level item for all roles that see it -->
+    <!-- For Department Users -->
+    <menuitem parent="menu_bhu_root" id="bhuarjan_dashboard_menu_dept" name="Dashboard" action="action_department_dashboard_owl" groups="bhukhadan_core.group_bhuarjan_department_user" sequence="1"/>
+
+    <!-- For All Other Roles (Uses role-based routing) -->
+    <menuitem parent="menu_bhu_root" id="bhuarjan_dashboard_menu" name="Dashboard" action="action_role_based_dashboard" sequence="1" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_collector,bhukhadan_core.group_bhuarjan_additional_collector,bhukhadan_core.group_bhuarjan_district_administrator,bhukhadan_core.group_bhuarjan_sdm"/>
+
+    <!-- Move Settings Master to Master Data section -->
+    <menuitem id="menu_bhu_settings_master" name="Settings Master" action="action_bhuarjan_settings_master_tree" parent="menu_bhu_master" sequence="100" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+    <menuitem id="menu_bhu_sequence_settings" name="Sequence Settings" action="action_bhuarjan_sequence_settings_tree" parent="base.menu_administration" sequence="101" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+    </data>
+</odoo>

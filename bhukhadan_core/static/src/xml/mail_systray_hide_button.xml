@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <!-- Inherit the MessagingMenu template and hide the chat button -->
+    <t t-inherit="mail.MessagingMenu" t-inherit-mode="extension">
+        <xpath expr="//button[i[contains(@class, 'fa-comments')]]" position="attributes">
+            <attribute name="t-attf-class">d-none {{ class or '' }}</attribute>
+        </xpath>
+    </t>
+
+    <t t-inherit="mail.ActivityMenu" t-inherit-mode="extension">
+        <xpath expr="//button[i[contains(@class, 'fa-clock-o')]]" position="attributes">
+            <attribute name="t-attf-class">d-none {{ class or '' }}</attribute>
+        </xpath>
+    </t>
+</templates>
+

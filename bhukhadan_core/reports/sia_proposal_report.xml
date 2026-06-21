@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- SIA Proposal Report Action (SDM's Proposal) -->
+    <record id="action_report_sia_proposal" model="ir.actions.report">
+        <field name="name">SIA Proposal</field>
+        <field name="model">bhu.sia.team</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">bhukhadan_core.sia_proposal_report</field>
+        <field name="report_file">bhukhadan_core.sia_proposal_report</field>
+        <field name="paperformat_id" ref="bhukhadan_core.bhuarjan_sia_paper_format"/>
+        <field name="print_report_name">'SIA_Proposal_' + ((object and object.project_id and object.project_id.name) or (docs and docs[0] and docs[0].project_id and docs[0].project_id.name) or 'Project') + '_' + ((object and object.create_date and object.create_date.strftime('%Y%m%d')) or (docs and docs[0] and docs[0].create_date and docs[0].create_date.strftime('%Y%m%d')) or 'Date')</field>
+    </record>
+
+    <!-- SIA Proposal Report Template (SDM's Proposal) -->
+    <template id="sia_proposal_report">
+        <t t-call="web.html_container">
+            <meta charset="utf-8"/>
+            <t t-foreach="docs" t-as="sia_team">
+                <t t-call="web.basic_layout">
+                <!-- Include centralized CSS styles -->
+                <t t-call="bhukhadan_core.report_common_styles"/>
+                <!-- Report-specific overrides for SIA Proposal -->
+                <style>
+                    .normal-text {
+                        font-size: 17px !important;
+                    }
+                    .normal-text p, .normal-text span, .normal-text strong {
+                        font-size: 17px !important;
+                    }
+                    .table-header {
+                        font-size: 17px !important;
+                    }
+                    .fsc {
+                        font-size: 17px !important;
+                    }
+                    .date-reference-section span {
+                        font-size: 17px !important;
+                    }
+                    table td, table th {
+                        font-size: 17px !important;
+                    }
+                    .subject-section, .body-section {
+                        font-size: 17px !important;
+                    }
+                    .subject-section p, .body-section p {
+                        font-size: 17px !important;
+                    }
+                </style>
+
+                <div class="container letter_space" style="border: 2px dotted #000; padding: 15px; margin: 10px; position: relative; min-height: calc(100vh - 20px); height: 100%;">
+                    <!-- Watermark with Logo - Centered on Page (using common CSS) -->
+                    <div class="watermark">
+                        <div class="watermark-circle"></div>
+                        <t t-set="base_url" t-value="request.env['ir.config_parameter'].sudo().get_param('web.base.url')"/>
+                        <img t-att-src="base_url + '/bhukhadan_core/static/img/logo.png'" alt="Logo Watermark"/>
+                    </div>
+                    <!-- Header with Logo and QR Code -->
+                    <div style="margin-bottom: 15px; padding-bottom: 8px;">
+                        <table style="width: 100%; border:1px solid white; margin-bottom: 8px;">
+                            <tr>
+                                <!-- Logo on Left -->
+                                <td rowspan="2" style="width: 12%; padding: 0; text-align: center; vertical-align: middle;">
+                                    <t t-set="base_url" t-value="request.env['ir.config_parameter'].sudo().get_param('web.base.url')"/>
+                                    <img t-att-src="base_url + '/bhukhadan_core/static/img/logo.png'" class="header-logo" alt="Logo"/>
+                                </td>
+                                <!-- Header Text - Line 1 -->
+                                <td colspan="2" style="text-align: center; vertical-align: middle; padding: 0 5px;">
+                                    <h3 class="hindi letter_space header-text" style="margin: 0; padding: 0; font-size: 23px; line-height: 0.95;">
+                                        <t t-set="header_subdivision_name" t-value="''"/>
+                                        <t t-if="sia_team.sub_division_id">
+                                            <t t-set="header_subdivision_name" t-value="sia_team.sub_division_id.name"/>
+                                        </t>
+                                        <t t-if="not sia_team.sub_division_id and sia_team.project_id and sia_team.project_id.sdm_ids and len(sia_team.project_id.sdm_ids) > 0">
+                                            <t t-set="first_sdm_header" t-value="sia_team.project_id.sdm_ids[0]"/>
+                                            <t t-set="sdm_sd_header_row" t-value="env['bhu.sub.division'].sudo().search([('user_id', '=', first_sdm_header.id)], limit=1)"/>
+                                            <t t-if="sdm_sd_header_row">
+                                                <t t-set="header_subdivision_name" t-value="sdm_sd_header_row.name"/>
+                                            </t>
+                                        </t>
+                                        कार्यालय अनुविभागीय अधिकारी (राजस्व), <span t-esc="header_subdivision_name if header_subdivision_name else '........................'"/>
+                                    </h3>
+                                </td>
+                                <!-- QR Code on Right -->
+                                <td rowspan="2" style="width: 12%; padding: 0; text-align: center; vertical-align: middle;">
+                                    <t t-set="qr_code_img" t-value="sia_team.get_qr_code_data()"/>
+                                    <t t-set="qr_download_url" t-value="'https://bhuarjan.com/bhuarjan/sia/' + str(sia_team.sia_team_uuid or '') + '/download'"/>
+                                    <t t-if="qr_code_img">
+                                        <a t-att-href="qr_download_url" style="display: block; width: 90%; margin: 0 auto; padding: 0; text-decoration: none;">
+                                            <img t-att-src="'data:image/png;base64,' + qr_code_img" 
+                                                 alt="QR Code - Click to download PDF" 
+                                                 style="width: 90%; max-width: 90%; height: auto; aspect-ratio: 1; border: none; display: block; margin: 0; padding: 0; object-fit: contain;"/>
+                                        </a>
+                                    </t>
+                                    <t t-if="not qr_code_img">
+                                        <a t-att-href="qr_download_url" style="display: block; width: 90%; margin: 0 auto; padding: 0; text-decoration: none;">
+                                            <div style="width: 90%; padding-top: 90%; position: relative; border: none; background: white; margin: 0;">
+                                                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                                                    <div style="text-align: center; font-size: 7px;">
+                                                        <div style="font-weight: bold;">QR Code</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <!-- Header Text - Line 2 -->
+                                <td colspan="2" style="text-align: center; vertical-align: middle; padding: 0 5px;">
+                                    <h3 class="hindi letter_space header-text" style="margin: 0; padding: 0; font-size: 23px; line-height: 0.95;">
+                                        जिला-रायगढ़ (छ.ग.)
+                                    </h3>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- Reference and Date -->
+                    <div class="date-reference-section row w-100" style="margin-bottom: 12px !important; display: flex; justify-content: space-between; white-space: nowrap !important;">
+                        <div class="col w-100 normal-text letter_space" style="flex: 1;">
+                                <strong>क्रमांक/</strong>
+                                <span t-if="sia_team.kramank" t-esc="sia_team.kramank"/>
+                                <span t-if="not sia_team.kramank">....................</span>
+                                /भू-अर्जन/वाचक <span t-esc="context_timestamp(sia_team.create_date or datetime.datetime.now()).strftime('%Y')"/>
+                        </div>
+                        <div class="col normal-text letter_space text-right w-100" style="flex: 1; text-align: right !important;">
+                                <strong>दिनांक/</strong>........../<span t-esc="context_timestamp(sia_team.create_date or datetime.datetime.now()).strftime('%Y')"/>
+                        </div>
+                    </div>
+
+                    <!-- Recipient -->
+                    <div style="margin-bottom: 12px !important; margin-top: 5px !important;">
+                        <p class="normal-text letter_space" style="margin: 4px 0 !important; line-height: 1.5 !important; font-size: 17px !important;">
+                            <strong style="font-size: 17px !important;">प्रति,</strong>
+                        </p>
+                        <p class="normal-text letter_space" style="margin: 4px 0 !important; line-height: 1.5 !important; font-size: 17px !important;">
+                            <strong style="font-size: 17px !important;">कलेक्टर</strong><br/>
+                            <strong style="font-size: 17px !important;">(भू-अर्जन शाखा)</strong><br/>
+                            <strong style="font-size: 17px !important;">जिला-रायगढ़ (छ.ग.)</strong>
+                        </p>
+                    </div>
+
+                    <!-- Subject -->
+                    <div class="subject-section" style="margin-bottom: 15px !important; margin-top: 10px !important;">
+                        <p class="normal-text letter_space" style="margin: 5px 0 !important; text-align: justify !important; line-height: 1.5 !important; text-indent: 0 !important; font-size: 17px !important;">
+                            <strong>विषय:-</strong>
+                            <span style="padding-left: 20px !important; display: inline;">
+                                विभाग <span t-esc="sia_team.requiring_body_id.name if sia_team.requiring_body_id else '........................'"/>&#160;अंतर्गत परियोजना <span t-esc="sia_team.project_id.name or '........................'"/>&#160;हेतु प्रभावित ग्राम 
+                            <t t-if="sia_team.village_ids">
+                                <t t-foreach="sia_team.village_ids" t-as="village">
+                                    <t t-if="village_index != 0">, </t><span t-esc="village.name or ''"/>
+                                </t>
+                            </t>
+                            <t t-if="not sia_team.village_ids and sia_team.project_id and sia_team.project_id.village_ids">
+                                <t t-foreach="sia_team.project_id.village_ids" t-as="village">
+                                    <t t-if="village_index != 0">, </t><span t-esc="village.name or ''"/>
+                                </t>
+                            </t>
+                            <t t-if="not sia_team.village_ids and (not sia_team.project_id or not sia_team.project_id.village_ids)">
+                                ........................
+                            </t>
+                            तहसील&#160;
+                            <t t-set="display_tehsils" t-value="False"/>
+                            <t t-if="sia_team.village_ids">
+                                <t t-set="display_tehsils" t-value="sia_team.village_ids.mapped('tehsil_id')"/>
+                            </t>
+                            <t t-elif="sia_team.project_id and sia_team.project_id.village_ids">
+                                <t t-set="display_tehsils" t-value="sia_team.project_id.village_ids.mapped('tehsil_id')"/>
+                            </t>
+                            <t t-if="display_tehsils">
+                                <t t-foreach="display_tehsils" t-as="tehsil">
+                                    <t t-if="tehsil_index != 0">,&#160;</t><span t-esc="tehsil.name or ''"/>
+                                </t>
+                            </t>
+                            <t t-if="not display_tehsils">
+                                ........................
+                            </t>
+                            &#160;जिला रायगढ़ (छ.ग.) में सामाजिक समाघात निर्धारण हेतु दल गठन का प्रस्ताव अनुमोदन बाबत।
+                            </span>
+                        </p>
+                    </div>
+
+                    
+                    <div style="text-align: center; margin: 10px 0;">
+                        <strong class="normal-text">--00--</strong>
+                    </div>
+
+                    <!-- New Paragraph -->
+                    <div class="body-section" style="margin-bottom: 15px !important; margin-top: 10px !important;">
+                        <p class="normal-text letter_space" style="margin: 5px 0 !important; text-align: justify !important; line-height: 1.5 !important; text-indent: 0 !important; font-size: 17px !important;">
+                            <strong>उपरोक्त विषयांतर्गत विभाग</strong> <span t-esc="sia_team.requiring_body_id.name if sia_team.requiring_body_id else '........................'"/>&#160;<strong>रायगढ़ (छ.ग.) अंतर्गत</strong> <strong>परियोजना</strong> <span t-esc="sia_team.project_id.name or '........................'"/>&#160;<strong>हेतु प्रभावित ग्राम</strong> 
+                            <t t-if="sia_team.village_ids">
+                                <t t-foreach="sia_team.village_ids" t-as="village">
+                                    <t t-if="village_index != 0">, </t><span t-esc="village.name or ''"/>
+                                </t>
+                            </t>
+                            <t t-if="not sia_team.village_ids and sia_team.project_id and sia_team.project_id.village_ids">
+                                <t t-foreach="sia_team.project_id.village_ids" t-as="village">
+                                    <t t-if="village_index != 0">, </t><span t-esc="village.name or ''"/>
+                                </t>
+                            </t>
+                            <t t-if="not sia_team.village_ids and (not sia_team.project_id or not sia_team.project_id.village_ids)">
+                                ........................
+                            </t>
+                            <strong>तहसील</strong>&#160;
+                            <t t-set="body_tehsils" t-value="False"/>
+                            <t t-if="sia_team.village_ids">
+                                <t t-set="body_tehsils" t-value="sia_team.village_ids.mapped('tehsil_id')"/>
+                            </t>
+                            <t t-elif="sia_team.project_id and sia_team.project_id.village_ids">
+                                <t t-set="body_tehsils" t-value="sia_team.project_id.village_ids.mapped('tehsil_id')"/>
+                            </t>
+                            <t t-if="body_tehsils">
+                                <t t-foreach="body_tehsils" t-as="tehsil">
+                                    <t t-if="tehsil_index != 0">,&#160;</t><span t-esc="tehsil.name or ''"/>
+                                </t>
+                            </t>
+                            <t t-if="not body_tehsils">
+                                ........................
+                            </t>
+                            &#160;<strong>जिला</strong> 
+                            <t t-if="sia_team.project_id and sia_team.project_id.village_ids and len(sia_team.project_id.village_ids) > 0">
+                                <span t-esc="sia_team.project_id.village_ids[0].district_id.name if sia_team.project_id.village_ids[0].district_id else 'रायगढ़'"/>
+                            </t>
+                            <t t-if="not (sia_team.project_id and sia_team.project_id.village_ids and len(sia_team.project_id.village_ids) > 0)">
+                                रायगढ़
+                            </t>
+                            <strong>(छ.ग.) की निजी भूमि कुल रकबा</strong>&#160;
+                            <t t-if="sia_team.total_area_acquired and sia_team.total_area_acquired > 0">
+                                <span t-esc="'{:,.4f}'.format(sia_team.total_area_acquired)"/>
+                            </t>
+                            <t t-if="not sia_team.total_area_acquired or sia_team.total_area_acquired == 0">
+                                ........................
+                            </t>
+                            <strong>हेक्टेयर </strong>भूमि के भू-अर्जन प्रस्ताव पर, सामाजिक समाघात निर्धारण हेतु दल गठन का प्रस्ताव कलेक्टर महोदय की ओर अनुमोदन हेतु सादर प्रस्तुत है :-
+                        </p>
+                    </div>
+
+                    <!-- Team Members Table -->
+                    <div style="margin-bottom: 15px; margin-top: 10px;">
+                        <table class="w-100" style="border-collapse: collapse; border: 2px solid #000; margin-top: 8px;">
+                            <thead>
+                                <tr>
+                                    <th class="table-header letter_space" style="border: 1px solid #000; padding: 6px; text-align: left; background-color: #f5f5f5; width: 45%;">
+                                        समाजिक समाघात निर्धारण दल का विवरण
+                                    </th>
+                                    <th class="table-header letter_space" style="border: 1px solid #000; padding: 6px; text-align: left; background-color: #f5f5f5; width: 55%;">
+                                        सदस्य का नाम / पता
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- (क) Non-Government Social Scientist -->
+                                <tr>
+                                    <td class="normal-text letter_space" style="border: 1px solid #000; padding: 4px; vertical-align: top; background-color: #fafafa; text-align: left;">
+                                        <strong>(क) गैर शासकीय सामाजिक वैज्ञानिक</strong>
+                                    </td>
+                                    <td class="normal-text letter_space" style="border: 1px solid #000; padding: 4px; text-align: left;">
+                                        <t t-if="sia_team.non_govt_social_scientist_line_ids">
+                                            <t t-foreach="sia_team.non_govt_social_scientist_line_ids" t-as="member">
+                                                <p style="margin: 1px 0; line-height: 1.3; text-align: left;">
+                                                    <span t-esc="member_index + 1"/>. 
+                                                    <span t-esc="member.name or ''"/>
+                                                    <t t-if="member.post">, <span t-esc="member.post"/></t>
+                                                    <t t-if="member.address">, <span t-esc="member.address"/></t>
+                                                </p>
+                                            </t>
+                                        </t>
+                                        <t t-if="not sia_team.non_govt_social_scientist_line_ids">
+                                            <p style="margin: 1px 0; text-align: left;">........................</p>
+                                        </t>
+                                    </td>
+                                </tr>
+
+                                <!-- (ख) Representatives of Local Bodies -->
+                                <tr>
+                                    <td class="normal-text letter_space" style="border: 1px solid #000; padding: 4px; vertical-align: top; background-color: #fafafa; text-align: left;">
+                                        <strong>(ख) स्थानीय निकायों के प्रतिनिधि</strong>
+                                    </td>
+                                    <td class="normal-text letter_space" style="border: 1px solid #000; padding: 4px; text-align: left;">
+                                        <t t-if="sia_team.local_bodies_representative_line_ids">
+                                            <t t-foreach="sia_team.local_bodies_representative_line_ids" t-as="member">
+                                                <p style="margin: 1px 0; line-height: 1.3; text-align: left;">
+                                                    <span t-esc="member_index + 1"/>. 
+                                                    <span t-esc="member.name or ''"/>
+                                                    <t t-if="member.post">, <span t-esc="member.post"/></t>
+                                                    <t t-if="member.address">, <span t-esc="member.address"/></t>
+                                                </p>
+                                            </t>
+                                        </t>
+                                        <t t-if="not sia_team.local_bodies_representative_line_ids">
+                                            <p style="margin: 1px 0; text-align: left;">........................</p>
+                                        </t>
+                                    </td>
+                                </tr>
+
+                                <!-- (ग) Resettlement Expert -->
+                                <tr>
+                                    <td class="normal-text letter_space" style="border: 1px solid #000; padding: 4px; vertical-align: top; background-color: #fafafa; text-align: left;">
+                                        <strong>(ग) पुनर्व्यवस्थापन विशेषज्ञ</strong>
+                                    </td>
+                                    <td class="normal-text letter_space" style="border: 1px solid #000; padding: 4px; text-align: left;">
+                                        <t t-if="sia_team.resettlement_expert_line_ids">
+                                            <t t-foreach="sia_team.resettlement_expert_line_ids" t-as="member">
+                                                <p style="margin: 1px 0; line-height: 1.3; text-align: left;">
+                                                    <span t-esc="member_index + 1"/>. 
+                                                    <span t-esc="member.name or ''"/>
+                                                    <t t-if="member.post">, <span t-esc="member.post"/></t>
+                                                    <t t-if="member.address">, <span t-esc="member.address"/></t>
+                                                </p>
+                                            </t>
+                                        </t>
+                                        <t t-if="not sia_team.resettlement_expert_line_ids">
+                                            <p style="margin: 1px 0; text-align: left;">........................</p>
+                                        </t>
+                                    </td>
+                                </tr>
+
+                                <!-- (घ) Technical Expert -->
+                                <tr>
+                                    <td class="normal-text letter_space" style="border: 1px solid #000; padding: 4px; vertical-align: top; background-color: #fafafa; text-align: left;">
+                                        <strong>(घ) परियोजना से संबंधित विषय का तकनीकी विशेषज्ञ</strong>
+                                    </td>
+                                    <td class="normal-text letter_space" style="border: 1px solid #000; padding: 4px; text-align: left;">
+                                        <t t-if="sia_team.technical_expert_line_ids">
+                                            <t t-foreach="sia_team.technical_expert_line_ids" t-as="member">
+                                                <p style="margin: 1px 0; line-height: 1.3; text-align: left;">
+                                                    <span t-esc="member_index + 1"/>. 
+                                                    <span t-esc="member.name or ''"/>
+                                                    <t t-if="member.post">, <span t-esc="member.post"/></t>
+                                                    <t t-if="member.address">, <span t-esc="member.address"/></t>
+                                                </p>
+                                            </t>
+                                        </t>
+                                        <t t-if="not sia_team.technical_expert_line_ids">
+                                            <p style="margin: 1px 0; text-align: left;">........................</p>
+                                        </t>
+                                    </td>
+                                </tr>
+
+                                <!-- (ड.) Tehsildar -->
+                                <tr>
+                                    <td class="normal-text letter_space" style="border: 1px solid #000; padding: 4px; vertical-align: top; background-color: #fafafa; text-align: left;">
+                                        <strong>(ड.) प्रभावित क्षेत्र का तहसीलदार</strong>
+                                    </td>
+                                    <td class="normal-text letter_space" style="border: 1px solid #000; padding: 4px; text-align: left;">
+                                        <t t-set="sia_tehsildar" t-value="sia_team.tehsildar_id"/>
+                                        <t t-if="not sia_tehsildar and sia_team.project_id and sia_team.project_id.tehsildar_ids">
+                                            <t t-set="sia_tehsildar" t-value="sia_team.project_id.tehsildar_ids[0]"/>
+                                        </t>
+                                        <t t-if="sia_tehsildar">
+                                            <t t-set="th_tehsil_row" t-value="env['bhu.tehsil'].sudo().search([('user_id', '=', sia_tehsildar.id)], limit=1)"/>
+                                            <t t-set="tehsildar_tehsil" t-value="th_tehsil_row.name if th_tehsil_row else ''"/>
+                                            <p style="margin: 1px 0; line-height: 1.3; text-align: left;">
+                                                <span t-esc="sia_tehsildar.name or ''"/>, तहसीलदार <span t-esc="tehsildar_tehsil"/> (संयोजक)
+                                            </p>
+                                        </t>
+                                        <t t-if="not sia_tehsildar">
+                                            <p style="margin: 1px 0; text-align: left;">........................</p>
+                                        </t>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Issuing Authority -->
+                    <div class="footer-section" style="margin-top: 80px !important; margin-bottom: 15px !important;">
+                        <p class="normal-text letter_space" style="margin: 5px 0 !important; text-align: right !important; line-height: 1.5 !important; font-size: 17px !important;">
+                            <strong style="font-size: 17px !important;">अनुविभागीय अधिकारी (राजस्व)</strong><br/>
+                            <strong style="font-size: 17px !important;">सह भू-अर्जन अधिकारी,</strong> 
+                            <t t-set="subdivision_name" t-value="''"/>
+                            <t t-if="sia_team.sub_division_id">
+                                <t t-set="subdivision_name" t-value="sia_team.sub_division_id.name"/>
+                            </t>
+                            <t t-if="not sia_team.sub_division_id and sia_team.project_id and sia_team.project_id.sdm_ids and len(sia_team.project_id.sdm_ids) > 0">
+                                <t t-set="first_sdm" t-value="sia_team.project_id.sdm_ids[0]"/>
+                                <t t-set="sdm_sd_footer_main" t-value="env['bhu.sub.division'].sudo().search([('user_id', '=', first_sdm.id)], limit=1)"/>
+                                <t t-if="sdm_sd_footer_main">
+                                    <t t-set="subdivision_name" t-value="sdm_sd_footer_main.name"/>
+                                </t>
+                            </t>
+                            <span style="font-size: 17px !important;" t-esc="subdivision_name if subdivision_name else '........................'"/><br/>
+                            <strong style="font-size: 17px !important;">जिला रायगढ़ (छ.ग.)</strong>
+                        </p>
+                    </div>
+
+                    <!-- Copy Distribution -->
+                    <div style="margin-top: 20px; padding-top: 10px;">
+                        <!-- क्रमांक and दिनांक Section -->
+                        <div class="date-reference-section" style="margin-bottom: 10px !important; display: flex; justify-content: space-between; white-space: nowrap !important;">
+                            <span class="normal-text letter_space" style="font-weight: bold !important; font-size: 17px !important; text-align: left !important; flex: 1;">
+                                <strong>क्रमांक /</strong>
+                                <span t-if="sia_team.kramank" t-esc="sia_team.kramank"/>
+                                <span t-if="not sia_team.kramank">...........</span>
+                                / भू-अर्जन / वाचक / <span t-esc="context_timestamp(sia_team.create_date or datetime.datetime.now()).strftime('%Y')"/>
+                            </span>
+                            <span class="normal-text letter_space" style="text-align: right !important; font-weight: bold !important; font-size: 17px !important; flex: 1;">
+                                <strong>दिनांक /</strong>........../<span t-esc="context_timestamp(sia_team.create_date or datetime.datetime.now()).strftime('%Y')"/>
+                            </span>
+                        </div>
+                        
+                        <!-- प्रतिलिपि Section -->
+                        <div style="margin-bottom: 10px !important;">
+                            <p class="normal-text letter_space" style="margin: 5px 0 !important; line-height: 1.5 !important; font-size: 17px !important;">
+                                <strong style="font-size: 17px !important;">प्रतिलिपिः-</strong>
+                            </p>
+                        </div>
+                        
+                        <!-- विभाग Section -->
+                        <div style="margin-bottom: 10px !important;">
+                            <p class="normal-text letter_space" style="margin: 5px 0 !important; line-height: 1.5 !important; font-size: 17px !important;">
+                                <strong style="font-size: 17px !important;">विभाग.</strong> <span style="font-size: 17px !important;" t-esc="sia_team.requiring_body_id.name if sia_team.requiring_body_id else '........................'"/> <strong style="font-size: 17px !important;">की ओर सूचनार्थ एवं आवश्यक कार्यवाही हेतु।</strong>
+                            </p>
+                        </div>
+                        
+                        <!-- Signature Block -->
+                        <p class="normal-text letter_space footer-section" style="margin: 10px 0 5px 0 !important; text-align: right !important; line-height: 1.5 !important; font-size: 17px !important;">
+                            <strong style="font-size: 17px !important;">अनुविभागीय अधिकारी (राजस्व)</strong><br/>
+                            <strong style="font-size: 17px !important;">सह भू-अर्जन अधिकारी,</strong> 
+                            <t t-set="subdivision_name_footer" t-value="''"/>
+                            <t t-if="sia_team.sub_division_id">
+                                <t t-set="subdivision_name_footer" t-value="sia_team.sub_division_id.name"/>
+                            </t>
+                            <t t-if="not sia_team.sub_division_id and sia_team.project_id and sia_team.project_id.sdm_ids and len(sia_team.project_id.sdm_ids) > 0">
+                                <t t-set="first_sdm_footer" t-value="sia_team.project_id.sdm_ids[0]"/>
+                                <t t-set="sdm_sd_footer_copy" t-value="env['bhu.sub.division'].sudo().search([('user_id', '=', first_sdm_footer.id)], limit=1)"/>
+                                <t t-if="sdm_sd_footer_copy">
+                                    <t t-set="subdivision_name_footer" t-value="sdm_sd_footer_copy.name"/>
+                                </t>
+                            </t>
+                            <span style="font-size: 17px !important;" t-esc="subdivision_name_footer if subdivision_name_footer else '........................'"/><br/>
+                            <strong style="font-size: 17px !important;">जिला रायगढ़ (छ.ग.)</strong>
+                        </p>
+                    </div>
+                </div>
+                </t>
+            </t>
+        </t>
+        <!-- Footer Section Name -->
+        <div class="footer-section-name">SIA Proposal / SIA प्रस्ताव</div>
+    </template>
+</odoo>
+
+
+

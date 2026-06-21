@@ -1,0 +1,1762 @@
+/* ================================================================== *
+ *  BhuKhadan – Unified Dashboard Theme (Admin, Group, SDM,
+ *  Department, Collector, District)
+ *  ----------------------------------------------------------
+ *  Loads LAST in the asset bundle so it wins over per-dashboard CSS.
+ *  Only style overrides live here – no structural rules.
+ * ================================================================== */
+
+:root {
+    /* Warm brown / cream palette (shared with admin) */
+    --bd-brand-50:  #FDF5E6;
+    --bd-brand-100: #FAF0E6;
+    --bd-brand-200: #F0E0C8;
+    --bd-brand-300: #E3C39B;
+    --bd-brand-500: #C87941;
+    --bd-brand-600: #A0522D;
+    --bd-brand-700: #8B4513;
+    --bd-brand-800: #6B3410;
+    --bd-brand-900: #4A240B;
+
+    --bd-ink-900: #2b1910;
+    --bd-ink-700: #5a3f2b;
+    --bd-ink-500: #87654b;
+    --bd-ink-300: #b89f88;
+
+    --bd-surface: #ffffff;
+    --bd-surface-alt: #fffaf2;
+    --bd-border: #ead9c0;
+    --bd-border-strong: #d9c09a;
+
+    --bd-shadow-xs: 0 1px 2px rgba(74, 36, 11, 0.04);
+    --bd-shadow-sm: 0 2px 4px rgba(74, 36, 11, 0.06);
+    --bd-shadow-md: 0 4px 12px rgba(74, 36, 11, 0.09);
+    --bd-shadow-lg: 0 10px 28px rgba(74, 36, 11, 0.12);
+
+    --bd-radius-sm: 8px;
+    --bd-radius-md: 12px;
+    --bd-radius-lg: 16px;
+
+    /* Accent palette for KPI tiles */
+    --bd-accent-brown-a: #8B5E3C;
+    --bd-accent-brown-b: #6B4226;
+    --bd-accent-green-a: #5CB074;
+    --bd-accent-green-b: #3E8E53;
+    --bd-accent-red-a:   #E05D4B;
+    --bd-accent-red-b:   #B93A2A;
+    --bd-accent-teal-a:  #2FB3C6;
+    --bd-accent-teal-b:  #1A8796;
+    --bd-accent-amber-a: #F2B749;
+    --bd-accent-amber-b: #D1901F;
+    --bd-accent-emerald-a: #3FA97A;
+    --bd-accent-emerald-b: #2B7F58;
+    --bd-accent-taupe-a:  #A08876;
+    --bd-accent-taupe-b:  #7B5E49;
+    --bd-accent-leaf-a:   #84C26A;
+    --bd-accent-leaf-b:   #5F9B47;
+    --bd-accent-sky-a:    #5CA8E8;
+    --bd-accent-sky-b:    #2E7DC2;
+    --bd-accent-purple-a: #A671BD;
+    --bd-accent-purple-b: #7B4795;
+    --bd-accent-orange-a: #F0A44B;
+    --bd-accent-orange-b: #CF7820;
+}
+
+/* =====================================================================
+ * 1. Page shell (applies to every dashboard wrapper)
+ * ===================================================================== */
+.o_admin_dashboard,
+.o_group_dashboard {
+    background:
+        radial-gradient(at 100% 0%, rgba(200, 121, 65, 0.08) 0%, transparent 45%),
+        radial-gradient(at 0% 100%, rgba(139, 69, 19, 0.06) 0%, transparent 40%),
+        linear-gradient(180deg, #FFF8F0 0%, #FDF5E6 100%) !important;
+    color: var(--bd-ink-900);
+    padding: 14px 14px 28px !important;
+    min-height: 100vh;
+}
+
+/* Payment dashboard: no outer padding — header & cards go edge-to-edge */
+.o_payment_dashboard {
+    background:
+        radial-gradient(at 100% 0%, rgba(200, 121, 65, 0.08) 0%, transparent 45%),
+        radial-gradient(at 0% 100%, rgba(139, 69, 19, 0.06) 0%, transparent 40%),
+        linear-gradient(180deg, #FFF8F0 0%, #FDF5E6 100%) !important;
+    color: var(--bd-ink-900);
+    padding: 0 !important;
+    min-height: 100vh;
+}
+
+/* Payment dashboard header: flush to edges, no border-radius */
+.o_payment_dashboard .dashboard-header {
+    border-radius: 0 !important;
+    margin: 0 0 0 0 !important;
+    padding: 12px 18px !important;
+}
+
+/* Payment dashboard content: add horizontal padding to match visual spacing */
+.o_payment_dashboard .dashboard-content {
+    padding: 12px 14px 28px !important;
+}
+
+/* Payment dashboard table card: remove top margin since content already has padding */
+.o_payment_dashboard .dashboard-content .card {
+    margin-top: 0 !important;
+}
+
+/* =====================================================================
+ * 2. Hero header (shared for admin + group)
+ *    Group's header block uses .dashboard-header; admin uses .o_dashboard_header
+ * ===================================================================== */
+.o_admin_dashboard .o_dashboard_header,
+.o_group_dashboard .dashboard-header,
+.o_payment_dashboard .dashboard-header {
+    background: linear-gradient(135deg, var(--bd-brand-900) 0%, var(--bd-brand-700) 55%, var(--bd-brand-500) 100%) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: var(--bd-radius-md) !important;
+    padding: 12px 18px !important;
+    box-shadow: var(--bd-shadow-md) !important;
+    margin-bottom: 14px !important;
+    position: relative;
+    overflow: visible;
+}
+
+.o_admin_dashboard .o_dashboard_header::after,
+.o_group_dashboard .dashboard-header::after,
+.o_payment_dashboard .dashboard-header::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -80px;
+    width: 220px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.08);
+    transform: skewX(-20deg);
+    pointer-events: none;
+}
+
+.o_admin_dashboard .o_dashboard_header::before,
+.o_group_dashboard .dashboard-header::before,
+.o_payment_dashboard .dashboard-header::before {
+    content: "";
+    position: absolute;
+    left: -40px;
+    top: -40px;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.10) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.o_admin_dashboard .o_dashboard_header h2,
+.o_group_dashboard .dashboard-header h2,
+.o_payment_dashboard .dashboard-header h2 {
+    color: #fff !important;
+    font-weight: 700 !important;
+    font-size: 19px !important;
+    letter-spacing: 0.3px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    margin: 0 !important;
+}
+
+.o_admin_dashboard .o_dashboard_header h2 i,
+.o_admin_dashboard .o_dashboard_header h2 .fa,
+.o_group_dashboard .dashboard-header h2 i,
+.o_group_dashboard .dashboard-header h2 .fa,
+.o_payment_dashboard .dashboard-header h2 i,
+.o_payment_dashboard .dashboard-header h2 .fa {
+    color: #ffd9b8 !important;
+}
+
+/* =====================================================================
+ * 3. KPI tiles – any dashboard that drops a .stat-card
+ * ===================================================================== */
+.o_group_dashboard .dashboard-content .row,
+.o_admin_dashboard .dashboard-content .row,
+.o_payment_dashboard .dashboard-content .row {
+    --bs-gutter-x: 0.85rem;
+    --bs-gutter-y: 0.85rem;
+}
+
+.o_group_dashboard .stat-card,
+.o_admin_dashboard .stat-card,
+.o_payment_dashboard .stat-card {
+    border-radius: var(--bd-radius-md) !important;
+    padding: 14px 16px !important;
+    min-height: 78px;
+    box-shadow: var(--bd-shadow-sm) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 14px !important;
+    transition: transform 0.25s cubic-bezier(.2, .8, .2, 1),
+                box-shadow 0.25s cubic-bezier(.2, .8, .2, 1) !important;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.o_group_dashboard .stat-card::before,
+.o_payment_dashboard .stat-card::before {
+    /* glass sheen overlay */
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 85% 15%, rgba(255, 255, 255, 0.25) 0%, transparent 50%),
+        radial-gradient(circle at 10% 90%, rgba(0, 0, 0, 0.10) 0%, transparent 55%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.o_group_dashboard .stat-card::after,
+.o_payment_dashboard .stat-card::after {
+    /* left accent strip */
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 10%;
+    bottom: 10%;
+    width: 3px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.55);
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.45);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.o_group_dashboard .stat-card > *,
+.o_payment_dashboard .stat-card > * {
+    position: relative;
+    z-index: 2;
+}
+
+.o_group_dashboard .stat-card:hover,
+.o_payment_dashboard .stat-card:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: var(--bd-shadow-lg) !important;
+}
+
+/* Icon circle */
+.o_group_dashboard .stat-card .stat-icon,
+.o_payment_dashboard .stat-card .stat-icon {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem !important;
+    color: #fff !important;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25),
+                0 2px 6px rgba(0, 0, 0, 0.12);
+    backdrop-filter: blur(2px);
+    transition: transform 0.25s ease;
+}
+
+.o_group_dashboard .stat-card:hover .stat-icon,
+.o_payment_dashboard .stat-card:hover .stat-icon {
+    transform: rotate(-6deg) scale(1.06);
+}
+
+.o_group_dashboard .stat-card .stat-details h3,
+.o_payment_dashboard .stat-card .stat-details h3 {
+    font-size: 1.55rem !important;
+    font-weight: 800 !important;
+    line-height: 1.1;
+    margin: 0 0 2px 0 !important;
+    color: #fff !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.22);
+    letter-spacing: 0.2px;
+}
+
+.o_group_dashboard .stat-card .stat-details p,
+.o_payment_dashboard .stat-card .stat-details p {
+    margin: 0 !important;
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    color: rgba(255, 255, 255, 0.92) !important;
+    text-transform: uppercase;
+    letter-spacing: 0.8px !important;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.18);
+}
+
+/* Tile color variants – refined 3-stop gradients */
+.o_group_dashboard .stat-card.bg-primary,
+.o_payment_dashboard .stat-card.bg-primary {
+    background: linear-gradient(135deg, var(--bd-accent-brown-a) 0%, var(--bd-accent-brown-b) 60%, #4A2A14 100%) !important;
+}
+
+.o_group_dashboard .stat-card.bg-success,
+.o_payment_dashboard .stat-card.bg-success {
+    background: linear-gradient(135deg, var(--bd-accent-green-a) 0%, var(--bd-accent-green-b) 60%, #2D6A3F 100%) !important;
+}
+
+.o_group_dashboard .stat-card.bg-danger,
+.o_payment_dashboard .stat-card.bg-danger {
+    background: linear-gradient(135deg, var(--bd-accent-red-a) 0%, var(--bd-accent-red-b) 60%, #8B2A1E 100%) !important;
+}
+
+.o_group_dashboard .stat-card.bg-info,
+.o_payment_dashboard .stat-card.bg-info {
+    background: linear-gradient(135deg, var(--bd-accent-teal-a) 0%, var(--bd-accent-teal-b) 60%, #125F6B 100%) !important;
+}
+
+.o_group_dashboard .stat-card.bg-warning,
+.o_payment_dashboard .stat-card.bg-warning {
+    background: linear-gradient(135deg, var(--bd-accent-amber-a) 0%, var(--bd-accent-amber-b) 60%, #A06C10 100%) !important;
+    color: #fff !important;
+}
+
+.o_group_dashboard .stat-card.bg-warning .stat-details h3,
+.o_group_dashboard .stat-card.bg-warning .stat-details p,
+.o_group_dashboard .stat-card.bg-warning .stat-icon,
+.o_payment_dashboard .stat-card.bg-warning .stat-details h3,
+.o_payment_dashboard .stat-card.bg-warning .stat-details p,
+.o_payment_dashboard .stat-card.bg-warning .stat-icon {
+    color: #fff !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25) !important;
+}
+
+.o_group_dashboard .stat-card.bg-patwari,
+.o_payment_dashboard .stat-card.bg-patwari {
+    background: linear-gradient(135deg, var(--bd-accent-taupe-a) 0%, var(--bd-accent-taupe-b) 60%, #543D30 100%) !important;
+}
+
+.o_group_dashboard .stat-card.bg-village,
+.o_payment_dashboard .stat-card.bg-village {
+    background: linear-gradient(135deg, var(--bd-accent-leaf-a) 0%, var(--bd-accent-leaf-b) 60%, #446E32 100%) !important;
+}
+
+.o_group_dashboard .stat-card.bg-survey,
+.o_payment_dashboard .stat-card.bg-survey {
+    background: linear-gradient(135deg, var(--bd-accent-sky-a) 0%, var(--bd-accent-sky-b) 60%, #1D5A8E 100%) !important;
+}
+
+.o_group_dashboard .stat-card.bg-landowner,
+.o_payment_dashboard .stat-card.bg-landowner {
+    background: linear-gradient(135deg, var(--bd-accent-purple-a) 0%, var(--bd-accent-purple-b) 60%, #56326A 100%) !important;
+}
+
+.o_group_dashboard .stat-card.bg-budget,
+.o_payment_dashboard .stat-card.bg-budget {
+    background: linear-gradient(135deg, var(--bd-accent-orange-a) 0%, var(--bd-accent-orange-b) 60%, #94560F 100%) !important;
+}
+
+/* =====================================================================
+ * 4. Projects table card (Group)
+ * ===================================================================== */
+.o_group_dashboard .dashboard-content .card,
+.o_payment_dashboard .dashboard-content .card {
+    border: 1px solid var(--bd-border) !important;
+    border-radius: var(--bd-radius-lg) !important;
+    background: var(--bd-surface);
+    box-shadow: var(--bd-shadow-md) !important;
+    overflow: hidden;
+}
+
+.o_group_dashboard .card-header.custom-card-header {
+    background: linear-gradient(135deg, var(--bd-brand-900) 0%, var(--bd-brand-700) 55%, var(--bd-brand-600) 100%) !important;
+    color: #fff !important;
+    padding: 14px 18px !important;
+    border-bottom: none !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.o_group_dashboard .card-header.custom-card-header::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -80px;
+    width: 200px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.06);
+    transform: skewX(-20deg);
+    pointer-events: none;
+}
+
+.o_group_dashboard .card-header.custom-card-header h5 {
+    color: #fff !important;
+    font-weight: 700 !important;
+    font-size: 1rem !important;
+    letter-spacing: 0.2px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.o_group_dashboard .card-header.custom-card-header h5::before {
+    content: "";
+    width: 4px;
+    height: 18px;
+    border-radius: 2px;
+    background: #ffd9b8;
+    box-shadow: 0 0 8px rgba(255, 217, 184, 0.55);
+}
+
+/* Header search pill */
+.o_group_dashboard .header-search-container {
+    background: rgba(255, 255, 255, 0.96) !important;
+    border-radius: 999px !important;
+    height: 36px !important;
+    max-width: 420px !important;
+    padding: 0 4px !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.o_group_dashboard .header-search-container:focus-within {
+    border-color: #ffd9b8 !important;
+    box-shadow: 0 0 0 3px rgba(255, 217, 184, 0.35), 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.o_group_dashboard .header-search-container .input-group-text {
+    background: transparent !important;
+    color: var(--bd-brand-700) !important;
+    padding: 0 10px !important;
+}
+
+.o_group_dashboard .header-search-input {
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    color: var(--bd-ink-900) !important;
+    font-size: 0.88rem !important;
+    font-weight: 500;
+}
+
+.o_group_dashboard .header-search-input::placeholder {
+    color: var(--bd-ink-300) !important;
+}
+
+/* Card body padding */
+.o_group_dashboard .card .card-body {
+    padding: 0 !important;
+    background: var(--bd-surface);
+}
+
+.o_group_dashboard .card .table-responsive {
+    border-radius: 0 0 var(--bd-radius-lg) var(--bd-radius-lg);
+}
+
+/* Table header: sticky + modern */
+.o_group_dashboard .dashboard-content .table {
+    margin: 0 !important;
+    font-size: 0.88rem;
+}
+
+.o_group_dashboard:not(.o_sdm_pipeline_dashboard) .dashboard-content .table thead th {
+    background: #fbf0dc !important;
+    color: var(--bd-brand-800) !important;
+    font-size: 0.72rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+    padding: 12px 10px !important;
+    border-bottom: 2px solid var(--bd-border-strong) !important;
+    border-top: none !important;
+    vertical-align: middle;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.o_group_dashboard:not(.o_sdm_pipeline_dashboard) .dashboard-content .table thead th[t-on-click]:hover,
+.o_group_dashboard:not(.o_sdm_pipeline_dashboard) .dashboard-content .table thead th:hover {
+    cursor: pointer;
+    background: #efe4d4 !important;
+    color: var(--bd-brand-900) !important;
+}
+
+.o_group_dashboard .dashboard-content .table thead th .fa-sort,
+.o_group_dashboard .dashboard-content .table thead th .fa-sort-up,
+.o_group_dashboard .dashboard-content .table thead th .fa-sort-down {
+    color: var(--bd-brand-600) !important;
+    opacity: 0.7;
+}
+
+/* Table body */
+.o_group_dashboard .dashboard-content .table tbody td {
+    border-bottom: 1px solid #f1e6d3 !important;
+    padding: 11px 10px !important;
+    vertical-align: middle;
+    color: var(--bd-ink-900);
+    font-size: 0.88rem;
+}
+
+.o_group_dashboard .dashboard-content .table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(255, 248, 236, 0.55) !important;
+}
+
+.o_group_dashboard .dashboard-content .project-row {
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.o_group_dashboard .dashboard-content .project-row:hover {
+    background-color: rgba(200, 121, 65, 0.08) !important;
+    transform: none;
+    box-shadow: inset 3px 0 0 var(--bd-brand-600);
+}
+
+/* Badges inside the table → soft chip treatment */
+.o_group_dashboard .dashboard-content .table .badge {
+    font-size: 0.74rem !important;
+    font-weight: 700 !important;
+    padding: 5px 10px !important;
+    border-radius: 999px !important;
+    letter-spacing: 0.3px;
+    min-width: 34px;
+    display: inline-block;
+}
+
+.o_group_dashboard .dashboard-content .table .badge.bg-secondary {
+    background: var(--bd-brand-700) !important;
+    color: #fff !important;
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+}
+
+.o_group_dashboard .dashboard-content .table .badge.bg-info {
+    background: rgba(47, 179, 198, 0.15) !important;
+    color: #116877 !important;
+    border: 1px solid rgba(47, 179, 198, 0.45);
+    box-shadow: none;
+}
+
+.o_group_dashboard .dashboard-content .table .badge.bg-primary {
+    background: rgba(139, 94, 60, 0.15) !important;
+    color: var(--bd-brand-800) !important;
+    border: 1px solid rgba(139, 94, 60, 0.45);
+}
+
+.o_group_dashboard .dashboard-content .table .badge.bg-success {
+    background: rgba(92, 176, 116, 0.18) !important;
+    color: #2D6A3F !important;
+    border: 1px solid rgba(92, 176, 116, 0.45);
+}
+
+/* Stage badge keeps its dynamic color but gets chip shape & subtle ring */
+.o_group_dashboard .dashboard-content .table .stage-badge {
+    border-radius: 999px !important;
+    padding: 5px 12px !important;
+    font-weight: 700 !important;
+    font-size: 0.72rem !important;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35),
+                0 2px 5px rgba(0, 0, 0, 0.12) !important;
+    color: #fff !important;
+    filter: saturate(1.05);
+}
+
+/* Clickable cells get a gentle underline on hover */
+.o_group_dashboard .dashboard-content .clickable-cell {
+    cursor: pointer;
+    transition: color 0.15s ease;
+}
+
+.o_group_dashboard .dashboard-content .clickable-cell:hover {
+    color: var(--bd-brand-700);
+}
+
+.o_group_dashboard .dashboard-content .dashboard-link,
+.o_group_dashboard .dashboard-content .dashboard-link-secondary {
+    color: var(--bd-brand-800) !important;
+    text-decoration: none;
+    font-weight: 600;
+    position: relative;
+}
+
+.o_group_dashboard .dashboard-content .clickable-cell:hover .dashboard-link,
+.o_group_dashboard .dashboard-content .clickable-cell:hover .dashboard-link-secondary {
+    color: var(--bd-brand-900) !important;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(139, 69, 19, 0.45);
+}
+
+/* Empty state on table */
+.o_group_dashboard .dashboard-content .no-projects-state {
+    background: linear-gradient(180deg, #fff8ed 0%, #fbf0dc 100%) !important;
+}
+
+.o_group_dashboard .dashboard-content .empty-state-wrapper i {
+    color: var(--bd-brand-500) !important;
+    opacity: 0.35 !important;
+}
+
+.o_group_dashboard .dashboard-content .empty-state-wrapper h4 {
+    color: var(--bd-brand-800) !important;
+}
+
+/* Scrollbar inside the group dashboard */
+.o_group_dashboard .scrollable-dashboard::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.o_group_dashboard .scrollable-dashboard::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.o_group_dashboard .scrollable-dashboard::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--bd-brand-600), var(--bd-brand-800));
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+.o_group_dashboard .scrollable-dashboard::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, var(--bd-brand-700), var(--bd-brand-900));
+    background-clip: padding-box;
+}
+
+/* =====================================================================
+ * 4b. Group hero header (brand new header added to group_dashboard.xml)
+ * ===================================================================== */
+.o_group_dashboard .o_group_hero {
+    background: linear-gradient(135deg, var(--bd-brand-900) 0%, var(--bd-brand-700) 55%, var(--bd-brand-500) 100%) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: var(--bd-radius-md) !important;
+    padding: 12px 18px !important;
+    margin: 0 0 14px 0 !important;
+    width: 100% !important;
+    box-sizing: border-box;
+    box-shadow: var(--bd-shadow-md);
+    position: relative;
+    overflow: hidden;
+}
+
+.o_group_dashboard .o_group_hero::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -80px;
+    width: 220px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.08);
+    transform: skewX(-20deg);
+    pointer-events: none;
+}
+
+.o_group_dashboard .o_group_hero::before {
+    content: "";
+    position: absolute;
+    left: -40px;
+    top: -40px;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.10) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.o_group_dashboard .o_group_hero h2 {
+    color: #fff !important;
+    font-weight: 700 !important;
+    font-size: 19px !important;
+    letter-spacing: 0.3px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    margin: 0 !important;
+}
+
+.o_group_dashboard .o_group_hero h2 > i {
+    color: #ffd9b8 !important;
+    font-size: 20px;
+}
+
+.o_group_dashboard .o_group_hero_pill {
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    backdrop-filter: blur(4px);
+}
+
+.o_group_dashboard .o_group_hero_pill i {
+    color: #ffd9b8;
+    font-size: 12px;
+}
+
+/* ===========================================================
+ * Modern selection-required state (admin + department)
+ * =========================================================== */
+.o_admin_dashboard .o_dashboard_selection_gate {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    padding: 36px 24px;
+}
+
+.o_admin_dashboard .o_selection_panel {
+    width: min(100%, 740px);
+    text-align: center;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 16px 12px 10px;
+    box-shadow: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.o_admin_dashboard .o_selection_panel::after {
+    content: none;
+}
+
+.o_admin_dashboard .o_selection_panel_icons {
+    font-size: 48px;
+    color: #8a4b36;
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.o_admin_dashboard .o_selection_panel_title {
+    margin: 0 0 10px;
+    color: #6f341d;
+    font-weight: 800;
+    font-size: 27px;
+    letter-spacing: 0.1px;
+}
+
+.o_admin_dashboard .o_selection_panel_title i {
+    margin-right: 8px;
+    color: #935130;
+}
+
+.o_admin_dashboard .o_selection_panel_text {
+    margin: 0 auto;
+    max-width: 560px;
+    color: #7f492b;
+    font-size: 16px;
+    line-height: 1.58;
+}
+
+.o_admin_dashboard .o_selection_badge_row {
+    margin-top: 22px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+}
+
+.o_admin_dashboard .o_selection_badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 13px;
+    border: 1px solid transparent;
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 6px 14px rgba(120, 69, 41, 0.08);
+}
+
+.o_admin_dashboard .o_selection_badge i {
+    font-size: 13px;
+}
+
+.o_admin_dashboard .o_selection_badge_missing {
+    color: #7f3d23;
+    border-color: rgba(127, 61, 35, 0.36);
+}
+
+.o_admin_dashboard .o_selection_badge_missing i {
+    color: #d9534f;
+}
+
+.o_admin_dashboard .o_selection_badge_ready {
+    color: #1f7f3f;
+    border-color: rgba(31, 127, 63, 0.36);
+}
+
+.o_admin_dashboard .o_selection_badge_ready i {
+    color: #1f9f4f;
+}
+
+.o_group_dashboard .o_group_hero_stats {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.o_group_dashboard .o_group_hero_chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 999px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 13px;
+    backdrop-filter: blur(4px);
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.o_group_dashboard .o_group_hero_chip:hover {
+    background: rgba(255, 255, 255, 0.22);
+    transform: translateY(-1px);
+}
+
+.o_group_dashboard .o_group_hero_chip i {
+    color: #ffd9b8;
+    font-size: 13px;
+}
+
+.o_group_dashboard .o_group_hero_chip small {
+    font-size: 10.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    opacity: 0.85;
+}
+
+/* =====================================================================
+ * 4c. Group loading / empty states match the theme
+ * ===================================================================== */
+.o_group_dashboard .loading-state-wrapper {
+    background: transparent !important;
+    min-height: 50vh;
+}
+
+.o_group_dashboard .coffee-loader .fa {
+    color: var(--bd-brand-700) !important;
+    background: none !important;
+    -webkit-text-fill-color: var(--bd-brand-700) !important;
+    filter: drop-shadow(0 4px 6px rgba(139, 69, 19, 0.25));
+}
+
+.o_group_dashboard .loading-title {
+    color: var(--bd-brand-900) !important;
+    font-weight: 800 !important;
+}
+
+.o_group_dashboard .steam span {
+    background: var(--bd-brand-600) !important;
+}
+
+/* =====================================================================
+ * 4d. Containers spacing polish
+ * ===================================================================== */
+.o_group_dashboard .container-fluid {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+}
+
+.o_group_dashboard .dashboard-content {
+    padding-top: 0 !important;
+}
+
+/* Keep KPI/table blocks aligned to full hero width (not squeezed). */
+.o_group_dashboard .dashboard-content > .container-fluid {
+    max-width: none !important;
+    width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/* =====================================================================
+ * 5. Responsive tweaks
+ * ===================================================================== */
+@media (max-width: 992px) {
+    .o_group_dashboard .stat-card .stat-details h3 {
+        font-size: 1.35rem !important;
+    }
+
+    .o_group_dashboard .stat-card .stat-icon {
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+        font-size: 1.1rem !important;
+    }
+
+    .o_group_dashboard .header-search-container {
+        max-width: 100% !important;
+        margin-top: 8px;
+    }
+}
+
+/* =====================================================================
+ * 7. Admin-family compact density (~90% zoom comfort at 100% browser zoom)
+ *     Applies to Admin, Collector, District, Department (all use .o_admin_dashboard).
+ * ===================================================================== */
+.o_admin_dashboard {
+    font-size: 13px !important;
+    padding: 10px 12px 22px !important;
+}
+
+.o_admin_dashboard .o_dashboard_header {
+    padding: 9px 14px !important;
+    margin-bottom: 11px !important;
+}
+
+.o_admin_dashboard .o_dashboard_header h2 {
+    font-size: 17px !important;
+    gap: 8px !important;
+    min-width: 0 !important;
+}
+
+/* One horizontal row: title (truncates) + department/project/village filters */
+.o_admin_dashboard .o_dashboard_header_row {
+    flex-wrap: nowrap !important;
+    min-width: 0 !important;
+}
+.o_admin_dashboard .o_dashboard_title_section {
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+    overflow: hidden !important;
+}
+.o_admin_dashboard .o_dashboard_actions {
+    flex-wrap: nowrap !important;
+    flex: 0 0 auto !important;
+    gap: 8px !important;
+    overflow: visible !important;
+    position: relative;
+    z-index: 20;
+}
+
+/* Native filter selects (reliable on mobile + Spiffy); ellipsis + title on hover */
+.o_dashboard_header .o_bhu_native_filter,
+.o_admin_dashboard .o_bhu_native_filter {
+    max-width: 300px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.o_dashboard_header .o_department_selector.o_bhu_native_filter,
+.o_admin_dashboard .o_department_selector.o_bhu_native_filter {
+    max-width: 340px;
+}
+
+.o_dashboard_header .o_project_selector.o_bhu_native_filter,
+.o_admin_dashboard .o_project_selector.o_bhu_native_filter {
+    max-width: 280px;
+}
+
+.o_dashboard_header .o_village_selector.o_bhu_native_filter,
+.o_admin_dashboard .o_village_selector.o_bhu_native_filter {
+    max-width: 240px;
+}
+.o_admin_dashboard .o_dashboard_actions .btn {
+    flex-shrink: 0 !important;
+}
+
+.o_admin_dashboard .o_dashboard_actions .btn,
+.o_admin_dashboard .o_dashboard_actions select.form-select,
+.o_admin_dashboard .o_dashboard_actions .o_department_selector,
+.o_admin_dashboard .o_dashboard_actions .o_project_selector,
+.o_admin_dashboard .o_dashboard_actions .o_village_selector {
+    font-size: 12px !important;
+    min-height: 30px !important;
+    height: auto !important;
+}
+
+.o_admin_dashboard .o_dashboard_actions select.form-select {
+    width: auto !important;
+    min-width: 110px !important;
+    max-width: 172px !important;
+    flex: 0 1 auto !important;
+}
+
+.o_admin_dashboard .o_dashboard_actions .o_bhu_filter_dropdown {
+    flex: 0 1 auto !important;
+}
+
+/* Filter dropdowns (OWL toggled): open reliably in Odoo; ellipsis + title on hover */
+.o_dashboard_header .o_bhu_filter_dropdown,
+.o_admin_dashboard .o_bhu_filter_dropdown {
+    position: relative;
+    display: inline-block;
+    flex: 0 1 auto;
+    min-width: 0;
+}
+
+.o_dashboard_header .o_bhu_filter_dropdown .dropdown-toggle,
+.o_admin_dashboard .o_bhu_filter_dropdown .dropdown-toggle {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 0.35rem;
+    max-width: 280px !important;
+    min-width: 110px;
+    overflow: hidden;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.o_dashboard_header .o_bhu_department_dropdown .dropdown-toggle,
+.o_admin_dashboard .o_bhu_department_dropdown .dropdown-toggle {
+    max-width: 320px !important;
+}
+
+.o_dashboard_header .o_bhu_filter_dropdown .dropdown-toggle .o_bhu_dd_label,
+.o_admin_dashboard .o_bhu_filter_dropdown .dropdown-toggle .o_bhu_dd_label {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.o_dashboard_header .o_bhu_filter_dropdown .dropdown-menu,
+.o_admin_dashboard .o_bhu_filter_dropdown .dropdown-menu {
+    z-index: 2000;
+    max-width: min(480px, 92vw);
+    max-height: min(50vh, 420px);
+    overflow-y: auto;
+}
+
+.o_dashboard_header .o_bhu_filter_dropdown .dropdown-item,
+.o_admin_dashboard .o_bhu_filter_dropdown .dropdown-item {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.o_dashboard_header .o_bhu_filter_dropdown .o_bhu_dd_label,
+.o_admin_dashboard .o_bhu_filter_dropdown .o_bhu_dd_label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+}
+
+.o_dashboard_header .o_bhu_filter_dropdown .o_bhu_dd_code,
+.o_admin_dashboard .o_bhu_filter_dropdown .o_bhu_dd_code {
+    font-size: 0.72rem;
+    font-weight: 700;
+    min-width: 2rem;
+}
+
+.o_dashboard_header .o_bhu_filter_dropdown .o_bhu_dd_logo_slot,
+.o_admin_dashboard .o_bhu_filter_dropdown .o_bhu_dd_logo_slot {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.o_dashboard_header .o_bhu_filter_dropdown .dropdown-toggle .o_bhu_dd_logo_slot,
+.o_admin_dashboard .o_bhu_filter_dropdown .dropdown-toggle .o_bhu_dd_logo_slot {
+    width: 22px;
+    height: 22px;
+}
+
+.o_dashboard_header .o_bhu_filter_dropdown .o_bhu_dd_logo,
+.o_admin_dashboard .o_bhu_filter_dropdown .o_bhu_dd_logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    padding: 1px;
+    border-radius: 6px;
+    background: #fff;
+    border: 1px solid rgba(139, 69, 19, 0.15);
+}
+
+.o_dashboard_header .o_bhu_filter_dropdown .o_bhu_dd_logo_placeholder,
+.o_admin_dashboard .o_bhu_filter_dropdown .o_bhu_dd_logo_placeholder {
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #faf6f0, #efe6dc);
+    border: 1px solid rgba(139, 69, 19, 0.2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.o_dashboard_header .o_bhu_filter_dropdown .o_bhu_dd_logo_placeholder .fa,
+.o_admin_dashboard .o_bhu_filter_dropdown .o_bhu_dd_logo_placeholder .fa {
+    font-size: 0.85rem;
+    color: #8b4513;
+    opacity: 0.85;
+}
+
+.o_dashboard_header .o_bhu_filter_dropdown .dropdown-item.o_bhu_dd_row_active,
+.o_admin_dashboard .o_bhu_filter_dropdown .dropdown-item.o_bhu_dd_row_active {
+    background-color: #fff3e0;
+    color: #7b3200;
+    font-weight: 700;
+}
+
+.o_dashboard_header .o_bhu_filter_dropdown .dropdown-item.o_bhu_dd_row_inactive,
+.o_admin_dashboard .o_bhu_filter_dropdown .dropdown-item.o_bhu_dd_row_inactive {
+    color: #999;
+}
+
+.o_dashboard_header .o_bhu_filter_dropdown .dropdown-item:hover,
+.o_admin_dashboard .o_bhu_filter_dropdown .dropdown-item:hover {
+    filter: brightness(0.97);
+}
+
+.o_admin_dashboard .o_dashboard_section,
+.o_collector_dashboard .o_dashboard_section {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+}
+
+.o_admin_dashboard .o_status_legend_section {
+    padding: 8px 12px !important;
+    border-radius: 10px !important;
+}
+
+.o_admin_dashboard .o_status_legend_title {
+    font-size: 12px !important;
+}
+
+.o_admin_dashboard .o_legend_item,
+.o_admin_dashboard .o_legend_label {
+    font-size: 11px !important;
+}
+
+/* Wider gutter between the two workflow columns + avoid column flex blowout */
+.o_admin_dashboard .o_sections_list_grid {
+    gap: 10px 24px !important;
+    align-items: flex-start !important;
+}
+
+.o_admin_dashboard .o_sections_column {
+    gap: 6px !important;
+}
+
+.o_admin_dashboard .o_section_list_item,
+.o_collector_dashboard .o_section_list_item {
+    align-items: flex-end !important;
+    min-height: auto !important;
+    gap: 10px !important;
+    padding: 0 !important;
+    border-radius: 11px !important;
+    background: var(--bd-card-bg, linear-gradient(145deg, #fffaf5 0%, #f8f0e6 48%, #f2e6d8 100%)) !important;
+    border: 1px solid var(--bd-card-border, rgba(180, 130, 90, 0.28)) !important;
+    box-shadow:
+        0 2px 10px rgba(61, 28, 18, 0.07),
+        inset 0 1px 0 rgba(255, 255, 255, 0.75) !important;
+    overflow: hidden !important;
+}
+
+.o_admin_dashboard .o_section_list_item .o_status_ribbon::before,
+.o_collector_dashboard .o_section_list_item .o_status_ribbon::before,
+.o_group_dashboard .o_section_list_item .o_status_ribbon::before {
+    border-width: 0 34px 34px 0;
+    border-color: transparent #28a745 transparent transparent !important;
+}
+
+.o_admin_dashboard .o_section_list_step,
+.o_collector_dashboard .o_section_list_step {
+    align-self: stretch !important;
+}
+
+.o_admin_dashboard .o_section_list_actions,
+.o_collector_dashboard .o_section_list_actions {
+    align-self: flex-end !important;
+    padding: 0 10px 10px 0 !important;
+}
+
+.o_admin_dashboard .o_section_list_content,
+.o_collector_dashboard .o_section_list_content {
+    padding: 10px 0 10px !important;
+    gap: 6px !important;
+    justify-content: flex-end !important;
+}
+
+.o_admin_dashboard .o_section_list_icon,
+.o_collector_dashboard .o_section_list_icon {
+    align-self: center !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.o_admin_dashboard .o_completion_widget_list.o_completion_single_line,
+.o_collector_dashboard .o_completion_widget_list.o_completion_single_line,
+.o_group_dashboard .o_completion_widget_list.o_completion_single_line {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    width: fit-content !important;
+    max-width: 100% !important;
+}
+
+.o_admin_dashboard .o_section_list_actions,
+.o_collector_dashboard .o_section_list_actions {
+    align-self: flex-end !important;
+    padding: 0 10px 10px 0 !important;
+    border-left: none !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+}
+
+.o_admin_dashboard .o_section_list_icon,
+.o_collector_dashboard .o_section_list_icon {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    align-self: center !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.o_admin_dashboard .o_section_list_title.o_has_project_name_row,
+.o_collector_dashboard .o_section_list_title.o_has_project_name_row,
+.o_group_dashboard .o_section_list_title.o_has_project_name_row {
+    white-space: nowrap !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+}
+
+.o_admin_dashboard .o_section_list_title:not(.o_has_project_name_row),
+.o_collector_dashboard .o_section_list_title:not(.o_has_project_name_row) {
+    display: block !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    margin-bottom: 0 !important;
+    min-width: 0 !important;
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    color: var(--bd-ink-900, #23150f) !important;
+    line-height: 1.35 !important;
+    letter-spacing: 0.15px !important;
+}
+
+.o_admin_dashboard .o_section_list_title_label,
+.o_collector_dashboard .o_section_list_title_label {
+    font-weight: inherit !important;
+    font-size: inherit !important;
+}
+
+.o_admin_dashboard .o_section_list_context,
+.o_collector_dashboard .o_section_list_context {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    vertical-align: middle !important;
+    margin-left: 6px !important;
+    padding: 0 !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    color: var(--bd-ink-500, #6a4a3c) !important;
+    background: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    white-space: nowrap !important;
+}
+
+.o_admin_dashboard .o_section_list_context::before,
+.o_collector_dashboard .o_section_list_context::before {
+    content: "|" !important;
+    margin-right: 6px !important;
+    color: rgba(106, 74, 60, 0.35) !important;
+    font-weight: 300 !important;
+    font-size: 12px !important;
+}
+
+.o_admin_dashboard .o_section_list_icon,
+.o_collector_dashboard .o_section_list_icon {
+    font-size: 22px !important;
+}
+
+.o_admin_dashboard .o_completion_tick,
+.o_collector_dashboard .o_completion_tick {
+    display: inline-flex !important;
+    vertical-align: middle !important;
+    margin-left: 6px !important;
+}
+
+.o_admin_dashboard .o_section_list_item::before {
+    left: 50px !important;
+    top: 10px !important;
+    bottom: 10px !important;
+}
+
+.o_admin_dashboard .o_section_list_step {
+    min-width: 50px !important;
+    width: 50px !important;
+    border-radius: 10px 0 0 10px !important;
+}
+
+.o_admin_dashboard .o_step_number {
+    font-size: 10.5px !important;
+    letter-spacing: 0.45px !important;
+}
+
+.o_admin_dashboard .o_section_list_item .o_section_list_icon .fa-clipboard {
+    font-size: 17px !important;
+}
+
+.o_admin_dashboard .o_count_badge,
+.o_admin_dashboard .o_completion_percent_list,
+.o_collector_dashboard .o_count_badge,
+.o_collector_dashboard .o_completion_percent_list {
+    min-height: 0 !important;
+    padding: 0 !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    line-height: 1.2 !important;
+    gap: 3px !important;
+    background: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+.o_admin_dashboard .o_count_badge i,
+.o_admin_dashboard .o_count_badge .fa,
+.o_collector_dashboard .o_count_badge i,
+.o_collector_dashboard .o_count_badge .fa {
+    width: auto !important;
+    font-size: 10px !important;
+}
+
+.o_admin_dashboard .o_completion_percent_list,
+.o_collector_dashboard .o_completion_percent_list {
+    min-width: 0 !important;
+    color: var(--bd-brand-700, #8a4531) !important;
+}
+
+.o_admin_dashboard .o_completion_percent_list::before,
+.o_collector_dashboard .o_completion_percent_list::before {
+    font-size: 10px !important;
+}
+
+.o_admin_dashboard .o_completion_widget_list.o_completion_single_line,
+.o_collector_dashboard .o_completion_widget_list.o_completion_single_line {
+    align-items: center !important;
+    gap: 0 !important;
+    margin: 0 !important;
+    padding: 5px 10px !important;
+    font-size: 11px !important;
+}
+
+.o_admin_dashboard .o_completion_percent_list:has(+ .o_section_list_count)::after,
+.o_collector_dashboard .o_completion_percent_list:has(+ .o_section_list_count)::after,
+.o_admin_dashboard .o_completion_single_line .o_section_list_count .o_count_badge:not(:last-child)::after,
+.o_collector_dashboard .o_completion_single_line .o_section_list_count .o_count_badge:not(:last-child)::after {
+    content: none !important;
+    display: none !important;
+}
+
+.o_admin_dashboard .o_completion_widget_list .o_completion_percent_list,
+.o_collector_dashboard .o_completion_widget_list .o_completion_percent_list,
+.o_group_dashboard .o_completion_widget_list .o_completion_percent_list,
+.o_admin_dashboard .o_completion_widget_list .o_count_badge,
+.o_collector_dashboard .o_completion_widget_list .o_count_badge,
+.o_group_dashboard .o_completion_widget_list .o_count_badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    position: relative !important;
+    vertical-align: middle !important;
+    box-decoration-break: clone !important;
+}
+
+.o_admin_dashboard .o_completion_widget_list .o_completion_percent_list:has(+ .o_section_list_count),
+.o_collector_dashboard .o_completion_widget_list .o_completion_percent_list:has(+ .o_section_list_count),
+.o_group_dashboard .o_completion_widget_list .o_completion_percent_list:has(+ .o_section_list_count) {
+    margin-right: 22px !important;
+}
+
+.o_admin_dashboard .o_completion_widget_list .o_completion_percent_list:has(+ .o_section_list_count)::after,
+.o_collector_dashboard .o_completion_widget_list .o_completion_percent_list:has(+ .o_section_list_count)::after,
+.o_group_dashboard .o_completion_widget_list .o_completion_percent_list:has(+ .o_section_list_count)::after {
+    content: "|" !important;
+    display: block !important;
+    position: absolute !important;
+    right: -12px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    color: rgba(106, 74, 60, 0.38) !important;
+    font-weight: 300 !important;
+    font-size: 12px !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    pointer-events: none !important;
+    z-index: 2 !important;
+}
+
+.o_admin_dashboard .o_completion_widget_list .o_section_list_count .o_count_badge:not(:last-child),
+.o_collector_dashboard .o_completion_widget_list .o_section_list_count .o_count_badge:not(:last-child),
+.o_group_dashboard .o_completion_widget_list .o_section_list_count .o_count_badge:not(:last-child) {
+    margin-right: 22px !important;
+}
+
+.o_admin_dashboard .o_completion_widget_list .o_section_list_count .o_count_badge:not(:last-child)::before,
+.o_collector_dashboard .o_completion_widget_list .o_section_list_count .o_count_badge:not(:last-child)::before,
+.o_group_dashboard .o_completion_widget_list .o_section_list_count .o_count_badge:not(:last-child)::before {
+    content: "|" !important;
+    position: absolute !important;
+    right: -12px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    color: rgba(106, 74, 60, 0.38) !important;
+    font-weight: 300 !important;
+    font-size: 12px !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    pointer-events: none !important;
+    z-index: 2 !important;
+}
+
+.o_admin_dashboard .o_completion_single_line .o_section_list_count,
+.o_collector_dashboard .o_completion_single_line .o_section_list_count {
+    display: inline-flex !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 0 !important;
+}
+
+.o_admin_dashboard .o_completion_percent_list,
+.o_admin_dashboard .o_count_badge,
+.o_collector_dashboard .o_completion_percent_list,
+.o_collector_dashboard .o_count_badge {
+    padding: 2px 1px !important;
+}
+
+.o_admin_dashboard .o_count_draft,
+.o_collector_dashboard .o_count_draft {
+    color: #5c4033 !important;
+}
+
+.o_admin_dashboard .o_count_submitted,
+.o_collector_dashboard .o_count_submitted {
+    color: #1e5088 !important;
+}
+
+.o_admin_dashboard .o_count_approved,
+.o_collector_dashboard .o_count_approved {
+    color: #1d6b42 !important;
+}
+
+.o_admin_dashboard .o_count_rejected,
+.o_collector_dashboard .o_count_rejected {
+    color: #9c3a3a !important;
+}
+
+/* Stat row — mute zeros, highlight non-zero counts with soft pills */
+.o_admin_dashboard .o_completion_widget_list .o_completion_percent_list:not(.o_stat_has_value),
+.o_admin_dashboard .o_completion_widget_list .o_count_badge:not(.o_stat_has_value),
+.o_collector_dashboard .o_completion_widget_list .o_completion_percent_list:not(.o_stat_has_value),
+.o_collector_dashboard .o_completion_widget_list .o_count_badge:not(.o_stat_has_value),
+.o_group_dashboard .o_completion_widget_list .o_completion_percent_list:not(.o_stat_has_value),
+.o_group_dashboard .o_completion_widget_list .o_count_badge:not(.o_stat_has_value) {
+    opacity: 0.42 !important;
+}
+
+.o_admin_dashboard .o_completion_widget_list .o_stat_has_value,
+.o_collector_dashboard .o_completion_widget_list .o_stat_has_value,
+.o_group_dashboard .o_completion_widget_list .o_stat_has_value {
+    opacity: 1 !important;
+    padding: 2px 8px !important;
+    border-radius: 7px !important;
+    font-weight: 700 !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65) !important;
+    background-clip: padding-box !important;
+    isolation: isolate !important;
+}
+
+.o_admin_dashboard .o_completion_percent_list.o_stat_has_value,
+.o_collector_dashboard .o_completion_percent_list.o_stat_has_value,
+.o_group_dashboard .o_completion_percent_list.o_stat_has_value {
+    color: #7a3f12 !important;
+    background: rgba(196, 124, 62, 0.22) !important;
+    border: 1px solid rgba(139, 69, 19, 0.28) !important;
+}
+
+.o_admin_dashboard .o_count_draft.o_stat_has_value,
+.o_collector_dashboard .o_count_draft.o_stat_has_value,
+.o_group_dashboard .o_count_draft.o_stat_has_value {
+    color: #4a2f1f !important;
+    background: rgba(92, 64, 51, 0.16) !important;
+    border: 1px solid rgba(92, 64, 51, 0.24) !important;
+}
+
+.o_admin_dashboard .o_count_submitted.o_stat_has_value,
+.o_collector_dashboard .o_count_submitted.o_stat_has_value,
+.o_group_dashboard .o_count_submitted.o_stat_has_value {
+    color: #134a82 !important;
+    background: rgba(30, 80, 136, 0.16) !important;
+    border: 1px solid rgba(30, 80, 136, 0.28) !important;
+}
+
+.o_admin_dashboard .o_count_approved.o_stat_has_value,
+.o_collector_dashboard .o_count_approved.o_stat_has_value,
+.o_group_dashboard .o_count_approved.o_stat_has_value {
+    color: #145c36 !important;
+    background: rgba(29, 107, 66, 0.16) !important;
+    border: 1px solid rgba(29, 107, 66, 0.28) !important;
+}
+
+.o_admin_dashboard .o_count_rejected.o_stat_has_value,
+.o_collector_dashboard .o_count_rejected.o_stat_has_value,
+.o_group_dashboard .o_count_rejected.o_stat_has_value {
+    color: #8b2e2e !important;
+    background: rgba(156, 58, 58, 0.15) !important;
+    border: 1px solid rgba(156, 58, 58, 0.26) !important;
+}
+
+.o_admin_dashboard .o_section_list_actions {
+    gap: 5px !important;
+}
+
+.o_admin_dashboard .o_section_list_actions .btn {
+    padding: 4px 9px !important;
+    font-size: 10.5px !important;
+    border-radius: 7px !important;
+    line-height: 1.25 !important;
+}
+
+.o_admin_dashboard .o_section_list_actions .btn i,
+.o_admin_dashboard .o_section_list_actions .btn .fa {
+    font-size: 11px !important;
+    margin-right: 3px !important;
+}
+
+/* Top KPI strip */
+.o_admin_dashboard .o_stat_card {
+    min-height: 58px !important;
+    padding: 8px 10px !important;
+}
+
+.o_admin_dashboard .o_stat_icon {
+    font-size: 22px !important;
+    margin-right: 8px !important;
+}
+
+.o_admin_dashboard .o_stat_value {
+    font-size: 20px !important;
+}
+
+.o_admin_dashboard .o_stat_label {
+    font-size: 8.5px !important;
+}
+
+/* Step card — Owl-safe layout (classes/data only, no DOM moves) */
+.o_admin_dashboard .o_section_list_item.o_has_title_header,
+.o_collector_dashboard .o_section_list_item.o_has_title_header,
+.o_group_dashboard .o_section_list_item.o_has_title_header {
+    display: grid !important;
+    grid-template-columns: auto auto minmax(0, 1fr) auto !important;
+    grid-template-rows: auto auto !important;
+    align-items: end !important;
+    column-gap: 10px !important;
+    row-gap: 4px !important;
+    overflow: hidden !important;
+}
+
+.o_admin_dashboard .o_section_list_item.o_has_title_header .o_section_list_step,
+.o_collector_dashboard .o_section_list_item.o_has_title_header .o_section_list_step,
+.o_group_dashboard .o_section_list_item.o_has_title_header .o_section_list_step {
+    grid-column: 1 !important;
+    grid-row: 1 / -1 !important;
+}
+
+.o_admin_dashboard .o_section_list_item.o_has_title_header .o_section_list_icon,
+.o_collector_dashboard .o_section_list_item.o_has_title_header .o_section_list_icon,
+.o_group_dashboard .o_section_list_item.o_has_title_header .o_section_list_icon {
+    grid-column: 2 !important;
+    grid-row: 1 / -1 !important;
+    align-self: center !important;
+}
+
+.o_admin_dashboard .o_section_list_item.o_has_title_header .o_section_list_content,
+.o_collector_dashboard .o_section_list_item.o_has_title_header .o_section_list_content,
+.o_group_dashboard .o_section_list_item.o_has_title_header .o_section_list_content {
+    display: contents !important;
+}
+
+.o_admin_dashboard .o_section_list_item.o_has_title_header .o_section_list_title,
+.o_collector_dashboard .o_section_list_item.o_has_title_header .o_section_list_title,
+.o_group_dashboard .o_section_list_item.o_has_title_header .o_section_list_title {
+    grid-column: 3 / 5 !important;
+    grid-row: 1 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 10px 6px 0 0 !important;
+    box-sizing: border-box !important;
+}
+
+.o_admin_dashboard .o_section_list_item.o_has_title_header .o_completion_widget_list,
+.o_collector_dashboard .o_section_list_item.o_has_title_header .o_completion_widget_list,
+.o_group_dashboard .o_section_list_item.o_has_title_header .o_completion_widget_list {
+    grid-column: 3 !important;
+    grid-row: 2 !important;
+    padding-left: 0 !important;
+}
+
+.o_admin_dashboard .o_section_list_item.o_has_title_header .o_section_list_actions,
+.o_collector_dashboard .o_section_list_item.o_has_title_header .o_section_list_actions,
+.o_group_dashboard .o_section_list_item.o_has_title_header .o_section_list_actions {
+    grid-column: 4 !important;
+    grid-row: 2 !important;
+}
+
+.o_admin_dashboard .o_section_list_item,
+.o_collector_dashboard .o_section_list_item,
+.o_group_dashboard .o_section_list_item {
+    position: relative !important;
+    max-width: 100% !important;
+}
+
+.o_admin_dashboard .o_section_list_content,
+.o_collector_dashboard .o_section_list_content,
+.o_group_dashboard .o_section_list_content {
+    position: relative !important;
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+    overflow: visible !important;
+}
+
+.o_admin_dashboard .o_section_list_title.o_has_project_name_row,
+.o_collector_dashboard .o_section_list_title.o_has_project_name_row,
+.o_group_dashboard .o_section_list_title.o_has_project_name_row {
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: nowrap !important;
+    gap: 8px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    padding-right: 0 !important;
+    white-space: nowrap !important;
+}
+
+.o_section_list_item.o_has_done_ribbon .o_section_list_title.o_has_project_name_row {
+    padding-right: 28px !important;
+}
+
+.o_section_list_title.o_has_project_name_row::before {
+    content: "Project" !important;
+    order: 1 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    flex-shrink: 0 !important;
+    padding: 2px 8px !important;
+    border-radius: 999px !important;
+    font-size: 9.5px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.35px !important;
+    text-transform: uppercase !important;
+    line-height: 1.2 !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55) !important;
+    background: rgba(139, 69, 19, 0.13) !important;
+    color: #5c3317 !important;
+    border: 1px solid rgba(139, 69, 19, 0.28) !important;
+}
+
+.o_section_list_title.o_has_project_name_row.o_step_scope_village::before {
+    content: "Village" !important;
+    background: rgba(192, 57, 43, 0.11) !important;
+    color: #922b21 !important;
+    border: 1px solid rgba(192, 57, 43, 0.24) !important;
+}
+
+.o_section_list_title.o_has_project_name_row::after {
+    content: attr(data-project-name) !important;
+    order: 3 !important;
+    flex: 1 1 0% !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    text-align: right !important;
+    font-size: 11.5px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.2px !important;
+    color: var(--bd-ink-700, #4a2f1f) !important;
+    text-decoration: underline !important;
+    text-decoration-color: rgba(139, 69, 19, 0.5) !important;
+    text-underline-offset: 2px !important;
+    text-decoration-thickness: 1px !important;
+    line-height: 1.25 !important;
+}
+
+.o_section_list_title.o_has_project_name_row > * {
+    order: 2 !important;
+    flex-shrink: 1 !important;
+    min-width: 0 !important;
+}
+
+.o_section_list_title.o_has_project_name_row .o_ctx_hidden_for_project {
+    display: none !important;
+}
+
+.o_section_list_title.o_has_project_name_row .o_section_list_context.o_ctx_village_only {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    margin-left: 6px !important;
+    font-size: 0 !important;
+    vertical-align: middle !important;
+}
+
+.o_section_list_title.o_has_project_name_row .o_section_list_context.o_ctx_village_only::before {
+    content: "|" !important;
+    margin-right: 6px !important;
+    color: rgba(106, 74, 60, 0.35) !important;
+    font-size: 12px !important;
+    font-weight: 300 !important;
+}
+
+.o_section_list_title.o_has_project_name_row .o_section_list_context.o_ctx_village_only i.fa-briefcase {
+    display: none !important;
+}
+
+.o_section_list_title.o_has_project_name_row .o_section_list_context.o_ctx_village_only i.fa-home {
+    font-size: 11px !important;
+    color: #922b21 !important;
+}
+
+.o_section_list_title.o_has_project_name_row .o_section_list_context.o_ctx_village_only i.fa-home::after {
+    content: attr(data-village-label) !important;
+    margin-left: 4px !important;
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    color: var(--bd-ink-700, #4a2f1f) !important;
+}

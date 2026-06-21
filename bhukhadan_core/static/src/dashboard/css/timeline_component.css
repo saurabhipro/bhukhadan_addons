@@ -1,0 +1,142 @@
+/* ══════════════════════════════════════════════════════
+   E2E Village Progress Timeline Component Styles
+   Theme: Warm Brown / Gold (matches dashboard #8B4513)
+   ══════════════════════════════════════════════════════ */
+
+@keyframes o_timeline_pulse {
+    0%   { box-shadow: 0 0 0 0px rgba(200, 100, 30, 0.55); }
+    60%  { box-shadow: 0 0 0 9px rgba(200, 100, 30, 0); }
+    100% { box-shadow: 0 0 0 0px rgba(200, 100, 30, 0); }
+}
+
+@keyframes o_timeline_shimmer {
+    0%   { background-position: -600px 0; }
+    100% { background-position: 600px 0; }
+}
+
+.o_step_active_blink {
+    animation: o_timeline_pulse 1.4s ease-out infinite;
+    border-color: #c8640a !important;
+    color: #c8640a !important;
+}
+
+/* ── Outer box ── */
+.o_timeline_gradient_box {
+    position: relative;
+    border: 1.5px solid rgba(139, 69, 19, 0.28) !important;
+    border-radius: 12px !important;
+    background:
+        radial-gradient(ellipse at 0% 0%,   rgba(205, 133, 63, 0.18)  0%, transparent 50%),
+        radial-gradient(ellipse at 100% 0%,  rgba(184, 115, 51, 0.14) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 100%, rgba(245, 200, 130, 0.10) 0%, transparent 55%),
+        linear-gradient(150deg,
+            #fff9f2 0%,
+            #fff4e8 30%,
+            #fef8f0 60%,
+            #fff9f4 100%);
+    box-shadow:
+        0 4px 20px rgba(139, 69, 19, 0.12),
+        0 1px 4px  rgba(139, 69, 19, 0.08),
+        inset 0 0 0 1px rgba(255, 235, 200, 0.5);
+}
+
+/* ── Shimmer sweep overlay ── */
+.o_timeline_gradient_box::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 11px;
+    background: linear-gradient(
+        105deg,
+        transparent 30%,
+        rgba(255, 220, 160, 0.18) 50%,
+        transparent 70%
+    );
+    background-size: 600px 100%;
+    animation: o_timeline_shimmer 4s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ── Legend / top bar ── */
+.o_timeline_legend_bar {
+    position: relative;
+    z-index: 1;
+    background: linear-gradient(90deg,
+        rgba(139, 69, 19, 0.07) 0%,
+        rgba(205, 133, 63, 0.06) 50%,
+        rgba(139, 69, 19, 0.05) 100%);
+    border-bottom: 1.5px solid rgba(139, 69, 19, 0.15) !important;
+}
+
+.o_timeline_header_actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+.o_docvault_timeline_btn,
+.o_timeline_village_toggle_btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: none;
+    border-radius: 7px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(139, 69, 19, 0.35);
+    letter-spacing: 0.2px;
+    background: linear-gradient(135deg, #8B4513, #a0522d);
+}
+
+.o_docvault_timeline_btn:hover,
+.o_timeline_village_toggle_btn:hover {
+    filter: brightness(1.05);
+}
+
+.o_timeline_village_toggle_label {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    max-width: min(42vw, 420px);
+}
+
+.o_timeline_village_name {
+    font-weight: 400;
+    opacity: 0.9;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 220px;
+}
+
+.o_timeline_toggle_chevron {
+    font-size: 10px;
+    margin-left: 2px;
+    flex-shrink: 0;
+}
+
+/* ── Collapsible body ── */
+.o_timeline_body {
+    position: relative;
+    z-index: 1;
+    background: rgba(255, 252, 248, 0.75);
+}
+
+/* ── Connector track line ── */
+.o_timeline_track_line {
+    background: linear-gradient(90deg,
+        #c8a07a 0%,
+        #d4895a 30%,
+        #c8894e 60%,
+        #c4956c 100%);
+    box-shadow:
+        0 1px 3px rgba(139, 69, 19, 0.25),
+        0 0 0 1px rgba(200, 140, 80, 0.15);
+}

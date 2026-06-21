@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data context="{'noupdate':0}">
+        <record id="action_bhuarjan_hierarchy_tree" model="ir.actions.client">
+            <field name="name">Department Hierarchy Tree</field>
+            <field name="tag">bhuarjan_hierarchy_tree_action</field>
+        </record>
+
+        <menuitem id="menu_bhuarjan_hierarchy_tree" 
+                  name="Hierarchy Tree" 
+                  parent="menu_bhu_users_maai_menu" 
+                  action="action_bhuarjan_hierarchy_tree" 
+                  sequence="20"/>
+    </data>
+</odoo>

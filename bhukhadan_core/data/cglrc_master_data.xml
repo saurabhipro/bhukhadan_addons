@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Sections from CGLRC (धारा 247) -->
+        <record id="section_247_1_cglrc" model="bhu.section.master">
+            <field name="name">Personal Notice generation (247.1)</field>
+            <field name="description">Personal Notice generation under Section 247.1 CGLRC</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="section_247_2_cglrc" model="bhu.section.master">
+            <field name="name">Istehar प्रकाशन (247.2)</field>
+            <field name="description">Istehar Publication under Section 247.2 CGLRC</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="section_247_3_cglrc" model="bhu.section.master">
+            <field name="name">Award (247.3)</field>
+            <field name="description">Award under Section 247.3 CGLRC</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <!-- Law Master: धारा 247 CGLRC -->
+        <record id="law_247_cglrc" model="bhu.law.master">
+            <field name="name">धारा 247 CGLRC</field>
+            <field name="active" eval="True"/>
+            <field name="section_ids" eval="[(6, 0, [
+                ref('section_surveys'),
+                ref('section_247_1_cglrc'),
+                ref('section_247_2_cglrc'),
+                ref('section_247_3_cglrc')
+            ])]"/>
+        </record>
+    </data>
+</odoo>

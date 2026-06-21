@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- SIA Team Member List View -->
+    <record id="view_sia_team_member_list" model="ir.ui.view">
+        <field name="name">bhu.sia.team.member.list</field>
+        <field name="model">bhu.sia.team.member</field>
+        <field name="arch" type="xml">
+            <list string="SIA Team Members / SIA टीम सदस्य">
+                <field name="name"/>
+                <field name="post"/>
+                <field name="address"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- SIA Team Member Form View -->
+    <record id="view_sia_team_member_form" model="ir.ui.view">
+        <field name="name">bhu.sia.team.member.form</field>
+        <field name="model">bhu.sia.team.member</field>
+        <field name="arch" type="xml">
+            <form string="SIA Team Member / SIA टीम सदस्य">
+                <sheet>
+                    <group>
+                        <field name="name" required="1"/>
+                        <field name="post" placeholder="Enter post..."/>
+                        <field name="address" placeholder="Enter address..."/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- SIA Team Member Search View -->
+    <record id="view_sia_team_member_search" model="ir.ui.view">
+        <field name="name">bhu.sia.team.member.search</field>
+        <field name="model">bhu.sia.team.member</field>
+        <field name="arch" type="xml">
+            <search string="Search SIA Team Members">
+                <field name="name"/>
+                <field name="post"/>
+                <field name="address"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- SIA Team Member Action -->
+    <record id="action_sia_team_member" model="ir.actions.act_window">
+        <field name="name">SIA Team Members / SIA टीम सदस्य</field>
+        <field name="res_model">bhu.sia.team.member</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_sia_team_member_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first SIA Team Member!
+            </p>
+            <p>
+                SIA Team Members are used in SIA Teams. They require a name and address.
+            </p>
+        </field>
+    </record>
+</odoo>
+

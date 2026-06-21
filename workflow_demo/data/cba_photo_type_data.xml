@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo noupdate="1">
+    <record id="cba_photo_type_site" model="cba.photo.type">
+        <field name="name">Site Photo</field>
+    </record>
+    <record id="cba_photo_type_drone" model="cba.photo.type">
+        <field name="name">Drone Survey</field>
+    </record>
+    <record id="cba_photo_type_asset" model="cba.photo.type">
+        <field name="name">Asset / Structure</field>
+    </record>
+    <record id="cba_photo_type_crop" model="cba.photo.type">
+        <field name="name">Crop Inspection</field>
+    </record>
+</odoo>

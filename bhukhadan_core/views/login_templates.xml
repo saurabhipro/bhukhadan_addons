@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="bhuarjan_login" inherit_id="web.login" name="BhuKhadan Welcome Text">
+        <xpath expr="//form" position="before">
+            <div class="text-center mb-4 mt-5 pt-3" style="font-family: 'Inter', system-ui, -apple-system, sans-serif;">
+                <h3 class="mb-2 text-primary" style="font-weight: 800; letter-spacing: -0.5px; font-size: 2rem;">
+                    Welcome to BHUKHADAN
+                </h3>
+                <h5 class="mb-4" style="font-weight: 600; color: #4b5563; font-size: 1.1rem; letter-spacing: 0.5px;">
+                    Land Acquisition Management System
+                </h5>
+            </div>
+        </xpath>
+    </template>
+</odoo>

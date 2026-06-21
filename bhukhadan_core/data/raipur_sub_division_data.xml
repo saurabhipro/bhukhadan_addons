@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Raipur Sub Division -->
+        <record id="raipur_sub_division" model="bhu.sub.division">
+            <field name="name">Raipur Sub Division / रायपुर उपभाग</field>
+            <field name="district_id" ref="district_raipur"/>
+            <field name="state_id" ref="base.state_in_cg"/>
+        </record>
+    </data>
+</odoo>

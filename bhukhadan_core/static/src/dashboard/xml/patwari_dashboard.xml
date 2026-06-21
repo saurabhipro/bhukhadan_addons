@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="bhukhadan_core.PatwariDashboard">
+        <div class="patwari-dashboard">
+            <div class="pw-hero">
+                <div class="pw-hero-title">Patwari Dashboard</div>
+                <div class="pw-hero-subtitle">
+                    Welcome, <t t-esc="state.userName or 'User'"/>. This dashboard is scoped to your assigned villages.
+                </div>
+            </div>
+
+            <t t-if="state.loading">
+                <div class="pw-empty-card">
+                    <i class="fa fa-spinner fa-spin me-2" title="Loading"/>
+                    Loading dashboard data...
+                </div>
+            </t>
+            <t t-else="">
+                <div class="pw-cards-grid">
+                    <div class="pw-card">
+                        <div class="pw-card-label">Assigned Villages</div>
+                        <div class="pw-card-value"><t t-esc="state.stats.village_count"/></div>
+                    </div>
+                    <div class="pw-card">
+                        <div class="pw-card-label">Assigned Projects</div>
+                        <div class="pw-card-value"><t t-esc="state.stats.project_count"/></div>
+                    </div>
+                    <div class="pw-card">
+                        <div class="pw-card-label">Total Surveys</div>
+                        <div class="pw-card-value"><t t-esc="state.stats.total_surveys"/></div>
+                    </div>
+                    <div class="pw-card">
+                        <div class="pw-card-label">Pending Surveys</div>
+                        <div class="pw-card-value text-warning"><t t-esc="state.stats.pending_surveys"/></div>
+                    </div>
+                    <div class="pw-card">
+                        <div class="pw-card-label">Approved Surveys</div>
+                        <div class="pw-card-value text-success"><t t-esc="state.stats.approved_surveys"/></div>
+                    </div>
+                    <div class="pw-card">
+                        <div class="pw-card-label">Payment Lines</div>
+                        <div class="pw-card-value"><t t-esc="state.stats.total_payment_lines"/></div>
+                    </div>
+                    <div class="pw-card">
+                        <div class="pw-card-label">Pending Payments</div>
+                        <div class="pw-card-value text-warning"><t t-esc="state.stats.pending_payment_lines"/></div>
+                    </div>
+                    <div class="pw-card">
+                        <div class="pw-card-label">Failed Payments</div>
+                        <div class="pw-card-value text-danger"><t t-esc="state.stats.failed_payment_lines"/></div>
+                    </div>
+                    <div class="pw-card">
+                        <div class="pw-card-label">Bank Detail Issues</div>
+                        <div class="pw-card-value text-danger"><t t-esc="state.stats.bene_fail_count"/></div>
+                    </div>
+                </div>
+
+                <div class="pw-actions">
+                    <button class="btn btn-primary" type="button" t-on-click="openSurveys">
+                        <i class="fa fa-list me-1" title="Open Surveys"/>
+                        Open Surveys
+                    </button>
+                    <button class="btn btn-outline-primary" type="button" t-on-click="openPendingPayments">
+                        <i class="fa fa-clock-o me-1" title="Open Pending Payments"/>
+                        Open Pending Payments
+                    </button>
+                    <button class="btn btn-outline-secondary" type="button" t-on-click="openAllPaymentLines">
+                        <i class="fa fa-credit-card me-1" title="Open Payment Lines"/>
+                        Open Payment Lines
+                    </button>
+                </div>
+
+                <div class="pw-village-strip">
+                    <strong>Villages:</strong>
+                    <t t-if="state.villageNames.length">
+                        <t t-foreach="state.villageNames" t-as="village_name" t-key="village_name">
+                            <span class="pw-village-pill"><t t-esc="village_name"/></span>
+                        </t>
+                    </t>
+                    <t t-else="">
+                        <span class="text-muted ms-1">No villages assigned.</span>
+                    </t>
+                </div>
+            </t>
+        </div>
+    </t>
+</templates>

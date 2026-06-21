@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_reject_survey_wizard_form" model="ir.ui.view">
+        <field name="name">bhu.reject.survey.wizard.form</field>
+        <field name="model">bhu.reject.survey.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Reject Survey / सर्वे अस्वीकार करें">
+                <sheet>
+                    <group>
+                        <div class="alert alert-danger" role="alert" style="margin-bottom: 20px;">
+                            <i class="fa fa-exclamation-triangle" title="Warning" style="margin-right: 10px;"></i>
+                            <strong>Warning:</strong> This will reject the survey relative to this objection.
+                            <br/>
+                            <span style="font-size: 13px; margin-top: 5px; display: inline-block;">चेतावनी: यह इस आपत्ति से संबंधित सर्वेक्षण को अस्वीकार कर देगा।</span>
+                        </div>
+                    </group>
+                    <group>
+                        <field name="objection_id" invisible="1"/>
+                        <field name="survey_id" options="{'no_open': True}"/>
+                        <field name="reason" placeholder="Enter reason for rejection..."/>
+                    </group>
+                    <footer>
+                        <button string="Reject / अस्वीकार करें" name="action_reject" type="object" class="btn-danger"/>
+                        <button string="Cancel / रद्द करें" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_reject_survey_wizard" model="ir.actions.act_window">
+        <field name="name">Reject Survey / सर्वे अस्वीकार करें</field>
+        <field name="res_model">bhu.reject.survey.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

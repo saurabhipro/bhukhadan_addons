@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Section 11 Preliminary Report -->
+    <record id="action_report_section11_preliminary" model="ir.actions.report">
+        <field name="name">Section 11 Preliminary Report / धारा 11 प्रारंभिक रिपोर्ट</field>
+        <field name="model">bhu.section11.preliminary.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">bhukhadan_core.section11_preliminary_report</field>
+        <field name="report_file">bhukhadan_core.section11_preliminary_report</field>
+        <field name="paperformat_id" ref="bhukhadan_core.bhuarjan_sia_paper_format"/>
+        <field name="print_report_name">'Section11_Preliminary_Report_' + ((object and object.name) or (docs and docs[0] and docs[0].name) or 'All')</field>
+    </record>
+
+    <!-- Section 11 Preliminary Report Template -->
+    <template id="section11_preliminary_report">
+        <t t-call="web.html_container">
+            <meta charset="utf-8"/>
+            <t t-foreach="docs" t-as="report">
+                <t t-call="web.basic_layout">
+                <!-- Include centralized CSS styles -->
+                <t t-call="bhukhadan_core.report_common_styles"/>
+                <!-- Report-specific overrides for Section 11 -->
+                <style>
+                    .normal-text {
+                        font-size: 21px !important;
+                    }
+                    .normal-text p, .normal-text span, .normal-text strong {
+                        font-size: 21px !important;
+                    }
+                    .schedule-table {
+                        font-size: 16.8px !important;
+                    }
+                    .schedule-table th,
+                    .schedule-table td {
+                        font-size: 16.8px !important;
+                        font-weight: normal !important;
+                    }
+                    .schedule-table th {
+                        font-size: 16.8px !important;
+                        font-weight: normal !important;
+                    }
+                    .schedule-table td {
+                        text-align: left !important;
+                        font-weight: normal !important;
+                    }
+                    .schedule-table td:nth-child(5) {
+                        text-align: right !important;
+                    }
+                    .paragraph-section {
+                        font-size: 21px !important;
+                    }
+                </style>
+
+                <div class="container letter_space" style="border: 2px dotted #000; padding: 15px; margin: 10px; position: relative;  height: 100%;">
+                    <!-- Watermark with Logo - Centered on Page (using common CSS) -->
+                    <div class="watermark">
+                        <div class="watermark-circle"></div>
+                        <t t-set="base_url" t-value="request.env['ir.config_parameter'].sudo().get_param('web.base.url')"/>
+                        <img t-att-src="base_url + '/bhukhadan_core/static/img/logo.png'" alt="Logo Watermark"/>
+                    </div>
+                    
+                    <!-- Header with Logo and QR Code -->
+                    <div style="margin-bottom: 15px; padding-bottom: 8px;">
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 8px;">
+                            <tr>
+                                <!-- Logo on Left -->
+                                <td rowspan="3" style="width: 12%; padding: 0; text-align: center; vertical-align: middle;">
+                                    <t t-set="base_url" t-value="request.env['ir.config_parameter'].sudo().get_param('web.base.url')"/>
+                                    <img t-att-src="base_url + '/bhukhadan_core/static/img/logo.png'" class="header-logo" alt="Logo"/>
+                                </td>
+                                <!-- Header Text - Line 1 -->
+                                <td colspan="2" style="text-align: center; vertical-align: middle; padding: 0 5px;">
+                                    <h3 class="hindi letter_space header-text" style="margin: 0; padding: 0; font-size: 24px; line-height: 1.2; font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif !important;">
+                                        कार्यालय कलेक्टर जिला रायगढ़ एवं पदेन उप सचिव छ.ग. शासन राजस्व एवं आपदा प्रबंधन
+                                    </h3>
+                                </td>
+                                <!-- QR Code on Right -->
+                                <td rowspan="3" style="width: 12%; padding: 0; text-align: center; vertical-align: middle;">
+                                    <t t-set="qr_code_img" t-value="report.get_qr_code_data() if report else None"/>
+                                    <t t-set="qr_download_url" t-value="'https://bhuarjan.com/bhuarjan/section11/' + str(report.report_uuid or '') + '/download' if report else '#'"/>
+                                    <t t-if="qr_code_img">
+                                        <a t-att-href="qr_download_url" class="qr-code-container">
+                                            <img t-att-src="'data:image/png;base64,' + qr_code_img" 
+                                                 alt="QR Code - Click to download PDF"/>
+                                        </a>
+                                    </t>
+                                    <t t-if="not qr_code_img">
+                                        <a t-att-href="qr_download_url" style="display: block; width: 90%; margin: 0 auto; padding: 0; text-decoration: none;">
+                                            <div style="width: 90%; padding-top: 90%; position: relative; border: none; background: white; margin: 0;">
+                                                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                                                    <div style="text-align: center; font-size: 7px;">
+                                                        <div style="font-weight: bold;">QR Code</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <!-- Header Text - Line 2: विभाग -->
+                                <td colspan="2" style="text-align: center; vertical-align: middle; padding: 0 5px;">
+                                    <h3 class="hindi letter_space header-text" style="margin: 0; padding: 0; font-size: 24px; line-height: 1.2; font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif !important;">
+                                        विभाग
+                                    </h3>
+                                </td>
+                            </tr>
+                            <tr>
+                                <!-- Header Text - Line 3: //प्रारंभिक अधिसूचना// -->
+                                <td colspan="2" style="text-align: center; vertical-align: middle; padding: 0 5px;">
+                                    <h2 style="text-decoration: underline; margin: 0; padding: 0; font-size: 24px; font-weight: bold; font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif !important;">
+                                        <strong>//प्रारंभिक अधिसूचना//</strong>
+                                    </h2>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- Date in top right corner -->
+                    <div style="width:100%;text-align:right; margin-bottom: 10px; font-size: 21px !important;">
+                        <strong>दिनांक-</strong> 
+                        <span t-if="report.create_date" t-esc="report.create_date.strftime('%d/%m/%Y')"/>
+                        <span t-if="not report.create_date">........................</span>
+                    </div>
+
+                    <div style="font-size: 21px !important; line-height: 1.6 !important; text-align: justify; margin-bottom: 15px;">
+                        <p style="margin: 0; padding: 0; font-size: 21px !important; line-height: 1.6 !important;">
+                            <strong>भू-अर्जन प्रकरण क्रमांक</strong>
+                            <span t-if="report.prakaran_kramank" t-esc="report.prakaran_kramank"/>
+                            <span t-if="not report.prakaran_kramank">........................</span>
+                            चूँकि राज्य शासन को यह प्रतीत होता है कि नीचे अनुसूची के कॉलम (1) से (5) में दर्शित भूमि की, अनुसूची के कॉलम (7) में दर्शित सार्वजनिक प्रयोजन के लिए आवश्यकता है अथवा पड़ने की संभावना है, अतः भूमि अर्जन, पुनर्वास तथा पुनर्व्यवस्थापन में उचित प्रतिकर और पारदर्शिता का अधिकार अधिनियम, 2013 (जिसे एतद् पश्चात् अधिनियम, 2013 कहा जायेगा) की धारा 11 की उपधारा (1) के प्रावधानों के अनुसार सभी संबंधित व्यक्तियों को इस आशय की सूचना दी जाती है कि राज्य शासन, एतद् द्वारा, अनुसूची के कॉलम (6) में उल्लिखित प्राधिकारी को उक्त भूमि के संबंध में धारा 12 के अंतर्गत दी गई शक्तियों का प्रयोग करने के लिए प्राधिकृत करता है :–
+                        </p>
+                    </div>
+
+                    <!-- Main Body Text -->
+                    
+                    <!-- Schedule Table -->
+                    <div style="margin: 20px 0;">
+                        <div style="text-align: center; font-size: 16.8px; font-weight: normal; margin-bottom: 10px; text-decoration: underline;">
+                            //अनुसूची//
+                        </div>
+                        <table class="schedule-table">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2" style="width: 10%;">जिला</th>
+                                    <th rowspan="2" style="width: 10%;">तहसील</th>
+                                    <th colspan="3" style="text-align: center; font-size: 16.8px !important; font-weight: normal !important;">
+                                        भूमि का प्रकार
+                                    </th>
+                                    <th rowspan="2" style="width: 20%;">धारा 12 द्वारा प्राधिकृत अधिकारी</th>
+                                    <th rowspan="2" style="width: 20%;">सार्वजनिक प्रयोजन का विवरण</th>
+                                </tr>
+                                <tr>
+                                    <th style="width: 15%;">ग्राम/प.हु.नं.</th>
+                                    <th style="width: 15%;">खसरा नं.</th>
+                                    <th style="width: 10%;">अर्जन हेतु प्रस्तावित रकबा (हे.में)</th>
+                                </tr>
+                                <tr>
+                                    <th style="width: 10%;">(1)</th>
+                                    <th style="width: 10%;">(2)</th>
+                                    <th style="width: 15%;">(3)</th>
+                                    <th style="width: 15%;">(4)</th>
+                                    <th style="width: 10%;">(5)</th>
+                                    <th style="width: 20%;">(6)</th>
+                                    <th style="width: 20%;">(7)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-if="report.land_parcel_ids and len(report.land_parcel_ids) > 0">
+                                    <t t-foreach="report.land_parcel_ids" t-as="parcel">
+                                        <tr>
+                                            <td style="font-size: 16.8px !important; font-weight: normal !important;" t-esc="parcel.village_id.district_id.name if parcel.village_id and parcel.village_id.district_id else '........................'"/>
+                                            <td style="font-size: 16.8px !important; font-weight: normal !important;" t-esc="parcel.village_id.tehsil_id.name if parcel.village_id and parcel.village_id.tehsil_id else '........................'"/>
+                                            <td style="font-size: 16.8px !important; font-weight: normal !important;" t-esc="parcel.village_id.name if parcel.village_id else '........................'"/>
+                                            <td style="font-size: 16.8px !important; font-weight: normal !important;" t-esc="parcel.khasra_number or '........................'"/>
+                                            <td style="font-size: 16.8px !important; font-weight: normal !important; text-align: right !important;" t-esc="'{:.4f}'.format(parcel.area_in_hectares) if parcel.area_in_hectares else '0.0000'"/>
+                                            <td style="font-size: 16.8px !important; font-weight: normal !important;" t-esc="parcel.authorized_officer or '........................'"/>
+                                            <td style="font-size: 16.8px !important; font-weight: normal !important;" t-esc="parcel.public_purpose_description or '........................'"/>
+                                        </tr>
+                                    </t>
+                                </t>
+                                <t t-if="not report.land_parcel_ids or len(report.land_parcel_ids) == 0">
+                                    <tr>
+                                        <td colspan="7" style="text-align: center; padding: 20px; font-size: 16.8px !important; font-weight: normal !important;">
+                                            कोई भूमि खंड जोड़ा नहीं गया है
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Paragraphs below table -->
+                    <div class="paragraph-section">
+                        <span class="paragraph-number">2.</span>
+                        <span style="font-size: 21px !important; line-height: 1.6 !important;">
+                            यह भी सूचित किया जाता है कि उपरोक्त भूमि में कोई भी हितबद्ध व्यक्ति इस अधिसूचना के प्रकाशन की तिथि के 60 दिवस के भीतर अर्जित की जाने वाली भूमि के क्षेत्रफल एवं उपयुक्तता, लोक प्रयोजन के औचित्य तथा सामाजिक समाघात निर्धारण के निष्कर्षों के बारे में अपना दावा/आपत्ति लिखित में कलेक्टर को स्वयं अथवा अपने द्वारा अधिकृत व्यक्ति के माध्यम से अधिनियम, 2013 की धारा 15 उपधारा (1) के अंतर्गत प्रस्तुत कर सकेगा।
+
+                        </span>
+                    </div>
+
+                    <div class="paragraph-section">
+                        <span class="paragraph-number">3.</span>
+                        <span style="font-size: 21px !important; line-height: 1.6 !important;">
+                            भूमि का नक्शा (प्लान) का निरीक्षण अनुविभागीय अधिकारी (राजस्व) 
+                            <span t-if="report.village_id and report.village_id.sub_division_id" t-esc="report.village_id.sub_division_id.name"/>
+                            <span t-if="not report.village_id or not report.village_id.sub_division_id">........................</span>
+                            के कार्यालय में किया जा सकता है।
+                        </span>
+                    </div>
+
+                    <div class="paragraph-section">
+                        <span class="paragraph-number">4.</span>
+                        <span style="font-size: 21px !important; line-height: 1.6 !important;">
+                            <t t-if="not report.is_displacement">
+                                प्रस्तावित भू-अर्जन से किसी भी प्रभावित परिवार का विस्थापन निहित नहीं है।
+                            </t>
+                            <t t-if="report.is_displacement">
+                                प्रस्तावित भू-अर्जन से 
+                                <span t-if="report.affected_families_count" t-esc="report.affected_families_count"/>
+                                <span t-if="not report.affected_families_count">........................</span>
+                                प्रभावित परिवारों का आवास परियोजना क्षेत्र में आ जाने के कारण उनका विस्थापन किया जाना प्रस्तावित है।                            </t>
+                        </span>
+                    </div>
+
+              
+                
+
+                    <div class="paragraph-section">
+                        <span class="paragraph-number">5.</span>
+                        <span style="font-size: 21px !important; line-height: 1.6 !important;">
+                            <t t-out="report.get_section5_text()"/>
+                        </span>
+                    </div>
+
+                    <div class="paragraph-section">
+                        <span class="paragraph-number">6.</span>
+                        <span style="font-size: 21px !important; line-height: 1.6 !important;">
+                            प्रस्तावित भू-अर्जन के लिए अधिनियम, 2013 की धारा 43 के तहत अनुविभागीय अधिकारी (राजस्व) 
+                            <span t-if="report.rehab_admin_name" t-esc="report.rehab_admin_name"/>
+                            <span t-if="not report.rehab_admin_name">........................</span>
+                            जिला रायगढ़ को पुनर्वास और पुनर्व्यवस्थापन प्रशासक नियुक्त किया गया है।
+                        </span>
+                    </div>
+                    
+                    <!-- Footer -->
+                    <div style="margin-top: 30px; text-align: right;">
+                        <div style="margin: 10px 0; font-size: 21px !important;">छत्तीसगढ़ के राज्यपाल के नाम से</div>
+                        <div style="margin: 10px 0; font-size: 21px !important;">तथा आदेशानुसार</div>
+                        <div style="margin: 20px 0; font-size: 21px !important;">(........................)</div>
+                        <div style="margin: 10px 0; font-size: 20px !important; font-weight: bold; font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif !important;">कलेक्टर रायगढ़ एवं पदेन उप सचिव</div>
+                        <div style="margin: 5px 0; font-size: 21px !important; font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif !important;">छ.ग.शासन, राजस्व एवं आपदा प्रबंधन विभाग</div>
+                    </div>
+                </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

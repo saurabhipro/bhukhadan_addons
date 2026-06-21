@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_bhu_s23_tree_edit_wizard_form" model="ir.ui.view">
+        <field name="name">bhu.s23.tree.edit.wizard.form</field>
+        <field name="model">bhu.s23.tree.edit.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Edit tree inputs / वृक्ष इनपुट संपादित करें">
+                <group>
+                    <field name="survey_line_id" invisible="1"/>
+                    <field name="survey_id" readonly="1"/>
+                    <field name="khasra_display" readonly="1"/>
+                </group>
+                <group string="Tree rows (add/remove/edit) / वृक्ष पंक्तियां">
+                    <field name="tree_line_ids" nolabel="1">
+                        <list editable="bottom" create="1" delete="1">
+                            <field name="tree_master_id"/>
+                            <field name="is_other_tree"/>
+                            <field name="tree_description"
+                                   placeholder="Enter tree details for Other"
+                                   required="is_other_tree"
+                                   readonly="not is_other_tree"/>
+                            <field name="tree_type" readonly="1"/>
+                            <field name="development_stage"/>
+                            <field name="girth_cm"/>
+                            <field name="quantity"/>
+                        </list>
+                    </field>
+                </group>
+                <footer>
+                    <button name="action_apply" type="object" string="Save / सहेजें" class="btn-primary"/>
+                    <button string="Cancel / रद्द" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

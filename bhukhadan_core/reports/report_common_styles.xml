@@ -1,0 +1,886 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Centralized CSS Styles for All Reports -->
+    <template id="report_common_styles">
+        <style>
+            /* ============================================
+               GLOBAL FONT SETTINGS
+               ============================================ */
+            body, html, .container, .page {
+                font-size: 16px !important;
+                font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif !important;
+            }
+            
+            body, .header-section, .header-info-table, h2, h3, strong, span, td, th, p, div, .container, .page {
+                font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif !important;
+            }
+            
+            /* Ensure page takes full height */
+            body, html {
+                height: 100%;
+                margin: 0;
+                padding: 0;
+                font-size: 16px !important;
+            }
+            
+            /* Force font sizes on all text elements */
+            p, span, div, td, th, strong, h2, h3 {
+                font-size: inherit !important;
+            }
+            
+            /* Table cells */
+            table td, table th {
+                font-size: 16px !important;
+            }
+            
+            /* ============================================
+               LETTER SPACING
+               ============================================ */
+            .letter_space {
+                letter-spacing: 1px !important;
+            }
+            
+            /* ============================================
+               HEADER TEXT STYLES
+               ============================================ */
+            .header-text {
+                font-size: 27px !important;
+                font-weight: bold !important;
+            }
+            
+            .header-text h3 {
+                font-size: 23px !important;
+                font-weight: bold !important;
+            }
+            
+            /* ============================================
+               NORMAL TEXT STYLES
+               ============================================ */
+            .normal-text {
+                font-size: 16px !important;
+            }
+            
+            .normal-text p, .normal-text span, .normal-text strong {
+                font-size: 16px !important;
+            }
+            
+            /* ============================================
+               TABLE HEADER
+               ============================================ */
+            .table-header {
+                font-size: 16px !important;
+                font-weight: bold !important;
+            }
+            
+            /* Legacy class for backward compatibility */
+            .fsc {
+                font-size: 16px !important;
+            }
+            
+            /* ============================================
+               HEADER INFO TABLE
+               ============================================ */
+            .header-info-table { 
+                width: 100% !important; 
+                border-collapse: collapse !important; 
+                font-size: 18px !important; 
+                border: 2px solid #000 !important; 
+                margin-bottom: 0 !important; 
+            }
+            
+            .header-info-table td { 
+                border: 1px solid #000 !important; 
+                padding: 6px !important; 
+                vertical-align: middle !important;
+                font-size: 18px !important;
+            }
+            
+            /* ============================================
+               DATE AND REFERENCE SECTION
+               ============================================ */
+            .date-reference-section {
+                display: flex !important;
+                justify-content: space-between !important;
+                align-items: baseline !important;
+                width: 100% !important;
+                margin: 4px 0 !important;
+            }
+            
+            .date-reference-section span {
+                font-size: 16px !important;
+                font-weight: 500 !important;    
+            }
+            
+            .date-reference-section span:first-child {
+                text-align: left !important;
+            }
+            
+            .date-reference-section span:last-child {
+                text-align: right !important;
+                margin-left: auto !important;
+            }
+            
+            /* ============================================
+               FOOTER SECTION
+               ============================================ */
+            .footer-section {
+                text-align: right !important;
+                margin-top: 20px !important;
+                margin-bottom: 15px !important;
+                position: relative !important;
+                z-index: 2 !important;
+            }
+            
+            .footer-section p {
+                text-align: right !important;
+                margin: 5px 0 !important;
+                line-height: 1.5 !important;
+            }
+            
+            /* Footer section name reference */
+            .footer-section-name {
+                position: absolute;
+                bottom: 10px;
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 12px !important;
+                color: #999999 !important;
+                opacity: 0.6;
+                z-index: 100;
+                text-align: center;
+            }
+            
+            /* ============================================
+               WATERMARK — Word-like “washout”: almost transparent. Avoid
+               print-color-adjust:exact on the mark (WebKit can print it fully opaque).
+               (Form 10 bulk does not use .watermark)
+               ============================================ */
+            .container > *:not(.watermark),
+            .page > *:not(.watermark) {
+                position: relative !important;
+                z-index: 1 !important;
+            }
+            .watermark {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                bottom: 0 !important;
+                width: 400px;
+                height: 400px;
+                max-width: 72% !important;
+                max-height: 58% !important;
+                margin: auto !important;
+                transform: none !important;
+                opacity: 0.008 !important;
+                z-index: 0;
+                pointer-events: none;
+                padding: 0;
+                display: flex !important;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                overflow: hidden;
+            }
+            .watermark .watermark-circle {
+                display: none !important;
+            }
+            .watermark img {
+                max-width: 100% !important;
+                max-height: 100% !important;
+                width: auto !important;
+                height: auto !important;
+                object-fit: contain !important;
+                display: block !important;
+                margin: 0 !important;
+                opacity: 0.12 !important;
+                -webkit-filter: grayscale(100%) contrast(0.75) !important;
+                filter: grayscale(100%) contrast(0.75) !important;
+            }
+            
+            /* ============================================
+               HEADER LOGO STYLES (Top Left)
+               ============================================ */
+            .header-logo {
+                width: 80px !important;
+                height: 80px !important;
+                max-width: 80px !important;
+                max-height: 80px !important;
+                object-fit: contain !important;
+                display: block !important;
+                margin: 0 auto !important;
+            }
+            
+            /* Ensure table cells containing logos don't cause distortion */
+            td:has(.header-logo),
+            td[rowspan]:has(.header-logo) {
+                overflow: visible !important;
+                text-align: center !important;
+                vertical-align: middle !important;
+                padding: 5px !important;
+            }
+            
+            /* Fallback for browsers that don't support :has() */
+            td .header-logo {
+                box-sizing: border-box !important;
+            }
+            
+            /* ============================================
+               QR CODE STYLES
+               ============================================ */
+            .qr-code-container {
+                display: block;
+                width: 80px;
+                height: 80px;
+                margin: 0 auto;
+                padding: 0;
+                text-decoration: none;
+            }
+            
+            .qr-code-container img {
+                width: 80px;
+                height: 80px;
+                max-width: 80px;
+                max-height: 80px;
+                border: none;
+                display: block;
+                margin: 0;
+                padding: 0;
+                object-fit: contain;
+            }
+            
+            /* ============================================
+               CONTAINER STYLES
+               ============================================ */
+            .container {
+                position: relative;
+                z-index: 1;
+                background: transparent;
+                box-sizing: border-box;
+            }
+            
+            /* ============================================
+               SUBJECT AND BODY SECTIONS
+               ============================================ */
+            .subject-section, .body-section {
+                font-size: 16px !important;
+            }
+            
+            .subject-section p, .body-section p {
+                font-size: 16px !important;
+            }
+            
+            /* ============================================
+               NOTIFICATION TABLE STYLING
+               ============================================ */
+            .notification-table {
+                width: 100% !important;
+                border-collapse: collapse !important;
+                margin: 20px 0 !important;
+                border: 2px solid #000 !important;
+            }
+            
+            .notification-table th,
+            .notification-table td {
+                border: 1px solid #000 !important;
+                padding: 6px 8px !important;
+                text-align: center !important;
+                font-size: 16px !important;
+                vertical-align: middle !important;
+            }
+            
+            .notification-table th {
+                background-color: #f5f5f5 !important;
+                font-weight: bold !important;
+                font-size: 16px !important;
+                padding: 7px 8px !important;
+            }
+            
+            .notification-table td:nth-child(5) {
+                text-align: left !important;
+                padding-left: 10px !important;
+            }
+            
+            /* ============================================
+               SCHEDULE TABLE STYLING
+               ============================================ */
+            .schedule-table {
+                width: 100% !important;
+                border-collapse: collapse !important;
+                margin: 8px 0 !important;
+                border: 2px solid #000 !important;
+                font-size: 16px !important;
+            }
+            
+            .schedule-table th, .schedule-table td {
+                border: 1px solid #000 !important;
+                padding: 6px !important;
+                text-align: center !important;
+                font-size: 16px !important;
+                vertical-align: middle !important;
+            }
+            
+            .schedule-table th {
+                background-color: #f5f5f5 !important;
+                font-weight: bold !important;
+                font-size: 16px !important;
+                padding: 7px 8px !important;
+            }
+            
+            /* ============================================
+               QUESTION ITEMS
+               ============================================ */
+            .question-item {
+                margin-bottom: 12px !important;
+                padding: 0 !important;
+                page-break-inside: avoid !important;
+                line-height: 1.8 !important;
+                font-size: 16px !important;
+            }
+            
+            .question-label {
+                font-weight: bold !important;
+                font-size: 16px !important;
+                display: inline !important;
+                text-align: left !important;
+                margin-right: 8px !important;
+                vertical-align: top !important;
+            }
+            
+            .question-answer {
+                display: inline !important;
+                margin-left: 0 !important;
+                text-align: left !important;
+                font-size: 16px !important;
+                line-height: 1.8 !important;
+                padding: 0 !important;
+                vertical-align: top !important;
+            }
+            
+            /* ============================================
+               SECTION DIVIDER
+               ============================================ */
+            .section-divider {
+                border-top: 2px solid #000 !important;
+                margin: 20px 0 !important;
+                width: 100% !important;
+            }
+            
+            /* ============================================
+               SIGNATURE BLOCK
+               ============================================ */
+            .signature-block {
+                margin-top: 80px !important;
+                page-break-inside: avoid !important;
+            }
+            
+            .signature-line {
+                border-top: 2px solid #000 !important;
+                width: 300px !important;
+                margin: 0 auto !important;
+                display: block !important;
+            }
+            
+            .signature-label {
+                font-weight: bold !important;
+                font-size: 18px !important;
+                text-align: center !important;
+                margin-top: 10px !important;
+                letter-spacing: 0.5px !important;
+            }
+            
+            /* ============================================
+               PARAGRAPH SECTIONS
+               ============================================ */
+            .paragraph-section {
+                margin: 15px 0 !important;
+                font-size: 17px !important;
+                line-height: 1.6 !important;
+            }
+            
+            .paragraph-number {
+                font-weight: bold !important;
+                display: inline !important;
+                margin-right: 8px !important;
+            }
+            
+            /* ============================================
+               FORM 10 SPECIFIC STYLES
+               ============================================ */
+            /* Form 10 Table Base Styles */
+            .bulk-form10-table,
+            .bulk-form10-table-landscape {
+                border-collapse: collapse !important;
+                border-spacing: 0 !important;
+                width: 100%;
+                table-layout: fixed;
+                border: 2px solid #000 !important;
+                margin: 0 !important;
+                margin-top: 0 !important;
+            }
+            
+            /* Ensure all cells have visible borders - Grid style */
+            .bulk-form10-table td, 
+            .bulk-form10-table th,
+            .bulk-form10-table-landscape td,
+            .bulk-form10-table-landscape th {
+                border: 1px solid #000 !important;
+                border-width: 1px !important;
+                border-style: solid !important;
+                border-color: #000 !important;
+                font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif !important;
+                padding: 6px 12px !important;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                vertical-align: top;
+            }
+            
+            /* Explicit borders for all table elements - Force grid */
+            .bulk-form10-table tr,
+            .bulk-form10-table-landscape tr {
+                border: none !important;
+            }
+            
+            .bulk-form10-table tr td,
+            .bulk-form10-table tr th,
+            .bulk-form10-table-landscape tr td,
+            .bulk-form10-table-landscape tr th {
+                border-left: 1px solid #000 !important;
+                border-right: 1px solid #000 !important;
+                border-top: 1px solid #000 !important;
+                border-bottom: 1px solid #000 !important;
+                border-width: 1px !important;
+                border-style: solid !important;
+                border-color: #000 !important;
+            }
+            
+            /* Ensure all header cells have light grey background */
+            .bulk-form10-table thead th,
+            .bulk-form10-table-landscape thead th,
+            .bulk-form10-table thead th.table_th_1,
+            .bulk-form10-table thead th.table_th_2,
+            .bulk-form10-table-landscape thead th.table_th_1,
+            .bulk-form10-table-landscape thead th.table_th_2 {
+                background-color: #D3D3D3 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            
+            .bulk-form10-table thead,
+            .bulk-form10-table-landscape thead {
+                display: table-header-group;
+                -fs-table-paginate: paginate;
+            }
+            
+            .bulk-form10-table thead tr,
+            .bulk-form10-table-landscape thead tr {
+                page-break-inside: avoid;
+                page-break-after: avoid;
+            }
+            
+            .bulk-form10-table thead th,
+            .bulk-form10-table-landscape thead th {
+                background-color: #D3D3D3 !important;
+                color: #000000 !important;
+                font-weight: bold;
+                font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif !important;
+                position: relative;
+                page-break-inside: avoid;
+                border-left: 1px solid #000 !important;
+                border-right: 1px solid #000 !important;
+                border-top: 1px solid #000 !important;
+                border-bottom: 1px solid #000 !important;
+                border-width: 1px !important;
+                border-style: solid !important;
+                border-color: #000 !important;
+                padding: 8px 14px !important;
+                line-height: 1.3;
+            }
+            
+            .bulk-form10-table tbody td,
+            .bulk-form10-table-landscape tbody td {
+                border-left: 1px solid #000 !important;
+                border-right: 1px solid #000 !important;
+                border-top: 1px solid #000 !important;
+                border-bottom: 1px solid #000 !important;
+                border-width: 1px !important;
+                border-style: solid !important;
+                border-color: #000 !important;
+                padding: 6px 12px !important;
+            }
+            
+            /* Force borders on all cells - override any other styles */
+            .bulk-form10-table td,
+            .bulk-form10-table th,
+            .bulk-form10-table tbody td,
+            .bulk-form10-table tbody th,
+            .bulk-form10-table thead td,
+            .bulk-form10-table thead th,
+            .bulk-form10-table-landscape td,
+            .bulk-form10-table-landscape th,
+            .bulk-form10-table-landscape tbody td,
+            .bulk-form10-table-landscape tbody th,
+            .bulk-form10-table-landscape thead td,
+            .bulk-form10-table-landscape thead th {
+                border: 1px solid #000000 !important;
+                border-width: 1px 1px 1px 1px !important;
+                border-style: solid solid solid solid !important;
+                border-color: #000000 #000000 #000000 #000000 !important;
+            }
+            
+            /* Ensure no border: none is applied */
+            .bulk-form10-table td[style*="border"],
+            .bulk-form10-table th[style*="border"],
+            .bulk-form10-table-landscape td[style*="border"],
+            .bulk-form10-table-landscape th[style*="border"] {
+                border: 1px solid #000000 !important;
+            }
+            
+            /* First and last columns - ensure outer borders */
+            .bulk-form10-table tr td:first-child,
+            .bulk-form10-table tr th:first-child,
+            .bulk-form10-table-landscape tr td:first-child,
+            .bulk-form10-table-landscape tr th:first-child {
+                border-left: 1px solid #000 !important;
+            }
+            
+            .bulk-form10-table tr td:last-child,
+            .bulk-form10-table tr th:last-child,
+            .bulk-form10-table-landscape tr td:last-child,
+            .bulk-form10-table-landscape tr th:last-child {
+                border-right: 1px solid #000 !important;
+            }
+            
+            .bulk-form10-table thead th {
+                font-size: 14px !important;
+            }
+            
+            .bulk-form10-table-landscape thead th {
+                font-size: 12px !important;
+            }
+            
+            .bulk-form10-table tbody,
+            .bulk-form10-table-landscape tbody {
+                display: table-row-group;
+            }
+            
+            /* Allow table rows to break across pages */
+            .bulk-form10-table tr,
+            .bulk-form10-table-landscape tr {
+                page-break-inside: auto !important;
+            }
+            
+            /* Allow table body to break across pages */
+            .bulk-form10-table tbody,
+            .bulk-form10-table-landscape tbody {
+                page-break-inside: auto !important;
+            }
+            
+            /* Allow table to break across pages */
+            .bulk-form10-table,
+            .bulk-form10-table-landscape {
+                page-break-inside: auto !important;
+            }
+            
+            /* Allow individual cells to break, except specific ones */
+            .bulk-form10-table td,
+            .bulk-form10-table-landscape td {
+                page-break-inside: auto !important;
+            }
+            
+            /*
+             * Form 10 page breaks: one khasra = one table row (class survey-row).
+             * If we allow the row to split, wkhtmltopdf can put the tail of a tall
+             * landowner cell on the next page above the repeated thead (bad layout).
+             * Keep each survey row unsplit; use .form10-lo-many to shrink text when
+             * many land owners so the row can still (usually) fit on one page.
+             */
+            .bulk-form10-table .form10-name-cell .form10-lo-line,
+            .bulk-form10-table-landscape .form10-name-cell .form10-lo-line {
+                margin-bottom: 2px;
+                line-height: 1.35;
+            }
+            .bulk-form10-table tbody td:nth-child(5).form10-lo-many,
+            .bulk-form10-table-landscape tbody td:nth-child(5).form10-lo-many,
+            .bulk-form10-table tbody td.form10-name-cell.form10-lo-many,
+            .bulk-form10-table-landscape tbody td.form10-name-cell.form10-lo-many {
+                font-size: 11px !important;
+                line-height: 1.25 !important;
+            }
+            /* Tiered shrink for longer lists so the row still fits one page */
+            .bulk-form10-table tbody td.form10-name-cell.form10-lo-xl,
+            .bulk-form10-table-landscape tbody td.form10-name-cell.form10-lo-xl {
+                font-size: 10px !important;
+                line-height: 1.2 !important;
+            }
+            .bulk-form10-table tbody td.form10-name-cell.form10-lo-xl .form10-lo-line,
+            .bulk-form10-table-landscape tbody td.form10-name-cell.form10-lo-xl .form10-lo-line {
+                margin-bottom: 1px;
+            }
+            .bulk-form10-table tbody td.form10-name-cell.form10-lo-xxl,
+            .bulk-form10-table-landscape tbody td.form10-name-cell.form10-lo-xxl {
+                font-size: 9px !important;
+                line-height: 1.15 !important;
+            }
+            .bulk-form10-table tbody td.form10-name-cell.form10-lo-xxl .form10-lo-line,
+            .bulk-form10-table-landscape tbody td.form10-name-cell.form10-lo-xxl .form10-lo-line {
+                margin-bottom: 0 !important;
+            }
+            .bulk-form10-table tbody tr.survey-row,
+            .bulk-form10-table-landscape tbody tr.survey-row {
+                page-break-inside: avoid !important;
+                page-break-after: auto;
+            }
+            /* Group-zebra shading: all rows of same khasra keep same color (tr + td for wkhtmltopdf) */
+            .bulk-form10-table tbody tr.survey-row.form10-group-even,
+            .bulk-form10-table-landscape tbody tr.survey-row.form10-group-even {
+                background-color: #dde3ea !important;
+            }
+            .bulk-form10-table tbody tr.survey-row.form10-group-odd,
+            .bulk-form10-table-landscape tbody tr.survey-row.form10-group-odd {
+                background-color: #ffffff !important;
+            }
+            .bulk-form10-table tbody tr.survey-row.form10-group-even > td,
+            .bulk-form10-table-landscape tbody tr.survey-row.form10-group-even > td {
+                background-color: #dde3ea !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .bulk-form10-table tbody tr.survey-row.form10-group-odd > td,
+            .bulk-form10-table-landscape tbody tr.survey-row.form10-group-odd > td {
+                background-color: #ffffff !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            /*
+             * For rows with a huge landowner list (lo_count above 20) start them on a
+             * fresh page. Because thead has display:table-header-group, the header
+             * is repeated at the top of the new page, so the row lands directly
+             * under a fresh header instead of sharing a page with the previous row.
+             */
+            .bulk-form10-table tbody tr.form10-row-fresh,
+            .bulk-form10-table-landscape tbody tr.form10-row-fresh {
+                page-break-before: always !important;
+                break-before: page !important;
+            }
+            /* Override generic td { break: auto } so a tall landowner cell does not split */
+            .bulk-form10-table tbody tr.survey-row > td,
+            .bulk-form10-table-landscape tbody tr.survey-row > td {
+                page-break-inside: avoid !important;
+            }
+            .bulk-form10-table tbody tr.form10-totals-row,
+            .bulk-form10-table-landscape tbody tr.form10-totals-row {
+                page-break-inside: avoid !important;
+            }
+            /* Rows without .survey-row (e.g. empty-state) may still break if needed */
+            .bulk-form10-table tbody tr:not(.survey-row):not(.form10-totals-row),
+            .bulk-form10-table-landscape tbody tr:not(.survey-row):not(.form10-totals-row) {
+                page-break-inside: auto !important;
+                page-break-after: auto !important;
+            }
+            
+            /* Form 10 Table Header Classes */
+            .table_th_1,
+            .table_th_2 {
+                text-align: center;
+                border: 2px solid #000;
+                background-color: #D3D3D3 !important;
+                color: #000000 !important;
+                padding: 6px;
+                font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif !important;
+                font-weight: bold !important;
+            }
+            
+            .table_th_1 {
+                font-size: 14px !important;
+                font-weight: bold !important;
+            }
+            
+            .table_th_2 {
+                font-size: 14px !important;
+                font-weight: bold !important;
+            }
+            
+            /* Form 10 Title */
+            .form10-title {
+                font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif !important;
+                font-weight: normal !important;
+            }
+            
+            /* Form 10 Header Info Table */
+            .form10-header-info-table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 14px;
+                border: 2px solid #000;
+                margin-bottom: 0 !important;
+                margin-top: 0 !important;
+                padding-bottom: 0 !important;
+                table-layout: fixed;
+            }
+            
+            .form10-header-info-table td {
+                border: 1px solid #000;
+                padding: 6px;
+                vertical-align: middle;
+            }
+            
+            /* Remove gap between header info table and main table */
+            .header-info-table {
+                margin-bottom: 0 !important;
+            }
+            
+            /* Remove gap between header and article sections */
+            .header.o_clearfix {
+                margin-bottom: 0 !important;
+                padding-bottom: 0 !important;
+            }
+            
+            .article.o_report_layout_standard {
+                margin-top: 0 !important;
+                padding-top: 0 !important;
+            }
+            
+            /* Reduce gap after header info table */
+            .header-info-table.form10-header-info-table {
+                margin-bottom: 0 !important;
+            }
+            
+            /* Ensure no gap between sections */
+            .header + .article,
+            .header ~ .article {
+                margin-top: 0 !important;
+                padding-top: 0 !important;
+            }
+            
+            /* Fix for parentheses rendering - use Arial font for wkhtmltopdf */
+            .paren-fix {
+                font-family: "Arial", "Helvetica", "Liberation Sans", "DejaVu Sans", sans-serif !important;
+                font-size: inherit !important;
+                display: inline !important;
+                unicode-bidi: embed !important;
+                direction: ltr !important;
+            }
+            
+            .table_th_2 .paren-fix,
+            .table_th_1 .paren-fix,
+            .table_th_2 strong .paren-fix,
+            .table_th_1 strong .paren-fix {
+                font-family: "Arial", "Helvetica", "Liberation Sans", "DejaVu Sans", sans-serif !important;
+                font-weight: normal !important;
+            }
+            
+            /* Force Arial for parentheses in table headers */
+            .table_th_2 strong,
+            .table_th_1 strong {
+                font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif !important;
+            }
+            
+            /* Form 10: rotated headers for cols 6–12.
+               Column widths are enforced by colgroup col elements; CSS here handles
+               the visual rotation inside the narrow cell.
+               Uses writing-mode (supported in wkhtmltopdf 0.12.5+). */
+            .bulk-form10-table th.form10-th-rotate,
+            .bulk-form10-table-landscape th.form10-th-rotate {
+                height: 90px;
+                padding: 2px 1px !important;
+                vertical-align: bottom;
+                text-align: center;
+                overflow: hidden;
+                box-sizing: border-box;
+            }
+            .bulk-form10-table th.form10-th-rotate .form10-rotate-wrap,
+            .bulk-form10-table-landscape th.form10-th-rotate .form10-rotate-wrap {
+                display: block;
+                width: 100%;
+                height: 84px;
+                text-align: center;
+                overflow: hidden;
+            }
+            .bulk-form10-table th.form10-th-rotate .form10-rotate-label,
+            .bulk-form10-table-landscape th.form10-th-rotate .form10-rotate-label {
+                display: inline-block;
+                -webkit-writing-mode: vertical-rl;
+                -ms-writing-mode: tb-rl;
+                writing-mode: vertical-rl;
+                -webkit-transform: rotate(180deg);
+                transform: rotate(180deg);
+                white-space: nowrap;
+                font-size: 9px;
+                font-weight: bold;
+                line-height: 1;
+                vertical-align: bottom;
+                font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif !important;
+            }
+            .bulk-form10-table th.form10-th-landowner,
+            .bulk-form10-table-landscape th.form10-th-landowner,
+            .bulk-form10-table tbody td:nth-child(5),
+            .bulk-form10-table-landscape tbody td:nth-child(5) {
+                width: 33.5% !important;
+                min-width: 16% !important;
+            }
+            /* Reduce landowner body-cell font by 20% (16px base -> ~13px) */
+            .bulk-form10-table tbody td:nth-child(5),
+            .bulk-form10-table-landscape tbody td:nth-child(5) {
+                font-size: 80% !important;
+                line-height: 1.3 !important;
+            }
+            /* रिमार्क column – very narrow; actual width driven by colgroup col */
+            .bulk-form10-table th.form10-th-remark,
+            .bulk-form10-table-landscape th.form10-th-remark,
+            .bulk-form10-table tbody td:last-child,
+            .bulk-form10-table-landscape tbody td:last-child {
+                width: 0% !important;
+                min-width: 0 !important;
+                max-width: 0 !important;
+                overflow: hidden;
+                white-space: nowrap;
+                word-break: break-all;
+                font-size: 0 !important;
+                line-height: 0 !important;
+                padding: 0 !important;
+                border-left: 0 !important;
+                border-right: 0 !important;
+                display: none !important;
+            }
+            /* Form 10 Column Widths - Portrait (row 1 only for cols 1–4 so sub-header row is not mis-sized) */
+            .bulk-form10-table thead tr:first-child th:nth-child(1),
+            .bulk-form10-table tbody td:nth-child(1) { width: 3%; }
+            .bulk-form10-table thead tr:first-child th:nth-child(2),
+            .bulk-form10-table tbody td:nth-child(2) { width: 5%; }
+            .bulk-form10-table thead tr:first-child th:nth-child(3),
+            .bulk-form10-table tbody td:nth-child(3) { width: 4%; }
+            .bulk-form10-table thead tr:first-child th:nth-child(4),
+            .bulk-form10-table tbody td:nth-child(4) { width: 5%; }
+            /* Visual-only rules for narrow data cells (cols 6–12); actual widths from colgroup */
+            .bulk-form10-table tbody td:nth-child(6),
+            .bulk-form10-table tbody td:nth-child(7),
+            .bulk-form10-table tbody td:nth-child(8),
+            .bulk-form10-table tbody td:nth-child(9),
+            .bulk-form10-table tbody td:nth-child(10),
+            .bulk-form10-table tbody td:nth-child(11),
+            .bulk-form10-table tbody td:nth-child(12),
+            .bulk-form10-table-landscape tbody td:nth-child(6),
+            .bulk-form10-table-landscape tbody td:nth-child(7),
+            .bulk-form10-table-landscape tbody td:nth-child(8),
+            .bulk-form10-table-landscape tbody td:nth-child(9),
+            .bulk-form10-table-landscape tbody td:nth-child(10),
+            .bulk-form10-table-landscape tbody td:nth-child(11),
+            .bulk-form10-table-landscape tbody td:nth-child(12) {
+                text-align: center;
+                font-size: 9px;
+                padding: 3px 1px !important;
+                overflow: hidden;
+            }
+            
+            /* ============================================
+               PAGE SETTINGS
+               ============================================ */
+            @page {
+                size: A4;
+                margin: 0;
+            }
+        </style>
+    </template>
+</odoo>
+

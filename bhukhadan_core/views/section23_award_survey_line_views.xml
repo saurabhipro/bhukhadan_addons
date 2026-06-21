@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_section23_award_survey_line_tree" model="ir.ui.view">
+        <field name="name">bhu.section23.award.survey.line.tree</field>
+        <field name="model">bhu.section23.award.survey.line</field>
+        <field name="arch" type="xml">
+            <list string="Land Lines (Search Results)" create="0" delete="0" default_order="khasra_number">
+                <field name="currency_id" column_invisible="1"/>
+                <button name="action_open_survey_for_land_edit" type="object"
+                        string="Edit" class="btn btn-sm btn-primary"
+                        title="Edit 4 fields: distance / road / irrigation / diverted"/>
+                <button name="action_open_survey_for_tree_edit" type="object"
+                        string="Edit Trees" class="btn btn-sm btn-secondary"
+                        title="Edit/add/remove tree rows for this khasra"/>
+                <field name="khasra_number" readonly="1" string="Khasra"/>
+                <field name="village_name" readonly="1" string="Village"/>
+                <field name="distance_from_main_road" readonly="1" string="Distance (m)"/>
+                <field name="road_type_display" readonly="1" string="Road"/>
+                <field name="irrigation_type" readonly="1" string="Irrigation"/>
+                <field name="has_traded_land" readonly="1" string="Diverted"/>
+                <field name="acquired_area" readonly="1" string="Acquired (Ha)" widget="float" digits="[16,4]"/>
+                <field name="base_rate_display" readonly="1" string="Base Rate (₹/Ha)" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="rate_per_hectare" readonly="1" string="Effective Rate (₹/Ha)" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="land_award_amount" readonly="1" string="Land Award (₹)" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+            </list>
+        </field>
+    </record>
+</odoo>
+

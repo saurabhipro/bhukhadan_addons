@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo noupdate="1">
+    <!-- Main process — SECL L and R Master SOP (lr-department-master-process.bpmn) -->
+
+    <record id="cba_wf_start" model="cba.workflow.step">
+        <field name="name">Project Identified</field>
+        <field name="bpmn_id">StartEvent_1</field>
+        <field name="sequence">1</field>
+        <field name="lane">area</field>
+        <field name="step_type">start</field>
+    </record>
+
+    <record id="cba_wf_certificates" model="cba.workflow.step">
+        <field name="name">Certificates 1A/1B/1C</field>
+        <field name="bpmn_id">Task_Certificates_1ABC</field>
+        <field name="sequence">2</field>
+        <field name="lane">area</field>
+        <field name="step_type">task</field>
+    </record>
+
+    <record id="cba_wf_s4_notification" model="cba.workflow.step">
+        <field name="name">Sec 4(1) Prospecting Notification</field>
+        <field name="bpmn_id">Task_S4_Notification</field>
+        <field name="sequence">3</field>
+        <field name="lane">central</field>
+        <field name="step_type">task</field>
+    </record>
+
+    <record id="cba_wf_state_gazette" model="cba.workflow.step">
+        <field name="name">State Gazette Republication</field>
+        <field name="bpmn_id">Task_State_Gazette</field>
+        <field name="sequence">4</field>
+        <field name="lane">state</field>
+        <field name="step_type">task</field>
+    </record>
+
+    <record id="cba_wf_exploration_2a" model="cba.workflow.step">
+        <field name="name">Prospecting Certificate 2A</field>
+        <field name="bpmn_id">Task_Exploration_2A</field>
+        <field name="sequence">5</field>
+        <field name="lane">area</field>
+        <field name="step_type">task</field>
+    </record>
+
+    <record id="cba_wf_s7_notification" model="cba.workflow.step">
+        <field name="name">Sec 7(1) Acquisition Notification</field>
+        <field name="bpmn_id">Task_S7_Notification</field>
+        <field name="sequence">6</field>
+        <field name="lane">central</field>
+        <field name="step_type">task</field>
+    </record>
+
+    <record id="cba_wf_objection_window" model="cba.workflow.step">
+        <field name="name">30-Day Objection Window</field>
+        <field name="bpmn_id">Task_Objection_Window</field>
+        <field name="sequence">7</field>
+        <field name="lane">pap</field>
+        <field name="step_type">task</field>
+    </record>
+
+    <record id="cba_wf_handle_objections" model="cba.workflow.step">
+        <field name="name">Coal Controller Inquiry</field>
+        <field name="bpmn_id">Task_Handle_Objections</field>
+        <field name="sequence">8</field>
+        <field name="lane">central</field>
+        <field name="step_type">task</field>
+    </record>
+
+    <record id="cba_wf_s9_declaration" model="cba.workflow.step">
+        <field name="name">Sec 9(1) Declaration</field>
+        <field name="bpmn_id">Task_S9_Declaration</field>
+        <field name="sequence">9</field>
+        <field name="lane">central</field>
+        <field name="step_type">task</field>
+    </record>
+
+    <record id="cba_wf_drone_survey" model="cba.workflow.step">
+        <field name="name">SOP 2 — Drone Survey</field>
+        <field name="bpmn_id">SubProcess_DroneSurvey</field>
+        <field name="sequence">10</field>
+        <field name="lane">area</field>
+        <field name="step_type">subprocess</field>
+        <field name="requires_photo">True</field>
+        <field name="description">Procure VHR imagery, drone survey with GPS, generate ortho-mosaic and 3D models.</field>
+    </record>
+
+    <record id="cba_wf_asset_survey" model="cba.workflow.step">
+        <field name="name">SOP 3 — Asset Survey</field>
+        <field name="bpmn_id">SubProcess_AssetSurvey</field>
+        <field name="sequence">11</field>
+        <field name="lane">area</field>
+        <field name="step_type">subprocess</field>
+        <field name="requires_photo">True</field>
+        <field name="description">Joint committee, socio-economic survey, videography with geotags, compensation calculation.</field>
+    </record>
+
+    <record id="cba_wf_joint_committee" model="cba.workflow.step">
+        <field name="name">Joint Committee Certifies MB</field>
+        <field name="bpmn_id">Task_Joint_Committee_Survey</field>
+        <field name="sequence">12</field>
+        <field name="lane">committees</field>
+        <field name="step_type">task</field>
+    </record>
+
+    <record id="cba_wf_comp_proposal" model="cba.workflow.step">
+        <field name="name">Compensation Proposal</field>
+        <field name="bpmn_id">Task_Prepare_Comp_Proposal</field>
+        <field name="sequence">13</field>
+        <field name="lane">area</field>
+        <field name="step_type">task</field>
+    </record>
+
+    <record id="cba_wf_asc_review" model="cba.workflow.step">
+        <field name="name">ASC Review</field>
+        <field name="bpmn_id">Task_ASC_Review</field>
+        <field name="sequence">14</field>
+        <field name="lane">committees</field>
+        <field name="step_type">task</field>
+    </record>
+
+    <record id="cba_wf_hq_scrutiny_comp" model="cba.workflow.step">
+        <field name="name">HQ L and R Scrutiny</field>
+        <field name="bpmn_id">Task_HQ_Scrutiny_Comp</field>
+        <field name="sequence">15</field>
+        <field name="lane">hq</field>
+        <field name="step_type">task</field>
+    </record>
+
+    <record id="cba_wf_standing_committee" model="cba.workflow.step">
+        <field name="name">Standing Committee</field>
+        <field name="bpmn_id">Task_Standing_Committee</field>
+        <field name="sequence">16</field>
+        <field name="lane">committees</field>
+        <field name="step_type">task</field>
+    </record>
+
+    <record id="cba_wf_hq_approval_comp" model="cba.workflow.step">
+        <field name="name">DTPP Approval</field>
+        <field name="bpmn_id">Task_HQ_Approval_Comp</field>
+        <field name="sequence">17</field>
+        <field name="lane">hq</field>
+        <field name="step_type">task</field>
+    </record>
+
+    <record id="cba_wf_drrc_meeting" model="cba.workflow.step">
+        <field name="name">SOP 4 — DRRC Meeting</field>
+        <field name="bpmn_id">Task_DRRC_Meeting</field>
+        <field name="sequence">18</field>
+        <field name="lane">committees</field>
+        <field name="step_type">task</field>
+    </record>
+
+    <record id="cba_wf_employment" model="cba.workflow.step">
+        <field name="name">SOP 5-8 — Employment</field>
+        <field name="bpmn_id">SubProcess_Employment</field>
+        <field name="sequence">19</field>
+        <field name="lane">area</field>
+        <field name="step_type">subprocess</field>
+    </record>
+
+    <record id="cba_wf_hq_scrutiny_emp" model="cba.workflow.step">
+        <field name="name">HQ Employment Approval</field>
+        <field name="bpmn_id">Task_HQ_Scrutiny_Emp</field>
+        <field name="sequence">20</field>
+        <field name="lane">hq</field>
+        <field name="step_type">task</field>
+    </record>
+
+    <record id="cba_wf_house_plot" model="cba.workflow.step">
+        <field name="name">SOP 7 — House Plot / Cash R&amp;R</field>
+        <field name="bpmn_id">SubProcess_HousePlot</field>
+        <field name="sequence">21</field>
+        <field name="lane">area</field>
+        <field name="step_type">subprocess</field>
+    </record>
+
+    <record id="cba_wf_crop_comp" model="cba.workflow.step">
+        <field name="name">SOP 9 — Crop Compensation</field>
+        <field name="bpmn_id">SubProcess_CropComp</field>
+        <field name="sequence">22</field>
+        <field name="lane">area</field>
+        <field name="step_type">subprocess</field>
+        <field name="requires_photo">True</field>
+        <field name="description">Joint site inspection and photos required.</field>
+    </record>
+
+    <record id="cba_wf_payment_attempt" model="cba.workflow.step">
+        <field name="name">Attempt Compensation Payment</field>
+        <field name="bpmn_id">Task_Payment_Attempt</field>
+        <field name="sequence">23</field>
+        <field name="lane">area</field>
+        <field name="step_type">task</field>
+    </record>
+
+    <record id="cba_wf_end" model="cba.workflow.step">
+        <field name="name">Process Closed</field>
+        <field name="bpmn_id">EndEvent_1</field>
+        <field name="sequence">30</field>
+        <field name="lane">tribunal</field>
+        <field name="step_type">end</field>
+    </record>
+
+    <record id="cba_wf_receive_compensation" model="cba.workflow.step">
+        <field name="name">PAP Receives Payment</field>
+        <field name="bpmn_id">Task_Receive_Compensation</field>
+        <field name="sequence">25</field>
+        <field name="lane">pap</field>
+        <field name="step_type">task</field>
+        <field name="next_step_id" ref="cba_wf_end"/>
+    </record>
+
+    <record id="cba_wf_initiate_ptt" model="cba.workflow.step">
+        <field name="name">Initiate PTT Deposit</field>
+        <field name="bpmn_id">Task_Initiate_PTT_Deposit</field>
+        <field name="sequence">26</field>
+        <field name="lane">area</field>
+        <field name="step_type">task</field>
+    </record>
+
+    <record id="cba_wf_payment_gateway" model="cba.workflow.step">
+        <field name="name">Payment Consent Gateway</field>
+        <field name="bpmn_id">Gateway_Payment_Consent</field>
+        <field name="sequence">24</field>
+        <field name="lane">pap</field>
+        <field name="step_type">gateway</field>
+        <field name="next_step_yes_id" ref="cba_wf_receive_compensation"/>
+        <field name="next_step_no_id" ref="cba_wf_initiate_ptt"/>
+    </record>
+
+    <record id="cba_wf_hq_approval_ptt" model="cba.workflow.step">
+        <field name="name">HQ PTT Approval</field>
+        <field name="bpmn_id">Task_HQ_Approval_PTT</field>
+        <field name="sequence">27</field>
+        <field name="lane">hq</field>
+        <field name="step_type">task</field>
+    </record>
+
+    <record id="cba_wf_deposit_ptt" model="cba.workflow.step">
+        <field name="name">Deposit in PTT</field>
+        <field name="bpmn_id">Task_Deposit_PTT</field>
+        <field name="sequence">28</field>
+        <field name="lane">area</field>
+        <field name="step_type">task</field>
+    </record>
+
+    <record id="cba_wf_ptt_hold" model="cba.workflow.step">
+        <field name="name">PTT Holds Funds</field>
+        <field name="bpmn_id">Task_PTT_Hold_Funds</field>
+        <field name="sequence">29</field>
+        <field name="lane">tribunal</field>
+        <field name="step_type">task</field>
+        <field name="next_step_id" ref="cba_wf_end"/>
+    </record>
+
+    <!-- Sub-process detail steps (Drone Survey) -->
+    <record id="cba_wf_sub_drone_1" model="cba.workflow.step">
+        <field name="name">Procure VHR Satellite Imagery</field>
+        <field name="bpmn_id">Task_DroneSurvey_1</field>
+        <field name="sequence">1</field>
+        <field name="parent_id" ref="cba_wf_drone_survey"/>
+        <field name="step_type">task</field>
+    </record>
+    <record id="cba_wf_sub_drone_2" model="cba.workflow.step">
+        <field name="name">Drone Survey with GPS Coordinates</field>
+        <field name="bpmn_id">Task_DroneSurvey_2</field>
+        <field name="sequence">2</field>
+        <field name="parent_id" ref="cba_wf_drone_survey"/>
+        <field name="step_type">task</field>
+        <field name="requires_photo">True</field>
+    </record>
+    <record id="cba_wf_sub_drone_3" model="cba.workflow.step">
+        <field name="name">Generate Ortho-mosaic and 3D Models</field>
+        <field name="bpmn_id">Task_DroneSurvey_3</field>
+        <field name="sequence">3</field>
+        <field name="parent_id" ref="cba_wf_drone_survey"/>
+        <field name="step_type">task</field>
+    </record>
+
+    <!-- Sub-process detail steps (Asset Survey) -->
+    <record id="cba_wf_sub_asset_1" model="cba.workflow.step">
+        <field name="name">Constitute Joint Committee</field>
+        <field name="bpmn_id">Task_AssetSurvey_1</field>
+        <field name="sequence">1</field>
+        <field name="parent_id" ref="cba_wf_asset_survey"/>
+        <field name="step_type">task</field>
+    </record>
+    <record id="cba_wf_sub_asset_2" model="cba.workflow.step">
+        <field name="name">Socio-economic Survey and Measurement Book</field>
+        <field name="bpmn_id">Task_AssetSurvey_2</field>
+        <field name="sequence">2</field>
+        <field name="parent_id" ref="cba_wf_asset_survey"/>
+        <field name="step_type">task</field>
+    </record>
+    <record id="cba_wf_sub_asset_3" model="cba.workflow.step">
+        <field name="name">Videography and Geotags</field>
+        <field name="bpmn_id">Task_AssetSurvey_3</field>
+        <field name="sequence">3</field>
+        <field name="parent_id" ref="cba_wf_asset_survey"/>
+        <field name="step_type">task</field>
+        <field name="requires_photo">True</field>
+    </record>
+    <record id="cba_wf_sub_asset_4" model="cba.workflow.step">
+        <field name="name">Calculate Land and Asset Compensation</field>
+        <field name="bpmn_id">Task_AssetSurvey_4</field>
+        <field name="sequence">4</field>
+        <field name="parent_id" ref="cba_wf_asset_survey"/>
+        <field name="step_type">task</field>
+    </record>
+    <record id="cba_wf_sub_asset_5" model="cba.workflow.step">
+        <field name="name">Verify B-1 P-II Statement V and VI</field>
+        <field name="bpmn_id">Task_AssetSurvey_5</field>
+        <field name="sequence">5</field>
+        <field name="parent_id" ref="cba_wf_asset_survey"/>
+        <field name="step_type">task</field>
+    </record>
+</odoo>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Report Actions -->
+    <record id="action_report_section247_1_notice" model="ir.actions.report">
+        <field name="name">Personal Notice (247.1)</field>
+        <field name="model">bhu.section247_1.cglrc</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">bhukhadan_core.report_section247_1_notice_template</field>
+        <field name="report_file">bhukhadan_core.report_section247_1_notice_template</field>
+        <field name="print_report_name">'Notice_247_1_%s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_bhu_section247_1_cglrc"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="bhuarjan_sia_paper_format"/>
+    </record>
+
+    <record id="action_report_section247_2_istehar" model="ir.actions.report">
+        <field name="name">Istehar Publication (247.2)</field>
+        <field name="model">bhu.section247_2.cglrc</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">bhukhadan_core.report_section247_2_istehar_template</field>
+        <field name="report_file">bhukhadan_core.report_section247_2_istehar_template</field>
+        <field name="print_report_name">'Istehar_247_2_%s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_bhu_section247_2_cglrc"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="bhuarjan_sia_paper_format"/>
+    </record>
+
+    <!-- Templates -->
+    <template id="report_section247_1_notice_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-family: 'Arial Unicode MS', 'FreeSans'; font-size: 14px;">
+                        <div class="text-center" style="font-weight: bold; font-size: 18px;">
+                            <p>सतही अधिकार के मामले में नोटिस</p>
+                            <p>(संशोधित)</p>
+                            <p>(धारा अंतर्गत छ.ग. भू-राजस्व संहिता 1959-धारा 247 के तहत)</p>
+                        </div>
+                        
+                        <div style="margin-top: 20px;">
+                            <p>समक्ष- न्यायालय अनुविभागीय अधिकारी (राजस्व) घरघोड़ा</p>
+                            <p>मामले का विषय : -ग्राम <span t-field="o.village_id.name"/> तहसील <span t-field="o.village_id.tehsil_id.name"/> जिला-<span t-field="o.village_id.district_id.name"/> (छ.ग.) के निजी भूमि पर सतही अधिकार के प्रकरण में मुआवजा निर्धारण के संबंध में।</p>
+                            <p>मामले का क्रमांक- <span t-field="o.name"/></p>
+                        </div>
+
+                        <div style="margin-top: 20px; text-align: justify; line-height: 1.6;">
+                            <p>आपको यह सूचना दी जाती है कि ग्राम <span t-field="o.village_id.name"/> तहसील <span t-field="o.village_id.tehsil_id.name"/>, जिला-<span t-field="o.village_id.district_id.name"/> की नीचे दर्शित भूमि को मेसर्स महाराष्ट्र स्टेट पावर जनरेशन कंपनी लिमिटेड गारे-पेल्मा सेक्टर-II ब्लॉक अंतर्गत खनिज पट्टा हेतु अधिग्रहण किया जा रहा है। अतः आप स्वयं अथवा अपने अधिकृत मुख्तियार के मार्फत उपस्थित होकर अधोलिखित वर्णित भूमि जिसे खनिज पट्टा के लिए भूमि अर्जन किया जा रहा है पर अपने हित अधिकार प्रतिकर राशि भूमि पर अधिकार के फलस्वरूप प्रतिकर में हित संबंधी दावे तथा भूमि के परिमाप संबंधी आपत्ति (यदि कोई हो) तो मय अभिलेखों दस्तावेजों प्रमाण के साथ दिनांक ________ तक न्यायालय भू-अर्जन अधिकारी घरघोड़ा के समक्ष प्रातः 11:00 बजे उपस्थित होकर पेश करें। उक्त तिथि तक किसी प्रकार की आपत्ति प्रस्तुत न करने पर यह माना जायेगा कि इस न्यायालय द्वारा अधिग्रहित भूमि का प्रतिकर निर्धारित किया जा रहा है उस पर आपको कोई आपत्ति नहीं है।</p>
+                        </div>
+
+                        <table class="table table-bordered mt-4" style="border: 1px solid black; width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="background-color: #f2f2f2;">
+                                    <th style="border: 1px solid black;">क्र</th>
+                                    <th style="border: 1px solid black;">ग्राम</th>
+                                    <th style="border: 1px solid black;">तहसील</th>
+                                    <th style="border: 1px solid black;">भूस्वामी का नाम मय वल्दियत</th>
+                                    <th style="border: 1px solid black;">कब्जेदार का नाम मय वल्दियत</th>
+                                    <th style="border: 1px solid black;">ख.नं.</th>
+                                    <th style="border: 1px solid black;">रकबा हे. (में)</th>
+                                    <th style="border: 1px solid black;">वर्गीकरण क, ख, ग, घ</th>
+                                    <th style="border: 1px solid black;">रिमार्क</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- This would typically iterate over related landowners/land lines -->
+                                <tr>
+                                    <td style="border: 1px solid black;">1</td>
+                                    <td style="border: 1px solid black;"><span t-field="o.village_id.name"/></td>
+                                    <td style="border: 1px solid black;"><span t-field="o.village_id.tehsil_id.name"/></td>
+                                    <td style="border: 1px solid black;"> - </td>
+                                    <td style="border: 1px solid black;"> - </td>
+                                    <td style="border: 1px solid black;"> - </td>
+                                    <td style="border: 1px solid black;"> - </td>
+                                    <td style="border: 1px solid black;"> - </td>
+                                    <td style="border: 1px solid black;"> - </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div style="margin-top: 40px; float: right; text-align: center; width: 300px;">
+                            <p>आज दिनांक <span t-esc="o.create_date.strftime('%d.%m.%Y')"/> को न्यायालय के पदमुद्रा अंकित कर जारी किया गया।</p>
+                            <br/><br/>
+                            <p style="font-weight: bold;">अनुविभागीय अधिकारी</p>
+                            <p>घरघोड़ा, जिला-रायगढ़ (छ.ग.)</p>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_section247_2_istehar_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-family: 'Arial Unicode MS', 'FreeSans'; font-size: 14px;">
+                        <div class="text-center" style="font-weight: bold; font-size: 18px;">
+                            <p>न्यायालय अनुविभागीय अधिकारी (राजस्व) घरघोड़ा जिला-रायगढ़ (छ.ग.)</p>
+                        </div>
+
+                        <div class="text-center mt-3" style="font-weight: bold;">
+                             <p>॥ इश्तेहार ॥</p>
+                        </div>
+                        
+                        <div style="margin-top: 20px; text-align: justify; line-height: 1.6;">
+                            <p>मेसर्स महाराष्ट्र स्टेट पावर जनरेशन कंपनी लिमिटेड गारे-पेल्मा सेक्टर-II ब्लॉक अंतर्गत खनिज पट्टा हेतु छ.ग. शासन खनिज साधन विभाग मंत्रालय रायपुर नया रायपुर का पत्र क्रमांक एफ 3-10/2016/12 नया रायपुर दिनांक 12 नवम्बर 2024 के तहत खनिज संपदा का अधिपत्य स्वीकृत है। उक्त क्षेत्र के अंतर्गत ग्राम <span t-field="o.village_id.name"/> स्थित नीचे दर्शित निजी भूमि रकबा _____ हे. भूमि पर खनिज संपदा उत्खनन हेतु छ.ग. भू-राजस्व संहिता 1959 की धारा 247 के तहत वर्तमान प्रचलित नियमों के अनुसार सतही अधिकार के तहत प्रतिकर का निर्धारण किया जाना निर्धारित है:-</p>
+                        </div>
+
+                        <table class="table table-bordered mt-4" style="border: 1px solid black; width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="background-color: #f2f2f2;">
+                                    <th style="border: 1px solid black;">क्र.</th>
+                                    <th style="border: 1px solid black;">खसरा नंबर</th>
+                                    <th style="border: 1px solid black;">रकबा (हे.)</th>
+                                    <th style="border: 1px solid black;">क्र.</th>
+                                    <th style="border: 1px solid black;">खसरा नंबर</th>
+                                    <th style="border: 1px solid black;">रकबा (हे.)</th>
+                                    <th style="border: 1px solid black;">क्र.</th>
+                                    <th style="border: 1px solid black;">खसरा नंबर</th>
+                                    <th style="border: 1px solid black;">रकबा (हे.)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Example row -->
+                                <tr>
+                                    <td style="border: 1px solid black;">1</td>
+                                    <td style="border: 1px solid black;"> - </td>
+                                    <td style="border: 1px solid black;"> - </td>
+                                    <td style="border: 1px solid black;"> - </td>
+                                    <td style="border: 1px solid black;"> - </td>
+                                    <td style="border: 1px solid black;"> - </td>
+                                    <td style="border: 1px solid black;"> - </td>
+                                    <td style="border: 1px solid black;"> - </td>
+                                    <td style="border: 1px solid black;"> - </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div style="margin-top: 20px; text-align: justify; line-height: 1.6;">
+                            <p>अतः एतद् द्वारा आम जनता/सर्व संबंधितों को सूचित किया जाता है कि उक्त संबंध में जिस किसी व्यक्ति को उपरोक्त भूमि एवं भूमि पर स्थित परिसंपत्तियों पर हक/आपत्ति हो तो वे इस न्यायालय में दिनांक ________ तक स्वयं अथवा अपने निजी अभिभाषक के माध्यम से उपस्थित होकर लिखित में आवेदन प्रस्तुत कर सकते हैं। निर्धारित समयावधि के पश्चात् प्राप्त दावा/आपत्ति पर किसी प्रकार का कोई भी विचार विमर्श नहीं किया जावेगा।</p>
+                        </div>
+
+                        <div style="margin-top: 40px; float: right; text-align: center; width: 300px;">
+                            <p>आज दिनांक <span t-esc="o.create_date.strftime('%d.%m.%Y')"/> को न्यायालय के पदमुद्रा एवं मेरे हस्ताक्षर से जारी किया गया।</p>
+                            <br/><br/>
+                            <p style="font-weight: bold;">अनुविभागीय अधिकारी (राज्.)</p>
+                            <p>घरघोड़ा जिला-रायगढ़ (छ.ग.)</p>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

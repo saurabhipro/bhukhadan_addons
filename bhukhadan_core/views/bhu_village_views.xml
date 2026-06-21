@@ -1,0 +1,176 @@
+<odoo>
+    <data>
+        <!-- Village Views -->
+    <record id="bhu_village_view_list" model="ir.ui.view">
+        <field name="name">bhu.village.view.list</field>
+        <field name="model">bhu.village</field>
+        <field name="arch" type="xml">
+            <list string="Villages / ग्राम" create="1" import="1">
+                <field name="state_id" string="State"/>
+                <field name="district_id" string="District"/>
+                <field name="sub_division_id" string="Sub Division"/>
+                <field name="tehsil_id" string="Tehsil"/>
+                <field name="village_code" string="Village Code"/>
+                <field name="name" string="Village Name"/>
+                <field name="name_english" string="English name"/>
+                <field name="user_id" string="Patwari Name"/>
+                <field name="project_ids" string="Projects" widget="many2many_tags" readonly="1"
+                       context="{'skip_project_domain_filter': True}"
+                       options="{'color_field': 'tag_color', 'no_create': True, 'no_quick_create': True, 'no_create_edit': True}"/>
+                <field name="survey_count" string="Surveys"/>
+                <field name="village_type" string="Type" optional="hide"
+                       decoration-info="village_type == 'urban'"
+                       decoration-muted="village_type == 'rural'"/>
+                <field name="urban_body_type" string="Urban Body" optional="hide"/>
+                <field name="pincode" string="Pincode" optional="hide"/>
+            </list>
+            
+        </field>
+    </record>
+
+    <record id="bhu_village_view_form" model="ir.ui.view">
+        <field name="name">bhu.village.view.form</field>
+        <field name="model">bhu.village</field>
+        <field name="arch" type="xml">
+            <form string="Village / ग्राम">
+                <header>
+                    <button name="action_view_section4_notifications" string="Section 4 Notifications" 
+                            type="object" class="oe_stat_button" icon="fa-file-text"
+                            invisible="section4_notification_count == 0">
+                        <field name="section4_notification_count" widget="statinfo" string="Notifications"/>
+                    </button>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_linked_projects"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-folder-open">
+
+                            <field name="project_link_count"
+                                string="Projects / परियोजनाएं"
+                                widget="statinfo"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="village_code" placeholder="Enter unique village code..."/>
+                            <field name="name"/>
+                            <field name="name_english" placeholder="e.g. English or romanized name"/>
+                            <field name="state_id" options="{'no_create':True,'no_create_edit':True,'no_open':True}"/>
+                            <field name="district_id" options="{'no_create':True,'no_create_edit':True,'no_open':True}"/>
+                        </group>
+                        <group>
+                            <field name="sub_division_id" options="{'no_create':True,'no_create_edit':True,'no_open':True}"/>
+                            <field name="tehsil_id" options="{'no_create':True,'no_create_edit':True,'no_open':True}"/>
+                            <field name="pincode"/>
+                            <field name="village_type" widget="radio" options="{'horizontal': true}"/>
+                            <field name="urban_body_type"
+                                   string="Urban Body Type / नगरीय निकाय प्रकार"
+                                   invisible="village_type != 'urban'"
+                                   required="village_type == 'urban'"
+                                   placeholder="Select Nagar Nigam / Palika / Panchayat…"/>
+                            <field name="user_id" domain="[('bhuarjan_role','=', 'patwari')]" options="{'no_create_edit':True, 'no_create':True}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Projects / परियोजनाएं" name="village_projects">
+                            <group>
+                                <div class="text-muted" colspan="2">
+                                    Projects are stored on each project’s <b>Villages</b> tab. Open a row to edit the project,
+                                    remove a link here with the row delete icon, or add links via <b>Edit</b> on this village form.
+                                </div>
+                            </group>
+                            <field name="project_ids" nolabel="1" colspan="2"
+                                   context="{'skip_project_domain_filter': True}"
+                                   options="{'no_create': True, 'no_create_edit': True, 'no_quick_create': True}">
+                                <list create="false" delete="true" edit="false" open_form_view="True">
+                                    <field name="code" string="Code"/>
+                                    <field name="name" string="Project name"/>
+                                    <field name="department_id" string="Department" optional="show"/>
+                                    <field name="district_id" optional="hide"/>
+                                    <field name="state" string="Status" widget="badge" optional="show"
+                                           decoration-info="state == 'draft'"
+                                           decoration-success="state == 'active'"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                    <group>
+                        <field name="village_uuid" readonly="1" invisible="1"/>
+                        <button name="action_regenerate_uuid" type="object" string="Regenerate UUID / UUID पुनर्जीवित करें" class="oe_link" invisible="1"/>
+                    </group>
+                </sheet>
+                <chatter groups="bhukhadan_core.group_bhuarjan_ri,bhukhadan_core.group_bhuarjan_nayab_tahsildar,bhukhadan_core.group_bhuarjan_tahsildar,bhukhadan_core.group_bhuarjan_sdm,bhukhadan_core.group_bhuarjan_additional_collector,bhukhadan_core.group_bhuarjan_collector,bhukhadan_core.group_bhuarjan_admin"/>
+
+            </form>
+        </field>
+    </record>
+
+    <record id="bhu_village_view_search" model="ir.ui.view">
+        <field name="name">bhu.village.view.search</field>
+        <field name="model">bhu.village</field>
+        <field name="arch" type="xml">
+            <search string="Search Villages / ग्राम खोजें">
+                <field name="village_code"/>
+                <field name="name"/>
+                <field name="name_english"/>
+                <field name="user_id" string="Patwari Name"
+                       filter_domain="['|', '|', '|', ('user_id.name', 'ilike', self), ('user_id.login', 'ilike', self), ('user_id.email', 'ilike', self), ('user_id.name_english', 'ilike', self)]"/>
+                <field name="district_id"/>
+                <field name="tehsil_id"/>
+                <field name="pincode"/>
+                
+                <group expand="0" string="Group By / समूह बनाएं">
+                    <filter string="District / जिला" name="group_district" context="{'group_by': 'district_id'}"/>
+                    <filter string="Tehsil / तहसील" name="group_tehsil" context="{'group_by': 'tehsil_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_bhu_village" model="ir.actions.act_window">
+        <field name="name">Villages / ग्राम</field>
+        <field name="res_model">bhu.village</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="bhu_village_view_search"/>
+        <field name="context">{'search_default_group_district': 1}</field>
+    </record>
+
+    <!-- Remove legacy list-bound actions even if ir.model.data XML ids differ / missing -->
+    <delete model="ir.actions.server" search="[('binding_model_id', '=', ref('model_bhu_village')), ('name', 'in', ['Regenerate All Village UUIDs', 'Clear linked projects from selected villages'])]"/>
+
+    <!-- Opens standard CSV/Excel import (also in cog menu when no rows selected) -->
+    <record id="action_bhu_village_import_records" model="ir.actions.server">
+        <field name="name">Import records</field>
+        <field name="model_id" ref="model_bhu_village"/>
+        <field name="binding_model_id" ref="model_bhu_village"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+action = {
+    'type': 'ir.actions.client',
+    'tag': 'import',
+    'params': {
+        'active_model': 'bhu.village',
+        'context': dict(env.context),
+    },
+}
+        </field>
+    </record>
+
+    <!-- Bulk repair: unlink village from projects whose Villages tab lists >250 villages (mass-import junk). -->
+    <record id="action_bhu_village_strip_mismatched_project_links" model="ir.actions.server">
+        <field name="name">Strip links from bulk projects (&gt;250 villages) / बड़ी परियोजनाओं से लिंक हटाएं</field>
+        <field name="model_id" ref="model_bhu_village"/>
+        <field name="binding_model_id" ref="model_bhu_village"/>
+        <field name="binding_view_types">list</field>
+        <field name="groups_id" eval="[(4, ref('bhukhadan_core.group_bhuarjan_admin')), (4, ref('bhukhadan_core.group_bhuarjan_district_administrator'))]"/>
+        <field name="state">code</field>
+        <field name="code">
+if records:
+    records.action_strip_mismatched_project_links()
+        </field>
+    </record>
+    </data>
+</odoo>

@@ -1,0 +1,143 @@
+<templates xml:space="preserve">
+    <!-- Common Dashboard Header Template -->
+    <t t-name="bhukhadan_core.DashboardHeader" owl="1">
+        <div class="o_dashboard_header" style="background: linear-gradient(135deg, #FFF8F0 0%, #FDF5E6 50%, #FAF0E6 100%); color: #8B4513; padding: 10px; border-radius: 8px; margin-bottom: 20px; border: 1.5px solid #8B4513;">
+            <div class="w-100 o_dashboard_header_row" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: nowrap; gap: 10px; min-width: 0;">
+                <div class="o_dashboard_title_section" style="min-width: 0; flex: 1 1 auto; overflow: hidden;">
+                    <h2 style="margin: 0; color: #8B4513; font-weight: bold; font-size: 18px;">
+                        <t t-if="iconClass">
+                            <span><i t-att-class="iconClass" style="font-size: 20px; color: #8B4513;"/></span>
+                            <t t-if="iconClass == 'fa fa-shield'">
+                                <span style="margin-left: -0.5rem;"> </span>
+                            </t>
+                            <t t-if="iconClass == 'fa fa-gavel'">
+                                <span style="margin-left: -1.5rem;"> </span>
+                            </t>
+                            <t t-if="iconClass != 'fa fa-shield' and iconClass != 'fa fa-gavel'">
+                                <span style="margin-right: 10px;"> </span>
+                            </t>
+                        </t>
+                        <t t-esc="title"/>
+                        <t t-if="state.selectedProjectName">
+                            <span class="o_selected_project_inline o_scope_pill o_scope_pill_project" t-att-title="state.selectedProjectName" style="max-width: 400px; display: inline-flex; align-items: center;">
+                                <i class="fa fa-briefcase" style="margin-right: 8px; flex-shrink: 0;"/>
+                                <span class="o_project_name_bold" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><t t-esc="state.selectedProjectName"/></span>
+                            </span>
+                        </t>
+                        <t t-if="state.selectedVillageName">
+                            <span class="o_selected_project_inline o_scope_pill o_scope_pill_village" t-att-title="state.selectedVillageName" style="margin-left: 10px; max-width: 280px; display: inline-flex; align-items: center;">
+                                <i class="fa fa-home" style="margin-right: 8px; flex-shrink: 0;"/>
+                                <span class="o_project_name_bold" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><t t-esc="state.selectedVillageName"/></span>
+                            </span>
+                        </t>
+                    </h2>
+                </div>
+                <div class="o_dashboard_actions" style="display: flex; gap: 8px; flex-wrap: nowrap; align-items: center; justify-content: flex-end; flex: 0 0 auto; margin-left: auto; min-width: 0;">
+                    <!-- Department (custom dropdown: logo icon per row) -->
+                    <t t-if="this.config.showDepartmentFilter">
+                        <t t-set="selDept" t-value="this.getSelectedDepartment()"/>
+                        <div t-ref="departmentDropdown"
+                             class="dropdown o_bhu_filter_dropdown o_bhu_department_dropdown"
+                             t-att-class="{ show: state.departmentDropdownOpen }">
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-secondary dropdown-toggle o_department_selector"
+                                    t-att-title="selDept ? this.getDepartmentOptionTitle(selDept) : 'Select Department'"
+                                    t-on-click.stop="toggleDepartmentDropdown"
+                                    aria-haspopup="true"
+                                    t-att-aria-expanded="state.departmentDropdownOpen ? 'true' : 'false'">
+                                <span t-if="selDept" class="o_bhu_dd_logo_slot flex-shrink-0">
+                                    <img t-if="selDept.department_has_logo"
+                                         class="o_bhu_dd_logo"
+                                         loading="lazy"
+                                         decoding="async"
+                                         t-att-alt="selDept.name || ''"
+                                         t-att-src="this.departmentLogoSrc(selDept.id)"/>
+                                    <span t-else="" class="o_bhu_dd_logo_placeholder">
+                                        <i t-att-class="this.departmentPlaceholderIcon(selDept)"/>
+                                    </span>
+                                </span>
+                                <span class="o_bhu_dd_label">
+                                    <t t-if="selDept" t-esc="this.getDepartmentOptionTitle(selDept)"/>
+                                    <t t-else="">Select Department</t>
+                                </span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end"
+                                t-att-class="{ show: state.departmentDropdownOpen }">
+                                <li>
+                                    <a href="#"
+                                       class="dropdown-item"
+                                       t-on-click.prevent="() => this.onDepartmentPick(null)">
+                                        Select Department
+                                    </a>
+                                </li>
+                                <t t-foreach="state.departments" t-as="department" t-key="department.id">
+                                    <li>
+                                        <a href="#"
+                                           t-attf-class="dropdown-item d-flex align-items-center gap-2 #{this.departmentRowClass(department)}"
+                                           t-att-title="this.getDepartmentOptionTitle(department)"
+                                           t-on-click.prevent="() => this.onDepartmentPick(department.id)">
+                                            <span class="o_bhu_dd_logo_slot flex-shrink-0">
+                                                <img t-if="department.department_has_logo"
+                                                     class="o_bhu_dd_logo"
+                                                     loading="lazy"
+                                                     decoding="async"
+                                                     t-att-alt="department.name || ''"
+                                                     t-att-src="this.departmentLogoSrc(department.id)"/>
+                                                <span t-else="" class="o_bhu_dd_logo_placeholder">
+                                                    <i t-att-class="this.departmentPlaceholderIcon(department)"/>
+                                                </span>
+                                            </span>
+                                            <span class="o_bhu_dd_label flex-grow-1 min-w-0">
+                                                <t t-esc="`${department.dropdown_label || this._formatDepartmentTitle(department) || department.name || ''} (${department.survey_count || 0})`"/>
+                                            </span>
+                                        </a>
+                                    </li>
+                                </t>
+                            </ul>
+                        </div>
+                    </t>
+                    <!-- Project -->
+                    <t t-if="this.config.showProjectFilter">
+                        <t t-set="selProject" t-value="this.getSelectedProject()"/>
+                        <select class="form-select o_project_selector o_bhu_native_filter"
+                                t-att-value="this.toString(state.selectedProject)"
+                                t-att-title="selProject ? this.getProjectOptionTitle(selProject) : ''"
+                                t-on-change="onProjectChange"
+                                t-att-disabled="this.config.showDepartmentFilter and !state.selectedDepartment">
+                            <option value="">Project</option>
+                            <t t-foreach="state.projects" t-as="project" t-key="project.id">
+                                <option
+                                    t-att-value="this.toString(project.id)"
+                                    t-att-title="this.getProjectOptionTitle(project)"
+                                    t-att-style="(project.survey_count || 0) > 0 ? 'background-color:#fff3e0; color:#7b3200; font-weight:700;' : 'background-color:#fff; color:#999;'"
+                                >
+                                    <t t-esc="`${project.code ? '[' + project.code + '] ' : ''}${project.name || ''} (${project.survey_count || 0})`"/>
+                                </option>
+                            </t>
+                        </select>
+                    </t>
+                    <!-- Village -->
+                    <t t-if="this.config.showVillageFilter">
+                        <t t-set="selVillage" t-value="this.getSelectedVillage()"/>
+                        <select class="form-select o_village_selector o_bhu_native_filter"
+                                t-att-value="this.toString(state.selectedVillage)"
+                                t-att-title="selVillage ? this.getVillageOptionTitle(selVillage) : ''"
+                                t-on-change="onVillageChange"
+                                t-att-disabled="!state.selectedProject">
+                            <option value="">Village</option>
+                            <t t-foreach="state.villages" t-as="village" t-key="village.id">
+                                <option
+                                    t-att-value="this.toString(village.id)"
+                                    t-att-title="this.getVillageOptionTitle(village)"
+                                    t-att-style="(village.survey_count || 0) > 0 ? 'background-color:#fff3e0; color:#7b3200; font-weight:700;' : 'background-color:#fff; color:#999;'"
+                                >
+                                    <t t-esc="this.getVillageOptionTitle(village)"/>
+                                </option>
+                            </t>
+                        </select>
+                    </t>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

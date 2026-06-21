@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Bulk Approval Wizard Form View -->
+    <record id="view_survey_bulk_approval_wizard_form" model="ir.ui.view">
+        <field name="name">bhu.survey.bulk.approval.wizard.form</field>
+        <field name="model">bhu.survey.bulk.approval.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Bulk Approval / बल्क अनुमोदन">
+                <sheet>
+                    <div class="alert alert-info" role="alert" style="margin-bottom: 15px;">
+                        <i class="fa fa-info-circle"/> This will approve all draft and submitted surveys for the selected project and village.
+                    </div>
+                    <group>
+                        <field name="project_name" readonly="1"/>
+                        <field name="village_name" readonly="1"/>
+                    </group>
+                    <group invisible="1">
+                        <field name="project_id" readonly="1" force_save="1"/>
+                        <field name="village_id" readonly="1" force_save="1"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_approve_surveys" string="Approve / अनुमोदित करें" type="object" class="btn-primary"/>
+                    <button string="Cancel / रद्द करें" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Bulk Approval Action -->
+    <record id="action_survey_bulk_approval_wizard" model="ir.actions.act_window">
+        <field name="name">Bulk Approval / बल्क अनुमोदन</field>
+        <field name="res_model">bhu.survey.bulk.approval.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>
+

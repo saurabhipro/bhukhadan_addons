@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Project Master File Report - All Screens in PDF -->
+        <record id="action_report_project_master" model="ir.actions.report">
+            <field name="name">Project Master File (All Screens) / परियोजना मास्टर फाइल</field>
+            <field name="model">bhu.project</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">bhukhadan_core.report_project_lifecycle</field>
+            <field name="report_file">bhukhadan_core.report_project_lifecycle</field>
+            <field name="print_report_name">'Project Master File - %s' % object.name</field>
+            <field name="binding_model_id" ref="model_bhu_project"/>
+            <field name="binding_type">report</field>
+            <field name="groups_id" eval="[(4, ref('bhukhadan_core.group_bhuarjan_sdm')), (4, ref('bhukhadan_core.group_bhuarjan_collector')), (4, ref('bhukhadan_core.group_bhuarjan_additional_collector')), (4, ref('bhukhadan_core.group_bhuarjan_admin'))]"/>
+        </record>
+
+
+        <!-- TEMPLATE 1: SUMMARY -->
+        <template id="report_project_master">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.external_layout">
+                        <div class="page" style="font-family: 'Mukta', sans-serif;">
+                            <!-- Header -->
+                            <div class="text-center mb-4" style="border-bottom: 2px solid #8B4513; padding-bottom: 15px;">
+                                <h2 style="color: #8B4513; font-weight: bold;">Project Status Dossier</h2>
+                                <h3 style="color: #555;">परियोजना स्थिति डोजियर</h3>
+                                <h4 class="mt-2"><span t-field="doc.name"/></h4>
+                            </div>
+
+                            <!-- Project Overview -->
+                            <div class="card mb-4">
+                                <div class="card-header" style="background-color: #f8f9fa;">
+                                    <strong>Project Overview / परियोजना विवरण</strong>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <p><strong>Code:</strong> <span t-field="doc.code"/></p>
+                                            <p><strong>Department:</strong> <span t-field="doc.department_id"/></p>
+                                            <p><strong>Status:</strong> <span t-field="doc.state"/></p>
+                                        </div>
+                                        <div class="col-6">
+                                            <p><strong>SDM(s):</strong> 
+                                                <t t-foreach="doc.sdm_ids" t-as="sdm">
+                                                    <span t-field="sdm.name"/>, 
+                                                </t>
+                                            </p>
+                                            <p><strong>Villages:</strong> <span t-esc="len(doc.village_ids)"/> Assigned</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 1. SIA Status -->
+                            <t t-set="sia_teams" t-value="doc.env['bhu.sia.team'].search([('project_id', '=', doc.id)])"/>
+                            <div class="mb-4" t-if="sia_teams">
+                                <h4 style="color: #8B4513; border-bottom: 1px solid #ccc;">1. Social Impact Assessment (SIA) / सामाजिक समाघात आकलन</h4>
+                                <table class="table table-sm table-bordered mt-2">
+                                    <thead style="background-color: #eee;">
+                                        <tr>
+                                            <th>Team Name</th>
+                                            <th>Villages</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="sia_teams" t-as="sia">
+                                            <td><span t-field="sia.name"/></td>
+                                            <td>
+                                                <t t-foreach="sia.village_ids" t-as="v">
+                                                    <span t-field="v.name"/><t t-if="not v_last">, </t>
+                                                </t>
+                                            </td>
+                                            <td>
+                                                <span t-field="sia.state"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- 2. Expert Committee -->
+                            <t t-set="expert_reports" t-value="doc.env['bhu.expert.committee.report'].search([('project_id', '=', doc.id)])"/>
+                            <div class="mb-4" t-if="expert_reports">
+                                <h4 style="color: #8B4513; border-bottom: 1px solid #ccc;">2. Expert Committee Report / विशेषज्ञ समिति की रिपोर्ट</h4>
+                                <table class="table table-sm table-bordered mt-2">
+                                    <thead>
+                                        <tr style="background-color: #eee;">
+                                            <th>Report Name</th>
+                                            <th>Villages</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="expert_reports" t-as="expert">
+                                            <td><span t-field="expert.name"/></td>
+                                            <td>
+                                                <t t-foreach="expert.village_ids" t-as="v">
+                                                    <span t-field="v.name"/><t t-if="not v_last">, </t>
+                                                </t>
+                                            </td>
+                                            <td><span t-field="expert.state"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- 3. Section 11 Preliminary Report -->
+                            <t t-set="sec11_reports" t-value="doc.env['bhu.section11.preliminary.report'].search([('project_id', '=', doc.id)])"/>
+                            <div class="mb-4" t-if="sec11_reports">
+                                <h4 style="color: #8B4513; border-bottom: 1px solid #ccc;">3. Section 11 Preliminary Notification / धारा 11 प्रारंभिक अधिसूचना</h4>
+                                <table class="table table-sm table-bordered mt-2">
+                                    <thead>
+                                        <tr style="background-color: #eee;">
+                                            <th>Village</th>
+                                            <th>Notification No.</th>
+                                            <th>Publication Date</th>
+                                            <th>Last Date of Obj.</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="sec11_reports" t-as="sec11">
+                                            <td><span t-field="sec11.village_id"/></td>
+                                            <td><span t-field="sec11.notification_number"/></td>
+                                            <td><span t-field="sec11.publication_date"/></td>
+                                            <td><span t-field="sec11.last_date_of_objection"/></td>
+                                            <td><span t-field="sec11.state"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                             <!-- 4. Section 15 Objections Summary -->
+                            <t t-set="objections" t-value="doc.env['bhu.section15.objection'].search([('project_id', '=', doc.id)])"/>
+                            <div class="mb-4" t-if="objections">
+                                <h4 style="color: #8B4513; border-bottom: 1px solid #ccc;">4. Section 15 Objections Summary / धारा 15 आपत्तियां सारांश</h4>
+                                <div class="row">
+                                    <div class="col-3">
+                                        <div class="alert alert-info py-2">
+                                            <strong>Total:</strong> <span t-esc="len(objections)"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="alert alert-warning py-2">
+                                            <strong>Draft:</strong> <span t-esc="len(objections.filtered(lambda o: o.state == 'draft'))"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="alert alert-success py-2">
+                                            <strong>Approved:</strong> <span t-esc="len(objections.filtered(lambda o: o.state == 'approved'))"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="alert alert-danger py-2">
+                                            <strong>Rejected:</strong> <span t-esc="len(objections.filtered(lambda o: o.state == 'rejected'))"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 5. Section 19 Declaration -->
+                            <t t-set="sec19_reports" t-value="doc.env['bhu.section19.notification'].search([('project_id', '=', doc.id)])"/>
+                            <div class="mb-4" t-if="sec19_reports">
+                                <h4 style="color: #8B4513; border-bottom: 1px solid #ccc;">5. Section 19 Declaration / धारा 19 घोषणा</h4>
+                                <table class="table table-sm table-bordered mt-2">
+                                    <thead>
+                                        <tr style="background-color: #eee;">
+                                            <th>Village</th>
+                                            <th>Declaration No.</th>
+                                            <th>Gazette Date</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="sec19_reports" t-as="sec19">
+                                            <td><span t-field="sec19.village_id"/></td>
+                                            <td><span t-field="sec19.declaration_number"/></td>
+                                            <td><span t-field="sec19.signed_date"/></td>
+                                            <td><span t-field="sec19.state"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                             <!-- 6. Section 21 Notification -->
+                            <t t-set="sec21_reports" t-value="doc.env['bhu.section21.notification'].search([('project_id', '=', doc.id)])"/>
+                            <div class="mb-4" t-if="sec21_reports">
+                                <h4 style="color: #8B4513; border-bottom: 1px solid #ccc;">6. Section 21 Notice / धारा 21 सूचना</h4>
+                                <table class="table table-sm table-bordered mt-2">
+                                    <thead>
+                                        <tr style="background-color: #eee;">
+                                            <th>Village</th>
+                                            <th>Public Notice Date</th>
+                                            <th>Notice Place</th>
+                                            <th>Claims Deadline</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="sec21_reports" t-as="sec21">
+                                            <td><span t-field="sec21.village_id"/></td>
+                                            <td><span t-field="sec21.public_notice_date"/></td>
+                                            <td><span t-field="sec21.public_hearing_place"/></td>
+                                            <td><span t-field="sec21.claims_objection_deadline"/></td>
+                                            <td><span t-field="sec21.state"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- 7. Awards -->
+                            <t t-set="awards" t-value="doc.env['bhu.section23.award'].search([('project_id', '=', doc.id)])"/>
+                            <div class="mb-4" t-if="awards">
+                                <h4 style="color: #8B4513; border-bottom: 1px solid #ccc;">7. Awards / अवार्ड</h4>
+                                <table class="table table-sm table-bordered mt-2">
+                                    <thead>
+                                        <tr style="background-color: #eee;">
+                                            <th>Village</th>
+                                            <th>Award No.</th>
+                                            <th>Award Date</th>
+                                            <th>Total Compensation</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="awards" t-as="award">
+                                            <td><span t-field="award.village_id"/></td>
+                                            <td><span t-field="award.award_number"/></td>
+                                            <td><span t-field="award.award_date"/></td>
+                                            <td><span t-field="award.total_compensation_amount"/></td>
+                                            <td><span t-field="award.state"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <!-- 8. Payment Reconciliation (Summary) -->
+                             <!-- (Optional) -->
+
+                            <div class="text-right mt-5 text-muted">
+                                <small>Report Generated on: <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d-%m-%Y %H:%M')"/></small>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <!-- TEMPLATE 2: DETAILED LIFECYCLE (All Screens) -->
+        <template id="report_project_lifecycle">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.external_layout">
+                        <div class="page" style="font-family: 'Mukta', sans-serif;">
+                            
+                            <!-- TITLE PAGE -->
+                            <div class="text-center" style="margin-top: 200px;">
+                                <h1 style="color: #8B4513; font-weight: bold; font-size: 36px;">Project Master File</h1>
+                                <h2 style="color: #555;">परियोजना विस्तृत डोजियर</h2>
+                                <hr style="width: 50%; border-color: #8B4513;"/>
+                                <h2 class="mt-4"><span t-field="doc.name"/></h2>
+                                <p class="lead">Code: <span t-field="doc.code"/></p>
+                                <p><strong>Department:</strong> <span t-field="doc.department_id.name"/></p>
+                            </div>
+                            <div style="page-break-after: always;"/>
+
+                            <!-- CHAPTER 1: PROJECT DETAILS SCREEN -->
+                            <div class="mb-5">
+                                <h2 style="color: white; background-color: #8B4513; padding: 10px;">1. Project Details / परियोजना विवरण</h2>
+                                <div class="card mt-3">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <p><strong>Name:</strong> <span t-field="doc.name"/></p>
+                                                <p><strong>Code:</strong> <span t-field="doc.code"/></p>
+                                                <p><strong>Department:</strong> <span t-field="doc.department_id"/></p>
+                                                <p><strong>SIA Exempt:</strong> <span t-field="doc.is_sia_exempt"/></p>
+                                            </div>
+                                            <div class="col-6">
+                                                <p><strong>Total Cost:</strong> <span t-field="doc.total_cost"/></p>
+                                                <p><strong>Status:</strong> <span t-field="doc.state"/></p>
+                                                <p><strong>Benefits:</strong> <span t-field="doc.project_benefits"/></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- CHAPTER 2: SECTION 4 NOTIFICATIONS -->
+                            <t t-set="sec4_list" t-value="doc.env['bhu.section4.notification'].search([('project_id', '=', doc.id)])"/>
+                            <div class="mb-5" t-if="sec4_list">
+                                <h2 style="color: white; background-color: #8B4513; padding: 10px;">2. Section 4 Notifications (SIA)</h2>
+                                <t t-foreach="sec4_list" t-as="rec">
+                                    <div class="card mt-3 mb-3 border-dark">
+                                        <div class="card-header bg-light">
+                                            <strong>Village: <span t-field="rec.village_id.name"/></strong> 
+                                            <span class="float-right badge badge-info"><span t-field="rec.state"/></span>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <p><strong>Created Date:</strong> <span t-field="rec.create_date" t-options='{"widget": "date"}'/></p>
+                                                    <p><strong>Signed Date:</strong> <span t-field="rec.signed_date"/></p>
+                                                    <p><strong>Notification No:</strong> <span t-field="rec.notification_seq_number"/></p>
+                                                </div>
+                                                <div class="col-6">
+                                                    <p><strong>Public Hearing Date:</strong> <span t-field="rec.public_hearing_date"/></p>
+                                                    <p><strong>Public Hearing Place:</strong> <span t-field="rec.public_hearing_place"/></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+
+                            <!-- CHAPTER 3: SIA REPORTS -->
+                            <t t-set="sia_list" t-value="doc.env['bhu.sia.team'].search([('project_id', '=', doc.id)])"/>
+                            <div class="mb-5" t-if="sia_list">
+                                <h2 style="color: white; background-color: #8B4513; padding: 10px;">3. SIA Reports / SIA रिपोर्ट</h2>
+                                <t t-foreach="sia_list" t-as="rec">
+                                    <div class="card mt-3 mb-3 border-dark">
+                                        <div class="card-header bg-light">
+                                            <strong>Village: <span t-field="rec.village_id.name"/></strong>
+                                            <span class="float-right badge badge-info"><span t-field="rec.state"/></span>
+                                        </div>
+                                        <div class="card-body">
+                                           <div class="row">
+                                                <div class="col-12">
+                                                    <p><strong>Villages:</strong> 
+                                                        <t t-foreach="rec.village_ids" t-as="v">
+                                                            <span t-field="v.name"/><t t-if="not v_last">, </t>
+                                                        </t>
+                                                    </p>
+                                                    <p><strong>Kramank:</strong> <span t-field="rec.kramank"/></p>
+                                                </div>
+                                           </div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+
+                            <!-- CHAPTER 4: EXPERT COMMITTEE REPORTS -->
+                            <t t-set="ec_list" t-value="doc.env['bhu.expert.committee.report'].search([('project_id', '=', doc.id)])"/>
+                            <div class="mb-5" t-if="ec_list">
+                                <h2 style="color: white; background-color: #8B4513; padding: 10px;">4. Expert Committee Reports / विशेषज्ञ समिति रिपोर्ट</h2>
+                                <t t-foreach="ec_list" t-as="rec">
+                                    <div class="card mt-3 mb-3 border-dark">
+                                        <div class="card-header bg-light">
+                                            <strong><span t-field="rec.name"/></strong>
+                                            <span class="float-right badge badge-info"><span t-field="rec.state"/></span>
+                                        </div>
+                                        <div class="card-body">
+                                            <p><strong>Affected Villages:</strong> 
+                                                <t t-foreach="rec.village_ids" t-as="v">
+                                                    <span t-field="v.name"/><t t-if="not v_last">, </t>
+                                                </t>
+                                            </p>
+                                            <p><strong>Kramank:</strong> <span t-field="rec.kramank"/></p>
+                                            <p><strong>Total Khasras:</strong> <span t-field="rec.total_khasras_count"/></p>
+                                            <p><strong>Total Area:</strong> <span t-field="rec.total_area_acquired"/> hectares</p>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+
+                            <!-- CHAPTER 5: SECTION 11 REPORTS -->
+                            <t t-set="sec11_list" t-value="doc.env['bhu.section11.preliminary.report'].search([('project_id', '=', doc.id)])"/>
+                            <div class="mb-5" t-if="sec11_list">
+                                <h2 style="color: white; background-color: #8B4513; padding: 10px;">5. Section 11 Preliminary Notifications</h2>
+                                <t t-foreach="sec11_list" t-as="rec">
+                                    <div class="card mt-3 mb-3 border-dark">
+                                        <div class="card-header bg-light">
+                                            <strong>Village: <span t-field="rec.village_id.name"/></strong>
+                                            <span class="float-right badge badge-info"><span t-field="rec.state"/></span>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <p><strong>Notification No:</strong> <span t-field="rec.notification_number"/></p>
+                                                    <p><strong>Publication Date:</strong> <span t-field="rec.publication_date"/></p>
+                                                </div>
+                                                <div class="col-6">
+                                                    <p><strong>Last Date of Objection:</strong> <span t-field="rec.last_date_of_objection"/></p>
+                                                    <p><strong>Land Parcels:</strong> <span t-esc="len(rec.land_parcel_ids)"/></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+                            <!-- (We can add a page break here if needed) -->
+                            <div style="page-break-inside: avoid;"/>
+
+                            <!-- CHAPTER 6: section 19 -->
+                             <t t-set="sec19_list" t-value="doc.env['bhu.section19.notification'].search([('project_id', '=', doc.id)])"/>
+                            <div class="mb-5" t-if="sec19_list">
+                                <h2 style="color: white; background-color: #8B4513; padding: 10px;">6. Section 19 Declarations</h2>
+                                <t t-foreach="sec19_list" t-as="rec">
+                                    <div class="card mt-3 mb-3 border-dark">
+                                        <div class="card-header bg-light">
+                                            <strong>Village: <span t-field="rec.village_id.name"/></strong>
+                                        </div>
+                                        <div class="card-body">
+                                            <p><strong>Declaration No:</strong> <span t-field="rec.declaration_number"/></p>
+                                            <p><strong>Signed Date:</strong> <span t-field="rec.signed_date"/></p>
+                                             <p><strong>State:</strong> <span t-field="rec.state"/></p>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+
+                            <!-- CHAPTER 7: section 21 -->
+                            <t t-set="sec21_list" t-value="doc.env['bhu.section21.notification'].search([('project_id', '=', doc.id)])"/>
+                            <div class="mb-5" t-if="sec21_list">
+                                <h2 style="color: white; background-color: #8B4513; padding: 10px;">7. Section 21 Notifications</h2>
+                                <t t-foreach="sec21_list" t-as="rec">
+                                    <div class="card mt-3 mb-3 border-dark">
+                                        <div class="card-header bg-light">
+                                            <strong>Village: <span t-field="rec.village_id.name"/></strong>
+                                        </div>
+                                        <div class="card-body">
+                                            <p><strong>Public Notice Date:</strong> <span t-field="rec.public_notice_date"/></p>
+                                            <p><strong>Hearing Place:</strong> <span t-field="rec.public_hearing_place"/></p>
+                                             <p><strong>Claims Deadline:</strong> <span t-field="rec.claims_objection_deadline"/></p>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+
+                             <!-- CHAPTER 8: Awards -->
+                            <t t-set="award_list" t-value="doc.env['bhu.section23.award'].search([('project_id', '=', doc.id)])"/>
+                            <div class="mb-5" t-if="award_list">
+                                <h2 style="color: white; background-color: #8B4513; padding: 10px;">8. Section 23 Awards</h2>
+                                <t t-foreach="award_list" t-as="rec">
+                                    <div class="card mt-3 mb-3 border-dark">
+                                        <div class="card-header bg-light">
+                                            <strong>Village: <span t-field="rec.village_id.name"/></strong>
+                                             <span class="float-right badge badge-success"><span t-field="rec.state"/></span>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                     <p><strong>Award No:</strong> <span t-field="rec.award_number"/></p>
+                                                     <p><strong>Date:</strong> <span t-field="rec.award_date"/></p>
+                                                </div>
+                                                <div class="col-6">
+                                                     <p><strong>Total Compensation:</strong> <span t-field="rec.total_compensation_amount"/></p>
+                                                     <p><strong>State:</strong> <span t-field="rec.state"/></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

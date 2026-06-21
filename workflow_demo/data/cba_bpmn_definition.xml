@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo noupdate="1">
+    <record id="cba_bpmn_default" model="cba.bpmn.definition">
+        <field name="name">SECL L and R Master SOP</field>
+        <field name="process_id">LR_Master_Process</field>
+        <field name="is_default">True</field>
+        <field name="bpmn_xml"><![CDATA[<!-- Loaded from static/src/bpmn/lr-department-master-process.bpmn at runtime -->]]></field>
+    </record>
+</odoo>

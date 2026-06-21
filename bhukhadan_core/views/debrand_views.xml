@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Remove Odoo Brand Promotion -->
+        <template id="brand_promotion_custom" inherit_id="web.brand_promotion" name="Custom Brand Promotion" priority="99">
+            <xpath expr="//div[hasclass('o_brand_promotion')]" position="replace"/>
+        </template>
+
+        <!-- Remove OAuth Providers and Separator from Login Page -->
+        <template id="hide_auth_providers" inherit_id="auth_oauth.providers" name="Remove OAuth Providers and Separator">
+            <xpath expr="//em[contains(text(), '- or -')]" position="replace"/>
+            <xpath expr="//div[hasclass('o_auth_oauth_providers') and hasclass('list-group') and hasclass('mt-1') and hasclass('mb-1') and hasclass('text-start')]" position="replace"/>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================
+         MOBILE APP PAGE  (/mobile-app)
+         ============================================================ -->
+    <template id="mobile_app_page" name="BhuKhadan – Mobile App">
+        <t t-call="website.layout">
+            <t t-set="additional_title">Mobile Field App — Land Survey</t>
+            <t t-set="meta_description">BhuKhadan Field App for mobile land survey, Khasra capture, GPS mapping, Form 10 reports, and offline field data collection for land acquisition projects.</t>
+            <t t-set="bhu_page_keywords" t-value="'coal bearing land acquisition mobile app, field survey app, Form 10, Khasra survey, GPS land mapping, CBA field data, BhuKhadan app'"/>
+            <t t-set="no_header" t-value="1"/>
+            <t t-set="no_footer" t-value="1"/>
+            <t t-set="head">
+                <t t-call="bhukhadan_web.seo_head"/>
+                <link rel="stylesheet" type="text/css"
+                      t-attf-href="/bhukhadan_web/static/src/css/bhuarjan_website.css?v=18.0.1.2.3"/>
+                <link rel="stylesheet"
+                      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+                <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap"
+                      rel="stylesheet"/>
+                <script type="text/javascript" src="/bhukhadan_web/static/src/js/bhuarjan_website.js"/>
+            </t>
+
+            <t t-call="bhukhadan_web.navbar"/>
+
+            <t t-set="bhu_mobile_app" t-value="request.env['bhuarjan.settings.master'].sudo().get_mobile_app_public_info()"/>
+
+            <!-- ── HERO ── -->
+            <section class="bma-hero">
+                <div class="bma-hero-bg-dots"/>
+                <div class="bma-hero-inner">
+                    <div class="bma-hero-left">
+                        <span class="bhu-hero-pill"><span class="dot"/> Field Data Collection App</span>
+                        <h1>BHUKHADAN<br/><span class="bma-accent">Field App</span></h1>
+                        <p class="bma-hero-sub">
+                            Digitise land surveys directly from the field. Capture Khasra data,
+                            GPS coordinates, owner details, and generate Form 10 reports —
+                            even in offline mode.
+                        </p>
+                        <div class="bma-hero-pills">
+                            <span><i class="fas fa-tower-broadcast"/> Offline Mode</span>
+                            <span><i class="fas fa-location-dot"/> GPS Capture</span>
+                            <span><i class="fas fa-camera"/> Photo Upload</span>
+                            <span><i class="fas fa-file-pdf"/> Instant PDF</span>
+                        </div>
+                        <div class="bma-hero-cta">
+                            <a t-if="bhu_mobile_app.get('available')" t-att-href="bhu_mobile_app.get('download_url')" class="bhu-btn primary">
+                                <i class="fab fa-android"/> Download APK
+                                <t t-if="bhu_mobile_app.get('version')"> (v<t t-esc="bhu_mobile_app.get('version')"/>)</t>
+                            </a>
+                            <a t-if="bhu_mobile_app.get('available')" href="/contact" class="bhu-btn bhu-btn-outline">
+                                <i class="fas fa-envelope"/> Request Access
+                            </a>
+                            <a t-if="not bhu_mobile_app.get('available')" href="/contact" class="bhu-btn primary">
+                                <i class="fas fa-envelope"/> Request Access
+                            </a>
+                            <a href="#bma-screenshots" class="bhu-btn ghost">
+                                <i class="fas fa-mobile-screen"/> View Screenshots
+                            </a>
+                        </div>
+                        <p t-if="bhu_mobile_app.get('available') and bhu_mobile_app.get('release_date_display')" class="bma-apk-meta">
+                            Latest release:
+                            <t t-esc="bhu_mobile_app.get('release_date_display')"/>
+                            <t t-if="bhu_mobile_app.get('version')"> · Version <t t-esc="bhu_mobile_app.get('version')"/></t>
+                        </p>
+                        <div class="bma-hero-badges">
+                            <div class="bma-badge">
+                                <div class="bma-badge-ico"><i class="fas fa-shield-halved"/></div>
+                                <div>
+                                    <div class="bma-badge-title">Government Grade</div>
+                                    <div class="bma-badge-sub">Secure &amp; encrypted</div>
+                                </div>
+                            </div>
+                            <div class="bma-badge">
+                                <div class="bma-badge-ico"><i class="fas fa-language"/></div>
+                                <div>
+                                    <div class="bma-badge-title">Hindi &amp; English</div>
+                                    <div class="bma-badge-sub">Bilingual interface</div>
+                                </div>
+                            </div>
+                            <div class="bma-badge">
+                                <div class="bma-badge-ico"><i class="fas fa-users"/></div>
+                                <div>
+                                    <div class="bma-badge-title">Role-Based</div>
+                                    <div class="bma-badge-sub">Patwari · RI · Tehsildar</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bma-hero-right">
+                        <div class="bma-phone-hero">
+                            <div class="bma-phone-frame">
+                                <div class="bma-phone-notch"/>
+                                <img src="/bhukhadan_web/static/src/img/app_screen_home.png"
+                                     alt="BHUKHADAN App – Home Dashboard"/>
+                            </div>
+                            <div class="bma-chip bma-chip-1">
+                                <i class="fas fa-circle-check"/> 99% Uptime
+                            </div>
+                            <div class="bma-chip bma-chip-2">
+                                <i class="fas fa-bolt"/> Real-time Sync
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ── SCREENSHOTS HEADING ── -->
+            <section class="bma-ss-heading" id="bma-screenshots">
+                <div class="bma-sec-inner" style="text-align:center;">
+                    <span class="bma-ss-tag">App Screens</span>
+                    <h2 class="bma-ss-main-title">Every feature, right in your pocket</h2>
+                    <p class="bma-ss-main-sub">From project selection to PDF generation — see all key screens of the BHUKHADAN Field App.</p>
+                </div>
+            </section>
+
+            <!-- ── SCREEN 1 – Home Dashboard  WHITE · phone LEFT ── -->
+            <section class="bma-ss bma-ss-light">
+                <div class="bma-ss-deco bma-ss-deco-tl"/>
+                <div class="bma-ss-inner">
+                    <div class="bma-ss-phone-col">
+                        <div class="bma-ss-glow bma-sg-blue"/>
+                        <div class="bma-phone-frame bma-phone-sm">
+                            <div class="bma-phone-notch"/>
+                            <img src="/bhukhadan_web/static/src/img/app_screen_home.png" alt="Home Dashboard"/>
+                        </div>
+                    </div>
+                    <div class="bma-ss-text-col">
+                        <div class="bma-ss-num-bg">01</div>
+                        <div class="bma-ss-icon"><i class="fas fa-house-chimney"/></div>
+                        <div class="bma-ss-lbl">Screen 01</div>
+                        <h3>Home Dashboard</h3>
+                        <p>Instantly see project stats — Total, Approved, Rejected, and Pending surveys — filtered by Department, Project, and Village.</p>
+                        <ul class="bma-ss-tags">
+                            <li><i class="fas fa-chart-simple"/> Live stat counters</li>
+                            <li><i class="fas fa-folder-tree"/> Project switcher</li>
+                            <li><i class="fas fa-map-pin"/> Village filter</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ── SCREEN 2 – Surveys List  DARK BLUE · phone RIGHT ── -->
+            <section class="bma-ss bma-ss-dark">
+                <div class="bma-ss-dots-overlay"/>
+                <div class="bma-ss-blob bma-sb-1"/>
+                <div class="bma-ss-blob bma-sb-2"/>
+                <div class="bma-ss-inner bma-ss-flip">
+                    <div class="bma-ss-phone-col">
+                        <div class="bma-ss-glow bma-sg-green"/>
+                        <div class="bma-phone-frame bma-phone-sm">
+                            <div class="bma-phone-notch"/>
+                            <img src="/bhukhadan_web/static/src/img/app_screen_surveys.png" alt="Surveys List"/>
+                        </div>
+                    </div>
+                    <div class="bma-ss-text-col">
+                        <div class="bma-ss-num-bg">02</div>
+                        <div class="bma-ss-icon bma-si-green"><i class="fas fa-list-check"/></div>
+                        <div class="bma-ss-lbl">Screen 02</div>
+                        <h3>Surveys List</h3>
+                        <p>Browse and search all Khasra surveys with status badges. Filter by Submitted, Approved, or All — and access PDF, photos, and delete actions inline.</p>
+                        <ul class="bma-ss-tags">
+                            <li><i class="fas fa-magnifying-glass"/> Khasra search</li>
+                            <li><i class="fas fa-filter"/> Status filter tabs</li>
+                            <li><i class="fas fa-bolt"/> Quick action icons</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ── SCREEN 3 – Survey Details  WHITE · phone LEFT ── -->
+            <section class="bma-ss bma-ss-light">
+                <div class="bma-ss-deco bma-ss-deco-br"/>
+                <div class="bma-ss-inner">
+                    <div class="bma-ss-phone-col">
+                        <div class="bma-ss-glow bma-sg-orange"/>
+                        <div class="bma-phone-frame bma-phone-sm">
+                            <div class="bma-phone-notch"/>
+                            <img src="/bhukhadan_web/static/src/img/app_screen_detail.png" alt="Survey Details"/>
+                        </div>
+                    </div>
+                    <div class="bma-ss-text-col">
+                        <div class="bma-ss-num-bg">03</div>
+                        <div class="bma-ss-icon bma-si-orange"><i class="fas fa-location-dot"/></div>
+                        <div class="bma-ss-lbl">Screen 03</div>
+                        <h3>Survey Details</h3>
+                        <p>Full land record in one view — Project &amp; Location, Khasra number, total &amp; acquired area, land type, owner information, and acquisition status.</p>
+                        <ul class="bma-ss-tags">
+                            <li><i class="fas fa-ruler-combined"/> Location &amp; area</li>
+                            <li><i class="fas fa-layer-group"/> Land classification</li>
+                            <li><i class="fas fa-pen-to-square"/> Edit &amp; Close</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ── SCREEN 4 – Form 10 PDF  DARK BLUE · phone RIGHT ── -->
+            <section class="bma-ss bma-ss-dark">
+                <div class="bma-ss-dots-overlay"/>
+                <div class="bma-ss-blob bma-sb-3"/>
+                <div class="bma-ss-blob bma-sb-4"/>
+                <div class="bma-ss-inner bma-ss-flip">
+                    <div class="bma-ss-phone-col">
+                        <div class="bma-ss-glow bma-sg-red"/>
+                        <div class="bma-phone-frame bma-phone-sm">
+                            <div class="bma-phone-notch"/>
+                            <img src="/bhukhadan_web/static/src/img/app_screen_form10.png" alt="Form 10 PDF"/>
+                        </div>
+                    </div>
+                    <div class="bma-ss-text-col">
+                        <div class="bma-ss-num-bg">04</div>
+                        <div class="bma-ss-icon bma-si-red"><i class="fas fa-file-pdf"/></div>
+                        <div class="bma-ss-lbl">Screen 04</div>
+                        <h3>Form 10 — PDF View</h3>
+                        <p>Generate and preview the official Form 10 (भू-अर्जन प्रारंभिक सर्वे प्रपत्र) directly on your device. Download or share instantly with all parcel entries and authority signatures.</p>
+                        <ul class="bma-ss-tags">
+                            <li><i class="fas fa-stamp"/> Official format</li>
+                            <li><i class="fas fa-table-list"/> Paginated view</li>
+                            <li><i class="fas fa-download"/> One-tap download</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ── FEATURE GRID ── -->
+            <section class="bma-features">
+                <div class="bma-sec-inner">
+                    <div class="bhu-sec-head" style="text-align:center; margin-bottom: 48px;">
+                        <span class="tag">App Capabilities</span>
+                        <h2>Built for field teams, loved by administrators</h2>
+                    </div>
+                    <div class="bma-feat-grid">
+                        <div class="bma-feat-card">
+                            <div class="bma-feat-ico"><i class="fas fa-tower-broadcast"/></div>
+                            <h4>Offline First</h4>
+                            <p>Capture surveys with no internet. Data syncs automatically once connectivity is restored.</p>
+                        </div>
+                        <div class="bma-feat-card">
+                            <div class="bma-feat-ico"><i class="fas fa-map-location-dot"/></div>
+                            <h4>GPS &amp; Mapping</h4>
+                            <p>Auto-capture precise GPS coordinates for each Khasra parcel during field visits.</p>
+                        </div>
+                        <div class="bma-feat-card">
+                            <div class="bma-feat-ico"><i class="fas fa-camera"/></div>
+                            <h4>Photo Evidence</h4>
+                            <p>Attach on-site photos to every survey record as visual proof of land conditions.</p>
+                        </div>
+                        <div class="bma-feat-card">
+                            <div class="bma-feat-ico"><i class="fas fa-file-lines"/></div>
+                            <h4>Form 10 Generation</h4>
+                            <p>Generate the official भू-अर्जन प्रारंभिक सर्वे प्रपत्र in one tap, ready for signatures.</p>
+                        </div>
+                        <div class="bma-feat-card">
+                            <div class="bma-feat-ico"><i class="fas fa-language"/></div>
+                            <h4>Bilingual UI</h4>
+                            <p>Switch between Hindi and English instantly. Data entry and labels in both languages.</p>
+                        </div>
+                        <div class="bma-feat-card">
+                            <div class="bma-feat-ico"><i class="fas fa-moon"/></div>
+                            <h4>Dark Mode</h4>
+                            <p>Easy on the eyes during late-night or indoor data entry sessions with a tap.</p>
+                        </div>
+                        <div class="bma-feat-card">
+                            <div class="bma-feat-ico"><i class="fas fa-arrows-rotate"/></div>
+                            <h4>Real-Time Sync</h4>
+                            <p>All data syncs instantly to the central BHUKHADAN platform for admin review.</p>
+                        </div>
+                        <div class="bma-feat-card">
+                            <div class="bma-feat-ico"><i class="fas fa-user-shield"/></div>
+                            <h4>Role-Based Access</h4>
+                            <p>Patwari, RI, and Tehsildar each have tailored screens and permissions.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ── STATS BAR ── -->
+            <section class="bma-stats-bar">
+                <div class="bma-sec-inner">
+                    <div class="bma-stat-row">
+                        <div class="bma-stat">
+                            <span class="bma-stat-num" data-count="5000" data-suffix="+">5000+</span>
+                            <span class="bma-stat-lbl">Khasras Surveyed</span>
+                        </div>
+                        <div class="bma-stat-div"/>
+                        <div class="bma-stat">
+                            <span class="bma-stat-num" data-count="120" data-suffix="+">120+</span>
+                            <span class="bma-stat-lbl">Active Projects</span>
+                        </div>
+                        <div class="bma-stat-div"/>
+                        <div class="bma-stat">
+                            <span class="bma-stat-num" data-count="200" data-suffix="+">200+</span>
+                            <span class="bma-stat-lbl">Field Officers</span>
+                        </div>
+                        <div class="bma-stat-div"/>
+                        <div class="bma-stat">
+                            <span class="bma-stat-num" data-count="99" data-suffix="%">99%</span>
+                            <span class="bma-stat-lbl">Sync Success Rate</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ── CTA ── -->
+            <section class="bma-cta">
+                <div class="bma-cta-inner">
+                    <div class="bma-cta-phones">
+                        <div class="bma-phone-frame bma-phone-cta bma-cta-phone-1">
+                            <div class="bma-phone-notch"/>
+                            <img src="/bhukhadan_web/static/src/img/app_screen_surveys.png" alt=""/>
+                        </div>
+                        <div class="bma-phone-frame bma-phone-cta bma-cta-phone-2">
+                            <div class="bma-phone-notch"/>
+                            <img src="/bhukhadan_web/static/src/img/app_screen_detail.png" alt=""/>
+                        </div>
+                    </div>
+                    <div class="bma-cta-content">
+                        <span class="tag">Official Use Only</span>
+                        <h2>Available to authorised<br/>government officials</h2>
+                        <p>
+                            The BHUKHADAN Field App is distributed exclusively to authorised
+                            district administration officers. Contact us to get access for your team.
+                        </p>
+                        <div class="bma-cta-actions">
+                            <a href="/contact" class="bhu-btn primary">
+                                <i class="fas fa-envelope"/> Request Access
+                            </a>
+                            <a href="/" class="bhu-btn ghost">
+                                <i class="fas fa-desktop"/> View Web Portal
+                            </a>
+                        </div>
+                        <div class="bma-cta-trust">
+                            <span><i class="fas fa-shield-halved"/> Bank-Grade Security</span>
+                            <span><i class="fas fa-lock"/> Encrypted Data</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <t t-call="bhukhadan_web.footer"/>
+        </t>
+    </template>
+
+</odoo>

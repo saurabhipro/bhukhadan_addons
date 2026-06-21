@@ -1,0 +1,96 @@
+<odoo>
+    <data>
+        <record id="email_bhuarjan_survey_submit_form" model="mail.template">
+            <field name="name">Survey: Submitted for Approval</field>
+            <field name="model_id" ref="bhukhadan_core.model_bhu_survey"/>
+            <field name="email_from">${(object.user_id.email_formatted or 'admin@bhuarjan.com')}</field>
+            <field name="email_to">${object.user_id.partner_id.email if (object.user_id and object.user_id.partner_id and object.user_id.partner_id.email) else (object.user_id.email if (object.user_id and object.user_id.email) else '')}</field>
+            <field name="subject">Survey Submitted for Approval - ${object.name}</field>
+            <field name="description">Email sent to user when survey is submitted for approval</field>
+            <field name="body_html" type="html">
+                <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f5f5f5;">
+                    <div style="background-color: #ffffff; border-radius: 8px; padding: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <!-- Header -->
+                        <div style="text-align: center; margin-bottom: 30px; border-bottom: 3px solid #2c5aa0; padding-bottom: 20px;">
+                            <h1 style="color: #2c5aa0; margin: 0; font-size: 24px; font-weight: 600;">Survey Submitted for Approval</h1>
+                            <p style="color: #666; margin: 10px 0 0 0; font-size: 14px;">BhuKhadan - Land Acquisition Management System</p>
+                        </div>
+                        
+                        <!-- Greeting -->
+                        <div style="margin-bottom: 25px;">
+                            <p style="color: #333; font-size: 16px; line-height: 1.6; margin: 0;">
+                                Dear ${object.user_id.name or 'User'},
+                            </p>
+                        </div>
+                        
+                        <!-- Main Content -->
+                        <div style="background-color: #f8f9fa; border-left: 4px solid #2c5aa0; padding: 20px; margin-bottom: 25px; border-radius: 4px;">
+                            <p style="color: #333; font-size: 15px; line-height: 1.7; margin: 0 0 15px 0;">
+                                Your survey has been successfully submitted for approval. Please review the details below:
+                            </p>
+                            
+                            <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+                                <tr>
+                                    <td style="padding: 8px 0; color: #555; font-size: 14px; font-weight: 600; width: 40%;">Survey Number:</td>
+                                    <td style="padding: 8px 0; color: #333; font-size: 14px;"><strong>${object.name}</strong></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px 0; color: #555; font-size: 14px; font-weight: 600;">Project:</td>
+                                    <td style="padding: 8px 0; color: #333; font-size: 14px;">${object.project_id.name or 'N/A'}</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px 0; color: #555; font-size: 14px; font-weight: 600;">Village:</td>
+                                    <td style="padding: 8px 0; color: #333; font-size: 14px;">${object.village_id.name or 'N/A'}</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px 0; color: #555; font-size: 14px; font-weight: 600;">Khasra Number:</td>
+                                    <td style="padding: 8px 0; color: #333; font-size: 14px;">${object.khasra_number or 'N/A'}</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px 0; color: #555; font-size: 14px; font-weight: 600;">Survey Date:</td>
+                                    <td style="padding: 8px 0; color: #333; font-size: 14px;">${object.survey_date.strftime('%d-%m-%Y') if object.survey_date else 'N/A'}</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px 0; color: #555; font-size: 14px; font-weight: 600;">Status:</td>
+                                    <td style="padding: 8px 0; color: #28a745; font-size: 14px; font-weight: 600;">Submitted</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <!-- Action Button -->
+                        <div style="text-align: center; margin: 30px 0;">
+                            <a href="${object.env['ir.config_parameter'].sudo().get_param('web.base.url')}/web#id=${object.id}&amp;model=bhu.survey&amp;view_type=form" 
+                               style="display: inline-block; background-color: #2c5aa0; color: #ffffff; text-decoration: none; padding: 14px 32px; border-radius: 5px; font-size: 16px; font-weight: 600; box-shadow: 0 2px 4px rgba(44, 90, 160, 0.3); transition: background-color 0.3s;">
+                                View Survey Details
+                            </a>
+                        </div>
+                        
+                        <!-- Additional Info -->
+                        <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid #e0e0e0;">
+                            <p style="color: #666; font-size: 13px; line-height: 1.6; margin: 0 0 10px 0;">
+                                <strong>Next Steps:</strong>
+                            </p>
+                            <ul style="color: #666; font-size: 13px; line-height: 1.8; margin: 0; padding-left: 20px;">
+                                <li>Your survey is now pending approval from the authorized personnel</li>
+                                <li>You will be notified once the survey is reviewed and approved</li>
+                                <li>You can track the status by clicking the link above</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Footer -->
+                        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0; text-align: center;">
+                            <p style="color: #999; font-size: 12px; margin: 0; line-height: 1.5;">
+                                This is an automated email from BhuKhadan System.<br/>
+                                Please do not reply to this email.
+                            </p>
+                            <p style="color: #999; font-size: 11px; margin: 10px 0 0 0;">
+                                © ${object.env['ir.config_parameter'].sudo().get_param('web.base.url')}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </field>
+            <field name="auto_delete" eval="False"/>
+        </record>
+    </data>
+</odoo>

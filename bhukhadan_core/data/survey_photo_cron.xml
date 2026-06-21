@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="ir_cron_sync_survey_photos_from_s3" model="ir.cron">
+            <field name="name">BhuKhadan: Sync survey photos from S3</field>
+            <field name="model_id" ref="model_bhu_survey_photo"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_sync_recent_survey_photos_from_s3()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">hours</field>
+            <field name="active">True</field>
+        </record>
+    </data>
+</odoo>

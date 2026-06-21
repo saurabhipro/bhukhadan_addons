@@ -1,0 +1,51 @@
+/* Green corner ribbon with white tick for approved BhuKhadan forms */
+.bhu_approved_form .o_form_sheet {
+    position: relative;
+    overflow: hidden;
+}
+
+.bhu_approved_form .o_web_ribbon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    margin: 0;
+    overflow: visible;
+    transform: none !important;
+    box-shadow: none;
+    font-size: 0;
+    z-index: 2;
+    pointer-events: none;
+    border: none;
+    background: none;
+}
+
+.bhu_approved_form .o_web_ribbon::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-style: solid;
+    border-width: 0 44px 44px 0;
+    border-color: transparent #28a745 transparent transparent;
+}
+
+.bhu_approved_form .o_web_ribbon::after {
+    content: '\f00c';
+    font-family: FontAwesome;
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 900;
+    line-height: 1;
+    z-index: 1;
+}
+
+.bhu_approved_form .o_web_ribbon > span,
+.bhu_approved_form .o_web_ribbon .text-bg-success {
+    display: none !important;
+}

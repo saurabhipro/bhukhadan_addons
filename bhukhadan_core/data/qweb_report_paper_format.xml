@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- SIA Paper Format for Reports -->
+        <record id="bhuarjan_sia_paper_format" model="report.paperformat">
+            <field name="name">SIA Paper Format</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">23</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">35</field> 
+            <field name="dpi">90</field>
+        </record>
+        
+        <!-- Landscape Paper Format for Form 10 -->
+        <record id="bhuarjan_landscape_paper_format" model="report.paperformat">
+            <field name="name">Form 10</field>
+            <field name="format">A4</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">50</field>
+            <field name="margin_bottom">40</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">30</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <!-- Landscape Paper Format for section 23 award -->
+        <record id="bhuarjan_section_23_award_paper_format" model="report.paperformat">
+            <field name="name">Form 10</field>
+            <field name="format">A4</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">30</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">30</field>
+            <field name="dpi">90</field>
+        </record>
+    </data>
+</odoo>

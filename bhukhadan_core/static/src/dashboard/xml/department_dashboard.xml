@@ -1,0 +1,201 @@
+<templates xml:space="preserve">
+    <t t-name="bhukhadan_core.DepartmentDashboardTemplate" owl="1">
+        <div class="o_admin_dashboard" t-ref="dashboardRoot">
+            <!-- Header with Role Title -->
+            <t t-call="bhukhadan_core.DashboardHeader">
+                <t t-set="title" t-value="'Department User Dashboard'"/>
+                <t t-set="iconClass" t-value="'fa fa-building'"/>
+            </t>
+
+            <!-- Loading State -->
+            <div t-if="state.loading" class="text-center p-4">
+                <i class="fa fa-spinner fa-spin fa-2x"/> Loading...
+            </div>
+
+            <!-- Dashboard Content -->  
+            <div t-if="!state.loading" class="o_dashboard_content">
+                <!-- Selection gate: Project and Village required -->
+                <div t-if="!state.selectedProject || !state.selectedVillage" class="o_dashboard_selection_gate">
+                    <div class="o_selection_panel">
+                        <div class="o_selection_panel_icons">
+                            <i class="fa fa-map-marker" title="Village"/>
+                            <i class="fa fa-briefcase" title="Project"/>
+                        </div>
+                        <h3 class="o_selection_panel_title">
+                            <i class="fa fa-info-circle" title="Information"/>
+                            Selection Required
+                        </h3>
+                        <p class="o_selection_panel_text">
+                            Please select both <strong>Project</strong> and <strong>Village</strong> from the filters above to view the dashboard.
+                        </p>
+                        <div class="o_selection_badge_row">
+                            <div t-if="!state.selectedProject" class="o_selection_badge o_selection_badge_missing">
+                                <i class="fa fa-briefcase" title="Project status"/>
+                                <span>Project: Not Selected</span>
+                            </div>
+                            <div t-if="state.selectedProject" class="o_selection_badge o_selection_badge_ready">
+                                <i class="fa fa-check-circle" title="Project status"/>
+                                <span>Project: Selected</span>
+                            </div>
+                            <div t-if="!state.selectedVillage" class="o_selection_badge o_selection_badge_missing">
+                                <i class="fa fa-map-marker" title="Village status"/>
+                                <span>Village: Not Selected</span>
+                            </div>
+                            <div t-if="state.selectedVillage" class="o_selection_badge o_selection_badge_ready">
+                                <i class="fa fa-check-circle" title="Village status"/>
+                                <span>Village: Selected</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <t t-if="state.selectedProject &amp;&amp; state.selectedVillage">
+                <!-- Status Legend Section - At the top -->
+                <div class="o_status_legend_section">
+                    <div class="o_status_legend_container">
+                        <div class="o_status_legend_title">
+                            <i class="fa fa-info-circle"/>
+                            <span>Status Legend</span>
+                        </div>
+                        <div class="o_status_legend_items">
+                            <div class="o_legend_item">
+                                <i class="fa fa-file-o o_legend_icon_draft"/>
+                                <span class="o_legend_label">Draft</span>
+                            </div>
+                            <div class="o_legend_item">
+                                <i class="fa fa-paper-plane o_legend_icon_submitted"/>
+                                <span class="o_legend_label">Submitted</span>
+                            </div>
+                            <div class="o_legend_item">
+                                <i class="fa fa-check-circle o_legend_icon_approved"/>
+                                <span class="o_legend_label">Approved</span>
+                            </div>
+                            <div class="o_legend_item">
+                                <i class="fa fa-times-circle o_legend_icon_rejected"/>
+                                <span class="o_legend_label">Returned</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Survey Statistics Cards -->
+                <div class="o_dashboard_section">
+                    <h3 class="o_section_title">
+                        <i class="fa fa-clipboard"/> SURVEY STATISTICS
+                    </h3>
+                    <div class="o_stats_grid">
+                        <!-- Total Surveys Card -->
+                        <div class="o_stat_card o_card_total_surveys" t-on-click="() => this.openSurveysByState(null)">
+                            <div class="o_stat_icon">
+                                <i class="fa fa-list-alt"/>
+                            </div>
+                            <div class="o_stat_content">
+                                <div class="o_stat_label">TOTAL SURVEYS</div>
+                                <div class="o_stat_value"><t t-esc="state.stats ? state.stats.survey_total : 0"/></div>
+                            </div>
+                        </div>
+
+                        <!-- Draft Surveys Card -->
+                        <div class="o_stat_card o_card_draft" t-on-click="() => this.openSurveysByState('draft')">
+                            <div class="o_stat_icon">
+                                <i class="fa fa-file-o"/>
+                            </div>
+                            <div class="o_stat_content">
+                                <div class="o_stat_label">DRAFT</div>
+                                <div class="o_stat_value"><t t-esc="state.stats ? state.stats.survey_draft : 0"/></div>
+                            </div>
+                        </div>
+
+                        <!-- Submitted Surveys Card -->
+                        <div class="o_stat_card o_card_submitted" t-on-click="() => this.openSurveysByState('submitted')">
+                            <div class="o_stat_icon">
+                                <i class="fa fa-paper-plane"/>
+                            </div>
+                            <div class="o_stat_content">
+                                <div class="o_stat_label">SUBMITTED</div>
+                                <div class="o_stat_value"><t t-esc="state.stats ? state.stats.survey_submitted : 0"/></div>
+                            </div>
+                        </div>
+
+                        <!-- Approved Surveys Card -->
+                        <div class="o_stat_card o_card_approved" t-on-click="() => this.openSurveysByState('approved')">
+                            <div class="o_stat_icon">
+                                <i class="fa fa-check-circle"/>
+                            </div>
+                            <div class="o_stat_content">
+                                <div class="o_stat_label">APPROVED</div>
+                                <div class="o_stat_value"><t t-esc="state.stats ? state.stats.survey_approved : 0"/></div>
+                            </div>
+                        </div>
+
+                        <!-- Returned/Rejected Surveys Card -->
+                        <div class="o_stat_card o_card_rejected" t-on-click="() => this.openSurveysByState('rejected')">
+                            <div class="o_stat_icon">
+                                <i class="fa fa-times-circle"/>
+                            </div>
+                            <div class="o_stat_content">
+                                <div class="o_stat_label">RETURNED</div>
+                                <div class="o_stat_value"><t t-esc="state.stats ? state.stats.survey_rejected : 0"/></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- List View Section - Only Surveys -->
+                <div class="o_dashboard_section">
+                    <div class="o_sections_list">
+                        <!-- Surveys - Step 1 Only -->
+                        <div class="o_section_list_item o_card_no_click">
+                            <div class="o_section_list_step">
+                                <span class="o_step_number bg-primary"><t t-esc="this.getStepNumber('Surveys', 'Step 1')"/></span>
+                            </div>
+                            <div class="o_section_list_icon">
+                                <i class="fa fa-clipboard"/>
+                            </div>
+                            <div class="o_section_list_content">
+                                <div class="o_section_list_title">
+                                    <i class="fa fa-clipboard" style="margin-right: 8px; color: #8B4513;"/>
+                                    Surveys
+                                    <t t-if="state.stats &amp;&amp; state.stats.survey_info &amp;&amp; state.stats.survey_info.is_completed">
+                                        <span class="o_completion_tick" title="All surveys completed">
+                                            <i class="fa fa-check-circle"/>
+                                        </span>
+                                    </t>
+                                </div>
+                                <div class="o_completion_widget_list o_completion_single_line">
+                                    <div class="o_completion_percent_list"><t t-esc="state.stats ? (state.stats.survey_completion_percent || 0) : 0"/>%</div>
+                                    <div class="o_section_list_count">
+                                        <span class="o_count_badge o_count_draft"><i class="fa fa-file-o"/> <t t-esc="state.stats ? (state.stats.survey_info ? state.stats.survey_info.draft_count : 0) : 0"/></span>
+                                        <span class="o_count_badge o_count_submitted"><i class="fa fa-paper-plane"/> <t t-esc="state.stats ? (state.stats.survey_info ? state.stats.survey_info.submitted_count : 0) : 0"/></span>
+                                        <span class="o_count_badge o_count_approved"><i class="fa fa-check-circle"/> <t t-esc="state.stats ? (state.stats.survey_info ? state.stats.survey_info.approved_count : 0) : 0"/></span>
+                                        <span class="o_count_badge o_count_rejected"><i class="fa fa-times-circle"/> <t t-esc="state.stats ? (state.stats.survey_info ? state.stats.survey_info.rejected_count : 0) : 0"/></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="o_section_list_actions">
+                                <button class="btn btn-sm btn-info" 
+                                        t-on-click.stop="() => this.openFirstDocument('bhu.survey', state.stats &amp;&amp; state.stats.survey_info ? state.stats.survey_info : null)"
+                                        t-att-disabled="!(state.stats &amp;&amp; state.stats.survey_info &amp;&amp; state.stats.survey_info.total > 0)">
+                                    <i class="fa fa-eye"/> View/Edit
+                                </button>
+                                <button class="btn btn-sm btn-success" 
+                                        t-on-click.stop="() => this.openFirstPending('bhu.survey', state.stats &amp;&amp; state.stats.survey_info ? state.stats.survey_info.first_pending_id : false, state.stats &amp;&amp; state.stats.survey_info ? state.stats.survey_info : null)"
+                                        t-att-disabled="state.stats &amp;&amp; state.stats.survey_info ? this.isAllApproved(state.stats.survey_info) : true"
+                                        title="Approve First Pending Survey">
+                                    <i class="fa fa-check"/> Approve
+                                </button>
+                                <button class="btn btn-sm btn-danger" 
+                                        t-on-click.stop="() => this.openFirstPending('bhu.survey', state.stats &amp;&amp; state.stats.survey_info ? state.stats.survey_info.first_pending_id : false, state.stats &amp;&amp; state.stats.survey_info ? state.stats.survey_info : null)"
+                                        t-att-disabled="state.stats &amp;&amp; state.stats.survey_info ? this.isAllApproved(state.stats.survey_info) : true"
+                                        title="Reject First Pending Survey">
+                                    <i class="fa fa-times"/> Reject
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </t>
+            </div>
+        </div>
+    </t>
+</templates>

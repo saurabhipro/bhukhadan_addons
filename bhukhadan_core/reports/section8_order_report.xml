@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Section 8 Order — CG-style धारा 8 आदेश (two pages); dynamic data from bhu.section8 + project + village + Section Master -->
+    <record id="action_report_section8_order" model="ir.actions.report">
+        <field name="name">Section 8 Order / धारा 8 आदेश</field>
+        <field name="model">bhu.section8</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">bhukhadan_core.section8_order_report</field>
+        <field name="report_file">bhukhadan_core.section8_order_report</field>
+        <field name="paperformat_id" ref="bhukhadan_core.bhuarjan_sia_paper_format"/>
+        <field name="binding_model_id" ref="model_bhu_section8"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'Section8_Order_' + (((object.order_kramank or object.name) or 'Export').replace('/', '-') if object else 'Export')</field>
+    </record>
+
+    <template id="section8_order_report">
+        <t t-call="web.html_container">
+            <meta charset="utf-8"/>
+            <t t-foreach="docs" t-as="doc">
+                <t t-if="doc">
+                    <t t-set="district_name" t-value="doc._report_district_name()"/>
+                    <t t-set="order_date" t-value="doc._report_order_date_only()"/>
+                    <t t-set="village_lbl" t-value="doc._report_primary_village_name()"/>
+                    <t t-set="tehsil_lbl" t-value="doc._report_primary_tehsil_name()"/>
+                    <t t-set="project_prose" t-value="doc._report_project_prose_for_order()"/>
+                    <t t-set="subdiv_first" t-value="doc._report_first_subdivision_name()"/>
+
+                    <t t-call="web.basic_layout">
+                        <t t-call="bhukhadan_core.report_common_styles"/>
+                        <style>
+                            .sec8-order { font-size: 15px !important; line-height: 1.65 !important; color: #111; }
+                            .sec8-order p { text-align: justify; margin: 0 0 10px 0; }
+                            .sec8-ul { margin: 8px 0 12px 0; padding-left: 22px; }
+                            .sec8-ul li { margin-bottom: 6px; text-align: justify; }
+                            .sec8-ol { margin: 10px 0 12px 0; padding-left: 22px; }
+                            .sec8-ol li { margin-bottom: 8px; text-align: justify; }
+                        </style>
+
+                        <!-- ——— Page 1 ——— -->
+                        <div class="sec8-order container letter_space" style="padding: 12px 14px 28px 14px;">
+                            <div style="text-align: center; font-weight: bold; font-size: 18px; margin-bottom: 6px;">
+                                कार्यालय कलेक्टर (भू-अर्जन शाखा) जिला <t t-if="district_name"><span t-esc="district_name"/></t><t t-if="not district_name">………………</t> (छ०ग०)
+                            </div>
+                            <div style="text-align: center; font-size: 20px; font-weight: bold; margin: 14px 0 16px 0;">
+                                // आदेश //
+                            </div>
+
+                            <table style="width: 100%; border-collapse: collapse; margin-bottom: 18px; font-size: 15px;">
+                                <tr>
+                                    <td style="vertical-align: top; width: 55%;">
+                                        <strong>क्रमांक</strong> <span t-esc="doc._report_kramank_display()"/>
+                                    </td>
+                                    <td style="vertical-align: top; text-align: right; width: 45%;">
+                                        <t t-if="district_name"><span t-esc="district_name"/></t><t t-if="not district_name">………………</t>
+                                        <strong> दिनांक </strong>
+                                        <t t-if="order_date"><span t-esc="order_date"/></t><t t-if="not order_date">………………</t>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <p>
+                                भूमि अर्जन, पुनर्वासन एवं पुनर्व्यवस्थापन में उचित प्रतिकर तथा पारदर्शिता का अधिकार अधिनियम, 2013 (hereinafter referred to as &quot;the Act&quot;) के अंतर्गत
+                                जिला <strong><t t-if="district_name"><span t-esc="district_name"/></t><t t-if="not district_name">………………</t></strong>
+                                में स्थित ग्राम <strong><t t-if="village_lbl"><span t-esc="village_lbl"/></t><t t-if="not village_lbl">………………</t></strong>,
+                                तहसील <strong><t t-if="tehsil_lbl"><span t-esc="tehsil_lbl"/></t><t t-if="not tehsil_lbl">………………</t></strong>
+                                से सम्बद्ध भूमि हेतु निम्नलिखित परियोजना के लिए भूमि अर्जन की कार्यवाही प्रचलित है&#160;—
+                                <strong><t t-if="project_prose"><span t-esc="project_prose"/></t><t t-if="not project_prose">……………………………………</t></strong>।
+                            </p>
+
+                            <p><strong>2/</strong> विशेषज्ञ समूह द्वारा क्षेत्र भ्रमण, हितधारकों से परामर्श एवं सामाजिक-आर्थिक प्रभाव आकलन उपरान्त अपनी रिपोर्ट प्रस्तुत की गई है।</p>
+
+                            <p><strong>3/</strong> विशेषज्ञ समूह की रिपोर्ट के परीक्षणोपरान्त निम्न बिन्दु स्पष्ट होते हैं&#160;—</p>
+                            <ul class="sec8-ul">
+                                <li>लोक प्रयोजन हेतु भूमि अर्जन आवश्यक है।</li>
+                                <li>सामाजिक-आर्थिक प्रभावों की तुलना में लाभ अधिक है।</li>
+                                <li>वैकल्पिक भूमि संबंधी विकल्पों पर विचार किया गया है।</li>
+                                <li>अधिनियम, 2013 के अनुरूप पुनर्वास एवं पुनर्व्यवस्थापन संभव है।</li>
+                            </ul>
+
+                            <p><strong>4/</strong> विशेषज्ञ समूह की संस्तुतियाँ अधिनियम के उद्देश्यों के अनुरूप हैं।</p>
+
+                            <p style="margin-top: 14px;">
+                                <strong>अतः</strong> जिला कलेक्टर एवं दक्ष अधिकारी, अधिनियम 2013 की <strong>धारा 8</strong> में प्रदत्त शक्तियों का प्रयोग करते हुए,
+                                विशेषज्ञ समूह की रिपोर्ट को स्वीकार कर निम्नानुसार आदेश पारित किया जाता है&#160;—
+                            </p>
+                            <ol class="sec8-ol">
+                                <li>प्रस्तावित भूमि के अर्जन की कार्यवाही आगे बढ़ाने हेतु स्वीकृति प्रदान की जाती है।</li>
+                                <li>आगामी कार्यवाही अधिनियम 2013 एवं उसके नियमों के अनुरूप की जाये।</li>
+                                <li>प्रतिकर, पुनर्वास एवं पुनर्व्यवस्थापन सम्बन्धी वैधानिक अधिकारों का समयबद्ध तरीके से निर्वहन सुनिश्चित किया जाये।</li>
+                                <li>यह आदेश विशेषज्ञ रिपोर्ट के आधार पर सिद्धान्ततः स्वीकृति हेतु है; प्रतिकर निर्धारण पृथक् प्रक्रिया में किया जायेगा।</li>
+                            </ol>
+
+                            <!-- Internal reference (DB) -->
+                            <p style="font-size: 13px; color: #444; margin-top: 16px;">
+                                <em>प्रणाली संदर्भः संतुष्टि दर्ज करना&#160;—</em>
+                                <span t-esc="doc._report_selection_label('is_satisfied')"/>
+                                <t t-if="doc.state"> | स्थिति: <span t-esc="doc._report_selection_label('state')"/></t>
+                            </p>
+
+                            <div style="text-align: right; margin-top: 48px; font-size: 15px;">
+                                <div style="font-weight: bold;">कलेक्टर</div>
+                                <div>जिला-<t t-if="district_name"><span t-esc="district_name"/></t><t t-if="not district_name">………………</t></div>
+                            </div>
+                        </div>
+
+                        <!-- ——— Page 2 ——— -->
+                        <div class="sec8-order container letter_space" style="page-break-before: always; padding: 12px 14px 28px 14px;">
+                            <div style="text-align: center; font-weight: bold; margin-bottom: 16px;">// 02 //</div>
+
+                            <table style="width: 100%; border-collapse: collapse; margin-bottom: 18px; font-size: 15px;">
+                                <tr>
+                                    <td style="vertical-align: top; width: 58%;">
+                                        <strong>पृ० क्रमांक</strong> <span t-esc="doc._report_kramank_display()"/>
+                                    </td>
+                                    <td style="vertical-align: top; text-align: right; width: 42%;">
+                                        <t t-if="district_name"><span t-esc="district_name"/></t><t t-if="not district_name">………………</t>
+                                        <strong> दिनांक </strong>
+                                        <t t-if="order_date"><span t-esc="order_date"/></t><t t-if="not order_date">………………</t>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <p style="font-weight: bold; margin-bottom: 10px;">प्रतिलिपि&#160;:-</p>
+                            <ol class="sec8-ol">
+                                <li>
+                                    अनुविभागीय अधिकारी (राजस्व)
+                                    <t t-if="subdiv_first"><span t-esc="subdiv_first"/></t><t t-if="not subdiv_first">………………</t>,
+                                    जिला <t t-if="district_name"><span t-esc="district_name"/></t><t t-if="not district_name">………………</t> (छ.ग.) की ओर सूचनार्थ एवं आवश्यक कार्यवाही हेतु।
+                                    उपरोक्तानुसार आदेश का तत्काल पालन करते हुए सूचना पटल में चस्पा कराना सुनिश्चित करें।
+                                </li>
+                                <li>
+                                    मुख्य महाप्रबंधक, जिला व्यापार एवं उद्योग केन्द्र, जिला
+                                    <t t-if="district_name"><span t-esc="district_name"/></t><t t-if="not district_name">………………</t> (छ.ग.) की ओर सूचनार्थ एवं आवश्यक कार्यवाही हेतु।
+                                    <t t-if="doc.department_id">
+                                        <span style="display:block; margin-top:4px; font-size:13px;">
+                                            (संबंधित विभाग/प्राधिकरणः <span t-esc="doc.department_id.name"/>)
+                                        </span>
+                                    </t>
+                                </li>
+                                <li>
+                                    जिला विज्ञान एवं सूचना अधिकारी, जिला
+                                    <t t-if="district_name"><span t-esc="district_name"/></t><t t-if="not district_name">………………</t>
+                                    की ओर सूचनार्थ एवं
+                                    <t t-if="district_name"><span t-esc="district_name"/></t><t t-if="not district_name">संबंधित</t>
+                                    जिले की वेबसाइट पर अपलोड करना सुनिश्चित करें।
+                                </li>
+                            </ol>
+
+                            <div style="text-align: right; margin-top: 56px; font-size: 15px;">
+                                <div style="font-weight: bold;">अपर कलेक्टर</div>
+                                <div>जिला-<t t-if="district_name"><span t-esc="district_name"/></t><t t-if="not district_name">………………</t></div>
+                            </div>
+
+                            <p style="font-size: 12px; color: #666; margin-top: 36px; text-align: center;">
+                                उत्पन्न दिनांक&#160;: <span t-esc="doc._report_generated_timestamp_label()"/>
+                            </p>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

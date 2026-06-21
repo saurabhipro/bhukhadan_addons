@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Stub Views for Process Wizards -->
+    
+    <!-- Section 4 Notification Wizard -->
+    <record id="view_section4_notification_wizard_form" model="ir.ui.view">
+        <field name="name">bhu.section4.notification.wizard.form</field>
+        <field name="model">bhu.section4.notification.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate Section 4 Notification / धारा 4 अधिसूचना जेनरेट करें">
+                <sheet>
+                    <group>
+                        <field name="project_id" required="1"/>
+                        <field name="village_id" required="1" 
+                               options="{'no_create_edit': True}"/>
+                    </group>
+                    <notebook>
+                        <page string="Basic Information / मूल जानकारी">
+                            <group string="Public Purpose / लोक प्रयोजन">
+                                <field name="public_purpose" placeholder="Enter description of public purpose for land acquisition..." 
+                                       widget="html" nolabel="1"/>
+                            </group>
+                            <group string="Public Hearing Details / जन सुनवाई विवरण">
+                                <group col="2">
+                                    <field name="public_hearing_datetime" widget="datetime"/>
+                                    <field name="public_hearing_place"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Section 4 Questions / धारा 4 प्रश्न">
+                            <group string="(एक) लोक प्रयोजन का संक्षिप्त विवरण / Brief description of public purpose">
+                                <field name="project_id" readonly="1" nolabel="1" 
+                                       options="{'no_create': True, 'no_open': True, 'no_edit': True}"/>
+                            </group>
+                            <field name="directly_affected"/>
+                            <field name="indirectly_affected"/>
+                            <field name="private_assets"/>
+                            <field name="government_assets"/>
+                            <field name="minimal_acquisition"/>
+                            <group string="(सात) क्या संभव विकल्पों और इसकी साध्यता पर विचार कर लिया गया है? / Have possible alternatives and their feasibility been considered?">
+                                <field name="alternatives_considered" widget="html" nolabel="1"/>
+                            </group>
+                            <field name="total_cost"/>
+                            <group string="(नौ) परियोजना से होने वाला लाभ / Benefits from the project">
+                                <field name="project_benefits" widget="html" nolabel="1"/>
+                            </group>
+                            <group string="(दस) प्रस्तावित सामाजिक समाघात की प्रतिपूर्ति के लिये उपाय तथा उस पर होने वाला संभावित व्यय / Measures for compensation and likely expenditure">
+                                <field name="compensation_measures" widget="html" nolabel="1"/>
+                            </group>
+                            <group string="(ग्यारह) परियोजना द्वारा प्रभावित होने वाले अन्य घटक / Other components affected by the project">
+                                <field name="other_components" widget="html" nolabel="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <button name="action_generate_pdf" string="Generate PDF / PDF जेनरेट करें" type="object" class="btn-primary"/>
+                    <button string="Cancel / रद्द करें" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Expert Committee Report Views - Moved to expert_committee_report_views.xml -->
+
+    <!-- Expert Committee Order Wizard -->
+    <record id="view_expert_committee_order_wizard_form" model="ir.ui.view">
+        <field name="name">bhu.expert.committee.order.wizard.form</field>
+        <field name="model">bhu.expert.committee.order.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate Expert Committee Order / विशेषज्ञ समिति आदेश जेनरेट करें">
+                <sheet>
+                    <group>
+                        <field name="project_id" required="1" options="{'no_create_edit': True}"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_generate_order" string="Generate Order / आदेश जेनरेट करें" type="object" class="btn-primary"/>
+                    <button string="Cancel / रद्द करें" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Section 11 Preliminary Wizard -->
+    <record id="view_section11_preliminary_wizard_form" model="ir.ui.view">
+        <field name="name">bhu.section11.preliminary.wizard.form</field>
+        <field name="model">bhu.section11.preliminary.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate Section 11 Preliminary Report / धारा 11 प्रारंभिक रिपोर्ट जेनरेट करें">
+                <sheet>
+                    <group>
+                        <field name="project_id" required="1" options="{'no_create_edit': True}"/>
+                        <field name="village_id" required="1" options="{'no_create_edit': True}"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_generate_report" string="Generate Report / रिपोर्ट जेनरेट करें" type="object" class="btn-primary"/>
+                    <button string="Cancel / रद्द करें" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Section 19 Notification Wizard -->
+    <record id="view_section19_notification_wizard_form" model="ir.ui.view">
+        <field name="name">bhu.section19.notification.wizard.form</field>
+        <field name="model">bhu.section19.notification.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate Section 19 Notification">
+                <sheet>
+                    <group>
+                        <field name="project_id" required="1" options="{'no_create': True, 'no_open': True}"/>
+                        <field name="village_id" required="1" 
+                               options="{'no_create_edit': True, 'no_open':True, 'no_create':True}"
+                               placeholder="Select village from project..."/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_generate_notification" string="Generate Notification" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Generate Notices Wizard -->
+    <record id="view_generate_notices_wizard_form" model="ir.ui.view">
+        <field name="name">bhu.generate.notices.wizard.form</field>
+        <field name="model">bhu.generate.notices.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate Notices">
+                <sheet>
+                    <group>
+                        <field name="project_id" required="1"/>
+                        <field name="village_ids" widget="many2many_tags"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_generate_notices" string="Generate Notices" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Download Notices Wizard -->
+    <record id="view_download_notices_wizard_form" model="ir.ui.view">
+        <field name="name">bhu.download.notices.wizard.form</field>
+        <field name="model">bhu.download.notices.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Download Notices">
+                <sheet>
+                    <group>
+                        <field name="project_id"/>
+                        <field name="village_id"/>
+                        <field name="landowner_id"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_download_notices" string="Download" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Award Notification Wizard -->
+    <record id="view_award_notification_wizard_form" model="ir.ui.view">
+        <field name="name">bhu.award.notification.wizard.form</field>
+        <field name="model">bhu.award.notification.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate Award Notification">
+                <sheet>
+                    <group>
+                        <field name="project_id" required="1"/>
+                        <field name="village_ids" widget="many2many_tags" required="1"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_generate_award_notification" string="Generate Notification" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Download Award Notification Wizard -->
+    <record id="view_download_award_notification_wizard_form" model="ir.ui.view">
+        <field name="name">bhu.download.award.notification.wizard.form</field>
+        <field name="model">bhu.download.award.notification.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Download Award Notification">
+                <sheet>
+                    <group>
+                        <field name="project_id"/>
+                        <field name="village_id"/>
+                        <field name="landowner_id"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_download_award_notification" string="Download" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>
+

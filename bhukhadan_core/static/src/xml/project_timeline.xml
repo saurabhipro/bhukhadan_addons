@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="bhukhadan_core.ProjectTimeline" owl="1">
+        <Dialog title="props.title || 'Project Progress Timeline'">
+            <div class="bhu-timeline-container">
+                <!-- Progress Header Info -->
+                <div class="bhu-timeline-summary d-flex justify-content-between align-items-center mb-2">
+                    <div>
+                        <h4 class="text-primary font-weight-bold mb-0">Milestone Tracking</h4>
+                    </div>
+                    <div class="overall-progress-chip">
+                        <span class="badge badge-pill badge-primary px-2 py-1 small">
+                            <i class="fa fa-line-chart mr-1"/> LIVE
+                        </span>
+                    </div>
+                </div>
+
+                <div class="bhu-timeline-steps">
+                    <t t-foreach="state.stages" t-as="stage" t-key="stage.id">
+                        <div t-attf-class="bhu-timeline-step #{stage.status}">
+                            <!-- Status Indicator (Top Right) -->
+                            <div class="status-indicator">
+                                <i t-if="stage.status === 'completed'" class="fa fa-check-circle text-success"/>
+                                <i t-elif="stage.status === 'in_progress'" class="fa fa-clock-o text-warning"/>
+                                <i t-else="" class="fa fa-circle-o text-muted opacity-50"/>
+                            </div>
+
+                            <div class="bhu-timeline-icon-wrapper">
+                                <div class="bhu-timeline-icon">
+                                    <i t-attf-class="fa #{stage.icon}"/>
+                                </div>
+                            </div>
+
+                            <div class="bhu-timeline-content">
+                                <div class="bhu-timeline-step-name" t-esc="stage.name"/>
+                                
+                                <!-- Progress Bar if count available -->
+                                <t t-if="stage.count !== undefined and stage.total > 0">
+                                    <div class="progress bhu-mini-progress mt-2" style="height: 4px;">
+                                        <div class="progress-bar" role="progressbar" 
+                                             t-attf-style="width: #{(stage.count / stage.total) * 100}%; background-color: #{(stage.status === 'completed' ? '#10b981' : '#f59e0b')};">
+                                        </div>
+                                    </div>
+                                    <div class="bhu-timeline-step-details mt-1 text-primary font-weight-bold" t-esc="stage.details"/>
+                                </t>
+                                <t t-else="">
+                                    <div class="bhu-timeline-step-details mt-1" t-esc="stage.details"/>
+                                </t>
+
+                                <span class="bhu-status-badge">
+                                    <t t-if="stage.status === 'completed'">Completed</t>
+                                    <t t-elif="stage.status === 'in_progress'">In Progress</t>
+                                    <t t-else="">Pending</t>
+                                </span>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+            <t t-set-slot="footer">
+                <div class="d-flex justify-content-between w-100 align-items-center">
+                    <div class="text-left text-muted small">
+                        <i class="fa fa-info-circle mr-1"/> Data auto-updates on refresh
+                    </div>
+                    <div class="d-flex g-2">
+                        <button class="btn btn-outline-primary mr-2" t-on-click="() => this.refreshProgress()">
+                            <i class="fa fa-refresh mr-1"/> Refresh / अपडेट करें
+                        </button>
+                        <button class="btn btn-primary px-4" t-on-click="props.close">
+                            Close / बंद करें
+                        </button>
+                    </div>
+                </div>
+            </t>
+        </Dialog>
+    </t>
+
+    <t t-name="bhukhadan_core.StageButton" owl="1">
+        <t t-if="props.listCompact">
+            <div class="bhu-stage-widget bhu-stage-widget-list text-center"
+                 tabindex="0"
+                 role="button"
+                 t-att-title="listTimelineHint"
+                 t-on-click="onStageClick">
+                <div class="bhu-stage-dots justify-content-center">
+                    <t t-foreach="state.stageDots" t-as="dot" t-key="dot.id">
+                        <span class="bhu-stage-dot" t-att-title="dot.title" t-attf-class="bhu-stage-dot #{dot.kind}"/>
+                    </t>
+                </div>
+            </div>
+        </t>
+        <t t-else="">
+            <div class="bhu-stage-widget d-flex flex-column align-items-start">
+                <span class="bhu-stage-widget-label text-uppercase fw-bold">STAGE</span>
+                <div class="bhu-stage-dots" role="img" t-att-title="state.currentStage">
+                    <t t-foreach="state.stageDots" t-as="dot" t-key="dot.id">
+                        <span t-att-title="dot.title"
+                              t-attf-class="bhu-stage-dot bhu-stage-dot--labeled #{dot.kind}">
+                            <t t-esc="dot.short_label"/>
+                        </span>
+                    </t>
+                </div>
+                <button type="button"
+                        class="btn btn-sm font-weight-bold px-3 py-2 text-white bhu-stage-widget-main-btn"
+                        t-on-click="onStageClick">
+                    <span t-esc="state.currentStage"/>
+                    <i class="fa fa-chevron-right ms-2"/>
+                </button>
+            </div>
+        </t>
+    </t>
+</templates>

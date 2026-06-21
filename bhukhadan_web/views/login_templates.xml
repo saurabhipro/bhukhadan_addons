@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Fully replace web.login with an immersive split-screen template -->
+    <template id="login_standalone_markup" inherit_id="web.login" priority="999">
+        <xpath expr="//t[@t-call='web.login_layout']" position="replace">
+            <t t-call="web.login_layout">
+                <link rel="stylesheet" type="text/css"
+                      href="/bhukhadan_web/static/src/css/bhuarjan_login.css?v=18.0.1.2.0"/>
+                <link rel="stylesheet"
+                      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+                <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap"
+                      rel="stylesheet"/>
+                <script type="text/javascript">
+                    if (document.body) document.body.classList.add('bhu-login-body');
+                    document.addEventListener('DOMContentLoaded', function () {
+                        document.body.classList.add('bhu-login-body');
+
+                        /* ── Password toggle ── */
+                        var toggle = document.getElementById('password_toggle_public');
+                        var pw = document.getElementById('password');
+                        if (toggle &amp;&amp; pw) {
+                            function applyPwVisible(show) {
+                                pw.type = show ? 'text' : 'password';
+                                toggle.classList.toggle('bhu-password-showing', show);
+                                toggle.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+                                toggle.setAttribute('title',      show ? 'Hide password' : 'Show password');
+                            }
+                            toggle.addEventListener('click',   function(e){ e.preventDefault(); applyPwVisible(pw.type === 'password'); });
+                            toggle.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); applyPwVisible(pw.type==='password'); } });
+                        }
+
+                        /* ── Slider ── */
+                        var slides = document.querySelectorAll('.bhu-slide');
+                        var dots   = document.querySelectorAll('.bhu-slider-dot');
+                        var cur = 0;
+                        function goTo(n) {
+                            slides[cur].classList.remove('active');
+                            dots[cur].classList.remove('active');
+                            cur = (n + slides.length) % slides.length;
+                            slides[cur].classList.add('active');
+                            dots[cur].classList.add('active');
+                        }
+                        if (slides.length > 1) {
+                            var autoTimer = setInterval(function(){ goTo(cur + 1); }, 4500);
+                            dots.forEach(function(d, i){
+                                d.addEventListener('click', function(){
+                                    clearInterval(autoTimer);
+                                    goTo(i);
+                                    autoTimer = setInterval(function(){ goTo(cur + 1); }, 4500);
+                                });
+                            });
+                        }
+
+                        /* ── Counter animation ── */
+                        function runCounter(el) {
+                            var target = parseInt(el.getAttribute('data-count'), 10);
+                            var start = 0, dur = 1600, step = target / (dur / 16);
+                            var t = setInterval(function(){
+                                start = Math.min(start + step, target);
+                                el.textContent = Math.floor(start).toLocaleString('en-IN');
+                                if (start >= target) clearInterval(t);
+                            }, 16);
+                        }
+                        document.querySelectorAll('[data-count]').forEach(runCounter);
+
+                        /* ── Input label float animation ── */
+                        document.querySelectorAll('.bhu-field-wrap input').forEach(function(inp) {
+                            function check() { inp.closest('.bhu-field-wrap').classList.toggle('has-val', inp.value.length > 0); }
+                            inp.addEventListener('input', check);
+                            inp.addEventListener('blur',  check);
+                            check();
+                        });
+                    });
+                </script>
+
+                <div id="bhu-login-root">
+
+                    <!-- ══════════════════════════════════════
+                         LEFT PANEL – immersive feature panel
+                         ══════════════════════════════════════ -->
+                    <div class="bhu-lp-left" aria-hidden="true">
+                        <!-- Background decorations -->
+                        <div class="bhu-blob bhu-blob-1"/>
+                        <div class="bhu-blob bhu-blob-2"/>
+                        <div class="bhu-blob bhu-blob-3"/>
+                        <div class="bhu-grid-overlay"/>
+
+                        <!-- Brand bar -->
+                        <div class="bhu-lp-brand">
+                            <img src="/bhukhadan_web/static/src/img/bhuarjan_logo.png" alt="" class="bhu-lp-logo"/>
+                            <div class="bhu-lp-brand-text">
+                                <span class="bhu-lp-brand-name">BHUKHADAN</span>
+                                <span class="bhu-lp-brand-sub">Land Acquisition Management System</span>
+                            </div>
+                        </div>
+
+                        <!-- Auto-rotating slides -->
+                        <div class="bhu-slider-container">
+
+                            <!-- Slide 1 – Platform overview + stats -->
+                            <div class="bhu-slide active">
+                                <div class="bhu-slide-tag">&#127981; Land Acquisition Platform</div>
+                                <h2 class="bhu-slide-title">India's Digital<br/>Land Acquisition<br/>Platform</h2>
+                                <p class="bhu-slide-desc">
+                                    Empowering district administration with real-time tracking,
+                                    paperless workflows, and transparent acquisition —
+                                    from survey to final award.
+                                </p>
+                                <div class="bhu-slide-stats">
+                                    <div class="bhu-slide-stat">
+                                        <span class="bhu-stat-num"><span data-count="120">120</span>+</span>
+                                        <span class="bhu-stat-lbl">Projects</span>
+                                    </div>
+                                    <div class="bhu-slide-stat">
+                                        <span class="bhu-stat-num"><span data-count="5000">5000</span>+</span>
+                                        <span class="bhu-stat-lbl">Parcels</span>
+                                    </div>
+                                    <div class="bhu-slide-stat">
+                                        <span class="bhu-stat-num"><span data-count="200">200</span>+</span>
+                                        <span class="bhu-stat-lbl">Officials</span>
+                                    </div>
+                                    <div class="bhu-slide-stat">
+                                        <span class="bhu-stat-num">99%</span>
+                                        <span class="bhu-stat-lbl">Uptime</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Slide 2 – 11-stage workflow pills -->
+                            <div class="bhu-slide">
+                                <div class="bhu-slide-tag">&#9881; Platform Capabilities</div>
+                                <h2 class="bhu-slide-title">11-Stage Statutory<br/>Workflow — Fully Digitised</h2>
+                                <p class="bhu-slide-desc">
+                                    Every stage from initial survey to final payment is tracked,
+                                    approved, and audit-ready with complete digital traceability.
+                                </p>
+                                <div class="bhu-slide-pills">
+                                    <span class="bhu-pill">&#128203; Survey &amp; SIA</span>
+                                    <span class="bhu-pill">&#128226; Sec 4 Notification</span>
+                                    <span class="bhu-pill">&#127979; Expert Committee</span>
+                                    <span class="bhu-pill">&#128220; Sec 8 Decision</span>
+                                    <span class="bhu-pill">&#128196; Sec 11 Preliminary</span>
+                                    <span class="bhu-pill">&#9878; Sec 15 Objections</span>
+                                    <span class="bhu-pill">&#128221; Sec 19 Declaration</span>
+                                    <span class="bhu-pill">&#127941; Sec 23 Award</span>
+                                    <span class="bhu-pill">&#128184; Payment File</span>
+                                </div>
+                            </div>
+
+                            <!-- Slide 3 – Impact -->
+                            <div class="bhu-slide">
+                                <div class="bhu-slide-tag">&#127775; Real Impact</div>
+                                <h2 class="bhu-slide-title">Delivering Faster,<br/>Fairer Land Governance</h2>
+                                <p class="bhu-slide-desc">
+                                    Real outcomes for communities and administrators
+                                    nationwide with measurable results.
+                                </p>
+                                <div class="bhu-slide-impacts">
+                                    <div class="bhu-impact-row">
+                                        <div class="bhu-impact-ico">&#9889;</div>
+                                        <div>
+                                            <div class="bhu-impact-val">47% Faster</div>
+                                            <div class="bhu-impact-lbl">Land acquisition turnaround time</div>
+                                        </div>
+                                    </div>
+                                    <div class="bhu-impact-row">
+                                        <div class="bhu-impact-ico">&#128220;</div>
+                                        <div>
+                                            <div class="bhu-impact-val">100% Paperless</div>
+                                            <div class="bhu-impact-lbl">Digital documentation &amp; e-signatures</div>
+                                        </div>
+                                    </div>
+                                    <div class="bhu-impact-row">
+                                        <div class="bhu-impact-ico">&#128200;</div>
+                                        <div>
+                                            <div class="bhu-impact-val">Real-Time Monitoring</div>
+                                            <div class="bhu-impact-lbl">Live dashboards for every level</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div><!-- /bhu-slider-container -->
+
+                        <!-- Dot navigation -->
+                        <div class="bhu-slider-dots">
+                            <button class="bhu-slider-dot active" type="button" aria-label="Slide 1"/>
+                            <button class="bhu-slider-dot"        type="button" aria-label="Slide 2"/>
+                            <button class="bhu-slider-dot"        type="button" aria-label="Slide 3"/>
+                        </div>
+
+                        <!-- Trust badges -->
+                        <div class="bhu-lp-trust">
+                            <span>&#128274; Bank-Grade Security</span>
+                            <span>&#9729; Cloud Native</span>
+                            <span>&#128241; Mobile-First</span>
+                            <span>&#127758; Hindi &amp; English</span>
+                        </div>
+                    </div><!-- /bhu-lp-left -->
+
+                    <!-- ══════════════════════════════════════
+                         RIGHT PANEL – Login form
+                         ══════════════════════════════════════ -->
+                    <div class="bhu-lp-right">
+                        <div class="bhu-login-mobile-shell">
+                            <header class="bhu-login-appbar">
+                                <a href="/" class="bhu-login-appbar-back" aria-label="Back to home">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                                </a>
+                                <div class="bhu-login-appbar-brand">
+                                    <img src="/bhukhadan_web/static/src/img/bhuarjan_logo.png" alt=""/>
+                                    <span>BHUKHADAN</span>
+                                </div>
+                                <span class="bhu-login-appbar-spacer" aria-hidden="true"/>
+                            </header>
+
+                        <div class="bhu-rp-inner">
+
+                            <!-- Logos (desktop only) -->
+                            <div class="bhu-login-logos bhu-login-logos--desktop">
+                                <img src="/bhukhadan_web/static/src/img/bhuarjan_logo.png" alt="BHUKHADAN" class="bhu-logo-left"/>
+                            </div>
+
+                            <!-- Heading -->
+                            <div class="bhu-login-head">
+                                <h1>Welcome back</h1>
+                                <p>Sign in to your BHUKHADAN secure account</p>
+                            </div>
+
+                            <!-- Form -->
+                            <form class="oe_login_form" role="form"
+                                  t-attf-action="/web/login" method="post"
+                                  onsubmit="this.action = '/web/login' + location.hash">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                                <div class="mb-3" t-if="databases and len(databases) &gt; 1">
+                                    <label for="db" class="form-label">Database</label>
+                                    <div class="input-group">
+                                        <input type="text" name="db" t-att-value="request.db" id="db"
+                                               class="form-control" required="required" readonly="readonly"/>
+                                        <a role="button" href="/web/database/selector" class="btn btn-secondary">
+                                            Select <i class="fa fa-database"/>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 field-login">
+                                    <label for="login" class="form-label">Email Address</label>
+                                    <div class="bhu-input-row">
+                                        <input type="text" placeholder="you@example.com"
+                                               name="login" t-att-value="login" id="login"
+                                               class="form-control" required="required"
+                                               autocapitalize="off" autocomplete="username"
+                                               autofocus="autofocus"/>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 field-password">
+                                    <label for="password" class="form-label">Password</label>
+                                    <div class="bhu-password-wrap bhu-input-row position-relative">
+                                        <input type="password" placeholder="Enter your password"
+                                               name="password" id="password"
+                                               class="form-control" required="required"
+                                               autocomplete="current-password" maxlength="4096"/>
+                                        <button type="button" class="bhu-password-toggle"
+                                                id="password_toggle_public"
+                                                title="Show password" aria-label="Show password">
+                                            <span class="bhu-toggle-icon-hidden" aria-hidden="true">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                                            </span>
+                                            <span class="bhu-toggle-icon-visible" aria-hidden="true">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <p class="alert alert-danger" t-if="error" role="alert">
+                                    <t t-esc="error"/>
+                                </p>
+                                <p class="alert alert-success" t-if="message" role="status">
+                                    <t t-esc="message"/>
+                                </p>
+
+                                <div class="oe_login_buttons d-grid mb-1 pt-2">
+                                    <button type="submit" class="btn btn-primary">
+                                        Sign In &#8594;
+                                    </button>
+                                </div>
+
+                                <input type="hidden" name="type"     value="password"/>
+                                <input type="hidden" name="redirect" t-att-value="redirect or '/odoo'"/>
+                            </form>
+
+                            <!-- Secure note -->
+                            <div class="bhu-secure-note">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                Secured with 256-bit SSL encryption
+                            </div>
+
+                            <div class="bhu-login-legal-links">
+                                By signing in, you agree to our
+                                <a href="/terms-and-conditions" target="_blank" rel="noopener noreferrer">Terms &amp; Conditions</a>
+                                and
+                                <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.
+                            </div>
+
+                            <!-- Back link (desktop only) -->
+                            <div class="o_login_redirect_back bhu-login-back--desktop">
+                                <a href="/">&#8592; Back to BHUKHADAN home</a>
+                            </div>
+                        </div>
+
+                        <footer class="bhu-login-footer">
+                            <p class="bhu-login-footer-brand">
+                                Developed by
+                                <a href="https://www.redmelon.co.in" target="_blank" rel="noopener noreferrer">REDMELON BUSINESS SOLUTIONS PRIVATE LIMITED</a>
+                            </p>
+                            <div class="bhu-login-footer-links">
+                                <a href="mailto:support@bhuarjan.com?subject=BHUKHADAN%20Login%20Support"
+                                   class="bhu-login-footer-chip">
+                                    <span class="bhu-login-footer-ico" aria-hidden="true">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                                    </span>
+                                    <span class="bhu-login-footer-label">Email</span>
+                                </a>
+                                <a href="https://wa.me/917042038092" target="_blank" rel="noopener noreferrer" class="bhu-login-footer-chip bhu-login-footer-chip--wa">
+                                    <span class="bhu-login-footer-ico" aria-hidden="true">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.881 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                                    </span>
+                                    <span class="bhu-login-footer-label">WhatsApp</span>
+                                </a>
+                                <a href="tel:+917042038092" class="bhu-login-footer-chip">
+                                    <span class="bhu-login-footer-ico" aria-hidden="true">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+                                    </span>
+                                    <span class="bhu-login-footer-label">Call</span>
+                                </a>
+                            </div>
+                        </footer>
+                        </div><!-- /bhu-login-mobile-shell -->
+                    </div><!-- /bhu-lp-right -->
+
+                </div><!-- /bhu-login-root -->
+            </t>
+        </xpath>
+    </template>
+
+</odoo>

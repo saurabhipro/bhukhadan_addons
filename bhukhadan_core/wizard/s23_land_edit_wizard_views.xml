@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_bhu_s23_land_edit_wizard_form" model="ir.ui.view">
+        <field name="name">bhu.s23.land.edit.wizard.form</field>
+        <field name="model">bhu.s23.land.edit.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Edit khasra inputs / खसरा संपादित करें">
+                <group>
+                    <field name="survey_line_id" invisible="1"/>
+                    <field name="khasra_display" readonly="1"/>
+                    <button name="action_open_linked_survey"
+                            type="object"
+                            string="Open Survey for this Khasra / इस खसरे का सर्वे खोलें"
+                            class="btn-link"/>
+                </group>
+                <group string="Values saved on the survey / सर्वे पर सहेजे जाएंगे">
+                    <field name="distance_from_main_road"/>
+                    <field name="road_type" widget="radio"/>
+                    <field name="irrigation_type" widget="radio"/>
+                    <field name="has_traded_land" widget="radio"/>
+                </group>
+                <footer>
+                    <button name="action_apply" type="object" string="Save / सहेजें" class="btn-primary"/>
+                    <button string="Cancel / रद्द" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

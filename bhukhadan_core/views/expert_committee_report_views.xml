@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Expert Committee Member Line List View -->
+    <record id="view_expert_committee_member_line_list" model="ir.ui.view">
+        <field name="name">bhu.expert.committee.member.line.list</field>
+        <field name="model">bhu.expert.committee.member.line</field>
+        <field name="arch" type="xml">
+            <list editable="bottom" create="1" delete="1">
+                <field name="sequence" widget="handle"/>
+                <field name="member_type" column_invisible="1"/>
+                <field name="name" string="Name / नाम"/>
+                <field name="address" string="Address / पता"/>
+                <field name="post" string="Post / पद"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Expert Committee Report List View -->
+    <record id="view_expert_committee_report_list" model="ir.ui.view">
+        <field name="name">bhu.expert.committee.report.list</field>
+        <field name="model">bhu.expert.committee.report</field>
+        <field name="arch" type="xml">
+            <list string="Expert Group Reports" create="not groups='bhukhadan_core.group_bhuarjan_collector'">
+                <field name="name" string="Report Name"/>
+                <field name="project_id" string="Project"/>
+                <field name="state" widget="badge" string="Status"
+                       decoration-success="state == 'approved'" 
+                       decoration-info="state == 'submitted'" 
+                       decoration-warning="state == 'draft'"
+                       decoration-danger="state == 'send_back'"/>
+                <field name="pending_with" string="Pending With" invisible="state == 'approved'"/>
+                <field name="signed_date" string="Signed Date"/>
+                <field name="signatory_name" string="Signatory Name"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Expert Committee Report Form View -->
+    <record id="view_expert_committee_report_form" model="ir.ui.view">
+        <field name="name">bhu.expert.committee.report.form</field>
+        <field name="model">bhu.expert.committee.report</field>
+        <field name="arch" type="xml">
+            <form string="Expert Committee Report / विशेषज्ञ समिति रिपोर्ट" class="bhu_approved_form">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved,send_back" options="{'clickable': True}"/>
+                </header>
+                <field name="is_sdm" invisible="1"/>
+                <field name="is_collector" invisible="1"/>
+                <field name="is_admin" invisible="1"/>
+                <field name="is_approved_readonly" invisible="1"/>
+                <field name="can_sdm_edit" invisible="1"/>
+                <field name="can_collector_edit" invisible="1"/>
+                
+                <sheet>
+                    <widget name="web_ribbon" title="Approved" bg_color="text-bg-success"
+                            invisible="state != 'approved'"/>
+                    <div class="oe_title" style="margin-bottom: 10px; padding-bottom: 8px;">
+                        <h1 style="font-size: 28px; font-weight: 700; color: #8B4513; margin: 0;">
+                            <i class="fa fa-graduation-cap" style="margin-right: 10px;"></i>Expert Committee Creation for <field name="project_id" readonly="1" options="{'no_open': True}" class="oe_inline" nolabel="1"/> / विशेषज्ञ समिति गठन
+                        </h1>
+                    </div>
+                    
+                    <div invisible="not project_id" class="mt-2 mb-3 p-2 rounded w-100" style="background-color: #e9ecef; border-left: 4px solid #8B4513; color: #495057; clear: both;">
+                         <i class="fa fa-info-circle me-1"></i>
+                         Creating Expert Committee for Project <field name="project_id" readonly="1" options="{'no_open': True}" class="fw-bold" style="color: #8B4513;"/>
+                    </div>
+                    
+                    <!-- Letter Number Field - Visible and Optional -->
+                    <group>
+                        <field name="project_id" string="Project / परियोजना" 
+                               readonly="not is_admin or state == 'approved'" 
+                               required="1"
+                               options="{'no_create': True, 'no_open': True}"/>
+                        <field name="kramank" string="Letter Number / पत्र क्रमांक" placeholder="Enter Letter Number / पत्र क्रमांक दर्ज करें" 
+                               readonly="is_approved_readonly or (state == 'submitted' and not can_collector_edit)"/>
+                    </group>
+                    
+                    <!-- Hidden Fields (Auto-populated from context) -->
+                    <group invisible="1">
+                        <field name="pending_with" string="Pending With / लंबित" readonly="1"/>
+                        <field name="village_ids" widget="many2many_tags" readonly="1" options="{'no_create_edit': True}"/>
+                        <field name="requiring_body_id" required="1" readonly="1" options="{'no_open': True}"/>
+                        <field name="total_area_acquired" readonly="1"/>
+                    </group>
+                    
+                    <style>
+                        /* Custom Section Headers */
+                        .custom-section-header {
+                            background-color: #FFF8DC; /* Cornsilk */
+                            color: #8B4513;
+                            padding: 12px 15px;
+                            font-size: 1.1rem;
+                            font-weight: 600;
+                            border-radius: 6px;
+                            border-left: 5px solid #8B4513;
+                            margin: 20px 0 10px 0;
+                            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                            display: flex;
+                            align-items: center;
+                        }
+                        .custom-section-header i {
+                            margin-right: 10px;
+                            opacity: 0.8;
+                        }
+
+                        /* Table Styling */
+                        .o_field_one2many .o_list_table {
+                            border: 1px solid #e0e0e0 !important;
+                            border-radius: 6px;
+                            overflow: hidden;
+                        }
+                        .o_field_one2many .o_list_table thead {
+                            background-color: #FFF8DC !important; /* Match Header */
+                            color: #8B4513 !important;
+                            font-weight: bold;
+                            border-bottom: 2px solid #8B4513 !important;
+                        }
+                        .o_field_one2many .o_list_table thead th {
+                            border-right: 1px solid rgba(139, 69, 19, 0.1);
+                            vertical-align: middle;
+                        }
+                        .o_field_one2many .o_field_x2many_list_row_add a {
+                            color: #8B4513 !important;
+                            font-weight: bold;
+                            padding: 8px 0;
+                            display: inline-block;
+                        }
+                        .o_field_one2many .o_field_x2many_list_row_add a:hover {
+                            text-decoration: underline;
+                        }
+
+                        /* Section Card Styling */
+                        .section-card {
+                            background-color: #fff;
+                            padding: 20px;
+                            margin-bottom: 20px;
+                            border: 1px solid #e0e0e0;
+                            border-radius: 4px;
+                        }
+                        .section-header {
+                            font-size: 1.1rem;
+                            font-weight: 600;
+                            color: #6c757d;
+                            border-bottom: 2px solid #8B4513;
+                            padding-bottom: 10px;
+                            margin-bottom: 20px;
+                            text-transform: uppercase;
+                            letter-spacing: 0.5px;
+                        }
+                        .custom-btn-primary {
+                            background-color: #8B4513 !important;
+                            border-color: #8B4513 !important;
+                            color: white !important;
+                        }
+                        .custom-btn-success {
+                            background-color: #28a745 !important;
+                            border-color: #28a745 !important;
+                            color: white !important;
+                            border-radius: 5px !important;
+                            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                            font-weight: 600;
+                            transition: all 0.2s;
+                            margin-right: 15px !important;
+                        }
+                        .custom-btn-success:hover {
+                            background-color: #218838 !important;
+                            transform: translateY(-1px);
+                            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+                        }
+                        .custom-btn-danger {
+                            background-color: #dc3545 !important;
+                            border-color: #dc3545 !important;
+                            color: white !important;
+                            border-radius: 5px !important;
+                            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                            font-weight: 600;
+                            transition: all 0.2s;
+                        }
+                        .custom-btn-danger:hover {
+                            background-color: #c82333 !important;
+                            transform: translateY(-1px);
+                            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+                        }
+                        .custom-btn-teal {
+                            background-color: #008080 !important;
+                            border-color: #008080 !important;
+                            color: white !important;
+                        }
+                    </style>
+                    <notebook>
+                        <page string="Team Members / टीम सदस्य" invisible="is_collector and not is_admin">
+
+                            
+                            <!-- (क) Non-Government Social Scientist -->
+                            <div class="custom-section-header">
+                                (क) Non-Government Social Scientist / गैर शासकीय सामाजिक वैज्ञानिक
+                            </div>
+                            <group>
+                                <div class="alert alert-info" role="alert" style="margin: 5px 0; padding: 8px; border-left: 4px solid #17a2b8;">
+                                    <i class="fa fa-info-circle"/> Click "Add a line" below to add team members
+                                </div>
+                                <field name="non_govt_social_scientist_line_ids" nolabel="1" 
+                                       context="{'default_member_type': 'non_govt_social_scientist'}"
+                                       readonly="is_approved_readonly or (state == 'submitted' and not can_collector_edit)"
+                                       control="full">
+                                    <list editable="bottom" create="1" delete="1">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="member_type" column_invisible="1"/>
+                                        <field name="name" string="Name / नाम" placeholder="Enter member name / सदस्य का नाम दर्ज करें"/>
+                                        <field name="address" string="Address / पता" placeholder="Enter address / पता दर्ज करें"/>
+                                        <field name="post" string="Post / पद" placeholder="Enter designation / पद दर्ज करें"/>
+                                    </list>
+                                </field>
+                            </group>
+                            
+                            <!-- (ख) Representatives of Local Bodies -->
+                            <div class="custom-section-header">
+                                (ख) Representatives of Local Bodies / ग्राम पंचायत या नगरीय निकाय के प्रतिनिधि
+                            </div>
+                            <group>
+                                <div class="alert alert-info" role="alert" style="margin: 5px 0; padding: 8px; border-left: 4px solid #17a2b8;">
+                                    <i class="fa fa-info-circle"/> Click "Add a line" below to add team members
+                                </div>
+                                <field name="local_bodies_representative_line_ids" nolabel="1"
+                                       context="{'default_member_type': 'local_bodies_representative'}"
+                                       readonly="is_approved_readonly or (state == 'submitted' and not can_collector_edit)"
+                                       control="full">
+                                    <list editable="bottom" create="1" delete="1">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="member_type" column_invisible="1"/>
+                                        <field name="name" string="Name / नाम" placeholder="Enter member name / सदस्य का नाम दर्ज करें"/>
+                                        <field name="address" string="Address / पता" placeholder="Enter address / पता दर्ज करें"/>
+                                        <field name="post" string="Post / पद" placeholder="Enter designation / पद दर्ज करें"/>
+                                    </list>
+                                </field>
+                            </group>
+                            
+                            <!-- (ग) Resettlement Expert -->
+                            <div class="custom-section-header">
+                                (ग) Resettlement Expert / पुनर्व्यवस्थापन संबंधी विशेषज्ञ
+                            </div>
+                            <group>
+                                <div class="alert alert-info" role="alert" style="margin: 5px 0; padding: 8px; border-left: 4px solid #17a2b8;">
+                                    <i class="fa fa-info-circle"/> Click "Add a line" below to add team members
+                                </div>
+                                <field name="resettlement_expert_line_ids" nolabel="1"
+                                       context="{'default_member_type': 'resettlement_expert'}"
+                                       readonly="is_approved_readonly or (state == 'submitted' and not can_collector_edit)"
+                                       control="full">
+                                    <list editable="bottom" create="1" delete="1">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="member_type" column_invisible="1"/>
+                                        <field name="name" string="Name / नाम" placeholder="Enter member name / सदस्य का नाम दर्ज करें"/>
+                                        <field name="address" string="Address / पता" placeholder="Enter address / पता दर्ज करें"/>
+                                        <field name="post" string="Post / पद" placeholder="Enter designation / पद दर्ज करें"/>
+                                    </list>
+                                </field>
+                            </group>
+                            
+                            <!-- (घ) Technical Expert -->
+                            <div class="custom-section-header">
+                                (घ) Technical Expert / परियोजना से संबंधित विषय का तकनीकि विशेषज्ञ
+                            </div>
+                            <group>
+                                <div class="alert alert-info" role="alert" style="margin: 5px 0; padding: 8px; border-left: 4px solid #17a2b8;">
+                                    <i class="fa fa-info-circle"/> Click "Add a line" below to add team members
+                                </div>
+                                <field name="technical_expert_line_ids" nolabel="1"
+                                       context="{'default_member_type': 'technical_expert'}"
+                                       readonly="is_approved_readonly or (state == 'submitted' and not can_collector_edit)"
+                                       control="full">
+                                    <list editable="bottom" create="1" delete="1">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="member_type" column_invisible="1"/>
+                                        <field name="name" string="Name / नाम" placeholder="Enter member name / सदस्य का नाम दर्ज करें"/>
+                                        <field name="address" string="Address / पता" placeholder="Enter address / पता दर्ज करें"/>
+                                        <field name="post" string="Post / पद" placeholder="Enter designation / पद दर्ज करें"/>
+                                    </list>
+                                </field>
+                            </group>
+                        </page>
+                        <page string="Expert Committee Upload / Download">
+
+
+                            <!-- SDM Section / SDM अनुभाग -->
+                            <div class="section-card" groups="bhukhadan_core.group_bhuarjan_sdm,bhukhadan_core.group_bhuarjan_admin,base.group_system"
+                                 invisible="(is_collector and not is_admin) or (is_admin and state not in ('draft', 'send_back'))">
+                                <div class="section-header">SDM Section / SDM अनुभाग</div>
+                                <div class="row">
+                                    <!-- Left: Download Options -->
+                                    <div class="col-md-6 border-right">
+                                        <div style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Step 1: Download Proposal</div>
+                                        <div class="d-flex align-items-center mb-3">
+                                            <button name="action_download_unsigned_file" string="Expert Committee Proposal" type="object" 
+                                                    class="btn custom-btn-primary mr-2" icon="fa-download" style="margin-right: 10px;"/>
+                                        </div>
+                                        
+                                        <div invisible="not sdm_signed_file" class="mt-3">
+                                            <div style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Signed Document</div>
+                                            <button name="action_download_sdm_signed_file" type="object" 
+                                                    class="btn custom-btn-primary"
+                                                    title="Download SDM Signed Expert Committee Report">
+                                                <i class="fa fa-download" style="margin-right: 5px;"/>
+                                                <i class="fa fa-check-circle" style="margin-right: 5px;"/>
+                                                Expert Committee SDM Signed
+                                            </button>
+                                        </div>
+
+                                        <div invisible="not expert_group_report_file" class="mt-3">
+                                            <div style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Expert Group Report</div>
+                                            <button name="action_download_expert_group_report" string="Expert Group Report" type="object" 
+                                                    class="btn custom-btn-primary" icon="fa-download"
+                                                    title="Download Expert Group Report"/>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Right: Upload and Submit -->
+                                    <div class="col-md-6">
+                                        <div style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Step 2: Upload Signed Proposal</div>
+                                        <div class="bg-light p-3 rounded mb-3">
+                                            <div class="mb-2">
+                                                <field name="sdm_signed_file" filename="sdm_signed_filename" widget="binary" 
+                                                       readonly="state != 'draft' and not is_admin"
+                                                       placeholder="Upload Signed Expert Committee Report"
+                                                       help="Upload the signed Expert Committee document from SDM"/>
+                                                <field name="sdm_signed_filename" invisible="1"/>
+                                            </div>
+                                            <div class="text-muted small">
+                                                <i class="fa fa-asterisk text-danger" style="font-size: 0.7em;"/> Mandatory
+                                            </div>
+                                        </div>
+                                        
+
+                                        
+                                        <!-- Submit Actions -->
+                                        <div class="mt-3 px-3">
+                                            <button name="action_submit" string="Submit to Collector" type="object" 
+                                                    class="btn custom-btn-teal mb-2" 
+                                                    icon="fa-paper-plane"
+                                                    invisible="not sdm_signed_file or state != 'draft'"/>
+
+                                            <button name="action_draft" string="Resubmit to Collector" type="object" 
+                                                    class="btn custom-btn-primary" 
+                                                    icon="fa-refresh"
+                                                    invisible="state != 'send_back'"/>
+                                        </div>
+
+                                        <div class="text-muted small mt-1" invisible="sdm_signed_file">
+                                            <i class="fa fa-info-circle"/> Upload the signed proposal PDF to enable submission.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Collector Section / कलेक्टर अनुभाग -->
+                             <div class="section-card" groups="bhukhadan_core.group_bhuarjan_collector,bhukhadan_core.group_bhuarjan_admin,base.group_system"
+                                  invisible="not (is_collector or is_admin) or (is_admin and state in ('draft', 'send_back'))">
+                                <div class="section-header">Collector Section / कलेक्टर अनुभाग</div>
+                                <div class="row">
+                                    <!-- Left: Download Options -->
+                                    <div class="col-md-6 border-right">
+                                        <div style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Step 1: Download Documents</div>
+                                        <div class="d-flex flex-wrap mb-3">
+                                            <button name="action_download_sdm_signed_file" 
+                                                    type="object" 
+                                                    class="btn custom-btn-primary mr-2 mb-2"
+                                                    title="Download SDM Signed Expert Committee Report"
+                                                    invisible="not sdm_signed_file">
+                                                <i class="fa fa-download" style="margin-right: 5px;"/> Expert Committee SDM Signed
+                                            </button>
+                                            
+                                            <button name="action_download_latest_pdf" 
+                                                    string="Expert Committee Proposal" type="object" 
+                                                    class="btn custom-btn-primary mb-2" icon="fa-download"
+                                                    title="Download Latest PDF (Collector's if available, otherwise SDM's, otherwise unsigned)"
+                                                    invisible="not sdm_signed_file and not collector_signed_file"/>
+                                        </div>
+                                        
+                                        <div invisible="not collector_signed_file" class="mt-3">
+                                            <div style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Signed Document</div>
+                                            <button name="action_download_collector_signed_file"
+                                                    type="object" 
+                                                    class="btn custom-btn-primary"
+                                                    title="Download Collector Signed Expert Committee">
+                                                <i class="fa fa-download" style="margin-right: 5px;"/>
+                                                <i class="fa fa-check-circle" style="margin-right: 5px;"/>
+                                                Expert Committee Collector Signed
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Right: Upload and Workflow -->
+                                    <div class="col-md-6">
+                                        <div style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Step 2: Upload &amp; Approve</div>
+                                        <div class="bg-light p-3 rounded">
+                                            <div class="mb-3">
+                                                <field name="collector_signed_file" filename="collector_signed_filename" 
+                                                       string="Upload Collector Signed Expert Committee"
+                                                       widget="binary"
+                                                       readonly="state != 'submitted' and not is_admin"
+                                                       placeholder="Upload Expert Committee Approval Letter"
+                                                       help="Upload the signed Expert Committee approval document from Collector"/>
+                                                <field name="collector_signed_filename" invisible="1"/>
+                                            </div>
+                                            
+                                             <!-- Action Buttons -->
+                                            <div class="d-flex" invisible="state != 'submitted'" style="margin-top: 15px;">
+                                                <button name="action_approve" string="Approve / स्वीकृत करें" type="object" 
+                                                        class="btn custom-btn-success flex-fill" 
+                                                        icon="fa-check"
+                                                        groups="bhukhadan_core.group_bhuarjan_collector,bhukhadan_core.group_bhuarjan_admin"
+                                                        invisible="not collector_signed_file"
+                                                        confirm="Are you sure want to approve this record."/>
+                                                
+                                                <button name="action_send_back" string="Send Back / वापस भेजें" type="object" 
+                                                        class="btn custom-btn-danger flex-fill" 
+                                                        icon="fa-times"
+                                                        groups="bhukhadan_core.group_bhuarjan_collector,bhukhadan_core.group_bhuarjan_admin"
+                                                        confirm="Are you sure want to send back this record."/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </page>
+                        <page string="Upload Expert group report" invisible="not is_sdm and not is_admin">
+                            <div class="section-card">
+                                <div class="section-header">Expert Group Report / विशेषज्ञ समूह रिपोर्ट</div>
+                                <div class="bg-light p-3 rounded mb-3">
+                                    <div style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">
+                                        Step 3: Upload Expert Group Report (Optional)
+                                    </div>
+                                    <div class="mb-2">
+                                        <field name="expert_group_report_file" filename="expert_group_report_filename" 
+                                               widget="binary"
+                                               readonly="is_approved_readonly or (state == 'submitted' and not can_collector_edit)"
+                                               placeholder="Upload Expert Group Report"/>
+                                        <field name="expert_group_report_filename" invisible="1"/>
+                                    </div>
+                                    <div class="text-muted small">
+                                        <i class="fa fa-info-circle"/> Optional
+                                    </div>
+                                </div>
+                            </div>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter groups="bhukhadan_core.group_bhuarjan_sdm,bhukhadan_core.group_bhuarjan_collector,bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Expert Committee Report Search View -->
+    <record id="view_expert_committee_report_search" model="ir.ui.view">
+        <field name="name">bhu.expert.committee.report.search</field>
+        <field name="model">bhu.expert.committee.report</field>
+        <field name="arch" type="xml">
+            <search string="Expert Committee Reports">
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="signatory_name"/>
+                <filter string="Draft / प्रारूप" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Submitted / प्रस्तुत" name="submitted" domain="[('state', '=', 'submitted')]"/>
+                <filter string="Approved / स्वीकृत" name="approved" domain="[('state', '=', 'approved')]"/>
+                <filter string="Sent Back / वापस भेजा गया" name="send_back" domain="[('state', '=', 'send_back')]"/>
+                <filter string="Has Signed Document / हस्ताक्षरित दस्तावेज़ है" name="has_signed" domain="[('has_signed_document', '=', True)]"/>
+                <separator/>
+                <filter string="My Reports / मेरी रिपोर्ट" name="my_reports" domain="[('create_uid', '=', uid)]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Expert Committee Report Action -->
+    <record id="action_expert_committee_report" model="ir.actions.act_window">
+        <field name="name">Expert Group Reports</field>
+        <field name="res_model">bhu.expert.committee.report</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_my_reports': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Expert Committee Report!
+            </p>
+            <p>
+                Create and manage Expert Committee reports. You can:
+            </p>
+            <ul>
+                <li>Upload original reports and signed documents</li>
+                <li>Generate Expert Committee Orders directly from reports</li>
+                <li>Track signatory information and approval status</li>
+            </ul>
+            <p>
+                Use the "Create" button to create a new report, then upload files and generate orders as needed.
+            </p>
+        </field>
+    </record>
+
+</odoo>
+

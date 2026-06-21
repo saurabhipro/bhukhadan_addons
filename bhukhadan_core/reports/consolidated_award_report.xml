@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_report_consolidated_award_sheet" model="ir.actions.report">
+            <field name="name">Consolidated Award Sheet / समेकित अवार्ड शीट</field>
+            <field name="model">bhu.section23.award</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">bhukhadan_core.consolidated_award_sheet_report</field>
+            <field name="report_file">bhukhadan_core.consolidated_award_sheet_report</field>
+            <field name="print_report_name">'ConsolidatedAwardSheet_%s' % (object.village_id.name or 'Village')</field>
+            <field name="paperformat_id" ref="bhukhadan_core.bhuarjan_section_23_award_paper_format"/>
+        </record>
+    </data>
+
+    <template id="consolidated_award_sheet_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="bhukhadan_core.section23_award_external_layout">
+
+                    <style>
+                        @page {
+                            margin-top: 0.8cm;
+                            margin-bottom: 5.5cm;
+                            margin-left: 0.5cm;
+                            margin-right: 0.5cm;
+                        }
+                        .cons-table {
+                            border-collapse: collapse !important;
+                            width: 100%;
+                            table-layout: fixed;
+                        }
+                        .cons-table th,
+                        .cons-table td {
+                            border: 1px solid #000 !important;
+                            padding: 3px 4px;
+                            font-family: 'Noto Sans Devanagari','Mangal','Arial Unicode MS','DejaVu Sans',sans-serif;
+                        }
+                    </style>
+
+                    <div class="page section23-award-section" style="padding:10px;">
+                        <t t-set="consolidated_data" t-value="o.get_consolidated_award_data()"/>
+                        <t t-set="headers" t-value="o.get_award_header_constants()['excel']['consolidated_award_headers']"/>
+
+                        <table class="cons-table" style="border-collapse:collapse; width:100%;" border="1" rules="all">
+                            <!-- Title / Logo header row — repeats on every page via thead -->
+                            <thead style="display:table-header-group;">
+                                <tr>
+                                    <th colspan="9" style="border:none !important; background:#fff !important; padding:0 0 4px 0 !important;">
+                                        <div style="display:flex; align-items:flex-start; gap:12px; color:#000; font-family:'Noto Sans Devanagari','Mangal','Arial Unicode MS','DejaVu Sans',sans-serif;">
+                                            <div style="flex-shrink:0; padding-top:2px;">
+                                                <img src="/bhukhadan_core/static/img/logo.png" alt="Logo" style="height:44px; width:auto;"/>
+                                            </div>
+                                            <div style="flex:1; text-align:center;">
+                                                <div style="font-size:16px; font-weight:700; color:#000;">भूमि, परिसंपत्तियों तथा वृक्षों के मुआवजा का गोशवारा भाग -1 (घ)</div>
+                                                <div style="font-size:11px; color:#000; margin-top:3px; line-height:1.55;">
+                                                    भू-अर्जन प्रकरण क्रमांक <span t-esc="o.case_number or ''"/> /
+                                                    ग्राम-<span t-esc="o.village_id.name if o.village_id else ''"/>
+                                                    <t t-if="o.get_urban_body_label()"> (<span t-esc="o.get_urban_body_label()"/>)</t>&#160;
+                                                    <span style="font-weight:800;">Project:</span>
+                                                    <span t-esc="o.get_consolidated_report_project_name()"/>&#160;
+                                                    तहसील-<span t-esc="o.village_id.tehsil_id.name if o.village_id and o.village_id.tehsil_id else ''"/>&#160;
+                                                    जिला-<span t-esc="o.village_id.district_id.name if o.village_id and o.village_id.district_id else ''"/>
+                                                    <t t-if="o.village_id and o.village_id.district_id and o.village_id.district_id.state_id">
+                                                        (<span t-esc="o.village_id.district_id.state_id.name"/>)
+                                                    </t>
+                                                </div>
+                                            </div>
+                                            <div style="flex-shrink:0; text-align:right; padding-top:2px; font-size:11px; font-weight:700;">
+                                                दिनांक: <span t-esc="o.award_date.strftime('%d-%m-%Y') if o.award_date else ''"/>
+                                            </div>
+                                        </div>
+                                    </th>
+                                </tr>
+                                <!-- Column header row 1 -->
+                                <!-- headers[0]=क्रमांक, [1]=भूमिस्वामी, [2]=खसरा(sub), [3]=रकबा(sub), [4]=भूमि मुआवजा, [5]=परिसंपत्ति, [6]=वृक्ष, [7]=निर्धारित कुल, [8]=रिमार्क -->
+                                <tr>
+                                    <th rowspan="2" style="border:1px solid #000 !important; background-color:#d3d3d3; color:#000; font-weight:900; text-align:center; padding:4px 3px; font-size:13px;"><span t-esc="headers[0]"/></th>
+                                    <th rowspan="2" style="width:22%; border:1px solid #000 !important; background-color:#d3d3d3; color:#000; font-weight:900; text-align:center; padding:4px 3px; font-size:13px;"><span t-esc="headers[1]"/></th>
+                                    <th colspan="2" style="border:1px solid #000 !important; background-color:#d3d3d3; color:#000; font-weight:900; text-align:center; padding:4px 3px; font-size:13px;">अर्जित भूमि का विवरण</th>
+                                    <th rowspan="2" style="border:1px solid #000 !important; background-color:#d3d3d3; color:#000; font-weight:900; text-align:center; padding:4px 3px; font-size:13px;"><span t-esc="headers[4]"/></th>
+                                    <th rowspan="2" style="border:1px solid #000 !important; background-color:#d3d3d3; color:#000; font-weight:900; text-align:center; padding:4px 3px; font-size:13px;"><span t-esc="headers[5]"/></th>
+                                    <th rowspan="2" style="border:1px solid #000 !important; background-color:#d3d3d3; color:#000; font-weight:900; text-align:center; padding:4px 3px; font-size:13px;"><span t-esc="headers[6]"/></th>
+                                    <th rowspan="2" style="border:1px solid #000 !important; background-color:#d3d3d3; color:#000; font-weight:900; text-align:center; padding:4px 3px; font-size:13px;"><span t-esc="headers[7]"/></th>
+                                    <th rowspan="2" style="border:1px solid #000 !important; background-color:#d3d3d3; color:#000; font-weight:900; text-align:center; padding:4px 3px; font-size:13px;"><span t-esc="headers[8]"/></th>
+                                </tr>
+                                <!-- Column header row 2: sub-headers for acquired land -->
+                                <tr>
+                                    <th style="border:1px solid #000 !important; background-color:#d3d3d3; color:#000; font-weight:900; text-align:center; padding:3px; font-size:12px;">खसरा नं.</th>
+                                    <th style="border:1px solid #000 !important; background-color:#d3d3d3; color:#000; font-weight:900; text-align:center; padding:3px; font-size:12px;">रकबा (हे.)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="total_ha"    t-value="0.0"/>
+                                <t t-set="total_land"  t-value="0.0"/>
+                                <t t-set="total_asset" t-value="0.0"/>
+                                <t t-set="total_tree"  t-value="0.0"/>
+                                <t t-set="total_det"   t-value="0.0"/>
+                                <t t-foreach="consolidated_data" t-as="group">
+                                    <t t-set="khasra_lines" t-value="group['khasra_lines']"/>
+                                    <t t-set="kline_count"  t-value="len(khasra_lines)"/>
+                                    <t t-set="row_bg" t-value="'#F8F8F8' if group_index % 2 == 1 else '#FFFFFF'"/>
+                                    <t t-set="B" t-value="'border:1px solid #000;'"/>
+                                    <t t-foreach="khasra_lines" t-as="kline">
+                                        <t t-set="total_ha"    t-value="total_ha    + kline['acquired_area_ha']"/>
+                                        <t t-set="total_land"  t-value="total_land  + kline['land_compensation']"/>
+                                        <t t-set="total_asset" t-value="total_asset + kline['asset_compensation']"/>
+                                        <t t-set="total_tree"  t-value="total_tree  + kline['tree_compensation']"/>
+                                        <t t-set="total_det"   t-value="total_det   + kline['determined_total']"/>
+                                        <tr>
+                                            <!-- Serial: rowspan across all khasra sub-rows -->
+                                            <td t-if="kline_index == 0"
+                                                t-att-rowspan="kline_count"
+                                                t-attf-style="border:1px solid #000; background-color:{row_bg}; text-align:center; vertical-align:middle; padding:3px 2px; font-size:13px;">
+                                                <span t-esc="group['serial']"/>
+                                            </td>
+                                            <!-- Owner name: rowspan across all khasra sub-rows -->
+                                            <td t-if="kline_index == 0"
+                                                t-att-rowspan="kline_count"
+                                                t-attf-style="border:1px solid #000; background-color:{row_bg}; padding:4px 3px; font-size:13px; vertical-align:top; text-align:left;">
+                                                <t t-foreach="group['owners']" t-as="owner">
+                                                    <div t-att-style="'' if owner_last else 'margin-bottom:2px; padding-bottom:2px; border-bottom:1px dotted #bbb;'">
+                                                        <span style="font-weight:600;"><t t-esc="owner_index + 1"/>. <t t-esc="owner['name']"/></span>
+                                                        <t t-if="owner['father_name']">&#160;पिता&#160;<span t-esc="owner['father_name']"/></t>
+                                                        <t t-elif="owner['spouse_name']">&#160;पति&#160;<span t-esc="owner['spouse_name']"/></t>
+                                                        <t t-if="owner['address']">
+                                                            <div style="font-size:9px; color:#444;">निवासी: <span t-esc="owner['address']"/></div>
+                                                        </t>
+                                                    </div>
+                                                </t>
+                                            </td>
+                                            <!-- Per-khasra columns -->
+                                            <td t-attf-style="border:1px solid #000; background-color:{row_bg}; text-align:center; padding:3px 2px; font-size:13px;">
+                                                <span t-esc="kline['khasra']"/>
+                                            </td>
+                                            <td t-attf-style="border:1px solid #000; background-color:{row_bg}; text-align:right; padding:3px 2px; font-size:14px;">
+                                                <span style="font-weight:700;" t-esc="'{:.4f}'.format(kline['acquired_area_ha'])"/>
+                                            </td>
+                                            <td t-attf-style="border:1px solid #000; background-color:{row_bg}; text-align:right; padding:3px 2px; font-size:14px;">
+                                                <span style="font-weight:700;" t-esc="'{:,.2f}'.format(kline['land_compensation'])"/>
+                                            </td>
+                                            <td t-attf-style="border:1px solid #000; background-color:{row_bg}; text-align:right; padding:3px 2px; font-size:14px;">
+                                                <span style="font-weight:700;" t-esc="'{:,.2f}'.format(kline['asset_compensation'])"/>
+                                            </td>
+                                            <td t-attf-style="border:1px solid #000; background-color:{row_bg}; text-align:right; padding:3px 2px; font-size:14px;">
+                                                <span style="font-weight:700;" t-esc="'{:,.2f}'.format(kline['tree_compensation'])"/>
+                                            </td>
+                                            <!-- Determined total: rowspan, showing group total -->
+                                            <td t-if="kline_index == 0"
+                                                t-att-rowspan="kline_count"
+                                                t-attf-style="border:1px solid #000; background-color:{row_bg}; text-align:right; vertical-align:middle; padding:3px 2px; font-size:14px; font-weight:900;">
+                                                <span t-esc="'{:,.2f}'.format(group['total_determined'])"/>
+                                            </td>
+                                            <!-- Remark: rowspan -->
+                                            <td t-if="kline_index == 0"
+                                                t-att-rowspan="kline_count"
+                                                t-attf-style="border:1px solid #000; background-color:{row_bg}; padding:3px 2px;"/>
+                                        </tr>
+                                    </t>
+                                </t>
+                                <!-- Total row -->
+                                <tr style="background-color:#d3d3d3; font-weight:900;">
+                                    <td colspan="3" style="text-align:center; border:1px solid #000 !important; padding:4px 2px; font-size:14px; font-weight:900; background-color:#d3d3d3 !important;">कुल / Total</td>
+                                    <td style="text-align:right; border:1px solid #000 !important; padding:4px 2px; font-size:14px; font-weight:900; background-color:#d3d3d3 !important;"><span style="font-size:14px; font-weight:900;" t-esc="'{:.4f}'.format(total_ha)"/></td>
+                                    <td style="text-align:right; border:1px solid #000 !important; padding:4px 2px; font-size:14px; font-weight:900; background-color:#d3d3d3 !important;"><span style="font-size:14px; font-weight:900;" t-esc="'{:,.2f}'.format(total_land)"/></td>
+                                    <td style="text-align:right; border:1px solid #000 !important; padding:4px 2px; font-size:14px; font-weight:900; background-color:#d3d3d3 !important;"><span style="font-size:14px; font-weight:900;" t-esc="'{:,.2f}'.format(total_asset)"/></td>
+                                    <td style="text-align:right; border:1px solid #000 !important; padding:4px 2px; font-size:14px; font-weight:900; background-color:#d3d3d3 !important;"><span style="font-size:14px; font-weight:900;" t-esc="'{:,.2f}'.format(total_tree)"/></td>
+                                    <td style="text-align:right; border:1px solid #000 !important; padding:4px 2px; font-size:14px; font-weight:900; background-color:#d3d3d3 !important;"><span style="font-size:14px; font-weight:900;" t-esc="'{:,.2f}'.format(total_det)"/></td>
+                                    <td style="border:1px solid #000 !important; background-color:#d3d3d3 !important;"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

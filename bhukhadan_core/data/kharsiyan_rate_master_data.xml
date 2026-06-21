@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Kharsiyan Block Land Rate Master Data (2019-2020) -->
+        <!-- Based on Market Value Guide for Land in Kharsiyan Block -->
+        <!-- Using existing Raigarh district and tehsil structure -->
+        <!-- One entry per village with base rates - system calculates all permutations -->        
+        <!-- First, create villages from the rate master document -->
+        <!-- Village 1: खड़गोव (Khadgov) -->
+        <record id="village_khadgov" model="bhu.village">
+            <field name="name">खड़गोव</field>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="village_code">KHAD</field>
+        </record>
+        
+        <!-- ============================================ -->
+        <!-- Delete Old Rate Master Records (if they exist) -->
+        <!-- ============================================ -->
+        <delete model="bhu.rate.master" search="[('village_id', '=', ref('village_khadgov'))]"/>
+        
+        <!-- ============================================ -->
+        <!-- Rate Master Records - One Entry Per Village -->
+        <!-- ============================================ -->
+        
+        <!-- खड़गोव (Khadgov) - Testing Village Only -->
+        <!-- Base rates from screenshot: Main Road Sqm = 2600, Other Road Sqm = 1900, Main Road Hectare = 6300000, Other Road Hectare = 4600000 -->
+        <record id="rate_khadgov" model="bhu.rate.master">
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="village_id" ref="village_khadgov"/>
+            <field name="main_road_rate_sqm">2600.0</field>
+            <field name="other_road_rate_sqm">1900.0</field>
+            <field name="main_road_rate_hectare">6300000.0</field>
+            <field name="other_road_rate_hectare">4600000.0</field>
+            <field name="state">active</field>
+            <field name="effective_from">2019-04-01</field>
+            <field name="effective_to">2020-03-31</field>
+            <field name="remarks">खड़गोव - Base rates (2019-2020). System calculates: Irrigated +20%, Non-Irrigated -20%</field>
+        </record>        
+    </data>
+</odoo>

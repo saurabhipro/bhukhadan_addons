@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <menuitem id="menu_cba_root"
+              name="Coal Bearing Act"
+              action="action_cba_case"
+              sequence="25"
+              groups="base.group_user"/>
+
+    <menuitem id="menu_cba_cases"
+              name="CBA Cases"
+              parent="menu_cba_root"
+              action="action_cba_case"
+              sequence="1"/>
+
+    <menuitem id="menu_cba_master"
+              name="Master Data"
+              parent="menu_cba_root"
+              sequence="10"
+              groups="bhuarjan_cba_core.group_cba_manager,base.group_system"/>
+
+    <menuitem id="menu_cba_projects"
+              name="Projects"
+              parent="menu_cba_master"
+              action="action_cba_project"
+              sequence="1"/>
+
+    <menuitem id="menu_cba_districts"
+              name="Districts"
+              parent="menu_cba_master"
+              action="action_cba_district"
+              sequence="2"/>
+
+    <menuitem id="menu_cba_tehsils"
+              name="Tehsils"
+              parent="menu_cba_master"
+              action="action_cba_tehsil"
+              sequence="3"/>
+
+    <menuitem id="menu_cba_villages"
+              name="Villages"
+              parent="menu_cba_master"
+              action="action_cba_village"
+              sequence="4"/>
+
+    <menuitem id="menu_cba_photo_types"
+              name="Photo Types"
+              parent="menu_cba_master"
+              action="action_cba_photo_type"
+              sequence="5"/>
+
+    <menuitem id="menu_cba_workflow_designer"
+              name="Workflow Designer"
+              parent="menu_cba_root"
+              action="action_cba_workflow"
+              sequence="5"
+              groups="bhuarjan_cba_core.group_cba_manager,base.group_system"/>
+
+    <menuitem id="menu_cba_workflow_steps"
+              name="Workflow Steps (Legacy)"
+              parent="menu_cba_master"
+              action="action_cba_workflow_step"
+              sequence="20"
+              groups="bhuarjan_cba_core.group_cba_manager,base.group_system"/>
+</odoo>

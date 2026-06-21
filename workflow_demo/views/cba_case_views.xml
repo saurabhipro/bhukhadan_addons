@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_cba_case_tree" model="ir.ui.view">
+        <field name="name">cba.case.tree</field>
+        <field name="model">cba.case</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="village_id"/>
+                <field name="district_id" optional="show"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-success="state == 'completed'"
+                       decoration-warning="state == 'in_progress'"/>
+                <field name="current_step_name"/>
+                <field name="progress_percent" widget="progressbar"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cba_case_form" model="ir.ui.view">
+        <field name="name">cba.case.form</field>
+        <field name="model">cba.case</field>
+        <field name="arch" type="xml">
+            <form string="CBA Case">
+                <header>
+                    <button name="action_start_process" string="Start Process"
+                            type="object" class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_complete_current_step" string="Complete Current Step"
+                            type="object" class="btn-primary"
+                            invisible="state not in ('draft', 'in_progress') or (not current_step_id and not current_node_id)"/>
+                    <button name="action_send_back_step" string="Send Back"
+                            type="object"
+                            invisible="state != 'in_progress'"/>
+                    <button name="action_cancel" string="Cancel"
+                            type="object"
+                            invisible="state in ('completed', 'cancelled')"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,in_progress,completed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="project_id"/>
+                            <field name="project_district_id" invisible="1"/>
+                            <field name="village_id"
+                                   readonly="not project_id"
+                                   context="{'cba_project_district_id': project_district_id}"/>
+                            <field name="district_id" readonly="1"/>
+                            <field name="tehsil_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="workflow_id"/>
+                            <field name="current_step_id" readonly="1" invisible="current_node_id"/>
+                            <field name="current_node_id" readonly="1" invisible="not current_node_id"/>
+                            <field name="current_step_name" readonly="1"/>
+                            <field name="current_bpmn_id" invisible="1"/>
+                            <field name="current_lane" readonly="1"/>
+                            <field name="progress_percent" widget="progressbar"/>
+                            <field name="payment_consent"
+                                   invisible="current_bpmn_id != 'Gateway_Payment_Consent'"/>
+                        </group>
+                    </group>
+                    <field name="description" placeholder="Case notes…"/>
+                    <notebook>
+                        <page string="Process Map (BPMN)" class="o_cba_bpmn_viewer_tab">
+                            <group colspan="2" col="1">
+                                <field name="workflow_id" invisible="1"/>
+                                <field name="bpmn_highlight_json" widget="cba_bpmn_viewer" nolabel="1"/>
+                            </group>
+                        </page>
+                        <page string="Step Tracker">
+                            <field name="step_line_ids" readonly="1">
+                                <list decoration-success="status == 'done'"
+                                      decoration-warning="status == 'in_progress'"
+                                      decoration-muted="status == 'skipped'">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="lane"/>
+                                    <field name="step_type"/>
+                                    <field name="status" widget="badge"/>
+                                    <field name="photo_count"/>
+                                    <field name="started_on"/>
+                                    <field name="completed_on"/>
+                                    <field name="completed_by_id"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Photos / Site Images">
+                            <field name="photo_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="step_line_id"/>
+                                    <field name="photo_type_id"/>
+                                    <field name="name"/>
+                                    <field name="image" widget="image" options="{'size': [64, 64]}"/>
+                                    <field name="image_filename" column_invisible="1"/>
+                                    <field name="latitude"/>
+                                    <field name="longitude"/>
+                                    <field name="notes"/>
+                                </list>
+                                <form>
+                                    <group>
+                                        <field name="step_line_id"/>
+                                        <field name="photo_type_id"/>
+                                        <field name="name"/>
+                                        <field name="image" widget="image"/>
+                                        <field name="image_filename" invisible="1"/>
+                                        <field name="latitude"/>
+                                        <field name="longitude"/>
+                                        <field name="notes"/>
+                                    </group>
+                                    <field name="image_preview"/>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cba_case_kanban" model="ir.ui.view">
+        <field name="name">cba.case.kanban</field>
+        <field name="model">cba.case</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" class="o_kanban_small_column">
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="current_step_name"/>
+                <field name="progress_percent"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_content">
+                            <strong><field name="name"/></strong>
+                            <div><field name="project_id"/></div>
+                            <div class="text-muted"><field name="current_step_name"/></div>
+                            <field name="progress_percent" widget="progressbar"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_cba_case_search" model="ir.ui.view">
+        <field name="name">cba.case.search</field>
+        <field name="model">cba.case</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="village_id"/>
+                <field name="current_step_id"/>
+                <filter name="in_progress" string="In Progress" domain="[('state', '=', 'in_progress')]"/>
+                <filter name="completed" string="Completed" domain="[('state', '=', 'completed')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_project" string="Project" context="{'group_by': 'project_id'}"/>
+                    <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                    <filter name="group_lane" string="Current Lane" context="{'group_by': 'current_lane'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cba_case" model="ir.actions.act_window">
+        <field name="name">CBA Cases</field>
+        <field name="res_model">cba.case</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create a CBA acquisition case</p>
+            <p>Track Coal Bearing Areas Act land acquisition through the SECL L&amp;R Master SOP BPMN workflow.</p>
+        </field>
+    </record>
+</odoo>

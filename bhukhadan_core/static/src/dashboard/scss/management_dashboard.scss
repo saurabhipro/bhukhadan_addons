@@ -1,0 +1,471 @@
+/* Management dashboard v2 — new `bhu-mgmt-*` classes (avoids theme clashes with old o_mgmt_*) */
+
+/*
+ * Root is the real .o_action (see management_dashboard.xml). Core webclient gives .o_action
+ * height:100% + overflow:hidden on desktop; we take over scrolling on this client action.
+ */
+.o_action_manager > .bhu-mgmt-root.o_action,
+.o_action_manager .bhu-mgmt-root.o_action {
+    flex: 1 1 0% !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    display: block !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(15, 23, 42, 0.35) rgba(255, 255, 255, 0.06);
+    background: #0f172a !important;
+}
+
+/* Undo core rule that hides scrollbars on .o_action at lg+ — users need visible scroll affordance */
+.o_action_manager > .bhu-mgmt-root.o_action::-webkit-scrollbar,
+.o_action_manager .bhu-mgmt-root.o_action::-webkit-scrollbar {
+    width: 10px;
+}
+
+.o_action_manager > .bhu-mgmt-root.o_action::-webkit-scrollbar-thumb,
+.o_action_manager .bhu-mgmt-root.o_action::-webkit-scrollbar-thumb {
+    background: rgba(15, 23, 42, 0.35);
+    border-radius: 999px;
+}
+
+.bhu-mgmt-root {
+    box-sizing: border-box;
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    color: #0f172a;
+}
+
+.bhu-mgmt-surface {
+    width: 100%;
+    max-width: 1580px;
+    margin: 0 auto;
+    padding: 0 clamp(0.65rem, 2.2vw, 1.5rem) 2.75rem;
+    box-sizing: border-box;
+    background: linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%);
+    border-radius: 0;
+}
+
+@media (min-width: 992px) {
+    .bhu-mgmt-surface {
+        border-radius: 0 0 20px 20px;
+    }
+}
+
+.bhu-mgmt-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0.35rem 0 0.5rem;
+}
+
+.bhu-mgmt-refresh {
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: #334155 !important;
+    padding: 0.28rem 0.72rem !important;
+    border-radius: 10px;
+    border: 1px solid rgba(148, 163, 184, 0.45);
+    background: rgba(255, 255, 255, 0.75) !important;
+
+    &:hover {
+        background: #fff !important;
+        border-color: #94a3b8;
+        color: #0f172a !important;
+    }
+}
+
+.bhu-mgmt-status {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    color: #475569;
+}
+
+.bhu-mgmt-alert {
+    margin: 0.5rem clamp(0.75rem, 2.5vw, 1.75rem);
+    border-radius: 12px;
+}
+
+.bhu-mgmt-kpis {
+    margin-top: 0.2rem;
+    margin-bottom: 0.25rem;
+}
+
+/* Single row: shrink-to-fit tiles + horizontal scroll on small viewports */
+.bhu-mgmt-kpi-grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 0.45rem;
+    overflow-x: auto;
+    overflow-y: visible;
+    padding: 0.2rem 0.1rem 0.65rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(15, 23, 42, 0.35) transparent;
+    -webkit-overflow-scrolling: touch;
+
+    @media (min-width: 1400px) {
+        gap: 0.55rem;
+        justify-content: space-between;
+
+        .bhu-mgmt-kpi {
+            flex: 1 1 0;
+        }
+    }
+}
+
+/* KPI pattern tiles — replace JPGs under /bhukhadan_core/static/img/ to customize */
+@mixin bhu-kpi-pattern($file, $border, $lbl, $val) {
+    border-color: $border !important;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.12);
+    background-color: #f1f5f9;
+    background-image:
+        linear-gradient(
+            168deg,
+            rgba(255, 255, 255, 0.92) 0%,
+            rgba(255, 255, 255, 0.62) 48%,
+            rgba(255, 255, 255, 0.28) 100%
+        ),
+        url("/bhukhadan_core/static/img/#{$file}");
+    background-size: cover, cover;
+    background-position: center, center;
+    background-repeat: no-repeat;
+
+    .k {
+        color: $lbl !important;
+        text-shadow: 0 1px 1px rgba(255, 255, 255, 0.85);
+    }
+
+    .v {
+        color: $val !important;
+        text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+    }
+}
+
+.bhu-mgmt-kpi {
+    flex: 0 0 auto;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    min-width: 7.75rem;
+    text-align: left;
+    border-radius: 12px;
+    padding: 0.45rem 0.55rem;
+    border-width: 1px;
+    border-style: solid;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    cursor: default;
+
+    &.c-projects {
+        @include bhu-kpi-pattern("blue_pattern.jpg", #3730a3, rgba(49, 46, 129, 0.95), #1e1b4b);
+    }
+
+    &.c-ontrack {
+        @include bhu-kpi-pattern("green_pattern.jpg", #047857, rgba(6, 78, 59, 0.95), #064e3b);
+    }
+
+    &.c-delay {
+        @include bhu-kpi-pattern("orange_pattern.jpg", #c2410c, rgba(124, 45, 18, 0.95), #7c2d12);
+    }
+
+    &.c-surveys {
+        @include bhu-kpi-pattern("purple_pattern.jpg", #5b21b6, rgba(76, 29, 149, 0.95), #4c1d95);
+    }
+
+    &.c-budget {
+        @include bhu-kpi-pattern("pink_pattern.jpg", #be185d, rgba(131, 24, 67, 0.95), #831843);
+    }
+
+    &.c-s23 {
+        @include bhu-kpi-pattern("yellow_pattern.jpg", #a16207, rgba(113, 63, 18, 0.95), #713f12);
+    }
+
+    &.c-generated {
+        @include bhu-kpi-pattern("blue_pattern.jpg", #9333ea, rgba(76, 29, 149, 0.95), #581c87);
+    }
+
+    &.c-recon {
+        @include bhu-kpi-pattern("green_pattern.jpg", #0f766e, rgba(15, 118, 110, 0.96), #115e59);
+    }
+
+    &.c-arb {
+        @include bhu-kpi-pattern("orange_pattern.jpg", #ea580c, rgba(154, 52, 18, 0.95), #9a3412);
+    }
+
+    &:is(button):hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 28px rgba(15, 23, 42, 0.15);
+        cursor: pointer;
+    }
+
+    .k {
+        display: block;
+        font-size: 0.53rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        line-height: 1.15;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .v {
+        display: block;
+        margin-top: 0.12rem;
+        font-size: clamp(0.95rem, 2.2vw, 1.1rem);
+        font-weight: 800;
+        font-variant-numeric: tabular-nums;
+        line-height: 1.15;
+        white-space: nowrap;
+    }
+}
+
+.bhu-mgmt-foot {
+    padding: 0.35rem 0.1rem 0.75rem;
+    line-height: 1.4;
+}
+
+.bhu-mgmt-main {
+    padding-top: 0.75rem;
+}
+
+@media (min-width: 992px) {
+    .bhu-mgmt-main .row.align-items-stretch > [class*="col-"] {
+        display: flex;
+
+        > .bhu-mgmt-card {
+            flex: 1;
+            width: 100%;
+            min-height: 308px;
+        }
+    }
+}
+
+.bhu-mgmt-card {
+    height: auto;
+    background: rgba(255, 255, 255, 0.97);
+    border-radius: 16px;
+    border: 1px solid rgba(15, 23, 42, 0.07);
+    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    backdrop-filter: blur(8px);
+    transition: box-shadow 0.2s ease, transform 0.15s ease;
+
+    &:hover {
+        box-shadow: 0 18px 48px rgba(15, 23, 42, 0.11);
+        transform: translateY(-1px);
+    }
+
+    &.bhu-mgmt-card-accent {
+        border-top: 3px solid #92400e;
+    }
+
+    > .bhu-mgmt-chart {
+        flex: 1 1 auto;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .bhu-mgmt-chart-note {
+        flex-shrink: 0;
+        margin-top: 0.12rem;
+        padding: 0 0.1rem;
+        font-size: 0.55rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: #78716c;
+    }
+}
+
+.bhu-mgmt-card-wide {
+    border-left: 4px solid #92400e;
+}
+
+.bhu-mgmt-card-hd {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.42rem 0.65rem;
+    background: linear-gradient(135deg, #4a3728 0%, #5c4033 38%, #78350f 100%);
+    border-bottom: 1px solid rgba(41, 20, 8, 0.45);
+    flex-shrink: 0;
+
+    h2 {
+        margin: 0;
+        font-size: 0.8rem;
+        font-weight: 800;
+        color: #fffbeb;
+        letter-spacing: -0.01em;
+        line-height: 1.25;
+    }
+
+    &.bhu-mgmt-card-hd-inline {
+        align-items: center;
+    }
+}
+
+.bhu-mgmt-snapshot-btn {
+    flex-shrink: 0;
+    font-weight: 700;
+    font-size: 0.75rem;
+    color: #fffbeb !important;
+    border: 1px solid rgba(254, 243, 199, 0.45) !important;
+    background: rgba(0, 0, 0, 0.12) !important;
+    border-radius: 8px;
+    padding: 0.28rem 0.65rem !important;
+
+    &:hover {
+        background: rgba(0, 0, 0, 0.22) !important;
+        border-color: rgba(254, 243, 199, 0.75) !important;
+        color: #fff !important;
+    }
+}
+
+.bhu-mgmt-tag {
+    flex-shrink: 0;
+    font-size: 0.52rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.18rem 0.45rem;
+    border-radius: 999px;
+    background: rgba(255, 251, 235, 0.22);
+    color: #fef3c7;
+    border: 1px solid rgba(254, 243, 199, 0.28);
+
+    &.t-violet {
+        background: rgba(233, 213, 255, 0.2);
+        color: #f3e8ff;
+        border-color: rgba(233, 213, 255, 0.35);
+    }
+
+    &.t-teal {
+        background: rgba(204, 251, 241, 0.18);
+        color: #ccfbf1;
+        border-color: rgba(204, 251, 241, 0.3);
+    }
+
+    &.t-warn {
+        background: rgba(254, 243, 199, 0.22);
+        color: #fde68a;
+        border-color: rgba(253, 230, 138, 0.35);
+    }
+}
+
+.bhu-mgmt-chart {
+    padding: 0.22rem 0.45rem 0.35rem;
+    background: linear-gradient(180deg, #f8fafc 0%, #fff 100%);
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Flex fill: bitmap absolutely fills so bars can use full vertical space (bottom-aligned in JS). */
+.bhu-mgmt-chart-plate {
+    position: relative;
+    flex: 1 1 auto;
+    width: 100%;
+    min-height: 216px;
+
+    canvas {
+        position: absolute;
+        inset: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.bhu-mgmt-table-wrap,
+.bhu-mgmt-table-wide {
+    overflow: auto;
+}
+
+.bhu-mgmt-card:not(.bhu-mgmt-card-wide) .bhu-mgmt-table-wrap {
+    max-height: none;
+}
+
+.bhu-mgmt-table-wide {
+    max-height: 420px;
+}
+
+.bhu-mgmt-table {
+    font-size: 0.8125rem;
+
+    thead th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        background: #f1f5f9;
+        color: #334155;
+        font-weight: 700;
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    tbody td {
+        vertical-align: middle;
+        border-color: #f1f5f9;
+    }
+
+    tbody tr:hover td {
+        background: rgba(120, 53, 15, 0.06);
+    }
+}
+
+.bhu-mgmt-a {
+    color: #0f766e;
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover {
+        color: #0d9488;
+        text-decoration: underline;
+    }
+}
+
+.bhu-mgmt-act-scroll {
+    flex: 1 1 0;
+    min-height: 0;
+    max-height: none;
+    overflow: auto;
+}
+
+.bhu-mgmt-act {
+    display: grid;
+    grid-template-columns: 88px 1fr minmax(72px, auto);
+    gap: 0.35rem 0.55rem;
+    padding: 0.55rem 0.85rem;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 0.78rem;
+
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+.bhu-mgmt-act-dt {
+    font-variant-numeric: tabular-nums;
+    color: #64748b;
+    font-size: 0.72rem;
+}
+
+.bhu-mgmt-act-body {
+    min-width: 0;
+}
+
+.bhu-mgmt-pipe {
+    background: rgba(13, 148, 136, 0.9) !important;
+    color: #fff !important;
+    font-weight: 600;
+}

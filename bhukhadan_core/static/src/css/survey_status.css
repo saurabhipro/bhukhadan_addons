@@ -1,0 +1,460 @@
+/* Survey Status Styling - Enhanced Green for Approved */
+
+/* Survey Form Spacing Optimization */
+.o_form_view .o_form_sheet {
+    padding: 10px 15px !important;
+}
+
+.o_form_view .oe_title {
+    margin-bottom: 10px !important;
+}
+
+.o_form_view .oe_title h1 {
+    margin-bottom: 5px !important;
+    margin-top: 5px !important;
+}
+
+.o_form_view .alert {
+    margin-bottom: 15px !important;
+    margin-top: 5px !important;
+}
+
+.o_form_view .o_group {
+    margin-bottom: 10px !important;
+}
+
+.o_form_view .o_group .o_group {
+    margin-bottom: 5px !important;
+}
+
+.o_form_view .o_notebook {
+    margin-top: 10px !important;
+}
+
+.o_form_view .o_notebook .tab-content {
+    padding: 10px 0 !important;
+}
+
+/* Kanban Card Approved Status */
+.o_kanban_record .badge[style*="background: linear-gradient(135deg, #10b981"] {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    color: #ffffff !important;
+    border: 2px solid #047857 !important;
+    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3) !important;
+    font-weight: bold !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* List View Approved Status */
+.o_list_view .o_field_badge[title*="Approved"],
+.o_list_view .o_field_badge[title*="अनुमोदित"] {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    color: #ffffff !important;
+    border: 2px solid #047857 !important;
+    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3) !important;
+    font-weight: bold !important;
+}
+
+/* Form View Approved Status */
+.o_form_view .o_field_badge[title*="Approved"],
+.o_form_view .o_field_badge[title*="अनुमोदित"] {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    color: #ffffff !important;
+    border: 2px solid #047857 !important;
+    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3) !important;
+    font-weight: bold !important;
+}
+
+/* General Approved Status Badge */
+.badge-success,
+.o_field_badge.badge-success,
+.o_field_badge[style*="background: #d1fae5"] {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    color: #ffffff !important;
+    border: 2px solid #047857 !important;
+    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3) !important;
+    font-weight: bold !important;
+}
+
+/* Hover Effect for Approved Status */
+.o_kanban_record .badge:hover,
+.o_list_view .o_field_badge:hover,
+.o_form_view .o_field_badge:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(16, 185, 129, 0.4) !important;
+    transition: all 0.3s ease;
+}
+
+/* Animation for Approved Status */
+@keyframes approvedPulse {
+    0% {
+        box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 4px 8px rgba(16, 185, 129, 0.5);
+    }
+
+    100% {
+        box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
+    }
+}
+
+.o_kanban_record .badge[style*="background: linear-gradient(135deg, #10b981"] {
+    animation: approvedPulse 2s ease-in-out infinite;
+}
+
+/* Statusbar Alignment - Right Aligned */
+.o_form_view header {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+}
+
+.o_form_view .o_statusbar_status {
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    margin-left: auto !important;
+}
+
+.o_form_view .o_statusbar_buttons {
+    display: flex !important;
+    justify-content: flex-end !important;
+    margin-left: auto !important;
+}
+
+.o_form_view header .o_statusbar_status {
+    display: flex !important;
+    justify-content: flex-end !important;
+    margin-left: auto !important;
+}
+
+.o_form_view header .o_field_statusbar {
+    display: flex !important;
+    justify-content: flex-end !important;
+    margin-left: auto !important;
+}
+
+/* Ensure statusbar container takes available space and aligns right */
+.o_form_view header>div {
+    display: flex !important;
+    width: 100% !important;
+}
+
+.o_form_view header>div .o_statusbar_status,
+.o_form_view header>div .o_field_statusbar {
+    margin-left: auto !important;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .o_kanban_record .badge {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+    }
+
+    .o_list_view .o_field_badge,
+    .o_form_view .o_field_badge {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+    }
+}
+
+
+/* Survey Form Card Styling Request */
+
+/* Card Containers */
+.o_form_view .o_group.survey-icon-project,
+.o_form_view .o_group.survey-icon-location,
+.o_form_view .o_group.survey-icon-land,
+.o_form_view .o_group.survey-icon-crop,
+.o_form_view .o_group.survey-icon-house,
+.o_form_view .o_group.survey-icon-infrastructure,
+.o_form_view .o_group.survey-icon-remarks {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    /* Softer shadow */
+    border: 1px solid #e0e0e0;
+    margin-bottom: 24px !important;
+    padding-bottom: 15px !important;
+    overflow: hidden;
+    /* Ensures header corners stay rounded */
+    display: block;
+    /* Ensure it behaves like a block container */
+}
+
+/* Headers Common */
+.o_form_view .o_group.survey-icon-project .o_horizontal_separator,
+.o_form_view .o_group.survey-icon-location .o_horizontal_separator,
+.o_form_view .o_group.survey-icon-land .o_horizontal_separator,
+.o_form_view .o_group.survey-icon-crop .o_horizontal_separator,
+.o_form_view .o_group.survey-icon-house .o_horizontal_separator,
+.o_form_view .o_group.survey-icon-infrastructure .o_horizontal_separator,
+.o_form_view .o_group.survey-icon-remarks .o_horizontal_separator {
+    color: white !important;
+    font-weight: 600 !important;
+    font-size: 1.15rem !important;
+    padding: 15px 20px !important;
+    margin: 0 0 15px 0 !important;
+    display: flex;
+    align-items: center;
+    text-transform: none !important;
+    /* Remove uppercase if applied */
+    letter-spacing: 0.5px;
+}
+
+/* Blue Gradient Headers */
+.o_form_view .o_group.survey-icon-project .o_horizontal_separator,
+.o_form_view .o_group.survey-icon-location .o_horizontal_separator,
+.o_form_view .o_group.survey-icon-land .o_horizontal_separator,
+.o_form_view .o_group.survey-icon-crop .o_horizontal_separator {
+    background: linear-gradient(135deg, #1e88e5 0%, #1565c0 100%) !important;
+    /* Material Blue */
+}
+
+/* Dark Slate Headers */
+.o_form_view .o_group.survey-icon-house .o_horizontal_separator,
+.o_form_view .o_group.survey-icon-infrastructure .o_horizontal_separator,
+.o_form_view .o_group.survey-icon-remarks .o_horizontal_separator {
+    background: linear-gradient(135deg, #37474f 0%, #263238 100%) !important;
+    /* Blue Grey */
+}
+
+/* Icons for Headers */
+.o_form_view .o_group.survey-icon-project .o_horizontal_separator::before {
+    content: "\f1ad";
+    font-family: FontAwesome;
+    margin-right: 12px;
+    font-weight: normal;
+}
+
+/* Building */
+.o_form_view .o_group.survey-icon-location .o_horizontal_separator::before {
+    content: "\f041";
+    font-family: FontAwesome;
+    margin-right: 12px;
+    font-weight: normal;
+}
+
+/* Map Marker */
+.o_form_view .o_group.survey-icon-land .o_horizontal_separator::before {
+    content: "\f1b2";
+    font-family: FontAwesome;
+    margin-right: 12px;
+    font-weight: normal;
+}
+
+/* Cube/Land */
+.o_form_view .o_group.survey-icon-crop .o_horizontal_separator::before {
+    content: "\f06c";
+    font-family: FontAwesome;
+    margin-right: 12px;
+    font-weight: normal;
+}
+
+/* Leaf */
+.o_form_view .o_group.survey-icon-house .o_horizontal_separator::before {
+    content: "\f015";
+    font-family: FontAwesome;
+    margin-right: 12px;
+    font-weight: normal;
+}
+
+/* Home */
+.o_form_view .o_group.survey-icon-infrastructure .o_horizontal_separator::before {
+    content: "\f0ad";
+    font-family: FontAwesome;
+    margin-right: 12px;
+    font-weight: normal;
+}
+
+/* Wrench */
+.o_form_view .o_group.survey-icon-remarks .o_horizontal_separator::before {
+    content: "\f040";
+    font-family: FontAwesome;
+    margin-right: 12px;
+    font-weight: normal;
+}
+
+/* Pencil */
+
+/* Inner Field padding fix */
+.o_form_view .o_group.survey-icon-project>table,
+.o_form_view .o_group.survey-icon-location>table,
+.o_form_view .o_group.survey-icon-land>table,
+.o_form_view .o_group.survey-icon-crop>table,
+.o_form_view .o_group.survey-icon-house>table,
+.o_form_view .o_group.survey-icon-infrastructure>table,
+.o_form_view .o_group.survey-icon-remarks>table {
+    margin: 0 15px !important;
+    width: calc(100% - 30px) !important;
+}
+
+/* ============================================================
+   BHU SURVEY FORM — thin informative summary strip only
+   (statusbar + sheet use default Odoo styling)
+   ============================================================ */
+
+.bhu_survey_form .oe_title {
+    margin-bottom: 8px !important;
+}
+
+/* Survey form hero header */
+.bhu_survey_form .bhu_survey_form_hero {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin: 0 0 14px;
+    padding: 14px 16px;
+    background: linear-gradient(135deg, #fff8f0 0%, #fff 55%, #f8f9fa 100%);
+    border: 1px solid #e8dcc8;
+    border-left: 4px solid #8b4513;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.bhu_survey_form .bhu_survey_form_hero_icon {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #8b4513;
+    color: #fff;
+    border-radius: 10px;
+    font-size: 1.35rem;
+    box-shadow: 0 2px 6px rgba(139, 69, 19, 0.25);
+}
+
+.bhu_survey_form .bhu_survey_form_hero_body {
+    flex: 1;
+    min-width: 0;
+}
+
+.bhu_survey_form .bhu_survey_form_hero_kicker {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #8b4513;
+    margin-bottom: 4px;
+    line-height: 1.3;
+}
+
+.bhu_survey_form .bhu_survey_form_hero_title {
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+    margin: 0 0 8px !important;
+    color: #212529;
+    line-height: 1.25;
+}
+
+.bhu_survey_form .bhu_survey_form_hero_title .o_field_widget {
+    font-size: inherit !important;
+    font-weight: inherit !important;
+}
+
+.bhu_survey_form .bhu_survey_form_hero_badges .o_field_widget {
+    display: inline-block;
+}
+
+.bhu_survey_form .oe_title h1 {
+    font-size: 1.45rem !important;
+    font-weight: 700 !important;
+    margin: 0 0 6px !important;
+    color: #212529;
+}
+
+.bhu_survey_form .bhu_survey_summary_strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    margin: 0 0 14px;
+    padding: 0;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.bhu_survey_form .bhu_survey_summary_item {
+    flex: 1 1 140px;
+    min-width: 0;
+    padding: 8px 12px;
+    border-right: 1px solid #e9ecef;
+    border-bottom: 1px solid #e9ecef;
+    background: #fff;
+}
+
+.bhu_survey_form .bhu_survey_summary_item:nth-child(4n) {
+    border-right: none;
+}
+
+.bhu_survey_form .bhu_survey_summary_label {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #6c757d;
+    margin-bottom: 3px;
+    line-height: 1.2;
+    padding-left: 18px;
+    position: relative;
+}
+
+.bhu_survey_form .bhu_survey_summary_label::before {
+    font-family: FontAwesome;
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #8b4513;
+    font-size: 0.72rem;
+    opacity: 0.85;
+}
+
+.bhu_survey_form .bhu_summary_project .bhu_survey_summary_label::before { content: "\f009"; }
+.bhu_survey_form .bhu_summary_village .bhu_survey_summary_label::before { content: "\f015"; }
+.bhu_survey_form .bhu_summary_tehsil .bhu_survey_summary_label::before { content: "\f041"; }
+.bhu_survey_form .bhu_summary_khasra .bhu_survey_summary_label::before { content: "\f02c"; }
+.bhu_survey_form .bhu_summary_date .bhu_survey_summary_label::before { content: "\f073"; }
+.bhu_survey_form .bhu_summary_type .bhu_survey_summary_label::before { content: "\f1bb"; }
+.bhu_survey_form .bhu_summary_payment .bhu_survey_summary_label::before { content: "\f155"; }
+.bhu_survey_form .bhu_summary_patwari .bhu_survey_summary_label::before { content: "\f007"; }
+
+.bhu_survey_form .bhu_survey_summary_item .o_field_widget {
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: #212529;
+    line-height: 1.35;
+    word-break: break-word;
+}
+
+.bhu_survey_form .bhu_survey_summary_item .o_field_badge {
+    font-size: 0.72rem;
+}
+
+.bhu_survey_form .bhu_survey_action_bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 12px;
+}
+
+@media (max-width: 768px) {
+    .bhu_survey_form .bhu_survey_summary_item {
+        flex: 1 1 50%;
+    }
+
+    .bhu_survey_form .bhu_survey_summary_item:nth-child(4n) {
+        border-right: 1px solid #e9ecef;
+    }
+
+    .bhu_survey_form .bhu_survey_summary_item:nth-child(2n) {
+        border-right: none;
+    }
+}

@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <!-- Survey Trend Chart Dialog -->
+    <t t-name="bhukhadan_core.SurveyTrendDialog" owl="1">
+        <Dialog title="'Survey Trends / सर्वे ट्रेंड'" size="'xl'">
+            <div class="bhu-chart-dialog">
+                <!-- Tab buttons -->
+                <div class="bhu-chart-tabs mb-3">
+                    <button t-att-class="'bhu-tab-btn ' + (state.view === 'daily' ? 'active' : '')"
+                            t-on-click="() => this.setView('daily')">
+                        <i class="fa fa-calendar me-1"/> Daily (Last 30 days)
+                    </button>
+                    <button t-att-class="'bhu-tab-btn ' + (state.view === 'weekly' ? 'active' : '')"
+                            t-on-click="() => this.setView('weekly')">
+                        <i class="fa fa-calendar-o me-1"/> Weekly (Last 12 weeks)
+                    </button>
+                    <button t-att-class="'bhu-tab-btn ' + (state.view === 'monthly' ? 'active' : '')"
+                            t-on-click="() => this.setView('monthly')">
+                        <i class="fa fa-calendar-plus-o me-1"/> Monthly (Last 12 months)
+                    </button>
+                </div>
+
+                <!-- Summary strip -->
+                <div class="bhu-chart-summary mb-3">
+                    <span class="bhu-summary-chip">
+                        <i class="fa fa-hashtag"/> Total in view:
+                        <strong><t t-esc="currentData.reduce((s,d) => s + d.value, 0)"/></strong>
+                    </span>
+                    <span class="bhu-summary-chip">
+                        <i class="fa fa-arrow-up"/> Peak:
+                        <strong><t t-esc="maxVal"/></strong>
+                    </span>
+                    <span class="bhu-summary-chip">
+                        <i class="fa fa-bar-chart"/> Avg:
+                        <strong><t t-esc="currentData.length ? Math.round(currentData.reduce((s,d) => s + d.value, 0) / currentData.length) : 0"/></strong>
+                    </span>
+                </div>
+
+                <!-- Canvas chart -->
+                <div class="bhu-chart-canvas-wrap">
+                    <canvas id="bhu_survey_chart" style="width:100%; display:block;"/>
+                </div>
+
+                <!-- Inline styles -->
+                <style>
+                    .bhu-chart-dialog { padding: 4px 0; }
+                    .bhu-chart-tabs { display:flex; gap:8px; flex-wrap:wrap; }
+                    .bhu-tab-btn {
+                        padding: 6px 16px; border-radius: 999px; font-size:0.85rem;
+                        font-weight: 600; border: 2px solid #8B4513;
+                        background: white; color: #8B4513; cursor: pointer;
+                        transition: all 0.2s ease;
+                    }
+                    .bhu-tab-btn.active, .bhu-tab-btn:hover {
+                        background: linear-gradient(135deg, #8B4513, #C87941);
+                        color: white; border-color: transparent;
+                        box-shadow: 0 2px 8px rgba(139,69,19,0.3);
+                    }
+                    .bhu-chart-summary { display:flex; gap:12px; flex-wrap:wrap; }
+                    .bhu-summary-chip {
+                        background: rgba(139,69,19,0.07); border: 1px solid rgba(139,69,19,0.18);
+                        border-radius: 8px; padding: 5px 14px; font-size:0.85rem; color:#5D2E0C;
+                    }
+                    .bhu-summary-chip strong { color:#8B4513; }
+                    .bhu-chart-canvas-wrap {
+                        background: #fffaf5; border-radius: 12px;
+                        border: 1px solid rgba(139,69,19,0.12);
+                        padding: 12px 8px 4px; overflow: hidden;
+                    }
+                </style>
+            </div>
+        </Dialog>
+    </t>
+
+    <t t-name="bhukhadan_core.GroupDashboard" owl="1">
+        <div class="o_group_dashboard">
+
+            <!-- Unified Dashboard Header (matches SDM / Admin look) -->
+            <div class="o_group_hero">
+                <div class="w-100 d-flex justify-content-between align-items-center flex-wrap" style="gap: 10px;">
+                    <div class="o_dashboard_title_section">
+                        <h2>
+                            <i class="fa fa-th-large"/>
+                            <span>Group Dashboard</span>
+                            <span class="o_group_hero_pill">
+                                <i class="fa fa-folder-open"/>
+                                <span>All Projects</span>
+                            </span>
+                        </h2>
+                    </div>
+                    <div class="o_dashboard_actions o_group_hero_stats" t-if="!state.loading">
+                        <span class="o_group_hero_chip" title="Total Projects">
+                            <i class="fa fa-folder-open"/>
+                            <span t-esc="state.stats.total_projects"/>
+                            <small>Projects</small>
+                        </span>
+                        <span class="o_group_hero_chip" title="Total Villages">
+                            <i class="fa fa-home"/>
+                            <span t-esc="state.stats.total_villages"/>
+                            <small>Villages</small>
+                        </span>
+                        <span class="o_group_hero_chip" title="Total Surveys">
+                            <i class="fa fa-clipboard"/>
+                            <span t-esc="state.stats.total_surveys"/>
+                            <small>Surveys</small>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading state handled by JS body-level loader (_showBodyLoader / _hideBodyLoader) -->
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-content scrollable-dashboard">
+                <!-- Statistics Cards -->
+                <div class="container-fluid mb-4">
+                    <div class="row g-3">
+                        <div class="col-md-2">
+                            <div class="stat-card bg-primary text-white">
+                                <div class="stat-icon">
+                                    <i class="fa fa-folder-open"/>
+                                </div>
+                                <div class="stat-details">
+                                    <h3 t-esc="state.stats.total_projects"/>
+                                    <p>Total Projects</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="stat-card bg-success text-white">
+                                <div class="stat-icon">
+                                    <i class="fa fa-check-circle"/>
+                                </div>
+                                <div class="stat-details">
+                                    <h3 t-esc="state.stats.on_track_projects"/>
+                                    <p>On Track</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="stat-card bg-survey text-white" t-on-click="showSurveyChart" style="cursor:pointer;" title="Click to view survey trends">
+                                <div class="stat-icon">
+                                    <i class="fa fa-bar-chart"/>
+                                </div>
+                                <div class="stat-details">
+                                    <h3 t-esc="state.stats.surveys_today"/>
+                                    <p>Surveys Today</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="stat-card bg-info text-white">
+                                <div class="stat-icon">
+                                    <i class="fa fa-users"/>
+                                </div>
+                                <div class="stat-details">
+                                    <h3 t-esc="state.stats.sia_stage"/>
+                                    <p>SIA Stage</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="stat-card bg-warning text-white">
+                                <div class="stat-icon">
+                                    <i class="fa fa-file-text"/>
+                                </div>
+                                <div class="stat-details">
+                                    <h3 t-esc="state.stats.section11_stage"/>
+                                    <p>Section 11</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="stat-card bg-success text-white">
+                                <div class="stat-icon">
+                                    <i class="fa fa-trophy"/>
+                                </div>
+                                <div class="stat-details">
+                                    <h3 t-esc="state.stats.award_stage"/>
+                                    <p>Award Stage</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Second Row of Statistics Cards -->
+                    <div class="row g-3 mt-1">
+                        <div class="col-md-2">
+                            <div class="stat-card bg-patwari text-white">
+                                <div class="stat-icon">
+                                    <i class="fa fa-user-secret"/>
+                                </div>
+                                <div class="stat-details">
+                                    <h3 t-esc="state.stats.total_patwaris"/>
+                                    <p>Total Patwaris</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="stat-card bg-village text-white">
+                                <div class="stat-icon">
+                                    <i class="fa fa-home"/>
+                                </div>
+                                <div class="stat-details">
+                                    <h3 t-esc="state.stats.total_villages"/>
+                                    <p>Total Villages</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="stat-card bg-survey text-white">
+                                <div class="stat-icon">
+                                    <i class="fa fa-clipboard"/>
+                                </div>
+                                <div class="stat-details">
+                                    <h3 t-esc="state.stats.total_surveys"/>
+                                    <p>Total Surveys</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="stat-card bg-landowner text-white">
+                                <div class="stat-icon">
+                                    <i class="fa fa-users"/>
+                                </div>
+                                <div class="stat-details">
+                                    <h3 t-esc="state.stats.total_landowners"/>
+                                    <p>Total Landowners</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-card bg-budget text-white">
+                                <div class="stat-icon">
+                                    <i class="fa fa-rupee"/>
+                                </div>
+                                <div class="stat-details">
+                                    <h3 t-esc="state.stats.total_budget"/>
+                                    <p>Total Budget (Est.)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Projects Table -->
+                <div class="container-fluid pb-5">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header custom-card-header d-flex align-items-center gap-3">
+                            <h5 class="mb-0 text-nowrap">
+                                <i class="fa fa-list-alt me-2"/>
+                                All Projects Status
+                            </h5>
+                            
+                            <!-- Search Bar moved towards right and lengthened -->
+                            <div class="header-search-container shadow-sm rounded overflow-hidden ms-auto me-3">
+                                <span class="input-group-text bg-white border-0 py-1">
+                                    <i class="fa fa-search text-muted small"/>
+                                </span>
+                                <input type="text" 
+                                       class="header-search-input border-0 py-1 px-2" 
+                                       placeholder="Search projects by name, code, district..." 
+                                       t-on-input="onSearchInput"/>
+                            </div>
+
+
+                        </div>
+                        <div class="card-body p-4">
+
+                            <div class="table-responsive">
+                                <table class="table table-hover table-striped mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 4%">#</th>
+                                            <th style="width: 12%; cursor: pointer;" t-on-click="() => this.sortBy('district_id')">
+                                                District <i t-att-class="'fa ms-1 ' + getSortIcon('district_id')"/>
+                                            </th>
+                                            <th style="width: 15%; cursor: pointer;" t-on-click="() => this.sortBy('department_id')">
+                                                Department <i t-att-class="'fa ms-1 ' + getSortIcon('department_id')"/>
+                                            </th>
+                                            <th style="width: 20%; cursor: pointer;" t-on-click="() => this.sortBy('name')">
+                                                Project Name <i t-att-class="'fa ms-1 ' + getSortIcon('name')"/>
+                                            </th>
+                                            <th style="width: 8%; cursor: pointer;" t-on-click="() => this.sortBy('code')">
+                                                Code <i t-att-class="'fa ms-1 ' + getSortIcon('code')"/>
+                                            </th>
+                                            <th style="width: 6%; cursor: pointer;" t-on-click="() => this.sortBy('village_count')">
+                                                Vil <i t-att-class="'fa ms-1 ' + getSortIcon('village_count')"/>
+                                            </th>
+                                            <th style="width: 7%; cursor: pointer;" t-on-click="() => this.sortBy('total_khasras')">
+                                                Khas <i t-att-class="'fa ms-1 ' + getSortIcon('total_khasras')"/>
+                                            </th>
+                                            <th style="width: 8%; cursor: pointer;" t-on-click="() => this.sortBy('total_landowners')">
+                                                Land <i t-att-class="'fa ms-1 ' + getSortIcon('total_landowners')"/>
+                                            </th>
+                                            <th style="width: 10%; cursor: pointer;" t-on-click="() => this.sortBy('total_cost')">
+                                                Project Cost <i t-att-class="'fa ms-1 ' + getSortIcon('total_cost')"/>
+                                            </th>
+                                            <th style="width: 10%">Stage</th>
+                                            <th style="width: 10%; cursor: pointer;" t-on-click="() => this.sortBy('last_survey_date')">
+                                                Survey <i t-att-class="'fa ms-1 ' + getSortIcon('last_survey_date')"/>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-if="filteredProjects.length === 0">
+                                            <tr>
+                                                <td colspan="11" class="text-center py-5 no-projects-state">
+                                                    <div class="empty-state-wrapper">
+                                                        <i class="fa fa-folder-open-o fa-4x mb-3 text-muted opacity-50"/>
+                                                        <h4 class="text-muted fw-bold">No Projects Found</h4>
+                                                        <p class="text-muted px-4">There are currently no projects matching your selected company or filters.</p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <t t-else="">
+                                            <tr t-foreach="filteredProjects" t-as="project" t-key="project.id" class="project-row">
+                                                <td t-esc="project_index + 1"/>
+                                                <td class="clickable-cell" t-on-click="() => project.district_id &amp;&amp; this.openDistrict(project.district_id[0])">
+                                                    <span t-att-class="project.district_id ? 'dashboard-link-secondary' : ''" 
+                                                          t-esc="project.district_id ? project.district_id[1] : 'N/A'"/>
+                                                </td>
+                                                <td class="clickable-cell" t-on-click="() => this.openDepartment(project.department_id[0])">
+                                                    <span class="dashboard-link-secondary" t-esc="project.department_id[1]"/>
+                                                </td>
+                                                <td class="clickable-cell" t-on-click="() => this.openProject(project.id)">
+                                                    <strong class="dashboard-link" t-esc="project.name"/>
+                                                </td>
+                                                <td>
+                                                    <span class="badge bg-secondary" t-esc="project.code"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span class="badge bg-info" t-esc="project.village_count"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span class="badge bg-primary" t-esc="project.total_khasras"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span class="badge bg-success" t-esc="project.total_landowners"/>
+                                                </td>
+                                                <td class="text-end">
+                                                    <strong t-esc="project.total_cost || 'N/A'"/>
+                                                </td>
+                                                <td class="text-center clickable-cell bhu-gdash-stage-cell" t-on-click="() => this.showTimeline(project.id)" style="cursor: pointer;">
+                                                    <div class="bhu-gdash-stage-dots">
+                                                        <t t-foreach="project.stage_dots" t-as="dot" t-key="dot.id">
+                                                            <span t-att-title="dot.title"
+                                                                  t-attf-class="bhu-stage-dot bhu-stage-dot--labeled #{dot.kind}">
+                                                                <t t-esc="dot.short_label"/>
+                                                            </span>
+                                                        </t>
+                                                    </div>
+                                                    <span class="badge stage-badge shadow-sm mt-1"
+                                                          t-att-style="'background-color: ' + getStageColor(project.current_stage) + '; pointer-events: none;'"
+                                                          t-esc="getStageLabel(project.current_stage)"/>
+                                                </td>
+                                                <td>
+                                                    <span t-att-class="project.last_survey_date === 'No Survey' ? 'text-muted italic' : 'fw-bold text-dark'" 
+                                                          t-esc="project.last_survey_date"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

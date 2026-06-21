@@ -1,0 +1,404 @@
+
+/* Horizontal PowerPoint-Style Organizational Chart */
+
+.modal-title{
+    color: #8B4513;
+}
+ 
+// .fa-clock-o{
+//     display: none;
+// }
+// .o-mail-DiscussSystray-class{
+//     display: none;
+// }
+
+// .o-mail-DiscussSystray-class{
+//     display: none;
+// }
+
+.o_user_lang{
+    display: none;
+}
+.dark-light-mode-button-design{
+    display: none;
+}
+
+.header_to_do_list{
+    display: none;
+}
+// .o_hierarchy_view {
+//     background: #f8f9fa;
+//     min-height: 100vh;
+//     padding: 10px;
+//     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+//     overflow-x: auto;
+// }
+
+// /* Horizontal layout support */
+// .o_hierarchy_view .o_hierarchy_row {
+//     display: flex;
+//     flex-direction: row;
+//     justify-content: center;
+//     align-items: flex-start;
+//     flex-wrap: wrap;
+//     gap: 10px;
+//     margin-bottom: 20px;
+// }
+
+// .o_hierarchy_view .o_hierarchy_level {
+//     display: flex;
+//     flex-direction: row;
+//     justify-content: center;
+//     align-items: flex-start;
+//     flex-wrap: wrap;
+//     gap: 10px;
+//     margin-bottom: 20px;
+// }
+
+// .o_hierarchy_node {
+//     background: white;
+//     border-radius: 6px;
+//     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+//     margin: 2px;
+//     transition: all 0.3s ease;
+//     border: none;
+//     overflow: hidden;
+//     position: relative;
+//     width: 150px;
+//     min-height: 110px;
+//     display: inline-block;
+//     vertical-align: top;
+//     flex-shrink: 0;
+// }
+
+// .o_hierarchy_node:hover {
+//     transform: translateY(-1px);
+//     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+// }
+
+// /* Role-based styling with distinct colors */
+// .o_hierarchy_node[data-role="administrator"] {
+//     border-top: 3px solid #8e44ad;
+// }
+
+// .o_hierarchy_node[data-role="administrator"] .o_hierarchy_node_header {
+//     background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
+// }
+
+// .o_hierarchy_node[data-role="collector"] {
+//     border-top: 3px solid #e74c3c;
+// }
+
+// .o_hierarchy_node[data-role="collector"] .o_hierarchy_node_header {
+//     background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+// }
+
+// .o_hierarchy_node[data-role="sdm"] {
+//     border-top: 3px solid #3498db;
+// }
+
+// .o_hierarchy_node[data-role="sdm"] .o_hierarchy_node_header {
+//     background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+// }
+
+// .o_hierarchy_node[data-role="tahsildar"] {
+//     border-top: 3px solid #27ae60;
+// }
+
+// .o_hierarchy_node[data-role="tahsildar"] .o_hierarchy_node_header {
+//     background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+// }
+
+// .o_hierarchy_node[data-role="nayab_tahsildar"] {
+//     border-top: 3px solid #f39c12;
+// }
+
+// .o_hierarchy_node[data-role="nayab_tahsildar"] .o_hierarchy_node_header {
+//     background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+// }
+
+// .o_hierarchy_node[data-role="revenue_inspector"] {
+//     border-top: 3px solid #9b59b6;
+// }
+
+// .o_hierarchy_node[data-role="revenue_inspector"] .o_hierarchy_node_header {
+//     background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+// }
+
+// .o_hierarchy_node[data-role="patwari"] {
+//     border-top: 3px solid #34495e;
+// }
+
+// .o_hierarchy_node[data-role="patwari"] .o_hierarchy_node_header {
+//     background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+// }
+
+// /* IAS role styling - Red color */
+// .o_hierarchy_node[data-role="ias"] {
+//     border-top: 3px solid #dc3545;
+// }
+
+// .o_hierarchy_node[data-role="ias"] .o_hierarchy_node_header {
+//     background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+// }
+
+// /* IAS COLLECTOR role styling - Red color */
+// .o_hierarchy_node[data-role="ias collector"] {
+//     border-top: 3px solid #dc3545;
+// }
+
+// .o_hierarchy_node[data-role="ias collector"] .o_hierarchy_node_header {
+//     background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+// }
+
+// /* IAS role styling for any role containing "IAS" */
+// .o_hierarchy_node[data-role*="ias"] {
+//     border-top: 3px solid #dc3545;
+// }
+
+// .o_hierarchy_node[data-role*="ias"] .o_hierarchy_node_header {
+//     background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+// }
+
+// .o_hierarchy_node_header {
+//     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+//     color: white;
+//     padding: 10px 6px;
+//     text-align: center;
+//     position: relative;
+//     min-height: 80px;
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: center;
+//     align-items: center;
+//     cursor: pointer;
+// }
+
+// /* Fold/Unfold icon in header */
+// .fold-unfold-icon {
+//     position: absolute;
+//     top: 8px;
+//     right: 8px;
+//     background: rgba(255, 255, 255, 0.2);
+//     border-radius: 50%;
+//     width: 20px;
+//     height: 20px;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     cursor: pointer;
+//     transition: all 0.2s ease;
+//     z-index: 10;
+// }
+
+// .fold-unfold-icon:hover {
+//     background: rgba(255, 255, 255, 0.3);
+//     transform: scale(1.1);
+// }
+
+// .fold-unfold-icon i {
+//     font-size: 0.7rem;
+//     color: white;
+// }
+
+// /* Hide footer completely */
+// .o_hierarchy_node_footer {
+//     display: none !important;
+// }
+
+// /* Avatar styling */
+// .o_hierarchy_node_header .fa-user-circle {
+//     font-size: 1.8rem !important;
+//     margin-bottom: 4px;
+//     opacity: 0.9;
+// }
+
+// /* Name styling */
+// .o_hierarchy_node_header .fw-bold {
+//     font-size: 0.8rem;
+//     font-weight: 600;
+//     margin-bottom: 3px;
+//     color: white;
+//     line-height: 1.1;
+// }
+
+// /* Badge styling */
+// .badge {
+//     font-size: 0.55rem;
+//     padding: 2px 5px;
+//     border-radius: 6px;
+//     font-weight: 600;
+//     text-transform: uppercase;
+//     letter-spacing: 0.2px;
+//     background-color: rgba(255, 255, 255, 0.2);
+//     color: white;
+//     border: 1px solid rgba(255, 255, 255, 0.3);
+// }
+
+// /* Horizontal connection lines */
+// .o_hierarchy_connector {
+//     stroke: #6c757d;
+//     stroke-width: 1.5;
+//     fill: none;
+//     opacity: 0.7;
+// }
+
+// .o_hierarchy_connector:hover {
+//     stroke: #495057;
+//     stroke-width: 2;
+//     opacity: 1;
+// }
+
+// /* Direct line connections for horizontal layout */
+// .o_hierarchy_view .o_hierarchy_connector_line {
+//     stroke: #6c757d;
+//     stroke-width: 1.5;
+//     fill: none;
+//     opacity: 0.7;
+// }
+
+// .o_hierarchy_view .o_hierarchy_connector_line:hover {
+//     stroke: #495057;
+//     stroke-width: 2;
+//     opacity: 1;
+// }
+
+// /* Remove umbrella-style connections */
+// .o_hierarchy_view .o_hierarchy_connector_umbrella {
+//     display: none;
+// }
+
+// /* Status indicators */
+// .o_hierarchy_node[data-status="active"] {
+//     position: relative;
+// }
+
+// .o_hierarchy_node[data-status="active"]::after {
+//     content: '';
+//     position: absolute;
+//     top: 4px;
+//     right: 4px;
+//     width: 6px;
+//     height: 6px;
+//     background-color: #27ae60;
+//     border-radius: 50%;
+//     border: 1px solid white;
+// }
+
+// .o_hierarchy_node[data-status="inactive"] {
+//     opacity: 0.7;
+// }
+
+// .o_hierarchy_node[data-status="inactive"]::after {
+//     content: '';
+//     position: absolute;
+//     top: 4px;
+//     right: 4px;
+//     width: 6px;
+//     height: 6px;
+//     background-color: #e74c3c;
+//     border-radius: 50%;
+//     border: 1px solid white;
+// }
+
+// /* Global Expand All Button */
+// .o_hierarchy_view .o_hierarchy_toolbar {
+//     text-align: center;
+//     margin-bottom: 20px;
+// }
+
+// .o_hierarchy_view .o_hierarchy_toolbar .btn-expand-all {
+//     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+//     color: white;
+//     border: none;
+//     border-radius: 6px;
+//     padding: 8px 16px;
+//     font-size: 0.8rem;
+//     font-weight: 600;
+//     text-transform: uppercase;
+//     letter-spacing: 0.5px;
+//     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+//     transition: all 0.2s ease;
+//     cursor: pointer;
+// }
+
+// .o_hierarchy_view .o_hierarchy_toolbar .btn-expand-all:hover {
+//     background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+//     transform: translateY(-1px);
+//     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+// }
+
+// /* Mobile responsiveness */
+// @media (max-width: 768px) {
+//     .o_hierarchy_view {
+//         padding: 5px;
+//     }
+    
+//     .o_hierarchy_node {
+//         width: 100%;
+//         margin: 2px 0;
+//         max-width: 180px;
+//     }
+    
+//     .o_hierarchy_node_header {
+//         padding: 8px;
+//         min-height: 70px;
+//     }
+    
+//     .o_hierarchy_node_header .fa-user-circle {
+//         font-size: 1.5rem !important;
+//     }
+    
+//     .o_hierarchy_view .o_hierarchy_row {
+//         flex-direction: column;
+//         align-items: center;
+//     }
+// }
+
+// /* Animation for smooth transitions */
+// @keyframes fadeInUp {
+//     from {
+//         opacity: 0;
+//         transform: translateY(10px);
+//     }
+//     to {
+//         opacity: 1;
+//         transform: translateY(0);
+//     }
+// }
+
+// .o_hierarchy_node {
+//     animation: fadeInUp 0.3s ease-out;
+// }
+
+// /* Custom scrollbar */
+// .o_hierarchy_view .o_content {
+//     scrollbar-width: thin;
+//     scrollbar-color: #bdc3c7 #f8f9fa;
+// }
+
+// .o_hierarchy_view .o_content::-webkit-scrollbar {
+//     width: 4px;
+// }
+
+// .o_hierarchy_view .o_content::-webkit-scrollbar-track {
+//     background: #f8f9fa;
+//     border-radius: 2px;
+// }
+
+// .o_hierarchy_view .o_content::-webkit-scrollbar-thumb {
+//     background: #bdc3c7;
+//     border-radius: 2px;
+// }
+
+// .o_hierarchy_view .o_content::-webkit-scrollbar-thumb:hover {
+//     background: #95a5a6;
+// }
+
+// /* Reduce hierarchy row height */
+// .o_hierarchy_row {
+//     padding-top: 0.25rem !important; /* Reduce from pt-3 */
+//     margin-bottom: 0.25rem !important; /* Reduce space between rows */
+//     gap: 0.25rem !important; /* Reduce gap between cards */
+//     min-height: auto !important; /* Remove minimum height */
+// }

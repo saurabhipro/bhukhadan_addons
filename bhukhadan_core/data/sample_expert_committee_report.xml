@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Sample Expert Committee Report (1 record per project) -->
+        <!-- Using existing project PROJ01 -->
+        <!-- Note: project_id will be set automatically via default function or create method -->
+        <!-- Only one Expert Committee Report is allowed per project -->
+        <record id="expert_committee_report_sample_1" model="bhu.expert.committee.report">
+            <field name="name">Expert Committee Report - PROJ01</field>
+            <field name="state">draft</field>
+        </record>
+    </data>
+</odoo>
+

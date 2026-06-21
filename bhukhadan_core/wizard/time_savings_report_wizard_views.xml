@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Parameter wizard -->
+    <record id="view_bhu_time_savings_report_wizard_form" model="ir.ui.view">
+        <field name="name">bhu.time.savings.report.wizard.form</field>
+        <field name="model">bhu.time.savings.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Time Savings Report">
+                <sheet>
+                    <div class="alert alert-info mb-3" role="alert">
+                        <p class="mb-1"><strong>BhuKhadan vs manual process</strong> — estimate desk-work time saved across the full RFCTLARR pipeline (Form 10 → awards → payment).</p>
+                        <p class="mb-0">Results are shown in <strong>workdays</strong> (8 desk hours = 1 day). Optionally pick a <strong>project</strong> to pre-fill village and survey counts from live data.</p>
+                    </div>
+                    <group>
+                        <group string="Reference (optional)">
+                            <field name="project_id" options="{'no_create': True}"/>
+                        </group>
+                        <group string="Scale">
+                            <field name="project_count"/>
+                            <field name="village_count"/>
+                            <field name="survey_count"/>
+                            <field name="beneficiaries_per_khasra"/>
+                            <field name="objection_rate_pct"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_generate_report" type="object"
+                            string="Generate Report" class="btn-primary" icon="fa-bar-chart"/>
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_bhu_time_savings_report_wizard" model="ir.actions.act_window">
+        <field name="name">Time Savings Report</field>
+        <field name="res_model">bhu.time.savings.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Report result form -->
+    <record id="view_bhu_time_savings_report_form" model="ir.ui.view">
+        <field name="name">bhu.time.savings.report.form</field>
+        <field name="model">bhu.time.savings.report</field>
+        <field name="arch" type="xml">
+            <form string="Time Savings Report" class="bhu_time_savings_report">
+                <header>
+                    <button name="action_download_pdf" type="object"
+                            string="Download PDF for Finance" class="btn-primary" icon="fa-download"/>
+                    <button name="action_new_report" type="object"
+                            string="New report" class="btn-secondary" icon="fa-refresh"/>
+                </header>
+                <sheet>
+                    <div class="alert alert-success mb-3" role="alert">
+                        <strong>Management briefing</strong> — all figures are in <strong>workdays</strong> (8 desk hours = 1 day).
+                        Use <em>Download PDF for Finance</em> to share with Finance Secretary. Click <em>New report</em> to regenerate after changing parameters.
+                    </div>
+                    <div class="oe_title mb-2">
+                        <h1><field name="name" readonly="1" nolabel="1"/></h1>
+                    </div>
+                    <field name="dashboard_html" nolabel="1" readonly="1" widget="html"/>
+                    <field name="summary_html" nolabel="1" readonly="1" widget="html" invisible="1"/>
+                    <separator string="Phase detail (workdays)"/>
+                    <field name="chart_html" nolabel="1" readonly="1" widget="html"/>
+                    <separator string="Section-by-section breakdown (workdays)"/>
+                    <field name="line_ids" nolabel="1" readonly="1">
+                        <list create="0" delete="0" edit="0" default_order="serial">
+                            <field name="serial" string="Sr."/>
+                            <field name="phase"/>
+                            <field name="section"/>
+                            <field name="qty"/>
+                            <field name="qty_label" column_invisible="1"/>
+                            <field name="manual_days" sum="Manual total"/>
+                            <field name="bhuarjan_days" sum="BhuKhadan total"/>
+                            <field name="saved_days" sum="Saved total"/>
+                            <field name="saved_pct"/>
+                            <field name="manual_hours" column_invisible="1"/>
+                            <field name="bhuarjan_hours" column_invisible="1"/>
+                            <field name="saved_hours" column_invisible="1"/>
+                        </list>
+                    </field>
+                    <group string="Parameters used" col="4" groups="base.group_no_one">
+                        <field name="total_manual_days" readonly="1"/>
+                        <field name="total_bhuarjan_days" readonly="1"/>
+                        <field name="total_saved_days" readonly="1"/>
+                        <field name="saved_pct" readonly="1"/>
+                        <field name="project_id" readonly="1"/>
+                        <field name="project_count" readonly="1"/>
+                        <field name="village_count" readonly="1"/>
+                        <field name="survey_count" readonly="1"/>
+                        <field name="beneficiaries_per_khasra" readonly="1"/>
+                        <field name="objection_rate_pct" readonly="1"/>
+                        <field name="payment_line_count" readonly="1"/>
+                        <field name="objection_count" readonly="1"/>
+                        <field name="workdays_saved" readonly="1"/>
+                        <field name="staff_months_saved" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Graph: saved hours by phase -->
+    <record id="view_bhu_time_savings_report_line_graph" model="ir.ui.view">
+        <field name="name">bhu.time.savings.report.line.graph</field>
+        <field name="model">bhu.time.savings.report.line</field>
+        <field name="arch" type="xml">
+            <graph string="Days saved by phase" type="bar" sample="1">
+                <field name="phase"/>
+                <field name="manual_days" type="measure"/>
+                <field name="bhuarjan_days" type="measure"/>
+                <field name="saved_days" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_bhu_time_savings_report_line_list" model="ir.ui.view">
+        <field name="name">bhu.time.savings.report.line.list</field>
+        <field name="model">bhu.time.savings.report.line</field>
+        <field name="arch" type="xml">
+            <list string="Time savings lines" create="0" delete="0" edit="0" default_order="serial">
+                <field name="serial"/>
+                <field name="phase"/>
+                <field name="section"/>
+                <field name="qty"/>
+                <field name="manual_days" sum="Manual"/>
+                <field name="bhuarjan_days" sum="BhuKhadan"/>
+                <field name="saved_days" sum="Saved"/>
+                <field name="saved_pct"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_bhu_time_savings_report" model="ir.actions.act_window">
+        <field name="name">Time Savings Report</field>
+        <field name="res_model">bhu.time.savings.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

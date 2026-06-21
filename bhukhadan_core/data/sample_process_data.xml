@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- This file has been split into separate files for better organization -->
+        <!-- See the following files for sample data: -->
+        <!-- - sample_expert_committee_report.xml -->
+        <!-- - sample_landowners.xml -->
+        <!-- - sample_surveys.xml -->
+        <!-- - sample_section4_config.xml -->
+        <!-- - sample_section4_notifications.xml -->
+        <!-- - sample_section15_objections.xml -->
+        <!-- - sample_section11_reports.xml -->
+        <!-- - sample_section19_notifications.xml -->
+    </data>
+</odoo>

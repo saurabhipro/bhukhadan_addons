@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Process Report Wizard Form View -->
+    <record id="view_process_report_wizard_form" model="ir.ui.view">
+        <field name="name">bhu.process.report.wizard.form</field>
+        <field name="model">bhu.process.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Process Report Filter">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="department_id" 
+                                   options="{'no_create': True, 'no_open': True}"
+                                   placeholder="Select Department..."/>
+                            <field name="project_id" 
+                                   options="{'no_create': True, 'no_open': True}"
+                                   placeholder="Select Project..."/>
+                            <field name="allowed_village_ids" invisible="1"/>
+                            <field name="village_id" 
+                                   domain="[('id', 'in', allowed_village_ids)]"
+                                   options="{'no_create_edit': True, 'no_open': True, 'no_create': True}"
+                                   placeholder="Select Village..."/>
+                        </group>
+                        <group>
+                            <field name="status_type" widget="radio" 
+                                   options="{'horizontal': true}"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_generate_report" string="Search" type="object" class="btn-primary" icon="fa-search"/>
+                    <button name="action_export_excel" string="Export to Excel" type="object" class="btn-secondary" icon="fa-file-excel-o"/>
+                    <button name="action_download_all_pdfs" string="Download PDF" type="object" class="btn-secondary" icon="fa-file-pdf-o"/>
+                    <button name="action_download_signed_docs" string="Download Signed Docs" type="object" class="btn-secondary" icon="fa-download"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Process Report List View -->
+    <record id="view_process_report_list" model="ir.ui.view">
+        <field name="name">bhu.process.report.list</field>
+        <field name="model">bhu.process.report</field>
+        <field name="arch" type="xml">
+            <list string="Process Report" 
+                  default_order="serial_number"
+                  decoration-success="status_mark == 'Green'"
+                  decoration-danger="status_mark == 'Red'"
+                  delete="0">
+                <field name="serial_number" string="S.No. / स.क्र."/>
+                <field name="department_id" string="Department / विभाग"/>
+                <field name="project_id" string="Project / परियोजना"/>
+                <field name="tehsil_id" string="Tehsil / तहसील"/>
+                <field name="village_id" string="Village / ग्राम"/>
+                <field name="total_khasras" string="Total Khasras / ख. नं. कूल प्रभावित"/>
+                <field name="total_area" string="Total Area (Hectares) / कुल अर्जन हेतु प्रस्तवित रकबा"/>
+                <field name="status" string="Status / स्टेटस"/>
+                <field name="status_mark" string="Red or Green Mark / रेड या ग्रीन मार्क"/>
+                <field name="section_type" invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Process Report Search View -->
+    <record id="view_process_report_search" model="ir.ui.view">
+        <field name="name">bhu.process.report.search</field>
+        <field name="model">bhu.process.report</field>
+        <field name="arch" type="xml">
+            <search string="Process Report">
+                <field name="department_id"/>
+                <field name="project_id"/>
+                <field name="village_id"/>
+                <field name="tehsil_id"/>
+                <field name="status"/>
+                <field name="status_mark"/>
+                <field name="section_type"/>
+                <group expand="0" string="Group By">
+                    <filter string="Department" name="group_department" context="{'group_by': 'department_id'}"/>
+                    <filter string="Project" name="group_project" context="{'group_by': 'project_id'}"/>
+                    <filter string="Village" name="group_village" context="{'group_by': 'village_id'}"/>
+                    <filter string="Tehsil" name="group_tehsil" context="{'group_by': 'tehsil_id'}"/>
+                    <filter string="Status" name="group_status" context="{'group_by': 'status'}"/>
+                    <filter string="Section Type" name="group_by_section" context="{'group_by': 'section_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Process Report Wizard Action -->
+    <record id="action_process_report_wizard" model="ir.actions.act_window">
+        <field name="name">Process Report</field>
+        <field name="res_model">bhu.process.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Process Report Action -->
+    <record id="action_process_report" model="ir.actions.act_window">
+        <field name="name">Process Report</field>
+        <field name="res_model">bhu.process.report</field>
+        <field name="view_mode">list</field>
+        <field name="search_view_id" ref="view_process_report_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Generate Process Report
+            </p>
+            <p>
+                Use the filter wizard to generate a report based on Department, Project, Village, and Status.
+            </p>
+        </field>
+    </record>
+</odoo>
+

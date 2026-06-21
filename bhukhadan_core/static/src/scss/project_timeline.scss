@@ -1,0 +1,211 @@
+.bhu-timeline-container {
+    padding: 10px;
+    background: #ffffff;
+}
+
+.bhu-timeline-summary {
+    border-bottom: 1px solid #edf2f7;
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem !important;
+}
+
+.bhu-timeline-summary h4 {
+    font-size: 1.1rem;
+}
+
+.bhu-timeline-steps {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    /* 5 items per row for a compact look */
+    gap: 0.75rem;
+    padding: 0;
+}
+
+.bhu-timeline-step {
+    position: relative;
+    padding: 0.75rem 0.5rem;
+    /* Reduced padding */
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    /* Slightly smaller radius */
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-height: 140px;
+    /* Smaller height */
+}
+
+.bhu-timeline-step:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.status-indicator {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 0.9rem;
+    /* Smaller status icon */
+}
+
+.bhu-timeline-step.completed {
+    border-top: 3px solid #10b981;
+    /* Top border instead of side */
+    background: #f0fdf4;
+}
+
+.bhu-timeline-step.in_progress {
+    border-top: 3px solid #f59e0b;
+    background: #fffbeb;
+}
+
+.bhu-timeline-icon {
+    width: 42px;
+    /* Much smaller icon */
+    height: 42px;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.bhu-timeline-step-name {
+    font-weight: 700;
+    font-size: 0.8rem;
+    /* Smaller text */
+    line-height: 1.2;
+    min-height: 2.4em;
+}
+
+.bhu-timeline-step-details {
+    font-size: 0.7rem;
+    margin-top: 2px;
+}
+
+.bhu-status-badge {
+    margin-top: 0.5rem;
+    padding: 0.15rem 0.5rem;
+    font-size: 0.6rem;
+}
+
+.bhu-mini-progress {
+    width: 80%;
+    margin: 4px auto;
+}
+
+/* Modal sizing fix */
+.o_dialog .modal-lg {
+    max-width: 95% !important;
+    /* Use more horizontal space */
+}
+
+/* ---- Project form: STAGE widget (9-dot pipeline) ---- */
+.bhu-stage-widget-label {
+    color: #4b5563;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+}
+
+.bhu-stage-dots {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 8px;
+}
+
+.bhu-stage-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    cursor: default;
+}
+
+.bhu-stage-dot.done {
+    background: #16a34a;
+    border-color: #15803d;
+    box-shadow: 0 0 0 1px rgba(22, 163, 74, 0.25);
+}
+
+.bhu-stage-dot.active {
+    background: #f59e0b;
+    border-color: #d97706;
+    box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.35);
+}
+
+.bhu-stage-dot.pending {
+    background: #f3f4f6;
+    border-color: #d1d5db;
+}
+
+.bhu-stage-dot.na {
+    background: repeating-linear-gradient(
+        -45deg,
+        #f3f4f6,
+        #f3f4f6 2px,
+        #e5e7eb 2px,
+        #e5e7eb 4px
+    );
+    border-color: #cbd5e1;
+    opacity: 0.95;
+}
+
+.bhu-stage-widget-main-btn {
+    border-radius: 4px;
+    background-color: #ff8c00;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    min-width: 150px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Compact variant (project list column): dots only, batched RPC */
+.bhu-stage-widget-list {
+    cursor: pointer;
+    padding: 2px 0;
+    outline: none;
+}
+.bhu-stage-widget-list:focus-visible .bhu-stage-dot {
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.45);
+}
+.bhu-stage-widget-list .bhu-stage-dots {
+    margin-bottom: 0;
+    min-width: 96px;
+}
+
+/* Labeled dots on project form STAGE widget (non-list) */
+.bhu-stage-widget:not(.bhu-stage-widget-list) .bhu-stage-dot.bhu-stage-dot--labeled {
+    width: auto;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: #fff;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.22);
+}
+
+.bhu-stage-widget:not(.bhu-stage-widget-list) .bhu-stage-dot.bhu-stage-dot--labeled.pending {
+    color: #374151;
+    text-shadow: none;
+}
+
+.bhu-stage-widget:not(.bhu-stage-widget-list) .bhu-stage-dot.bhu-stage-dot--labeled.na {
+    color: #475569;
+    font-size: 7px;
+    text-shadow: none;
+}

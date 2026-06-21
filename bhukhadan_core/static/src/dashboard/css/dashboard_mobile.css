@@ -1,0 +1,517 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   BhuKhadan Dashboard — Mobile / narrow viewport (≤768px)
+   Workflow cards, timeline, header. Loaded after sdm_dashboard.css.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+
+    /* ── Page shell ─────────────────────────────────────────────────── */
+    .o_admin_dashboard {
+        padding: 10px 10px max(24px, env(safe-area-inset-bottom, 24px));
+        background: #f0e8df;
+        overflow-x: hidden;
+        box-sizing: border-box;
+    }
+
+    .o_admin_dashboard .o_dashboard_content {
+        gap: 10px;
+        margin-bottom: 5.5rem;
+        padding-bottom: 12px;
+    }
+
+    .o_admin_dashboard .o_dashboard_section {
+        margin-top: 0;
+    }
+
+    /* ── Hide standalone status legend (SECTION / E2E pills) ────────── */
+    .o_status_legend_section {
+        display: none !important;
+    }
+
+    /* ── Header — compact filters row ───────────────────────────────── */
+    .o_admin_dashboard .o_dashboard_header {
+        margin-bottom: 8px !important;
+        padding: 8px 10px !important;
+        border-radius: 12px !important;
+        min-height: 0 !important;
+        gap: 8px !important;
+    }
+
+    .o_admin_dashboard .o_dashboard_header_row {
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+        align-items: flex-start !important;
+    }
+
+    .o_admin_dashboard .o_dashboard_title_section {
+        flex: 1 1 100% !important;
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    .o_admin_dashboard .o_dashboard_header h2 {
+        font-size: 0.9rem !important;
+        width: 100% !important;
+        flex-wrap: wrap !important;
+        gap: 4px !important;
+        line-height: 1.25 !important;
+        margin-bottom: 0 !important;
+    }
+
+    .o_admin_dashboard .o_dashboard_header h2 .o_selected_project_inline {
+        font-size: 0.72rem !important;
+        padding: 2px 8px !important;
+        max-width: 100% !important;
+    }
+
+    /* Filters: 3-column grid, short dropdowns */
+    .o_admin_dashboard .o_dashboard_actions {
+        display: grid !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        width: 100% !important;
+        flex: 1 1 100% !important;
+        margin-left: 0 !important;
+        gap: 6px !important;
+        align-items: center !important;
+    }
+
+    .o_admin_dashboard .o_dashboard_actions .btn {
+        grid-column: 1 / -1 !important;
+        width: 100% !important;
+        height: 30px !important;
+        min-height: 30px !important;
+        max-height: 30px !important;
+        padding: 0 10px !important;
+        font-size: 0.72rem !important;
+        line-height: 1 !important;
+        border-radius: 8px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+
+    .o_admin_dashboard .o_dashboard_actions .btn .fa {
+        font-size: 11px !important;
+        margin-right: 4px !important;
+    }
+
+    .o_admin_dashboard .o_dashboard_actions select.form-select,
+    .o_admin_dashboard .o_dashboard_actions .o_department_selector,
+    .o_admin_dashboard .o_dashboard_actions .o_project_selector,
+    .o_admin_dashboard .o_dashboard_actions .o_village_selector,
+    .o_admin_dashboard .o_dashboard_actions .o_bhu_native_filter {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        flex: none !important;
+        height: 30px !important;
+        min-height: 30px !important;
+        max-height: 30px !important;
+        padding: 5px 22px 5px 8px !important;
+        margin: 0 !important;
+        font-size: 0.72rem !important;
+        font-weight: 600 !important;
+        line-height: 1.2 !important;
+        box-sizing: border-box !important;
+        border-width: 1px !important;
+        border-radius: 8px !important;
+        box-shadow: none !important;
+        -webkit-appearance: none;
+        appearance: none;
+        background-position: right 6px center !important;
+        background-size: 10px !important;
+        text-overflow: ellipsis !important;
+        overflow: hidden !important;
+        white-space: nowrap !important;
+    }
+
+    /* ── E2E timeline ───────────────────────────────────────────────── */
+    .o_e2e_timeline_section.o_timeline_gradient_box {
+        border-radius: 14px !important;
+        margin-bottom: 10px !important;
+    }
+
+    /* Hide Section/E2E legend row inside timeline; keep village toggle */
+    .o_timeline_legend_bar > div:first-child {
+        display: none !important;
+    }
+
+    .o_timeline_legend_bar {
+        padding: 6px 8px !important;
+        justify-content: stretch !important;
+    }
+
+    .o_timeline_header_actions {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 6px !important;
+        width: 100% !important;
+        margin-left: 0 !important;
+    }
+
+    .o_timeline_header_actions button,
+    .o_timeline_legend_bar button {
+        width: 100%;
+        justify-content: center;
+        font-size: 0.72rem !important;
+        padding: 6px 10px !important;
+        min-height: 30px !important;
+        max-height: 30px !important;
+        line-height: 1.2 !important;
+        border-radius: 8px !important;
+    }
+
+    .o_timeline_village_name {
+        max-width: 140px !important;
+    }
+
+    .o_timeline_body {
+        padding: 12px 8px 10px !important;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Horizontal scroll for step circles */
+    .o_timeline_body > div > div:last-child {
+        min-width: max(100%, 480px);
+        padding-bottom: 4px;
+    }
+
+    .o_timeline_body > div > div:last-child > div {
+        flex: 0 0 auto !important;
+        min-width: 52px;
+        max-width: 72px;
+    }
+
+    /* ── Workflow list — single column ──────────────────────────────── */
+    .o_sections_list,
+    .o_sections_column {
+        gap: 10px !important;
+    }
+
+    .o_sections_list_grid {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+
+    .o_sections_column {
+        width: 100% !important;
+    }
+
+    /* ── Workflow step card (grid layout like mobile app) ───────────── */
+    .o_section_list_item {
+        display: grid !important;
+        /* col1=STEP rail | col2=gutter | col3=icon | col4=content */
+        grid-template-columns: 40px 10px 28px minmax(0, 1fr) !important;
+        grid-template-rows: auto auto auto !important;
+        align-items: stretch !important;
+        column-gap: 0 !important;
+        row-gap: 8px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        min-height: 0 !important;
+        flex-wrap: nowrap !important;
+        border-radius: 14px !important;
+        border: 1px solid rgba(163, 84, 51, 0.16) !important;
+        border-left: 4px solid #8a4531 !important;
+        background: linear-gradient(135deg, #fff8f0 0%, #fdf5e6 50%, #faf0e6 100%) !important;
+        box-shadow: 0 2px 10px rgba(61, 28, 18, 0.08) !important;
+        overflow: hidden !important;
+        transform: none !important;
+    }
+
+    .o_section_list_item::before,
+    .o_section_list_item::after {
+        display: none !important;
+    }
+
+    .o_section_list_item:hover,
+    .o_section_list_item.o_card_no_click:hover {
+        transform: none !important;
+        box-shadow: 0 2px 10px rgba(61, 28, 18, 0.08) !important;
+    }
+
+    /* STEP rail — spans full card height */
+    .o_section_list_step {
+        grid-column: 1 !important;
+        grid-row: 1 / 4 !important;
+        width: 40px !important;
+        min-width: 40px !important;
+        max-width: 40px !important;
+        margin: 0 !important;
+        align-self: stretch !important;
+        border-radius: 12px 0 0 12px !important;
+        background: linear-gradient(180deg, #4a2414 0%, #6b3822 55%, #7a4428 100%) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 6px 3px !important;
+        box-shadow: none !important;
+        overflow: hidden !important;
+    }
+
+    .o_step_number {
+        font-size: 8px !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.25px !important;
+        line-height: 1.15 !important;
+        white-space: normal !important;
+        word-break: break-word !important;
+        hyphens: auto;
+        text-align: center !important;
+        width: 100% !important;
+        max-width: 36px !important;
+        display: block !important;
+        text-transform: uppercase !important;
+    }
+
+    /* Section icon */
+    .o_section_list_icon {
+        grid-column: 3 !important;
+        grid-row: 1 !important;
+        align-self: center !important;
+        width: 28px !important;
+        height: 28px !important;
+        min-width: 28px !important;
+        margin: 0 0 0 2px !important;
+        padding: 0 !important;
+        font-size: 18px !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    .o_section_list_icon .fa,
+    .o_section_list_item .o_section_list_icon .fa-clipboard {
+        font-size: 18px !important;
+        color: #8a4531 !important;
+    }
+
+    /* Flatten content so title + stats sit on the grid */
+    .o_section_list_content {
+        display: contents !important;
+        padding: 0 !important;
+        flex: none !important;
+        min-width: 0 !important;
+        overflow: visible !important;
+    }
+
+    .o_section_list_title {
+        grid-column: 4 !important;
+        grid-row: 1 !important;
+        align-self: center !important;
+        padding: 10px 12px 2px 4px !important;
+        font-size: 0.84rem !important;
+        font-weight: 800 !important;
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: unset !important;
+        display: block !important;
+        line-height: 1.3 !important;
+    }
+
+    .o_section_list_title > i.fa-clipboard:first-child {
+        display: none !important;
+    }
+
+    .o_section_list_context {
+        display: inline-flex !important;
+        flex-wrap: wrap !important;
+        margin-left: 0 !important;
+        margin-top: 4px !important;
+        white-space: normal !important;
+        font-size: 0.65rem !important;
+    }
+
+    .o_section_list_context::before {
+        display: none !important;
+    }
+
+    /* Stats bar — white pill row (offset from STEP rail) */
+    .o_completion_widget_list.o_completion_single_line {
+        grid-column: 3 / 5 !important;
+        grid-row: 2 !important;
+        display: flex !important;
+        align-items: center !important;
+        flex-wrap: nowrap !important;
+        gap: 0 !important;
+        width: auto !important;
+        max-width: none !important;
+        margin: 0 12px 0 2px !important;
+        padding: 6px 10px !important;
+        font-size: 0.68rem !important;
+        line-height: 1.25 !important;
+        background: #fff !important;
+        border: 1px solid rgba(180, 130, 90, 0.22) !important;
+        border-radius: 10px !important;
+        box-shadow: 0 1px 3px rgba(61, 28, 18, 0.06) !important;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .o_completion_single_line .o_section_list_count {
+        flex-wrap: nowrap !important;
+    }
+
+    .o_completion_percent_list,
+    .o_count_badge {
+        font-size: 0.68rem !important;
+        flex-shrink: 0;
+        white-space: nowrap !important;
+    }
+
+    .o_completion_percent_list:has(+ .o_section_list_count)::after,
+    .o_completion_single_line .o_section_list_count .o_count_badge:not(:last-child)::after {
+        margin: 0 8px !important;
+        font-size: 11px !important;
+    }
+
+    /* Action buttons — 2×2 grid (offset from STEP rail) */
+    .o_section_list_actions {
+        grid-column: 3 / 5 !important;
+        grid-row: 3 !important;
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 8px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 12px 12px 2px !important;
+        margin: 0 !important;
+        align-self: stretch !important;
+        flex: none !important;
+        border: none !important;
+        border-top: none !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-sizing: border-box !important;
+    }
+
+    .o_section_list_actions .btn {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 9px 6px !important;
+        font-size: 0.7rem !important;
+        font-weight: 700 !important;
+        line-height: 1.2 !important;
+        min-height: 38px;
+        border-radius: 10px !important;
+        white-space: nowrap !important;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        justify-content: center !important;
+        text-align: center !important;
+    }
+
+    .o_section_list_actions .btn i,
+    .o_section_list_actions .btn .fa {
+        font-size: 11px !important;
+        margin-right: 3px !important;
+    }
+
+    /* Single button spans full width; odd third button full width */
+    .o_section_list_actions .btn:only-child {
+        grid-column: 1 / -1;
+    }
+
+    .o_section_list_actions .btn:nth-child(3):last-child {
+        grid-column: 1 / -1;
+    }
+
+    .o_section_list_item .o_status_ribbon {
+        width: 28px;
+        height: 28px;
+    }
+
+    .o_section_list_item .o_status_ribbon::before {
+        border-width: 0 28px 28px 0 !important;
+    }
+
+    .o_section_list_item .o_status_ribbon::after {
+        top: 4px;
+        right: 4px;
+        font-size: 8px;
+    }
+}
+
+/* Very small phones */
+@media (max-width: 480px) {
+    .o_admin_dashboard .o_dashboard_actions {
+        gap: 5px !important;
+    }
+
+    .o_admin_dashboard .o_dashboard_actions select.form-select,
+    .o_admin_dashboard .o_dashboard_actions .o_bhu_native_filter {
+        height: 28px !important;
+        min-height: 28px !important;
+        max-height: 28px !important;
+        line-height: 1.2 !important;
+        font-size: 0.68rem !important;
+        padding: 4px 20px 4px 6px !important;
+        box-sizing: border-box !important;
+    }
+
+    .o_admin_dashboard .o_dashboard_actions .btn {
+        height: 28px !important;
+        min-height: 28px !important;
+        max-height: 28px !important;
+        font-size: 0.68rem !important;
+    }
+
+    .o_section_list_item {
+        grid-template-columns: 36px 8px 26px minmax(0, 1fr) !important;
+        row-gap: 6px !important;
+    }
+
+    .o_section_list_step {
+        width: 36px !important;
+        min-width: 36px !important;
+        max-width: 36px !important;
+    }
+
+    .o_completion_widget_list.o_completion_single_line {
+        margin: 0 10px 0 2px !important;
+    }
+
+    .o_section_list_actions {
+        padding: 0 10px 10px 2px !important;
+    }
+
+    .o_step_number {
+        font-size: 7px !important;
+        max-width: 32px !important;
+    }
+
+    .o_section_list_title {
+        font-size: 0.8rem !important;
+    }
+
+    .o_section_list_actions .btn {
+        font-size: 0.65rem !important;
+        padding: 8px 4px !important;
+        min-height: 36px;
+    }
+
+    .o_timeline_body > div > div:last-child > div {
+        min-width: 48px;
+    }
+}
+
+/* Tablet portrait — same card layout as phone */
+@media (min-width: 769px) and (max-width: 992px) {
+    .o_section_list_item {
+        flex-wrap: wrap !important;
+    }
+
+    .o_section_list_actions {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 8px !important;
+    }
+
+    .o_section_list_actions .btn {
+        width: 100% !important;
+        min-height: 36px;
+    }
+}

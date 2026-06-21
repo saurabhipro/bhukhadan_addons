@@ -1,0 +1,231 @@
+/* Responsive Document Section Styling */
+
+/* Ensure form view doesn't overflow */
+.o_form_view .o_form_sheet {
+    max-width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+}
+
+/* Document page container */
+.o_form_view .o_notebook .o_notebook_content {
+    padding: 16px;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+/* Document groups container - responsive flexbox layout */
+.o_form_view .o_notebook [name="documents"] .o_document_groups.o_group {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: stretch;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+/* Individual document group (Aadhar/PAN) */
+.o_form_view .o_notebook [name="documents"] .o_document_group.o_group {
+    flex: 1;
+    min-width: 300px;
+    max-width: 100%;
+    width: 100%;
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.o_form_view .o_notebook [name="documents"] .o_document_group.o_group:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Document group label styling */
+.o_form_view .o_notebook [name="documents"] .o_document_group.o_group > label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 16px;
+    display: block;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #7b68ee;
+    width: 100%;
+}
+
+/* Image capture widget container within document groups */
+.o_form_view .o_notebook [name="documents"] .o_document_group .o_field_widget {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Ensure image capture widget is responsive */
+.o_form_view .o_notebook [name="documents"] .o_image_capture_container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+/* Prevent image capture widget from causing horizontal scroll */
+.o_form_view .o_notebook [name="documents"] .o_image_capture_container * {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Ensure preview images don't overflow and show full image */
+.o_form_view .o_notebook [name="documents"] .o_preview_img,
+.o_form_view .o_notebook [name="documents"] .o_snapshot_canvas,
+.o_form_view .o_group .o_preview_img,
+.o_form_view .o_group .o_snapshot_canvas {
+    max-width: 100% !important;
+    height: auto !important;
+    box-sizing: border-box;
+    object-fit: contain !important; /* Show full image without cropping */
+}
+
+/* Fix image capture widget in all forms (survey and landowner) */
+.o_form_view .o_image_capture_container {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible;
+    box-sizing: border-box;
+}
+
+.o_form_view .o_image_capture_container .o_preview_section {
+    overflow: hidden; /* Keep for border-radius */
+    padding: 8px; /* Add padding to prevent edge cropping */
+}
+
+/* Ensure survey form image widget has proper sizing */
+.o_form_view .o_group .oe_avatar .o_image_capture_container {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* Mobile Responsive - Stack vertically on small screens */
+@media screen and (max-width: 768px) {
+    /* Ensure form sheet doesn't overflow on mobile */
+    .o_form_view .o_form_sheet {
+        padding: 12px 8px;
+        margin: 0;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .o_form_view .o_notebook .o_notebook_content {
+        padding: 12px 8px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .o_form_view .o_notebook [name="documents"] .o_document_groups.o_group {
+        flex-direction: column;
+        gap: 16px;
+        padding: 0;
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .o_form_view .o_notebook [name="documents"] .o_document_group.o_group {
+        min-width: 100%;
+        width: 100%;
+        max-width: 100%;
+        padding: 16px 12px;
+        margin: 0;
+        flex: 1 1 100%;
+    }
+    
+    .o_form_view .o_notebook [name="documents"] .o_document_group.o_group > label {
+        font-size: 1rem;
+        margin-bottom: 12px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+}
+
+/* Tablet Responsive */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+    .o_form_view .o_notebook [name="documents"] .o_document_group.o_group {
+        min-width: calc(50% - 10px);
+        flex: 1 1 calc(50% - 10px);
+        padding: 18px;
+    }
+}
+
+/* Very small screens (phones in portrait) */
+@media screen and (max-width: 480px) {
+    .o_form_view .o_form_sheet {
+        padding: 8px 4px;
+    }
+    
+    .o_form_view .o_notebook .o_notebook_content {
+        padding: 8px 4px;
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .o_form_view .o_notebook [name="documents"] .o_document_groups.o_group {
+        gap: 12px;
+        padding: 0;
+        width: 100%;
+    }
+    
+    .o_form_view .o_notebook [name="documents"] .o_document_group.o_group {
+        padding: 12px 8px;
+        border-radius: 8px;
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .o_form_view .o_notebook [name="documents"] .o_document_group.o_group > label {
+        font-size: 0.95rem;
+        margin-bottom: 10px;
+        padding-bottom: 8px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+}
+
+/* Better spacing for notebook pages */
+.o_form_view .o_notebook .o_notebook_content .o_group {
+    margin-bottom: 0;
+}
+
+/* Fix for Odoo's default group styling override */
+.o_form_view .o_notebook [name="documents"] .o_document_group.o_group .o_group {
+    width: 100%;
+    margin: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Prevent horizontal scrolling on the entire form */
+body .o_form_view {
+    overflow-x: hidden;
+    max-width: 100%;
+}
+
+/* Ensure all form elements respect container width */
+.o_form_view .o_group,
+.o_form_view .o_form_sheet,
+.o_form_view .o_notebook {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+

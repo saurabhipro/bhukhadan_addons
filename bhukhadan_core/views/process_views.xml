@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Placeholder Actions for Process Menu Items -->
+    <!-- These will be replaced with actual implementations -->
+    
+    <!-- (Sec 4) Create SIA Team -->
+    <record id="action_create_sia_team" model="ir.actions.act_window">
+        <field name="name">Create SIA Team / SIA टीम बनाएं</field>
+        <field name="res_model">bhu.sia.team</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first SIA Team!
+            </p>
+            <p>
+                Create SIA (Social Impact Assessment) teams by adding multiple users under selected projects.
+            </p>
+        </field>
+    </record>
+
+    <!-- (Sec 4) Section 4 Notifications - Main List View -->
+    <!-- Note: action_section4_notification is defined in section4_notification_views.xml -->
+
+    <!-- (Sec 7) Upload Expert Committee Report - Use the main action from expert_committee_report_views.xml -->
+    <!-- action_expert_committee_report is defined in expert_committee_report_views.xml -->
+
+    <!-- (Sec 7) Generate Expert Committee Order -->
+    <record id="action_generate_expert_committee_order" model="ir.actions.act_window">
+        <field name="name">Generate Expert Committee Order / विशेषज्ञ समिति आदेश जेनरेट करें</field>
+        <field name="res_model">bhu.expert.committee.order.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+
+
+    <!-- (Sec 15) Objections -->
+    <record id="action_section15_objections" model="ir.actions.act_window">
+        <field name="name">Section 15 Objections / धारा 15 आपत्तियां</field>
+        <field name="res_model">bhu.section15.objection</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- (Sec 19) Generate Section 19 Notification -->
+    <record id="action_generate_section19_notification" model="ir.actions.act_window">
+        <field name="name">Generate Section 19 Notification / धारा 19 अधिसूचना जेनरेट करें</field>
+        <field name="res_model">bhu.section19.notification.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- (Sec 21) Generate Notices -->
+    <record id="action_generate_notices" model="ir.actions.act_window">
+        <field name="name">Generate Notices / नोटिस जेनरेट करें</field>
+        <field name="res_model">bhu.generate.notices.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- (Sec 21) Download Notices -->
+    <record id="action_download_notices" model="ir.actions.act_window">
+        <field name="name">Download Notices / नोटिस डाउनलोड करें</field>
+        <field name="res_model">bhu.download.notices.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- (Sec 23) Generate Award Notification -->
+    <record id="action_generate_award_notification" model="ir.actions.act_window">
+        <field name="name">Generate Award Notification / पुरस्कार अधिसूचना जेनरेट करें</field>
+        <field name="res_model">bhu.award.notification.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- (Sec 23) Download Award Notification -->
+    <record id="action_download_award_notification" model="ir.actions.act_window">
+        <field name="name">Download Award Notification / पुरस्कार अधिसूचना डाउनलोड करें</field>
+        <field name="res_model">bhu.download.award.notification.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Payment Actions -->
+    <record id="action_generate_payment_file" model="ir.actions.act_window">
+        <field name="name">Payment Vouchers / भुगतान वाउचर</field>
+        <field name="res_model">bhu.payment.voucher</field>
+        <field name="view_mode">list,form</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="action_payment_reconciliation" model="ir.actions.act_window">
+        <field name="name">Payment Reconciliation / भुगतान सामंजस्य</field>
+        <field name="res_model">bhu.payment.reconciliation</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>
+

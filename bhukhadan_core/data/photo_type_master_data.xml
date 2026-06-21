@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Photo Type Master Sample Data -->
+        <record id="photo_type_land" model="bhu.photo.type">
+            <field name="name">Land / भूमि</field>
+            <field name="code">LAND</field>
+            <field name="sequence">10</field>
+            <field name="description">Photos of the land/property being surveyed</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="photo_type_well" model="bhu.photo.type">
+            <field name="name">Well / कुआं</field>
+            <field name="code">WELL</field>
+            <field name="sequence">20</field>
+            <field name="description">Photos of wells on the property</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="photo_type_house" model="bhu.photo.type">
+            <field name="name">House / घर</field>
+            <field name="code">HOUSE</field>
+            <field name="sequence">30</field>
+            <field name="description">Photos of houses/buildings on the property</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="photo_type_shed" model="bhu.photo.type">
+            <field name="name">Shed / शेड</field>
+            <field name="code">SHED</field>
+            <field name="sequence">40</field>
+            <field name="description">Photos of sheds or temporary structures</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="photo_type_tubewell" model="bhu.photo.type">
+            <field name="name">Tubewell / ट्यूबवेल</field>
+            <field name="code">TUBEWELL</field>
+            <field name="sequence">50</field>
+            <field name="description">Photos of tubewells on the property</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="photo_type_pond" model="bhu.photo.type">
+            <field name="name">Pond / तालाब</field>
+            <field name="code">POND</field>
+            <field name="sequence">60</field>
+            <field name="description">Photos of ponds or water bodies</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="photo_type_trees" model="bhu.photo.type">
+            <field name="name">Trees / वृक्ष</field>
+            <field name="code">TREES</field>
+            <field name="sequence">70</field>
+            <field name="description">Photos of trees on the property</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="photo_type_boundary" model="bhu.photo.type">
+            <field name="name">Boundary / सीमा</field>
+            <field name="code">BOUNDARY</field>
+            <field name="sequence">80</field>
+            <field name="description">Photos showing property boundaries or markers</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="photo_type_other" model="bhu.photo.type">
+            <field name="name">Other / अन्य</field>
+            <field name="code">OTHER</field>
+            <field name="sequence">90</field>
+            <field name="description">Other photos related to the survey</field>
+            <field name="active">True</field>
+        </record>
+    </data>
+</odoo>
+

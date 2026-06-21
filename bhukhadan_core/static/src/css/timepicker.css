@@ -1,0 +1,58 @@
+.o_field_time_input::placeholder {
+    color: #444 !important;
+    opacity: 1 !important;
+}
+
+.time-picker-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 250px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    position: absolute; /* important for popup positioning */
+    width: 25%;
+}
+
+.time-box-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 5px;
+}
+
+.time-box-button {
+    padding: 5px 10px;
+    margin: 2px 0;
+    background-color: #ddd;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    user-select: none;
+    /* display: none; */
+}
+
+.time-box-display {
+    font-size: 18px;
+    padding: 5px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    min-width: 30px;
+    text-align: center;
+}
+
+.time-picker-confirm-button {
+    margin-top: -10px;
+    padding: 5px 15px;
+    background-color: #714B67;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    user-select: none;
+}

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="bhuarjan_cba_core.BpmnViewerField">
+        <div class="o_cba_bpmn_viewer_wrapper">
+            <div class="o_cba_bpmn_toolbar d-flex flex-wrap align-items-center gap-2 px-2 py-1 border-bottom bg-light">
+                <button type="button" class="btn btn-outline-secondary btn-sm" title="Zoom out"
+                        t-on-click.stop="zoomOut" t-att-disabled="!state.ready">
+                    <i class="fa fa-search-minus"/>
+                </button>
+                <span class="small text-muted o_cba_bpmn_zoom_label">
+                    <t t-esc="state.zoomLevel"/>%
+                </span>
+                <button type="button" class="btn btn-outline-secondary btn-sm" title="Zoom in"
+                        t-on-click.stop="zoomIn" t-att-disabled="!state.ready">
+                    <i class="fa fa-search-plus"/>
+                </button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" title="Reset view"
+                        t-on-click.stop="zoomReset" t-att-disabled="!state.ready">
+                    <i class="fa fa-crosshairs me-1"/>Reset view
+                </button>
+                <span t-if="state.legend" class="o_cba_bpmn_legend small text-muted ms-auto">
+                    <span class="badge bg-success me-1">Done</span>
+                    <span class="badge bg-warning text-dark me-2">Current</span>
+                    <t t-esc="state.legend"/>
+                </span>
+            </div>
+            <div t-if="state.loading" class="o_cba_bpmn_loading text-muted p-3">
+                <i class="fa fa-spinner fa-spin me-2"/>Loading BPMN diagram…
+            </div>
+            <div t-if="state.error" class="alert alert-danger m-2" role="alert">
+                <t t-esc="state.error"/>
+            </div>
+            <div class="o_cba_bpmn_canvas" t-ref="bpmnContainer"/>
+        </div>
+    </t>
+</templates>

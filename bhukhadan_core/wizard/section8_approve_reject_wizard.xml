@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Section 8 Approve/Reject Wizard Form View -->
+    <record id="view_section8_approve_reject_wizard_form" model="ir.ui.view">
+        <field name="name">bhu.section8.approve.reject.wizard.form</field>
+        <field name="model">bhu.section8.approve.reject.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Approve / Reject Section 8">
+                <sheet>
+                    <group>
+                        <field name="res_id" invisible="1"/>
+                        <field name="action_type" invisible="1"/>
+                        <div invisible="action_type != 'approve'" style="margin-bottom: 15px; padding: 12px; background-color: #d4edda; border-left: 4px solid #28a745; border-radius: 4px;">
+                            <i class="fa fa-check-circle" style="color: #28a745; margin-right: 8px;"/>
+                            <span style="font-weight: 600; color: #155724;">Approve Section 8 / धारा 8 अनुमोदित करें</span>
+                        </div>
+                        <div invisible="action_type != 'reject'" style="margin-bottom: 15px; padding: 12px; background-color: #f8d7da; border-left: 4px solid #dc3545; border-radius: 4px;">
+                            <i class="fa fa-times-circle" style="color: #dc3545; margin-right: 8px;"/>
+                            <span style="font-weight: 600; color: #721c24;">Reject Section 8 / धारा 8 अस्वीकृत करें</span>
+                        </div>
+                        <field name="reason" placeholder="Enter reason for approval or rejection..." 
+                               required="action_type == 'reject'"
+                               nolabel="1"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_confirm" 
+                            string="Approve / अनुमोदित करें"
+                            type="object" 
+                            class="btn-primary"
+                            icon="fa-check"
+                            invisible="action_type != 'approve'"/>
+                    <button name="action_confirm" 
+                            string="Reject / अस्वीकृत करें"
+                            type="object" 
+                            class="btn-danger"
+                            icon="fa-times"
+                            invisible="action_type != 'reject'"/>
+                    <button string="Cancel / रद्द करें" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
+

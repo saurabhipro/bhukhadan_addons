@@ -1,0 +1,249 @@
+// Image Capture Widget - Clean & Responsive Styling
+.o_image_capture_container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    // Preview Section
+    .o_preview_section {
+        width: 100%;
+        position: relative;
+        border-radius: 12px;
+        overflow: hidden; // Keep for border-radius, but images will use object-fit: contain
+        background: #f8f9fa;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: 200px;
+        padding: 8px; // Add padding to prevent edge cropping
+
+        .o_preview_img {
+            max-width: calc(100% - 16px); // Account for padding
+            width: auto;
+            height: auto;
+            max-height: 600px;
+            display: block;
+            border-radius: 8px;
+            object-fit: contain; // Show full image without cropping
+            box-sizing: border-box;
+            margin: 0 auto; // Center the image
+        }
+
+        .o_video_player {
+            max-width: calc(100% - 16px); // Account for padding
+            width: 100%;
+            height: auto;
+            max-height: 600px;
+            display: block;
+            background: #000;
+            border-radius: 8px;
+            object-fit: contain;
+            margin: 0 auto;
+        }
+
+        .o_snapshot_canvas {
+            max-width: calc(100% - 16px); // Account for padding
+            width: auto;
+            height: auto;
+            max-height: 600px;
+            display: block;
+            background: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            object-fit: contain;
+            margin: 0 auto;
+        }
+
+        // Overlay actions for edit/delete
+        .o_image_overlay_actions {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+
+            .o_preview_section:hover & {
+                opacity: 1;
+            }
+        }
+
+        .o_edit_btn,
+        .o_delete_btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #495057;
+
+            i {
+                font-size: 18px;
+            }
+
+            &:hover {
+                transform: scale(1.1);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            }
+
+            &:active {
+                transform: scale(0.95);
+            }
+        }
+
+        .o_delete_btn {
+            color: #dc3545;
+            background: rgba(220, 53, 69, 0.1);
+
+            &:hover {
+                background: #dc3545;
+                color: white;
+            }
+        }
+    }
+
+    // Controls Section - Separate Row
+    .o_controls_section {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        flex-wrap: wrap;
+
+        button {
+            border: none;
+            border-radius: 10px;
+            padding: 14px 28px;
+            font-weight: 600;
+            font-size: 15px;
+            min-height: 50px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            flex: 1;
+            min-width: 160px; // Increased to fit "Open Camera" text
+            max-width: 100%;
+            white-space: nowrap; // Prevent text wrapping
+            overflow: visible; // Ensure text is visible
+
+            i {
+                font-size: 18px;
+                flex-shrink: 0; // Prevent icon from shrinking
+            }
+
+            span {
+                font-size: 15px;
+                white-space: nowrap; // Prevent text wrapping
+                overflow: visible;
+            }
+
+            &:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            }
+
+            &:active {
+                transform: translateY(0);
+            }
+        }
+
+        .o_camera_btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+
+            &:hover {
+                background: linear-gradient(135deg, #5568d3 0%, #6a3d8f 100%);
+            }
+        }
+
+        .o_capture_btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+
+            &:hover {
+                background: linear-gradient(135deg, #5568d3 0%, #6a3d8f 100%);
+            }
+        }
+
+        .o_save_btn {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+
+            &:hover {
+                background: linear-gradient(135deg, #0d7a73 0%, #2dd466 100%);
+            }
+        }
+    }
+
+    // Mobile Responsive
+    @media (max-width: 768px) {
+        gap: 12px;
+
+        .o_preview_section {
+            border-radius: 8px;
+            min-height: 180px;
+            padding: 6px;
+
+            .o_preview_img,
+            .o_video_player,
+            .o_snapshot_canvas {
+                border-radius: 6px;
+                max-height: 500px; // Reduced for mobile
+                max-width: calc(100% - 12px);
+            }
+        }
+
+        .o_controls_section {
+            flex-direction: column;
+            gap: 10px;
+
+            button {
+                width: 100%;
+                max-width: 100%;
+                min-width: unset;
+                padding: 16px 24px;
+                font-size: 16px;
+                min-height: 54px;
+                white-space: nowrap;
+                overflow: visible;
+
+                i {
+                    font-size: 20px;
+                    flex-shrink: 0;
+                }
+
+                span {
+                    font-size: 16px;
+                    white-space: nowrap;
+                    overflow: visible;
+                }
+            }
+        }
+
+        .o_preview_section .o_image_overlay_actions {
+            .o_edit_btn,
+            .o_delete_btn {
+                width: 40px;
+                height: 40px;
+
+                i {
+                    font-size: 16px;
+                }
+            }
+        }
+    }
+}

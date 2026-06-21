@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <!-- Add "Save" text to the save button -->
+    <t t-inherit="web.FormStatusIndicator" t-inherit-mode="extension">
+        <xpath expr="//button[contains(@class, 'o_form_button_save')]" position="inside">
+            <span class="ms-1">Save</span>
+        </xpath>
+    </t>
+
+</templates>

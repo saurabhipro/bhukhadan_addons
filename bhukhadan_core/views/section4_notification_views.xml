@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Section 4 Notification List View -->
+    <record id="view_section4_notification_list" model="ir.ui.view">
+        <field name="name">bhu.section4.notification.list</field>
+        <field name="model">bhu.section4.notification</field>
+        <field name="arch" type="xml">
+            <list string="Section 4 Notifications" delete="1" create="not groups='bhukhadan_core.group_bhuarjan_collector'">
+                <field name="notification_seq_number" string="Notification Sequence Number"/>
+                <field name="project_id" string="Project"/>
+                <field name="requiring_body_id" string="Requiring Body"/>
+                <field name="tehsil_id" string="Tehsil"/>
+                <field name="village_id" string="Village"/>
+                <field name="public_hearing_datetime" string="Public Hearing Date &amp; Time"/>
+                <field name="state" widget="badge" string="Status"
+                       decoration-success="state == 'approved'" 
+                       decoration-info="state == 'submitted'" 
+                       decoration-warning="state == 'draft'"
+                       decoration-danger="state == 'send_back'"/>
+                <field name="pending_with" string="Pending With" invisible="state == 'approved'"/>
+                <field name="signed_date" string="Signed Date"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Section 4 Notification Form View -->
+    <record id="view_section4_notification_form" model="ir.ui.view">
+        <field name="name">bhu.section4.notification.form</field>
+        <field name="model">bhu.section4.notification</field>
+        <field name="arch" type="xml">
+            <form string="Section 4 Notification" class="bhu_approved_form">
+                    <div class="row w-100">
+                        <div class="col w-100">
+                                <!-- Approve Button (Collector only) -->
+
+
+                            <!-- Reset to Draft button (for sent back records - allows SDM to resubmit) -->
+                            <button name="action_draft" string="Resubmit" type="object" class="btn-primary" 
+                                    icon="fa-refresh"
+                                    groups="bhukhadan_core.group_bhuarjan_sdm"
+                                    invisible="state != 'send_back'"/>
+                        </div>
+                        <div class="col text-right" style="text-align:right; width:100% ">
+                            <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved,send_back" options="{'clickable': True}" 
+                            confirm="Are you sure want to submit this record." class="oe_right"/>
+                        </div>
+                    </div>
+
+                <div class="alert alert-danger" role="alert" invisible="not has_no_surveys or not project_id or not village_id or state != 'draft'" 
+                     style="margin: 10px; padding: 12px; background-color: #f8d7da; border: 1px solid #dc3545; border-radius: 4px;"
+                     groups="base.group_no_one"> <!-- Hidden from normal users but kept for logic safety if needed, effectively removing it for user -->
+                    <strong style="color: #dc3545; font-weight: bold;">⚠ Debug:</strong> No surveys found.
+                </div>
+                <div class="alert alert-success" role="alert" invisible="state != 'submitted'" 
+                     style="margin: 10px; padding: 12px; background-color: #d4edda; border: 1px solid #c3e6cb; border-radius: 4px; color: #155724;">
+                    <i class="fa fa-check-circle me-1" title="Success"></i>
+                    <strong>Success:</strong> Section 4 Notification submitted successfully. Pending with Collector for approval.
+                </div>
+                <field name="is_sdm" invisible="1"/>
+                <field name="is_collector" invisible="1"/>
+                <field name="is_admin" invisible="1"/>
+                <field name="is_approved_readonly" invisible="1"/>
+                <field name="can_sdm_edit" invisible="1"/>
+                <field name="can_collector_edit" invisible="1"/>
+                
+                <sheet readonly="is_approved_readonly or (state == 'submitted' and not can_collector_edit)">
+                    <widget name="web_ribbon" title="Approved" bg_color="text-bg-success" invisible="state != 'approved'"/>
+                    <div class="oe_title" style="margin-bottom: 10px; padding-bottom: 8px;">
+                        <h1 style="font-size: 28px; font-weight: 700; color: #8B4513; margin: 0;">
+                            <i class="fa fa-bell" style="margin-right: 10px;"></i>Section 4 Notification / धारा 4 अधिसूचना
+                        </h1>
+                    </div>
+                    
+                    <div invisible="not project_id or not village_id" class="mt-2 mb-3 p-2 rounded w-100" style="background-color: #e9ecef; border-left: 4px solid #8B4513; color: #495057; clear: both;">
+                         <i class="fa fa-info-circle me-1"></i>
+                         Creating Section 4 Notification for Village <field name="village_id" readonly="1" options="{'no_open': True}" class="fw-bold" style="color: #8B4513;"/>, 
+                         Project <field name="project_id" readonly="1" options="{'no_open': True}" class="fw-bold" style="color: #8B4513;"/>
+                    </div>
+                    <!-- Hidden Fields (Auto-populated from context) -->
+                    <group invisible="1">
+                        <field name="pending_with" string="Pending With / लंबित" readonly="1"/>
+                        <field name="project_id" required="1" readonly="1" options="{'no_open': True}"/>
+                        <field name="village_domain"/>
+                        <field name="village_id" required="1" readonly="1" domain="village_domain" options="{'no_open': True}"/>
+                        <field name="requiring_body_id" required="1" readonly="1" options="{'no_open': True}"/>
+                        <field name="tehsil_id" readonly="1"/>
+                        <field name="public_hearing_datetime"/>
+                        <field name="survey_count"/>
+                        <field name="approved_survey_count"/>
+                        <field name="has_pending_surveys"/>
+                        <field name="has_no_surveys"/>
+                        <field name="all_surveys_approved"/>
+                        <field name="area_captured_from_form10"/>
+                        <field name="total_area"/>
+                    </group>
+                    
+                    <!-- Public Hearing Details - Editable Section -->
+                    <style>
+                        /* Darker placeholder text */
+                        .o_field_widget input::placeholder,
+                        .o_field_widget textarea::placeholder {
+                            color: #666 !important;
+                            opacity: 1 !important;
+                            font-weight: 500;
+                        }
+                        
+                        /* Time picker styling with clock icon */
+                        .o_field_float_time {
+                            position: relative;
+                        }
+                        
+                        .o_field_float_time input {
+                            padding-left: 30px !important;
+                            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>');
+                            background-repeat: no-repeat;
+                            background-position: 8px center;
+                            background-size: 16px 16px;
+                        }
+                    </style>
+                    <group col="2">
+                        <group>
+                            <field name="public_hearing_date" string="Public Hearing Date / सार्वजनिक सुनवाई दिनांक" 
+                                   required="1"
+                                   readonly="is_approved_readonly or (state == 'submitted' and not can_collector_edit)"/>
+                            <field name="public_hearing_time" string="Public Hearing Time / सार्वजनिक सुनवाई समय" 
+                                   widget="timepicker"
+                                   required="1"
+                                   placeholder="⏰ Select time / समय चुनें (e.g., 10:00:00)"
+                                   readonly="is_approved_readonly or (state == 'submitted' and not can_collector_edit)"/>
+                        </group>
+                        <group>
+                            <field name="public_hearing_place" string="Public Hearing Place / सार्वजनिक सुनवाई स्थान" 
+                                   required="1"
+                                   placeholder="Enter hearing location / सुनवाई स्थान दर्ज करें"
+                                   readonly="is_approved_readonly or (state == 'submitted' and not can_collector_edit)"/>
+                        </group>
+                    </group>
+                    
+                    <style>
+                        .section-card {
+                            background-color: #fff;
+                            padding: 20px;
+                            margin-bottom: 20px;
+                            border: 1px solid #e0e0e0;
+                            border-radius: 4px;
+                        }
+                        .section-header {
+                            font-size: 1.1rem;
+                            font-weight: 600;
+                            color: #6c757d;
+                            border-bottom: 2px solid #8B4513;
+                            padding-bottom: 10px;
+                            margin-bottom: 20px;
+                            text-transform: uppercase;
+                            letter-spacing: 0.5px;
+                        }
+                        .custom-btn-primary {
+                            background-color: #8B4513 !important;
+                            border-color: #8B4513 !important;
+                            color: white !important;
+                        }
+                        .custom-btn-success {
+                            background-color: #28a745 !important;
+                            border-color: #28a745 !important;
+                            color: white !important;
+                            border-radius: 5px !important;
+                            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                            font-weight: 600;
+                            transition: all 0.2s;
+                            margin-right: 15px !important;
+                        }
+                        .custom-btn-success:hover {
+                            background-color: #218838 !important;
+                            transform: translateY(-1px);
+                            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+                        }
+                        .custom-btn-danger {
+                            background-color: #dc3545 !important;
+                            border-color: #dc3545 !important;
+                            color: white !important;
+                            border-radius: 5px !important;
+                            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                            font-weight: 600;
+                            transition: all 0.2s;
+                        }
+                        .custom-btn-danger:hover {
+                            background-color: #c82333 !important;
+                            transform: translateY(-1px);
+                            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+                        }
+                        .custom-btn-teal {
+                            background-color: #008080 !important;
+                            border-color: #008080 !important;
+                            color: white !important;
+                        }
+                        /* Surveys tab: brown list headers (Section 4 theme) */
+                        .bhu_section4_surveys_wrap .o_list_renderer table.o_list_table thead > tr > th {
+                            background-color: #8B4513 !important;
+                            color: #fff !important;
+                            vertical-align: middle;
+                        }
+                        .bhu_section4_surveys_wrap .o_list_renderer table.o_list_table thead > tr > th .o_list_sortable_caret {
+                            color: #fff !important;
+                        }
+                        .bhu_section4_surveys_wrap .o_list_renderer .o_optional_columns_dropdown_toggle {
+                            color: #fff !important;
+                        }
+                    </style>
+
+                    <notebook class="bhu_section4_notebook mb-3">
+                        <page string="Workflow / कार्यप्रवाह" name="section4_workflow_tab">
+
+                    <!-- SDM Section / SDM अनुभाग -->
+                    <div class="section-card" groups="bhukhadan_core.group_bhuarjan_sdm,bhukhadan_core.group_bhuarjan_admin,base.group_system" 
+                         invisible="(is_collector and not is_admin) or (is_admin and state not in ('draft', 'send_back'))">
+                        <div class="section-header">SDM Section / SDM अनुभाग</div>
+                        <div class="row">
+                            <!-- Left: Download Options -->
+                            <div class="col-md-6 border-right">
+                                <div style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Step 1: Download Proposal</div>
+                                <div class="mb-3">
+                                    <button name="action_download_unsigned_file" string="Section 4 Proposal" type="object" 
+                                            class="btn custom-btn-primary" icon="fa-download"
+                                            style="margin-bottom: 10px; padding: 10px 15px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"/>
+                                </div>
+                                
+                                <div invisible="not sdm_signed_file">
+                                    <div style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Signed Document</div>
+                                    <button name="action_download_sdm_signed_file" 
+                                            type="object" 
+                                            class="btn custom-btn-primary"
+                                            title="Download SDM Signed Section 4"
+                                            style="margin-bottom: 10px; padding: 10px 15px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                        <i class="fa fa-download" style="margin-right: 10px;"/>
+                                        <i class="fa fa-check-circle" style="margin-right: 5px;"/>
+                                        Section 4 SDM Signed
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Right: Upload & Submit -->
+                            <div class="col-md-6">
+                                <div style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Step 2: Upload Signed Proposal</div>
+                                <div class="bg-light p-3 rounded">
+                                    <div class="mb-3">
+                                        <field name="sdm_signed_file" filename="sdm_signed_filename" 
+                                               options="{'accepted_file_extensions': '.pdf'}"
+                                               widget="binary" class="w-100"
+                                               string="Upload SDM Signed Section 4 / हस्ताक्षरित अधिसूचना अपलोड करें"
+                                               readonly="state != 'draft'"/>
+                                        <field name="sdm_signed_filename" invisible="1"/>
+                                    </div>
+
+                                    <div invisible="not sdm_signed_file or state != 'draft'">
+                                         <button name="action_submit" string="Submit to Collector" type="object" 
+                                                 class="btn custom-btn-teal" 
+                                                 icon="fa-paper-plane"
+                                                 invisible="not sdm_signed_file or state != 'draft'"/>
+                                         <div class="text-muted small mt-1">
+                                             <i class="fa fa-info-circle"/> Click to submit for approval.
+                                         </div>
+                                    </div>
+                                    
+                                    <div class="alert alert-warning mt-2" role="alert" invisible="sdm_signed_file">
+                                        <i class="fa fa-exclamation-triangle me-2"></i>
+                                        Please upload the signed document to proceed.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Collector Section / कलेक्टर अनुभाग -->
+                    <div class="section-card" groups="bhukhadan_core.group_bhuarjan_collector,bhukhadan_core.group_bhuarjan_admin" 
+                         invisible="not (is_collector or is_admin) or (is_admin and state in ('draft', 'send_back'))">
+                        <div class="section-header">Collector Section / कलेक्टर अनुभाग</div>
+                        <div class="row">
+                            <!-- Left: Download Options -->
+                            <div class="col-md-6 border-right">
+                                <div style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Step 1: Download Documents</div>
+                                <div class="d-flex flex-wrap mb-3">
+                                    <button name="action_download_sdm_signed_file" 
+                                            type="object" 
+                                            class="btn custom-btn-primary mr-2 mb-2"
+                                            title="Download SDM Signed Section 4"
+                                            invisible="not sdm_signed_file">
+                                        <i class="fa fa-download" style="margin-right: 5px;"/> Section 4 SDM Signed
+                                    </button>
+                                    
+                                    <button name="action_download_latest_pdf" 
+                                            string="Section 4 Proposal" type="object" 
+                                            class="btn custom-btn-primary mb-2" icon="fa-download"
+                                            title="Download Latest PDF"
+                                            invisible="not sdm_signed_file and not collector_signed_file"/>
+                                </div>
+                                
+                                <div invisible="not collector_signed_file" class="mt-3">
+                                    <div style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Signed Document</div>
+                                    <button name="action_download_collector_signed_file"
+                                            type="object" 
+                                            class="btn custom-btn-primary"
+                                            title="Download Collector Signed Section 4">
+                                        <i class="fa fa-download" style="margin-right: 5px;"/>
+                                        <i class="fa fa-check-circle" style="margin-right: 5px;"/>
+                                        Section 4 Collector Signed
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Right: Upload & Workflow -->
+                            <div class="col-md-6">
+                                <div style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Step 2: Upload &amp; Approve</div>
+                                <div class="bg-light p-3 rounded">
+                                    <div class="mb-3">
+                                        <field name="collector_signed_file" filename="collector_signed_filename" 
+                                               string="Upload Collector Signed Section 4 / हस्ताक्षरित आदेश अपलोड करें"
+                                               widget="binary"
+                                               readonly="state != 'submitted'"
+                                               placeholder="Upload Section 4 Approval Letter"/>
+                                        <field name="collector_signed_filename" invisible="1"/>
+                                    </div>
+                                    
+                                    <!-- Action Buttons -->
+                                    <div class="d-flex flex-wrap gap-2" invisible="state != 'submitted'" style="margin-top: 15px;">
+                                        <button name="action_approve" string="Approve / स्वीकृत करें" type="object" 
+                                                class="btn custom-btn-success" 
+                                                icon="fa-check"
+                                                groups="bhukhadan_core.group_bhuarjan_collector,bhukhadan_core.group_bhuarjan_admin"
+                                                invisible="not collector_signed_file"
+                                                confirm="Are you sure want to approve this record."/>
+                                        
+                                        <button name="action_send_back" string="Send Back / वापस भेजें" type="object" 
+                                                class="btn custom-btn-danger" 
+                                                icon="fa-times"
+                                                groups="bhukhadan_core.group_bhuarjan_collector,bhukhadan_core.group_bhuarjan_admin"
+                                                confirm="Are you sure want to send back this record."/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                        </page>
+
+                        <page string="Surveys / सर्वे" name="section4_surveys_tab" invisible="not project_id or not village_id">
+                            <div class="alert alert-warning mb-3" role="alert"
+                                 invisible="not has_no_surveys">
+                                <i class="fa fa-exclamation-triangle me-1" title="Warning"/>
+                                <strong>No surveys found</strong> for this village and project. Section 4 data cannot be validated until surveys exist.
+                            </div>
+                            <div class="alert alert-warning mb-3" role="alert"
+                                 invisible="has_no_surveys or not has_pending_surveys">
+                                <i class="fa fa-clock-o me-1" title="Pending"/>
+                                <strong>Pending approval:</strong> Some surveys are still in draft or submitted state. Only approved surveys are included in area totals for the notification PDF.
+                            </div>
+                            <div class="bhu_section4_surveys_wrap">
+                                <field name="survey_ids" readonly="1" nolabel="1"
+                                       options="{'no_create': True, 'no_quick_create': True}">
+                                    <list string="Surveys" create="false" delete="false" edit="false"
+                                          default_order="khasra_number asc"
+                                          decoration-success="state in ('approved', 'locked')"
+                                          decoration-warning="state == 'submitted'"
+                                          decoration-info="state == 'draft'"
+                                          decoration-danger="state == 'rejected'">
+                                        <field name="name" string="Survey No. / सर्वे संख्या"/>
+                                        <field name="khasra_number" string="Khasra / खसरा"/>
+                                        <field name="total_area" string="Total Area (Ha)"/>
+                                        <field name="acquired_area" string="Acquired Area (Ha)"/>
+                                        <field name="crop_type_id" string="Crop Type" optional="show"/>
+                                        <field name="irrigation_type" string="Irrigation" optional="hide"/>
+                                        <field name="landowner_ids" widget="many2many_tags" string="Landowners / भूमिस्वामी"/>
+                                        <field name="user_id" string="Patwari" optional="show"/>
+                                        <field name="survey_date" string="Survey Date"/>
+                                        <field name="state" widget="badge" string="Status / स्थिति"
+                                               decoration-success="state in ('approved', 'locked')"
+                                               decoration-warning="state == 'submitted'"
+                                               decoration-info="state == 'draft'"
+                                               decoration-danger="state == 'rejected'"/>
+                                    </list>
+                                    <form create="false" edit="false" delete="false">
+                                        <sheet>
+                                            <group>
+                                                <group>
+                                                    <field name="name" readonly="1"/>
+                                                    <field name="khasra_number" readonly="1"/>
+                                                    <field name="state" widget="badge" readonly="1"/>
+                                                    <field name="survey_date" readonly="1"/>
+                                                    <field name="user_id" readonly="1" options="{'no_open': True}"/>
+                                                </group>
+                                                <group>
+                                                    <field name="total_area" readonly="1"/>
+                                                    <field name="acquired_area" readonly="1"/>
+                                                    <field name="crop_type_id" readonly="1" options="{'no_open': True}"/>
+                                                    <field name="irrigation_type" readonly="1"/>
+                                                    <field name="landowner_ids" widget="many2many_tags" readonly="1"/>
+                                                </group>
+                                            </group>
+                                            <group string="Location" col="2">
+                                                <field name="project_id" readonly="1" options="{'no_open': True}"/>
+                                                <field name="village_id" readonly="1" options="{'no_open': True}"/>
+                                                <field name="latitude" readonly="1" optional="hide"/>
+                                                <field name="longitude" readonly="1" optional="hide"/>
+                                            </group>
+                                            <group string="Remarks / टिप्पणी">
+                                                <field name="remarks" readonly="1" nolabel="1"/>
+                                            </group>
+                                        </sheet>
+                                    </form>
+                                </field>
+                            </div>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter groups="bhukhadan_core.group_bhuarjan_sdm,bhukhadan_core.group_bhuarjan_collector,bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Section 4 Notification Search View -->
+    <record id="view_section4_notification_search" model="ir.ui.view">
+        <field name="name">bhu.section4.notification.search</field>
+        <field name="model">bhu.section4.notification</field>
+        <field name="arch" type="xml">
+            <search string="Section 4 Notifications">
+                <field name="notification_seq_number"/>
+                <field name="requiring_body_id"/>
+                <field name="project_id"/>
+                <field name="tehsil_id"/>
+                <field name="village_id"/>
+                <field name="public_hearing_datetime"/>
+                <field name="public_hearing_place"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Generated" name="generated" domain="[('state', '=', 'generated')]"/>
+                <filter string="Signed" name="signed" domain="[('state', '=', 'signed')]"/>
+                <filter string="Has Signed Document" name="has_signed" domain="[('has_signed_document', '=', True)]"/>
+                <separator/>
+                <filter string="My Notifications" name="my_notifications" domain="[('create_uid', '=', uid)]"/>
+                <filter string="All Notifications" name="all" domain="[]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Section 4 Notification Graph View -->
+    <record id="view_section4_notification_graph" model="ir.ui.view">
+        <field name="name">bhu.section4.notification.graph</field>
+        <field name="model">bhu.section4.notification</field>
+        <field name="arch" type="xml">
+            <graph string="Section 4 Analysis" type="bar" sample="1">
+                <field name="village_id"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Section 4 Notification Pivot View -->
+    <record id="view_section4_notification_pivot" model="ir.ui.view">
+        <field name="name">bhu.section4.notification.pivot</field>
+        <field name="model">bhu.section4.notification</field>
+        <field name="arch" type="xml">
+            <pivot string="Section 4 Analysis" sample="1">
+                <field name="village_id" type="row"/>
+                <field name="project_id" type="col"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Section 4 Notification Action -->
+    <record id="action_section4_notification" model="ir.actions.act_window">
+        <field name="name">Section 4 Notifications</field>
+        <field name="res_model">bhu.section4.notification</field>
+        <field name="view_mode">list,graph,pivot,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Section 4 Notification!
+            </p>
+            <p>
+                Create and manage Section 4 notifications for land acquisition. You can generate PDFs and upload signed documents.
+            </p>
+            <p>
+                Use the "Create" button to create a new notification, or use "Generate New" action from the menu to use the wizard.
+            </p>
+        </field>
+    </record>
+    
+    <!-- Action to create notification via wizard -->
+    <record id="action_create_section4_notification_wizard" model="ir.actions.act_window">
+        <field name="name">Generate Section 4 Notification</field>
+        <field name="res_model">bhu.section4.notification.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>
+

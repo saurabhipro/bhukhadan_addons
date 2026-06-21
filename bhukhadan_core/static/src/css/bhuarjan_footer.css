@@ -1,0 +1,151 @@
+/* BhuKhadan backend footer (layout_templates.xml) */
+
+.bhuarjan-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    min-height: 40px;
+    z-index: 1000;
+    padding: 8px 20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    line-height: 1.35;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: nowrap;
+    box-sizing: border-box;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: visible;
+}
+
+body.o_web_client .bhuarjan-footer {
+    display: flex !important;
+}
+
+.bhuarjan-footer__brand {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2px 4px;
+    min-width: 0;
+    flex: 1 1 auto;
+    opacity: 0.92;
+}
+
+.bhuarjan-footer__brand a {
+    font-weight: 700;
+    margin: 0 4px;
+}
+
+.bhuarjan-footer__contact {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    flex-shrink: 0;
+    justify-content: flex-end;
+}
+
+.bhuarjan-footer__link,
+.bhuarjan-footer__phone {
+    color: #fff;
+    text-decoration: none;
+    opacity: 0.9;
+    white-space: nowrap;
+    transition: opacity 0.2s ease;
+}
+
+.bhuarjan-footer__link:hover {
+    opacity: 1;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+}
+
+.bhuarjan-footer__phone {
+    cursor: default;
+}
+
+body.o_web_client {
+    height: calc(100% - 40px) !important;
+    min-height: calc(100% - 40px) !important;
+    overflow: hidden;
+}
+
+/* Prevent fixed footer from covering scrollable backend content */
+body.o_web_client .o_action_manager {
+    padding-bottom: 48px;
+    box-sizing: border-box;
+}
+
+.o_dialog_container {
+    z-index: 1100 !important;
+}
+
+/* Never show website cookie UI over the backend Redmelon footer */
+body.o_web_client #website_cookies_bar,
+body.o_web_client .o_cookies_bar,
+body.o_web_client .o_cookies_discrete,
+body.o_web_client .o_cookies_bar_fixed {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    height: 0 !important;
+    overflow: hidden !important;
+}
+
+/* ── Mobile / narrow screens ───────────────────────────────────────── */
+@media (max-width: 768px) {
+    .bhuarjan-footer {
+        flex-direction: column;
+        align-items: stretch !important;
+        justify-content: center !important;
+        padding: 10px 12px max(10px, env(safe-area-inset-bottom, 10px)) !important;
+        min-height: auto;
+        font-size: 11px;
+        gap: 8px;
+    }
+
+    .bhuarjan-footer__brand {
+        width: 100%;
+        flex: none;
+        font-size: 10px;
+        line-height: 1.45;
+    }
+
+    .bhuarjan-footer__contact {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        gap: 6px 12px;
+        font-size: 10px;
+    }
+
+    .bhuarjan-footer__link,
+    .bhuarjan-footer__phone {
+        font-size: 10px;
+    }
+
+    body.o_web_client {
+        height: calc(100% - 88px) !important;
+        min-height: calc(100% - 88px) !important;
+    }
+
+    body.o_web_client .o_action_manager {
+        padding-bottom: 88px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .bhuarjan-footer__contact {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+
+    body.o_web_client .o_action_manager {
+        padding-bottom: 96px !important;
+    }
+}

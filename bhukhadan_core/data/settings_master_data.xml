@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Settings Master Data -->
+        <!-- Only one BhuKhadan Settings record is allowed - created in sample_sequence_settings.xml -->
+        <!-- This file is kept for reference but the actual settings master is created in sample_sequence_settings.xml -->
+        
+    </data>
+</odoo>

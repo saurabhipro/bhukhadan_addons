@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Photo Type Master List View -->
+        <record id="view_bhu_photo_type_tree" model="ir.ui.view">
+            <field name="name">bhu.photo.type.tree</field>
+            <field name="model">bhu.photo.type</field>
+            <field name="type">list</field>
+            <field name="arch" type="xml">
+                <list string="Photo Types / फोटो प्रकार" decoration-muted="active == False">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Photo Type Master Form View -->
+        <record id="view_bhu_photo_type_form" model="ir.ui.view">
+            <field name="name">bhu.photo.type.form</field>
+            <field name="model">bhu.photo.type</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Photo Type / फोटो प्रकार">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" placeholder="Enter photo type name (e.g., Land, Well, House)"/>
+                                <field name="code" placeholder="Enter unique code"/>
+                                <field name="sequence" widget="handle"/>
+                                <field name="active"/>
+                            </group>
+                            <group>
+                                <field name="description" placeholder="Enter description"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- Photo Type Master Search View -->
+        <record id="view_bhu_photo_type_search" model="ir.ui.view">
+            <field name="name">bhu.photo.type.search</field>
+            <field name="model">bhu.photo.type</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Search Photo Types / फोटो प्रकार खोजें">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <filter string="Active / सक्रिय" name="active" domain="[('active', '=', True)]"/>
+                    <filter string="Inactive / निष्क्रिय" name="inactive" domain="[('active', '=', False)]"/>
+                    <group expand="0" string="Group By / समूह">
+                        <filter string="Active / सक्रिय" name="group_active" context="{'group_by': 'active'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Photo Type Master Action -->
+        <record id="action_bhu_photo_type" model="ir.actions.act_window">
+            <field name="name">Photo Types / फोटो प्रकार</field>
+            <field name="res_model">bhu.photo.type</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_bhu_photo_type_search"/>
+            <field name="context">{'search_default_active': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new photo type
+                </p>
+                <p>
+                    Photo types are used to categorize photos uploaded in surveys (e.g., Land, Well, House, Shed).
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>
+

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Global Sequence Settings for all notification types -->
+        <!-- Settings are now global and apply to all projects -->
+        
+        <!-- First, create Global Settings Master (no project dependency) -->
+        <record id="settings_master_global" model="bhuarjan.settings.master">
+            <!-- No project_id - this is a global settings master -->
+        </record>
+        
+        <!-- Survey Sequence -->
+        <record id="seq_survey" model="bhuarjan.sequence.settings">
+            <field name="settings_master_id" ref="settings_master_global"/>
+            <field name="process_name">survey</field>
+            <field name="prefix">SC_{bhu.project.code}_{bhu.village.code}_</field>
+            <field name="initial_sequence">1</field>
+            <field name="padding">3</field>
+        </record>
+        
+        <!-- Section 4 Notification Sequence -->
+        <record id="seq_section4_notification" model="bhuarjan.sequence.settings">
+            <field name="settings_master_id" ref="settings_master_global"/>
+            <field name="process_name">section4_notification</field>
+            <field name="prefix">NOT4_{bhu.project.code}_{bhu.village.code}</field>
+            <field name="initial_sequence">1</field>
+            <field name="padding">3</field>
+        </record>
+        
+        <!-- Section 11 Notification Sequence -->
+        <record id="seq_section11_notification" model="bhuarjan.sequence.settings">
+            <field name="settings_master_id" ref="settings_master_global"/>
+            <field name="process_name">section11_notification</field>
+            <field name="prefix">NOT11_{bhu.project.code}_{bhu.village.code}</field>
+            <field name="initial_sequence">1</field>
+            <field name="padding">3</field>
+        </record>
+        
+        <!-- Section 19 Notification Sequence -->
+        <record id="seq_section19_notification" model="bhuarjan.sequence.settings">
+            <field name="settings_master_id" ref="settings_master_global"/>
+            <field name="process_name">section19_notification</field>
+            <field name="prefix">NOT19_{bhu.project.code}</field>
+            <field name="initial_sequence">1</field>
+            <field name="padding">3</field>
+        </record>
+        
+        <!-- Section 15 Objection Sequence -->
+        <record id="seq_section15_objection" model="bhuarjan.sequence.settings">
+            <field name="settings_master_id" ref="settings_master_global"/>
+            <field name="process_name">section15_objection</field>
+            <field name="prefix">OBJ_{bhu.project.code}_{bhu.village.code}</field>
+            <field name="initial_sequence">1</field>
+            <field name="padding">3</field>
+        </record>
+        
+        <!-- Draft Award Sequence -->
+        <record id="seq_draft_award" model="bhuarjan.sequence.settings">
+            <field name="settings_master_id" ref="settings_master_global"/>
+            <field name="process_name">draft_award</field>
+            <field name="prefix">AWARD_{bhu.project.code}_{bhu.village.code}</field>
+            <field name="initial_sequence">1</field>
+            <field name="padding">3</field>
+        </record>
+        
+        <!-- Payment File Sequence -->
+        <record id="seq_payment_file" model="bhuarjan.sequence.settings">
+            <field name="settings_master_id" ref="settings_master_global"/>
+            <field name="process_name">payment_file</field>
+            <field name="prefix">PAY_{bhu.project.code}_{bhu.village.code}</field>
+            <field name="initial_sequence">1</field>
+            <field name="padding">3</field>
+        </record>
+        
+        <!-- Payment Reconciliation Sequence -->
+        <record id="seq_payment_reconciliation" model="bhuarjan.sequence.settings">
+            <field name="settings_master_id" ref="settings_master_global"/>
+            <field name="process_name">payment_reconciliation</field>
+            <field name="prefix">RECON_{bhu.project.code}</field>
+            <field name="initial_sequence">1</field>
+            <field name="padding">3</field>
+        </record>
+        
+        <!-- Escalation Matrix Sample Data (Based on LARR Act 2013 Timeline) -->
+        <!-- Step 1: Form 10 → SIA Approval (SIA Team Formation: 7-10 days) -->
+        <record id="escalation_form10_to_sia" model="bhuarjan.escalation.matrix">
+            <field name="settings_master_id" ref="settings_master_global"/>
+            <field name="sequence">10</field>
+            <field name="from_process">form10</field>
+            <field name="to_process">sia_approval</field>
+            <field name="days_required">10</field>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Step 2: SIA Approval → Section 4 Notification (Day 0 - Official start) -->
+        <record id="escalation_sia_to_section4" model="bhuarjan.escalation.matrix">
+            <field name="settings_master_id" ref="settings_master_global"/>
+            <field name="sequence">20</field>
+            <field name="from_process">sia_approval</field>
+            <field name="to_process">section4_notification</field>
+            <field name="days_required">0</field>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Step 3-4: Section 4 Notification → Expert Committee (SIA Report Submission: 180 days from Day 0) -->
+        <record id="escalation_section4_to_expert" model="bhuarjan.escalation.matrix">
+            <field name="settings_master_id" ref="settings_master_global"/>
+            <field name="sequence">30</field>
+            <field name="from_process">section4_notification</field>
+            <field name="to_process">expert_committee</field>
+            <field name="days_required">180</field>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Step 5: Expert Committee → Section 11 Notification (30 days from Expert Committee approval) -->
+        <record id="escalation_expert_to_section11" model="bhuarjan.escalation.matrix">
+            <field name="settings_master_id" ref="settings_master_global"/>
+            <field name="sequence">40</field>
+            <field name="from_process">expert_committee</field>
+            <field name="to_process">section11_notification</field>
+            <field name="days_required">30</field>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Step 7: Section 11 Notification → Section 15 Objection (60 days objection period) -->
+        <record id="escalation_section11_to_section15" model="bhuarjan.escalation.matrix">
+            <field name="settings_master_id" ref="settings_master_global"/>
+            <field name="sequence">50</field>
+            <field name="from_process">section11_notification</field>
+            <field name="to_process">section15_objection</field>
+            <field name="days_required">60</field>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Step 8-9: Section 15 Objection → Section 19 Notification (30 days Collector Disposal + buffer to ensure ≤12 months from Sec 11) -->
+        <!-- Note: Section 19 must be ≤12 months (365 days) from Section 11, so if Sec 11→Sec 15 takes 60 days, 
+             and Sec 15→Sec 19 takes 30 days, we have 90 days used. Remaining: 365-90 = 275 days max.
+             But we'll set it to 30 days for Collector Disposal, and the system should track total from Sec 11 -->
+        <record id="escalation_section15_to_section19" model="bhuarjan.escalation.matrix">
+            <field name="settings_master_id" ref="settings_master_global"/>
+            <field name="sequence">60</field>
+            <field name="from_process">section15_objection</field>
+            <field name="to_process">section19_notification</field>
+            <field name="days_required">30</field>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Step 9 Alternative: Section 11 → Section 19 (Direct path ensuring ≤12 months total) -->
+        <!-- This ensures Section 19 is issued within 12 months (365 days) from Section 11 -->
+        <record id="escalation_section11_to_section19" model="bhuarjan.escalation.matrix">
+            <field name="settings_master_id" ref="settings_master_global"/>
+            <field name="sequence">65</field>
+            <field name="from_process">section11_notification</field>
+            <field name="to_process">section19_notification</field>
+            <field name="days_required">365</field>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Step 10: Section 19 Notification → Draft Award (Immediate/Administrative) -->
+        <record id="escalation_section19_to_draft_award" model="bhuarjan.escalation.matrix">
+            <field name="settings_master_id" ref="settings_master_global"/>
+            <field name="sequence">70</field>
+            <field name="from_process">section19_notification</field>
+            <field name="to_process">draft_award</field>
+            <field name="days_required">0</field>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Step 11: Draft Award → Payment File (Final Award: ≤12 months from Sec 19) -->
+        <record id="escalation_draft_award_to_payment" model="bhuarjan.escalation.matrix">
+            <field name="settings_master_id" ref="settings_master_global"/>
+            <field name="sequence">80</field>
+            <field name="from_process">draft_award</field>
+            <field name="to_process">payment_file</field>
+            <field name="days_required">365</field>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Alternative: Section 19 → Payment File (Direct path ensuring ≤12 months total) -->
+        <record id="escalation_section19_to_payment" model="bhuarjan.escalation.matrix">
+            <field name="settings_master_id" ref="settings_master_global"/>
+            <field name="sequence">85</field>
+            <field name="from_process">section19_notification</field>
+            <field name="to_process">payment_file</field>
+            <field name="days_required">365</field>
+            <field name="active">True</field>
+        </record>
+        
+    </data>
+</odoo>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Chhattisgarh State reference will be handled in districts -->
+        <record id="district_raigarh" model="bhu.district">
+            <field name="name">Raigarh / रायगढ़</field>
+            <field name="state_id" ref="base.state_in_cg"/>
+        </record>
+
+        <record id="district_raipur" model="bhu.district">
+            <field name="name">रायपुर</field>
+            <field name="state_id" ref="base.state_in_cg"/>
+        </record>
+
+        <record id="district_durg" model="bhu.district">
+            <field name="name">दुर्ग</field>
+            <field name="state_id" ref="base.state_in_cg"/>
+        </record>
+        </data>
+</odoo>

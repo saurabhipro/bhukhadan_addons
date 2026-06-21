@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Section 11 Preliminary Report List View -->
+    <record id="view_section11_preliminary_report_list" model="ir.ui.view">
+        <field name="name">bhu.section11.preliminary.report.list</field>
+        <field name="model">bhu.section11.preliminary.report</field>
+        <field name="arch" type="xml">
+            <list string="Section 11 Notifications" delete="1" create="not groups='bhukhadan_core.group_bhuarjan_collector'">
+                <header>
+                    <button name="action_open_wizard" string="Generate" type="object" icon="fa-plus" 
+                            class="oe_highlight" title="Generate new Section 11 Preliminary Report"/>
+                </header>
+                <field name="project_id" string="Project"/>
+                <field name="village_id" string="Village"/>
+                <field name="notification_number" string="Notification Number"/>
+                <field name="state" widget="badge" string="Status" decoration-success="state == 'signed'" decoration-info="state == 'generated'" decoration-muted="state == 'draft'"/>
+                <field name="pending_with" string="Pending With" invisible="state == 'approved'"/>
+                <field name="signed_date" string="Signed Date"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Section 11 Preliminary Report Form View -->
+    <record id="view_section11_preliminary_report_form" model="ir.ui.view">
+        <field name="name">bhu.section11.preliminary.report.form</field>
+        <field name="model">bhu.section11.preliminary.report</field>
+        <field name="arch" type="xml">
+            <form string="Section 11 Preliminary Report" class="bhu_approved_form">
+                <field name="is_sdm" invisible="1"/>
+                <field name="is_collector" invisible="1"/>
+                <field name="is_admin" invisible="1"/>
+                <field name="is_approved_readonly" invisible="1"/>
+                <field name="can_sdm_edit" invisible="1"/>
+                <field name="can_collector_edit" invisible="1"/>
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved,send_back" options="{'clickable': True}"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Approved" bg_color="text-bg-success" invisible="state != 'approved'"/>
+                    <div class="oe_title" style="margin-bottom: 10px; padding-bottom: 8px;">
+                        <h1 style="font-size: 28px; font-weight: 700; color: #8B4513; margin: 0;">
+                            <i class="fa fa-file-text" style="margin-right: 10px;"></i>Section 11 Preliminary Report / धारा 11 प्रारंभिक रिपोर्ट
+                        </h1>
+                    </div>
+                    
+                    <div invisible="not project_id or not village_id" class="mt-2 mb-3 p-2 rounded w-100" style="background-color: #e9ecef; border-left: 4px solid #8B4513; color: #495057; clear: both;">
+                         <i class="fa fa-info-circle me-1"></i>
+                         Creating Section 11 Preliminary Report for Village <field name="village_id" readonly="1" options="{'no_open': True}" class="fw-bold" style="color: #8B4513;"/>, 
+                         Project <field name="project_id" readonly="1" options="{'no_open': True}" class="fw-bold" style="color: #8B4513;"/>
+                    </div>
+                    <group>
+                        <field name="pending_with" string="Pending With / लंबित" readonly="1" invisible="1"/>
+                    </group>
+                    
+                    <!-- Prakaran Kramank Field - First and Editable -->
+                    <group>
+                        <field name="prakaran_kramank" string="Bhu-arjan Prakaran Kramank / भू-अर्जन प्रकरण क्रमांक"
+                               readonly="is_approved_readonly or (state == 'submitted' and not can_collector_edit)"/>
+                    </group>
+                    
+                    <!-- Hidden Fields -->
+                    <group invisible="1">
+                        <field name="project_id" required="1" readonly="1"
+                               options="{'no_create_edit': True, 'no_open': True}"/>
+                        <field name="notification_number"/>
+                        <field name="village_domain"/>
+                        <field name="village_id" required="1" readonly="1"
+                               options="{'no_create_edit': True, 'no_quick_create': True, 'no_open': True}"
+                               context="{'default_project_id': project_id}"
+                               placeholder="Village"
+                               domain="village_domain"/>
+                        <field name="total_area_acquired" readonly="1"/>
+                    </group>
+                    
+                    <style>
+                        .section-card {
+                            background-color: #fff;
+                            padding: 20px;
+                            margin-bottom: 20px;
+                            border: 1px solid #e0e0e0;
+                            border-radius: 4px;
+                        }
+                        .section-header {
+                            font-size: 1.1rem;
+                            font-weight: 600;
+                            color: #6c757d;
+                            border-bottom: 2px solid #8B4513;
+                            padding-bottom: 10px;
+                            margin-bottom: 20px;
+                            text-transform: uppercase;
+                            letter-spacing: 0.5px;
+                        }
+                        .custom-btn-primary {
+                            background-color: #8B4513 !important;
+                            border-color: #8B4513 !important;
+                            color: white !important;
+                        }
+                        .custom-btn-success {
+                            background-color: #28a745 !important;
+                            border-color: #28a745 !important;
+                            color: white !important;
+                            border-radius: 5px !important;
+                            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                            font-weight: 600;
+                            transition: all 0.2s;
+                            margin-right: 15px !important;
+                        }
+                        .custom-btn-success:hover {
+                            background-color: #218838 !important;
+                            transform: translateY(-1px);
+                            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+                        }
+                        .custom-btn-danger {
+                            background-color: #dc3545 !important;
+                            border-color: #dc3545 !important;
+                            color: white !important;
+                            border-radius: 5px !important;
+                            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                            font-weight: 600;
+                            transition: all 0.2s;
+                        }
+                        .custom-btn-danger:hover {
+                            background-color: #c82333 !important;
+                            transform: translateY(-1px);
+                            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+                        }
+                        .custom-btn-teal {
+                            background-color: #008080 !important;
+                            border-color: #008080 !important;
+                            color: white !important;
+                        }
+                        /* Surveys tab only: primary-colored list column headers */
+                        .bhu_section11_surveys_wrap .o_list_renderer table.o_list_table thead > tr > th {
+                            background-color: var(--primary, #0d6efd) !important;
+                            color: #fff !important;
+                            vertical-align: middle;
+                        }
+                        .bhu_section11_surveys_wrap .o_list_renderer table.o_list_table thead > tr > th .o_list_sortable_caret {
+                            color: #fff !important;
+                        }
+                        .bhu_section11_surveys_wrap .o_list_renderer .o_optional_columns_dropdown_toggle {
+                            color: #fff !important;
+                        }
+                    </style>
+
+                    <notebook class="bhu_section11_notebook mb-3">
+                        <page string="SDM Section" name="section11_sdm_tab">
+                    <!-- SDM Section / SDM अनुभाग -->
+                    <div class="section-card" groups="bhukhadan_core.group_bhuarjan_sdm,bhukhadan_core.group_bhuarjan_admin,base.group_system" 
+                         invisible="(is_collector and not is_admin) or (is_admin and state not in ('draft', 'send_back'))">
+                        <div class="section-header">SDM Section / SDM अनुभाग</div>
+                        <div class="row">
+                            <!-- Left: Download Options -->
+                            <div class="col-md-6 border-right">
+                                <div style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Step 1: Download Proposal</div>
+                                <div class="mb-3">
+                                    <button name="action_download_unsigned_file" string="Section 11 Proposal" type="object" 
+                                            class="btn custom-btn-primary" icon="fa-download"
+                                            style="margin-bottom: 10px; padding: 10px 15px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"/>
+                                </div>
+                                
+                                <div invisible="not sdm_signed_file">
+                                    <div style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Signed Document</div>
+                                    <button name="action_download_sdm_signed_file" 
+                                            type="object" 
+                                            class="btn custom-btn-primary"
+                                            title="Download SDM Signed Section 11"
+                                            style="margin-bottom: 10px; padding: 10px 15px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                        <i class="fa fa-download" style="margin-right: 10px;"/>
+                                        <i class="fa fa-check-circle" style="margin-right: 5px;"/>
+                                        SDM Signed
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Right: Upload & Submit -->
+                            <div class="col-md-6">
+                                <div style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Step 2: Upload Signed Proposal</div>
+                                <div class="bg-light p-3 rounded">
+                                    <div class="mb-3">
+                                        <field name="sdm_signed_file" filename="sdm_signed_filename" 
+                                               options="{'accepted_file_extensions': '.pdf'}"
+                                               widget="binary" class="w-100"
+                                               string="Upload SDM Signed Section 11 / हस्ताक्षरित प्रारंभिक रिपोर्ट अपलोड करें"
+                                               readonly="state != 'draft'"/>
+                                        <field name="sdm_signed_filename" invisible="1"/>
+                                    </div>
+
+                                    <div invisible="not sdm_signed_file or (state != 'draft' and state != 'send_back')">
+                                         <button name="action_submit" string="Submit to Collector" type="object" 
+                                                 class="btn custom-btn-teal" icon="fa-paper-plane"
+                                                 invisible="state != 'draft'"/>
+                                         
+                                         <!-- Resubmit Button -->
+                                         <button name="action_draft" string="Resubmit / पुनः जमा करें" type="object" 
+                                                 class="btn custom-btn-primary w-100" icon="fa-refresh"
+                                                 invisible="state != 'send_back'"/>
+                                                 
+                                         <div class="text-muted small mt-1" invisible="state != 'draft'">
+                                             <i class="fa fa-info-circle"/> Click to submit for approval.
+                                         </div>
+                                    </div>
+                                    
+                                    <div class="alert alert-warning mt-2" role="alert" invisible="sdm_signed_file">
+                                        <i class="fa fa-exclamation-triangle me-2"></i>
+                                        Please upload the signed document to proceed.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Collector Section / कलेक्टर अनुभाग -->
+                    <div class="section-card" groups="bhukhadan_core.group_bhuarjan_collector,bhukhadan_core.group_bhuarjan_admin,base.group_system" 
+                         invisible="not (is_collector or is_admin) or (is_admin and state in ('draft', 'send_back'))">
+                        <div class="section-header">Collector Section / कलेक्टर अनुभाग</div>
+                        <div class="row">
+                            <!-- Left: Download Options -->
+                            <div class="col-md-6 border-right">
+                                <div style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Step 1: Download Documents</div>
+                                <div class="d-flex flex-wrap mb-3">
+                                    <button name="action_download_sdm_signed_file" 
+                                            type="object" 
+                                            class="btn custom-btn-primary mr-2 mb-2"
+                                            title="Download SDM Signed Section 11"
+                                            invisible="not sdm_signed_file">
+                                        <i class="fa fa-download" style="margin-right: 5px;"/> SDM Signed
+                                    </button>
+                                    
+                                    <button name="action_download_latest_pdf" 
+                                            string="Section 11 Proposal" type="object" 
+                                            class="btn custom-btn-primary mb-2" icon="fa-download"
+                                            title="Download Latest PDF"
+                                            invisible="not sdm_signed_file and not collector_signed_file"/>
+                                </div>
+                                
+                                <div invisible="not collector_signed_file" class="mt-3">
+                                    <div style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Signed Document</div>
+                                    <button name="action_download_collector_signed_file"
+                                            type="object" 
+                                            class="btn custom-btn-primary"
+                                            title="Download Collector Signed Section 11">
+                                        <i class="fa fa-download" style="margin-right: 5px;"/>
+                                        <i class="fa fa-check-circle" style="margin-right: 5px;"/>
+                                        Collector Signed
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Right: Upload & Workflow -->
+                            <div class="col-md-6">
+                                <div style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Step 2: Upload &amp; Approve</div>
+                                <div class="bg-light p-3 rounded">
+                                    <div class="mb-3">
+                                        <field name="collector_signed_file" filename="collector_signed_filename" 
+                                               string="Upload Collector Signed Section 11 / हस्ताक्षरित आदेश अपलोड करें"
+                                               widget="binary"
+                                               readonly="state != 'submitted'"
+                                               placeholder="Upload Section 11 Approval Letter"/>
+                                        <field name="collector_signed_filename" invisible="1"/>
+                                    </div>
+                                    
+                                    <!-- Action Buttons -->
+                                    <div class="d-flex" invisible="state != 'submitted'" style="margin-top: 15px;">
+                                        <button name="action_approve" string="Approve / स्वीकृत करें" type="object" 
+                                                class="btn custom-btn-success flex-fill" 
+                                                icon="fa-check"
+                                                groups="bhukhadan_core.group_bhuarjan_collector,bhukhadan_core.group_bhuarjan_admin"
+                                                invisible="not collector_signed_file"
+                                                confirm="Are you sure want to approve this record."/>
+                                        
+                                        <button name="action_send_back" string="Send Back / वापस भेजें" type="object" 
+                                                class="btn custom-btn-danger flex-fill" 
+                                                icon="fa-times"
+                                                groups="bhukhadan_core.group_bhuarjan_collector,bhukhadan_core.group_bhuarjan_admin"
+                                                confirm="Are you sure want to send back this record."/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                        </page>
+
+                        <page string="Surveys" name="section11_surveys_tab" invisible="not project_id or not village_id">
+                            <div class="bhu_section11_surveys_wrap">
+                            <field name="survey_ids" readonly="1" nolabel="1"
+                                   options="{'no_create': True, 'no_quick_create': True, 'no_open': True}">
+                                <list create="false" delete="false" edit="false" multi_edit="false">
+                                    <field name="name" string="Survey Number"/>
+                                    <field name="user_id" string="User"/>
+                                    <field name="department_id" string="Department" optional="hide"/>
+                                    <field name="project_id" string="Project" optional="hide"/>
+                                    <field name="village_id" string="Village" optional="show"/>
+                                    <field name="khasra_number" string="Khasra Number"/>
+                                    <field name="total_area" string="Total Area (Ha)"/>
+                                    <field name="acquired_area" string="Acquired Area (Ha)"/>
+                                    <field name="state" widget="badge" string="Status"
+                                           decoration-success="state == 'approved'"
+                                           decoration-info="state == 'submitted'"
+                                           decoration-warning="state == 'draft'"
+                                           decoration-danger="state == 'rejected'"
+                                           decoration-muted="state == 'locked'"/>
+                                    <field name="survey_date" string="Survey Date"/>
+                                </list>
+                            </field>
+                            </div>
+                        </page>
+
+                        <page string="Questions / प्रश्न" invisible="1" name="section11_questions_tab">
+                            <group>
+                                <group string="Paragraph 2: Land Map Inspection / धारा 2: भूमि मानचित्र निरीक्षण (From Project Master)">
+                                    <field name="map_inspection_location" nolabel="1" readonly="1"/>
+                                </group>
+                                <group string="(छः) धारा 12 द्वारा प्राधिकृत अधिकारी / Officer authorized by Section 12 (From Project Master)">
+                                    <field name="authorized_officer" nolabel="1" readonly="1"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group string="(दस) पुनर्वास प्रशासक / Rehabilitation Administrator (From Project Master)">
+                                    <field name="rehab_admin_name" nolabel="1" readonly="1"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group string="(आठ) कितने परिवारों का विस्थापन निहित है। / How many families are displaced? (From Project Master)">
+                                    <field name="is_displacement" nolabel="1" readonly="1"/>
+                                    <field name="affected_families_count" 
+                                           invisible="not is_displacement"
+                                           readonly="1"
+                                           string="Number of Families / परिवारों की संख्या"/>
+                                </group>
+                            </group>
+                            <group string="(नौ) क्या प्रस्तावित परियोजना के लिए अधिनियम 2013 के अध्याय &quot;दो&quot; एवं &quot;तीन&quot; के प्रावधानों से छूट प्रदान की गई है। / Has exemption been granted from the provisions of Chapters &quot;Two&quot; and &quot;Three&quot; of the Act 2013 for the proposed project? (From Project Master)">
+                                <field name="is_exemption" nolabel="1" readonly="1"/>
+                                <group string="Exemption Details / छूट विवरण" 
+                                       invisible="section5_text_type != 'exemption'">
+                                    <field name="exemption_details" widget="text" nolabel="1" readonly="1"/>
+                                </group>
+                                <group string="SIA Justification / SIA औचित्य" 
+                                       invisible="section5_text_type != 'sia_justification'">
+                                    <field name="sia_justification" widget="text" nolabel="1" readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter groups="bhukhadan_core.group_bhuarjan_sdm,bhukhadan_core.group_bhuarjan_collector,bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Section 11 Preliminary Report Search View -->
+    <record id="view_section11_preliminary_report_search" model="ir.ui.view">
+        <field name="name">bhu.section11.preliminary.report.search</field>
+        <field name="model">bhu.section11.preliminary.report</field>
+        <field name="arch" type="xml">
+            <search string="Section 11 Preliminary Reports">
+                <field name="project_id"/>
+                <field name="village_id"/>
+                <field name="notification_number"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Generated" name="generated" domain="[('state', '=', 'generated')]"/>
+                <filter string="Signed" name="signed" domain="[('state', '=', 'signed')]"/>
+                <filter string="Has Signed Document" name="has_signed" domain="[('has_signed_document', '=', True)]"/>
+                <separator/>
+                <filter string="My Reports" name="my_reports" domain="[('create_uid', '=', uid)]"/>
+                <filter string="All Reports" name="all" domain="[]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Project" name="group_by_project" context="{'group_by': 'project_id'}"/>
+                    <filter string="Village" name="group_by_village" context="{'group_by': 'village_id'}"/>
+                    <filter string="Status" name="group_by_state" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Section 11 Preliminary Report Graph View -->
+    <record id="view_section11_preliminary_report_graph" model="ir.ui.view">
+        <field name="name">bhu.section11.preliminary.report.graph</field>
+        <field name="model">bhu.section11.preliminary.report</field>
+        <field name="arch" type="xml">
+            <graph string="Section 11 Analysis" type="bar" sample="1">
+                <field name="village_id"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Section 11 Preliminary Report Pivot View -->
+    <record id="view_section11_preliminary_report_pivot" model="ir.ui.view">
+        <field name="name">bhu.section11.preliminary.report.pivot</field>
+        <field name="model">bhu.section11.preliminary.report</field>
+        <field name="arch" type="xml">
+            <pivot string="Section 11 Analysis" sample="1">
+                <field name="village_id" type="row"/>
+                <field name="project_id" type="col"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Section 11 Preliminary Report Action -->
+    <record id="action_section11_preliminary_report" model="ir.actions.act_window">
+        <field name="name">Section 11 Notifications</field>
+        <field name="res_model">bhu.section11.preliminary.report</field>
+        <field name="view_mode">list,graph,pivot,form</field>
+        <field name="context">{'search_default_my_reports': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Section 11 Preliminary Report!
+            </p>
+            <p>
+                Create and manage Section 11 preliminary reports for land acquisition. You can generate PDFs and upload signed documents.
+            </p>
+            <p>
+                Use the "Generate" button to create a new report via the wizard.
+            </p>
+        </field>
+    </record>
+    
+    <!-- Action to generate new report via wizard -->
+    <record id="action_generate_section11_preliminary" model="ir.actions.act_window">
+        <field name="name">Generate Section 11 Preliminary Report</field>
+        <field name="res_model">bhu.section11.preliminary.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>
+

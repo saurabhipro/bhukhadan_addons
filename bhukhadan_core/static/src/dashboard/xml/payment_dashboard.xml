@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="bhukhadan_core.PaymentDashboard" owl="1">
+        <div class="o_payment_dashboard">
+
+            <!-- Dashboard Header — uses same .dashboard-header class as Group Dashboard -->
+            <div class="dashboard-header">
+                <div class="w-100 d-flex justify-content-between align-items-center flex-wrap" style="gap: 10px;">
+                    <div class="o_dashboard_title_section">
+                        <h2>
+                            <i class="fa fa-credit-card"/>
+                            <span>Payment Dashboard</span>
+                            <span class="o_group_hero_pill">
+                                <i class="fa fa-bolt"/>
+                                <span>Live</span>
+                            </span>
+                        </h2>
+                    </div>
+                    <div class="o_dashboard_actions o_group_hero_stats" t-if="!state.loading">
+                        <span class="o_group_hero_chip" title="Projects">
+                            <i class="fa fa-folder-open"/>
+                            <span t-esc="state.stats.project_count"/>
+                            <small>Projects</small>
+                        </span>
+                        <span class="o_group_hero_chip" title="Villages">
+                            <i class="fa fa-home"/>
+                            <span t-esc="state.stats.village_count"/>
+                            <small>Villages</small>
+                        </span>
+                        <span class="o_group_hero_chip" title="Total Payments">
+                            <i class="fa fa-exchange"/>
+                            <span t-esc="state.stats.total_count"/>
+                            <small>Payments</small>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div t-if="state.loading" class="loading-state-wrapper">
+                <div class="loading-content">
+                    <div class="coffee-loader mb-4">
+                        <i class="fa fa-coffee fa-4x text-primary-gradient"/>
+                        <div class="steam">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                    <h3 class="loading-title">Loading payment data...</h3>
+                    <p class="loading-subtitle text-muted italic">Aggregating every transaction across every project.</p>
+                </div>
+            </div>
+
+            <!-- Dashboard Content -->
+            <div t-else="" class="dashboard-content scrollable-dashboard">
+                <!-- Statistics Cards (palette matches Group Dashboard exactly) -->
+                <div class="container-fluid mb-4">
+                    <div class="row g-3">
+                        <!-- Row 1: counts (matches Total Projects / On Track / Delayed / SIA / Section 11 / Award) -->
+                        <div class="col-md-2">
+                            <div class="stat-card bg-primary text-white" t-on-click="openAllLines">
+                                <div class="stat-icon"><i class="fa fa-exchange"/></div>
+                                <div class="stat-details">
+                                    <h3 t-esc="state.stats.total_count"/>
+                                    <p>Total Payments</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="stat-card bg-success text-white" t-on-click="openAllSuccess">
+                                <div class="stat-icon"><i class="fa fa-check-circle"/></div>
+                                <div class="stat-details">
+                                    <h3 t-esc="state.stats.success_count"/>
+                                    <p>Successful</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="stat-card bg-danger text-white" t-on-click="openAllFailed">
+                                <div class="stat-icon"><i class="fa fa-times-circle"/></div>
+                                <div class="stat-details">
+                                    <h3 t-esc="state.stats.failed_count"/>
+                                    <p>Failed</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="stat-card bg-info text-white" t-on-click="openAllPending">
+                                <div class="stat-icon"><i class="fa fa-clock-o"/></div>
+                                <div class="stat-details">
+                                    <h3 t-esc="state.stats.pending_count"/>
+                                    <p>Pending</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="stat-card bg-warning text-white">
+                                <div class="stat-icon"><i class="fa fa-building"/></div>
+                                <div class="stat-details">
+                                    <h3 t-esc="state.stats.project_count"/>
+                                    <p>Projects</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="stat-card bg-success text-white">
+                                <div class="stat-icon"><i class="fa fa-home"/></div>
+                                <div class="stat-details">
+                                    <h3 t-esc="state.stats.village_count"/>
+                                    <p>Villages</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: amounts (matches Total Patwaris / Villages / Surveys / Landowners / Budget) -->
+                    <div class="row g-3 mt-1">
+                        <div class="col-md-2">
+                            <div class="stat-card bg-patwari text-white">
+                                <div class="stat-icon"><i class="fa fa-line-chart"/></div>
+                                <div class="stat-details">
+                                    <h3><t t-esc="formatPct(state.stats.success_rate)"/></h3>
+                                    <p>Success Rate</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="stat-card bg-village text-white">
+                                <div class="stat-icon"><i class="fa fa-rupee"/></div>
+                                <div class="stat-details">
+                                    <h3 t-esc="formatInr(state.stats.success_amount)"/>
+                                    <p>Success Amount</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="stat-card bg-survey text-white">
+                                <div class="stat-icon"><i class="fa fa-rupee"/></div>
+                                <div class="stat-details">
+                                    <h3 t-esc="formatInr(state.stats.failed_amount)"/>
+                                    <p>Failed Amount</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="stat-card bg-landowner text-white">
+                                <div class="stat-icon"><i class="fa fa-rupee"/></div>
+                                <div class="stat-details">
+                                    <h3 t-esc="formatInr(state.stats.pending_amount)"/>
+                                    <p>Pending Amount</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-card bg-budget text-white">
+                                <div class="stat-icon"><i class="fa fa-rupee"/></div>
+                                <div class="stat-details">
+                                    <h3 t-esc="formatInr(state.stats.total_amount)"/>
+                                    <p>Total Amount (Disbursed)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- All Projects Payment Status Table -->
+                <div class="container-fluid pb-5">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header custom-card-header d-flex align-items-center gap-3">
+                            <h5 class="mb-0 text-nowrap">
+                                <i class="fa fa-list-alt me-2"/>
+                                All Projects Payment Status
+                            </h5>
+
+                            <div class="header-search-container shadow-sm rounded overflow-hidden ms-auto me-3">
+                                <span class="input-group-text bg-white border-0 py-1">
+                                    <i class="fa fa-search text-muted small"/>
+                                </span>
+                                <input type="text"
+                                       class="header-search-input border-0 py-1 px-2"
+                                       placeholder="Search projects by name, code, district..."
+                                       t-on-input="onSearchInput"/>
+                            </div>
+                        </div>
+                        <div class="card-body p-3">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-striped mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 3%">#</th>
+                                            <th style="width: 11%">District</th>
+                                            <th style="width: 14%">Department</th>
+                                            <th style="width: 20%">Project Name</th>
+                                            <th style="width: 6%">Code</th>
+                                            <th style="width: 5%" class="text-center">Vil</th>
+                                            <th style="width: 6%" class="text-center">Total</th>
+                                            <th style="width: 6%" class="text-center">Success</th>
+                                            <th style="width: 6%" class="text-center">Failed</th>
+                                            <th style="width: 6%" class="text-center">Pending</th>
+                                            <th style="width: 5%" class="text-center">Rate</th>
+                                            <th style="width: 12%" class="text-center">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-if="filteredProjects.length === 0">
+                                            <tr>
+                                                <td colspan="12" class="text-center py-5 no-projects-state">
+                                                    <div class="empty-state-wrapper">
+                                                        <i class="fa fa-folder-open-o fa-4x mb-3 text-muted opacity-50"/>
+                                                        <h4 class="text-muted fw-bold">No Projects Found</h4>
+                                                        <p class="text-muted px-4">There are currently no projects matching your search.</p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <t t-else="">
+                                            <tr t-foreach="filteredProjects" t-as="project" t-key="project.id" class="project-row">
+                                                <td t-esc="project_index + 1"/>
+                                                <td>
+                                                    <span t-esc="project.district_name || 'N/A'"/>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="project.department_name || 'N/A'"/>
+                                                </td>
+                                                <td class="clickable-cell" t-on-click="() => this.openProject(project)">
+                                                    <strong class="dashboard-link" t-esc="project.project_name"/>
+                                                </td>
+                                                <td>
+                                                    <span class="badge bg-secondary" t-esc="project.project_code || '-'"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span class="badge bg-info" t-esc="project.village_count"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span class="badge bg-primary" t-esc="project.total_count"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span class="badge badge-success" t-esc="project.success_count"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span class="badge badge-danger" t-esc="project.failed_count"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span class="badge badge-warning" t-esc="project.pending_count"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span class="rate-pill"
+                                                          t-att-style="'background:' + rateBg(project.success_rate) + '; color:' + rateColor(project.success_rate) + ';'">
+                                                        <t t-esc="Math.round(project.success_rate)"/>%
+                                                    </span>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span t-att-class="'stage-badge shadow-sm ' + statusBadgeClass(project)">
+                                                        <t t-esc="project.payment_status"/>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

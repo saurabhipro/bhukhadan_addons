@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Muahapali Circle -->
+        <record id="raigarh_tehsil" model="bhu.tehsil">
+            <field name="name">Raigarh / रायगढ़</field>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="sub_division_id" ref="raigarh_sub_division"/>
+            <field name="state_id" ref="base.state_in_cg"/>
+        </record>
+    </data>
+</odoo>

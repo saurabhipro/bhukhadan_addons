@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Post-Award Payment List View -->
+    <record id="view_post_award_payment_list" model="ir.ui.view">
+        <field name="name">bhu.post.award.payment.list</field>
+        <field name="model">bhu.post.award.payment</field>
+        <field name="arch" type="xml">
+            <list string="Post-Award Payments" decoration-info="state == 'draft'" decoration-warning="state == 'approved'" decoration-primary="state == 'processed'" decoration-success="state == 'paid'" decoration-muted="state == 'cancelled'">
+                <field name="name"/>
+                <field name="company_id"/>
+                <field name="payment_date"/>
+                <field name="landowner_id"/>
+                <field name="payment_type"/>
+                <field name="amount"/>
+                <field name="payment_method"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Post-Award Payment Form View -->
+    <record id="view_post_award_payment_form" model="ir.ui.view">
+        <field name="name">bhu.post.award.payment.form</field>
+        <field name="model">bhu.post.award.payment</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_approve" string="Approve" type="object" class="btn-primary" 
+                            invisible="state != 'draft'" icon="fa-check"/>
+                    <button name="action_process" string="Process" type="object" class="btn-info" 
+                            invisible="state != 'approved'" icon="fa-cogs"/>
+                    <button name="action_pay" string="Mark as Paid" type="object" class="btn-success" 
+                            invisible="state != 'processed'" icon="fa-money"/>
+                    <button name="action_cancel" string="Cancel" type="object" class="btn-danger" 
+                            invisible="state not in ['draft', 'approved', 'processed']" icon="fa-times"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,approved,processed,paid"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Payment Number"/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group string="Basic Information">
+                            <field name="name"/>
+                            <field name="payment_date"/>
+                            <field name="payment_type"/>
+                            <field name="state"/>
+                        </group>
+                        <group string="Company Information">
+                            <field name="company_id"/>
+                        </group>
+                    </group>
+                    
+                    <group>
+                        <group string="Related Records">
+                            <field name="survey_id"/>
+                            <field name="landowner_id"/>
+                        </group>
+                        <group string="Payment Details">
+                            <field name="amount"/>
+                            <field name="currency_id"/>
+                            <field name="payment_method"/>
+                        </group>
+                    </group>
+                    
+                    <group>
+                        <group string="Bank Details">
+                            <field name="bank_name"/>
+                            <field name="account_number"/>
+                            <field name="ifsc_code"/>
+                            <field name="branch_name"/>
+                        </group>
+                        <group string="Cheque/DD Details">
+                            <field name="cheque_number"/>
+                            <field name="cheque_date"/>
+                            <field name="drawee_bank"/>
+                        </group>
+                    </group>
+                    
+                    <group>
+                        <group string="Approval Details">
+                            <field name="approved_by"/>
+                            <field name="approval_date"/>
+                        </group>
+                        <group string="Processing Details">
+                            <field name="processed_by"/>
+                            <field name="processing_date"/>
+                        </group>
+                    </group>
+                    
+                    <group>
+                        <group string="Payment Confirmation">
+                            <field name="payment_reference"/>
+                            <field name="transaction_id"/>
+                            <field name="payment_confirmation_date"/>
+                        </group>
+                    </group>
+                    
+                    <group string="Notes">
+                        <field name="approval_notes" nolabel="1"/>
+                        <field name="processing_notes" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Post-Award Payment Search View -->
+    <record id="view_post_award_payment_search" model="ir.ui.view">
+        <field name="name">bhu.post.award.payment.search</field>
+        <field name="model">bhu.post.award.payment</field>
+        <field name="arch" type="xml">
+            <search string="Search Post-Award Payments">
+                <field name="name"/>
+                <field name="landowner_id"/>
+                <field name="payment_type"/>
+                <field name="survey_id"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Approved" name="approved" domain="[('state', '=', 'approved')]"/>
+                <filter string="Processed" name="processed" domain="[('state', '=', 'processed')]"/>
+                <filter string="Paid" name="paid" domain="[('state', '=', 'paid')]"/>
+                <filter string="Cancelled" name="cancelled" domain="[('state', '=', 'cancelled')]"/>
+                <filter string="This Month" name="this_month" domain="[('payment_date', '>=', (context_today() - relativedelta(months=1)).strftime('%Y-%m-%d'))]"/>
+                <group expand="0" string="Group By">
+                    <filter string="State" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Payment Type" name="group_type" context="{'group_by': 'payment_type'}"/>
+                    <filter string="Payment Method" name="group_method" context="{'group_by': 'payment_method'}"/>
+                    <filter string="Date" name="group_date" context="{'group_by': 'payment_date'}"/>
+                    <filter string="Landowner" name="group_landowner" context="{'group_by': 'landowner_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Post-Award Payment Action -->
+    <record id="action_post_award_payment" model="ir.actions.act_window">
+        <field name="name">Post-Award Payments</field>
+        <field name="res_model">bhu.post.award.payment</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_post_award_payment_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Post-Award Payment
+            </p>
+            <p>
+                Post-Award Payments are made to landowners after the land acquisition process is completed.
+            </p>
+        </field>
+    </record>
+</odoo>

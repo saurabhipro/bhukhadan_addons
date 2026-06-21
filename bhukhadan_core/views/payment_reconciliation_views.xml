@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Payment Reconciliation List View -->
+    <record id="view_payment_reconciliation_list" model="ir.ui.view">
+        <field name="name">bhu.payment.reconciliation.list</field>
+        <field name="model">bhu.payment.reconciliation</field>
+        <field name="arch" type="xml">
+            <list string="Payment Reconciliations" decoration-info="state == 'draft'" decoration-warning="state == 'in_progress'" decoration-primary="state == 'reviewed'" decoration-success="state == 'approved'" decoration-muted="state == 'completed'">
+                <field name="name"/>
+                <field name="company_id"/>
+                <field name="reconciliation_date"/>
+                <field name="reconciliation_type"/>
+                <field name="period_start"/>
+                <field name="period_end"/>
+                <field name="total_payments"/>
+                <field name="total_amount"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Payment Reconciliation Form View -->
+    <record id="view_payment_reconciliation_form" model="ir.ui.view">
+        <field name="name">bhu.payment.reconciliation.form</field>
+        <field name="model">bhu.payment.reconciliation</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_start_reconciliation" string="Start Reconciliation" type="object" class="btn-primary" 
+                            invisible="state != 'draft'" icon="fa-play"/>
+                    <button name="action_review" string="Review" type="object" class="btn-info" 
+                            invisible="state != 'in_progress'" icon="fa-search"/>
+                    <button name="action_approve" string="Approve" type="object" class="btn-success" 
+                            invisible="state != 'reviewed'" icon="fa-check"/>
+                    <button name="action_complete" string="Complete" type="object" class="btn-warning" 
+                            invisible="state != 'approved'" icon="fa-check-circle"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,in_progress,reviewed,approved,completed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Reconciliation Number"/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group string="Basic Information">
+                            <field name="name"/>
+                            <field name="reconciliation_date"/>
+                            <field name="reconciliation_type"/>
+                            <field name="state"/>
+                        </group>
+                        <group string="Company Information">
+                            <field name="company_id"/>
+                        </group>
+                    </group>
+                    
+                    <group>
+                        <group string="Period Information">
+                            <field name="period_start"/>
+                            <field name="period_end"/>
+                        </group>
+                        <group string="Related Records">
+                            <field name="survey_id"/>
+                            <field name="payment_ids" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                    
+                    <group>
+                        <group string="Financial Summary">
+                            <field name="total_payments"/>
+                            <field name="total_amount"/>
+                            <field name="currency_id"/>
+                        </group>
+                        <group string="Discrepancies">
+                            <field name="discrepancy_count"/>
+                            <field name="discrepancy_amount"/>
+                        </group>
+                    </group>
+                    
+                    <group>
+                        <group string="Review Details">
+                            <field name="reviewed_by"/>
+                            <field name="review_date"/>
+                        </group>
+                        <group string="Approval Details">
+                            <field name="approved_by"/>
+                            <field name="approval_date"/>
+                        </group>
+                    </group>
+                    
+                    <group string="Reconciliation Notes">
+                        <field name="reconciliation_notes" nolabel="1"/>
+                        <field name="discrepancies_notes" nolabel="1"/>
+                        <field name="resolution_notes" nolabel="1"/>
+                    </group>
+                    
+                    <group string="Review and Approval Notes">
+                        <field name="review_notes" nolabel="1"/>
+                        <field name="approval_notes" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Payment Reconciliation Search View -->
+    <record id="view_payment_reconciliation_search" model="ir.ui.view">
+        <field name="name">bhu.payment.reconciliation.search</field>
+        <field name="model">bhu.payment.reconciliation</field>
+        <field name="arch" type="xml">
+            <search string="Search Payment Reconciliations">
+                <field name="name"/>
+                <field name="survey_id"/>
+                <field name="reconciliation_type"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="In Progress" name="in_progress" domain="[('state', '=', 'in_progress')]"/>
+                <filter string="Reviewed" name="reviewed" domain="[('state', '=', 'reviewed')]"/>
+                <filter string="Approved" name="approved" domain="[('state', '=', 'approved')]"/>
+                <filter string="Completed" name="completed" domain="[('state', '=', 'completed')]"/>
+                <filter string="This Month" name="this_month" domain="[('reconciliation_date', '>=', (context_today() - relativedelta(months=1)).strftime('%Y-%m-%d'))]"/>
+                <group expand="0" string="Group By">
+                    <filter string="State" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Reconciliation Type" name="group_type" context="{'group_by': 'reconciliation_type'}"/>
+                    <filter string="Date" name="group_date" context="{'group_by': 'reconciliation_date'}"/>
+                    <filter string="Survey" name="group_survey" context="{'group_by': 'survey_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Payment Reconciliation Action -->
+    <record id="action_payment_reconciliation" model="ir.actions.act_window">
+        <field name="name">Payment Reconciliations</field>
+        <field name="res_model">bhu.payment.reconciliation</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_payment_reconciliation_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Payment Reconciliation
+            </p>
+            <p>
+                Payment Reconciliations help ensure that all payments are properly accounted for and any discrepancies are identified and resolved.
+            </p>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree Master List View -->
+    <record id="view_bhu_tree_master_list" model="ir.ui.view">
+        <field name="name">bhu.tree.master.list</field>
+        <field name="model">bhu.tree.master</field>
+        <field name="arch" type="xml">
+            <list string="Tree Rate Master">
+                <field name="tree_type_icon" string="Icon"/>
+                <field name="name"/>
+                <field name="tree_type"/>
+                <field name="display_rate" widget="monetary"/>
+                <field name="district_id"/>
+                <field name="active"/>
+                <field name="currency_id" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Tree Master Form View -->
+    <record id="view_bhu_tree_master_form" model="ir.ui.view">
+        <field name="name">bhu.tree.master.form</field>
+        <field name="model">bhu.tree.master</field>
+        <field name="arch" type="xml">
+            <form string="Tree Rate Master">
+                <header/>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Enter tree name (e.g., Mango, Neem, Sal)"/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group string="Tree Information / वृक्ष जानकारी">
+                            <field name="tree_type" widget="radio" options="{'horizontal': true}"/>
+                            <field name="district_id" options="{'no_create': True}"/>
+                            <field name="fruit_rate" widget="monetary" invisible="tree_type != 'fruit_bearing'"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    
+                    <!-- Rate Variants - Same for both fruit and non-fruit bearing trees -->
+                    <group string="Rate Variants / दर वेरिएंट" col="1" invisible="tree_type == 'fruit_bearing'">
+                        <field name="tree_rate_ids" nolabel="1" context="{'default_tree_master_id': id}">
+                            <list string="Rate Variants by Development Stage and Girth Range" editable="bottom">
+                                <field name="stage_icon" string="Sound Type" optional="show"/>
+                                <field name="development_stage" string="Development Stage" 
+                                       required="1" width="200"/>
+                                <field name="girth_range_min" string="Min Girth (cm)" 
+                                       required="1" width="200"/>
+                                <field name="girth_range_max" string="Max Girth (cm)" 
+                                       width="200" 
+                                       placeholder="Leave empty for 'Above X cm'"/>
+                                <field name="rate" string="Rate" widget="monetary" 
+                                       required="1" width="200"/>
+                                <field name="active" string="Active" width="150"/>
+                            </list>
+                        </field>
+                    </group>
+                </sheet>
+                <chatter groups="bhukhadan_core.group_bhuarjan_ri,bhukhadan_core.group_bhuarjan_nayab_tahsildar,bhukhadan_core.group_bhuarjan_tahsildar,bhukhadan_core.group_bhuarjan_sdm,bhukhadan_core.group_bhuarjan_additional_collector,bhukhadan_core.group_bhuarjan_collector,bhukhadan_core.group_bhuarjan_admin"/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree Master Search View -->
+    <record id="view_bhu_tree_master_search" model="ir.ui.view">
+        <field name="name">bhu.tree.master.search</field>
+        <field name="model">bhu.tree.master</field>
+        <field name="arch" type="xml">
+            <search string="Search Tree Rate Master">
+                <field name="name"/>
+                <field name="tree_type"/>
+                <filter string="Fruit-bearing" name="fruit_bearing" domain="[('tree_type', '=', 'fruit_bearing')]"/>
+                <filter string="Non-fruit-bearing" name="non_fruit_bearing" domain="[('tree_type', '=', 'non_fruit_bearing')]"/>
+                <filter string="Active" name="active_only" domain="[('active', '=', True)]"/>
+                <filter string="Archived" name="archived_only" domain="[('active', '=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Tree Type" name="group_by_tree_type" context="{'group_by': 'tree_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Tree Master Action -->
+    <record id="action_bhu_tree_master" model="ir.actions.act_window">
+        <field name="name">Tree Rate Master</field>
+        <field name="res_model">bhu.tree.master</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_bhu_tree_master_search"/>
+        <field name="context">{'search_default_active_only': 1, 'search_default_group_by_tree_type': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Tree Rate Master record!
+            </p>
+            <p>
+                Define tree species with their compensation rates for survey purposes.
+            </p>
+        </field>
+    </record>
+
+</odoo>
+

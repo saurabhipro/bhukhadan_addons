@@ -1,0 +1,800 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Sample Hindi Content Templates for Section 4 Notification -->
+        <!-- These can be used as reference when filling wizard forms -->
+        
+        <!-- Sample Data Template 1 -->
+        <record id="section4_sample_template_1" model="ir.config_parameter">
+            <field name="key">bhukhadan_core.section4.sample.public_purpose</field>
+            <field name="value"><![CDATA[<p><strong>रिंग रोड रायगढ़</strong> परियोजना के लिए भूमि अर्जन। यह परियोजना शहर के यातायात को सुविधाजनक बनाने और आर्थिक विकास को बढ़ावा देने के लिए है।</p>]]></field>
+        </record>
+        
+        <record id="section4_sample_template_q1" model="ir.config_parameter">
+            <field name="key">bhukhadan_core.section4.sample.q1</field>
+            <field name="value"><![CDATA[<p><strong>लोक प्रयोजन:</strong> रिंग रोड रायगढ़ परियोजना के अंतर्गत जुर्दा ग्राम में <strong>3.0000 हेक्टेयर</strong> भूमि का अर्जन किया जा रहा है। यह परियोजना शहर के यातायात प्रबंधन में सुधार लाएगी और आर्थिक विकास को गति देगी।</p>]]></field>
+        </record>
+        
+        <record id="section4_sample_template_q7" model="ir.config_parameter">
+            <field name="key">bhukhadan_core.section4.sample.q7</field>
+            <field name="value"><![CDATA[<p><strong>विकल्पों का अध्ययन:</strong></p><ul><li>वैकल्पिक मार्गों का सर्वेक्षण किया गया</li><li>न्यूनतम प्रभाव वाला मार्ग चुना गया</li><li>पर्यावरणीय प्रभाव का मूल्यांकन किया गया</li></ul>]]></field>
+        </record>
+        
+        <record id="section4_sample_template_q9" model="ir.config_parameter">
+            <field name="key">bhukhadan_core.section4.sample.q9</field>
+            <field name="value"><![CDATA[<p><strong>परियोजना के लाभ:</strong></p><ul><li>यातायात की सुविधा में सुधार</li><li>आर्थिक विकास में वृद्धि</li><li>रोजगार के अवसरों में वृद्धि</li><li>शहरी विकास में योगदान</li></ul>]]></field>
+        </record>
+        
+        <record id="section4_sample_template_q10" model="ir.config_parameter">
+            <field name="key">bhukhadan_core.section4.sample.q10</field>
+            <field name="value"><![CDATA[<p><strong>प्रतिकर उपाय:</strong></p><ul><li>भूमि मालिकों को उचित मुआवजा</li><li>पुनर्वासन पैकेज</li><li>रोजगार के अवसर</li><li>शिक्षा और स्वास्थ्य सुविधाएं</li></ul><p><strong>अनुमानित व्यय:</strong> ₹ 5 करोड़</p>]]></field>
+        </record>
+        
+        <record id="section4_sample_template_q11" model="ir.config_parameter">
+            <field name="key">bhukhadan_core.section4.sample.q11</field>
+            <field name="value"><![CDATA[<p><strong>अन्य प्रभावित घटक:</strong></p><ul><li>कृषि भूमि</li><li>वन क्षेत्र</li><li>जल स्रोत</li><li>सड़क और बिजली की सुविधाएं</li></ul>]]></field>
+        </record>
+        
+        <!-- Additional Sample Hindi Content for other questions -->
+        <record id="section4_sample_template_q2" model="ir.config_parameter">
+            <field name="key">bhukhadan_core.section4.sample.q2</field>
+            <field name="value">15</field>
+        </record>
+        
+        <record id="landowner_jurda_9" model="bhu.landowner">
+            <field name="name">विकास कुमार</field>
+            <field name="father_name">दिनेश कुमार</field>
+            <field name="age">29</field>
+            <field name="gender">male</field>
+            <field name="village_id" ref="jurda_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789020</field>
+            <field name="pan_number">ABCDE1242F</field>
+            <field name="phone">9876543218</field>
+            <field name="bank_name">Indian Bank</field>
+            <field name="account_number">123456789012353</field>
+            <field name="ifsc_code">IDIB0001234</field>
+        </record>
+        
+        <record id="landowner_jurda_10" model="bhu.landowner">
+            <field name="name">पूजा देवी</field>
+            <field name="father_name">राजेश कुमार</field>
+            <field name="age">36</field>
+            <field name="gender">female</field>
+            <field name="village_id" ref="jurda_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789021</field>
+            <field name="pan_number">ABCDE1243F</field>
+            <field name="phone">9876543219</field>
+            <field name="bank_name">Bank of Baroda</field>
+            <field name="account_number">123456789012354</field>
+            <field name="ifsc_code">BARB0001234</field>
+        </record>
+        
+        <record id="landowner_jurda_11" model="bhu.landowner">
+            <field name="name">राजेश कुमार</field>
+            <field name="father_name">प्रेम कुमार</field>
+            <field name="age">44</field>
+            <field name="gender">male</field>
+            <field name="village_id" ref="jurda_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789022</field>
+            <field name="pan_number">ABCDE1244F</field>
+            <field name="phone">9876543220</field>
+            <field name="bank_name">Central Bank of India</field>
+            <field name="account_number">123456789012355</field>
+            <field name="ifsc_code">CBIN0001234</field>
+        </record>
+        
+        <record id="landowner_jurda_12" model="bhu.landowner">
+            <field name="name">मीना देवी</field>
+            <field name="father_name">सुरेश प्रसाद</field>
+            <field name="age">39</field>
+            <field name="gender">female</field>
+            <field name="village_id" ref="jurda_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789023</field>
+            <field name="pan_number">ABCDE1245F</field>
+            <field name="phone">9876543221</field>
+            <field name="bank_name">Indian Overseas Bank</field>
+            <field name="account_number">123456789012356</field>
+            <field name="ifsc_code">IOBA0001234</field>
+        </record>
+        
+        <record id="landowner_jurda_13" model="bhu.landowner">
+            <field name="name">अजय कुमार</field>
+            <field name="father_name">विजय कुमार</field>
+            <field name="age">31</field>
+            <field name="gender">male</field>
+            <field name="village_id" ref="jurda_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789024</field>
+            <field name="pan_number">ABCDE1246F</field>
+            <field name="phone">9876543222</field>
+            <field name="bank_name">Oriental Bank of Commerce</field>
+            <field name="account_number">123456789012357</field>
+            <field name="ifsc_code">ORBC0001234</field>
+        </record>
+        
+        <record id="landowner_jurda_14" model="bhu.landowner">
+            <field name="name">सुनीता देवी</field>
+            <field name="father_name">अमित कुमार</field>
+            <field name="age">27</field>
+            <field name="gender">female</field>
+            <field name="village_id" ref="jurda_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789025</field>
+            <field name="pan_number">ABCDE1247F</field>
+            <field name="phone">9876543223</field>
+            <field name="bank_name">Syndicate Bank</field>
+            <field name="account_number">123456789012358</field>
+            <field name="ifsc_code">SYNB0001234</field>
+        </record>
+        
+        <record id="landowner_jurda_15" model="bhu.landowner">
+            <field name="name">नीरज कुमार</field>
+            <field name="father_name">अशोक कुमार</field>
+            <field name="age">41</field>
+            <field name="gender">male</field>
+            <field name="village_id" ref="jurda_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789026</field>
+            <field name="pan_number">ABCDE1248F</field>
+            <field name="phone">9876543224</field>
+            <field name="bank_name">UCO Bank</field>
+            <field name="account_number">123456789012359</field>
+            <field name="ifsc_code">UCBA0001234</field>
+        </record>
+        
+        <!-- Landowners for Pandripani Village (15 landowners) -->
+        <record id="landowner_pandripani_1" model="bhu.landowner">
+            <field name="name">प्रकाश कुमार</field>
+            <field name="father_name">राम कुमार</field>
+            <field name="age">46</field>
+            <field name="gender">male</field>
+            <field name="village_id" ref="pandripani_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789027</field>
+            <field name="pan_number">ABCDE1249F</field>
+            <field name="phone">9876543225</field>
+            <field name="bank_name">State Bank of India</field>
+            <field name="account_number">123456789012360</field>
+            <field name="ifsc_code">SBIN0001235</field>
+        </record>
+        
+        <record id="landowner_pandripani_2" model="bhu.landowner">
+            <field name="name">मंजू देवी</field>
+            <field name="father_name">कमलेश प्रसाद</field>
+            <field name="age">43</field>
+            <field name="gender">female</field>
+            <field name="village_id" ref="pandripani_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789028</field>
+            <field name="pan_number">ABCDE1250F</field>
+            <field name="phone">9876543226</field>
+            <field name="bank_name">Punjab National Bank</field>
+            <field name="account_number">123456789012361</field>
+            <field name="ifsc_code">PUNB0001235</field>
+        </record>
+        
+        <record id="landowner_pandripani_3" model="bhu.landowner">
+            <field name="name">दिलीप कुमार</field>
+            <field name="father_name">महेंद्र कुमार</field>
+            <field name="age">50</field>
+            <field name="gender">male</field>
+            <field name="village_id" ref="pandripani_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789029</field>
+            <field name="pan_number">ABCDE1251F</field>
+            <field name="phone">9876543227</field>
+            <field name="bank_name">Bank of India</field>
+            <field name="account_number">123456789012362</field>
+            <field name="ifsc_code">BKID0001235</field>
+        </record>
+        
+        <record id="landowner_pandripani_4" model="bhu.landowner">
+            <field name="name">रानी देवी</field>
+            <field name="father_name">गंगा प्रसाद</field>
+            <field name="age">37</field>
+            <field name="gender">female</field>
+            <field name="village_id" ref="pandripani_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789030</field>
+            <field name="pan_number">ABCDE1252F</field>
+            <field name="phone">9876543228</field>
+            <field name="bank_name">HDFC Bank</field>
+            <field name="account_number">123456789012363</field>
+            <field name="ifsc_code">HDFC0001235</field>
+        </record>
+        
+        <record id="landowner_pandripani_5" model="bhu.landowner">
+            <field name="name">संजय कुमार</field>
+            <field name="father_name">विनोद कुमार</field>
+            <field name="age">34</field>
+            <field name="gender">male</field>
+            <field name="village_id" ref="pandripani_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789031</field>
+            <field name="pan_number">ABCDE1253F</field>
+            <field name="phone">9876543229</field>
+            <field name="bank_name">ICICI Bank</field>
+            <field name="account_number">123456789012364</field>
+            <field name="ifsc_code">ICIC0001235</field>
+        </record>
+        
+        <record id="landowner_pandripani_6" model="bhu.landowner">
+            <field name="name">कविता देवी</field>
+            <field name="father_name">रवि कुमार</field>
+            <field name="age">30</field>
+            <field name="gender">female</field>
+            <field name="village_id" ref="pandripani_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789032</field>
+            <field name="pan_number">ABCDE1254F</field>
+            <field name="phone">9876543230</field>
+            <field name="bank_name">Axis Bank</field>
+            <field name="account_number">123456789012365</field>
+            <field name="ifsc_code">UTIB0001235</field>
+        </record>
+        
+        <record id="landowner_pandripani_7" model="bhu.landowner">
+            <field name="name">महेश कुमार</field>
+            <field name="father_name">राज कुमार</field>
+            <field name="age">47</field>
+            <field name="gender">male</field>
+            <field name="village_id" ref="pandripani_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789033</field>
+            <field name="pan_number">ABCDE1255F</field>
+            <field name="phone">9876543231</field>
+            <field name="bank_name">Union Bank of India</field>
+            <field name="account_number">123456789012366</field>
+            <field name="ifsc_code">UBIN0001235</field>
+        </record>
+        
+        <record id="landowner_pandripani_8" model="bhu.landowner">
+            <field name="name">सरोज देवी</field>
+            <field name="father_name">किशोर कुमार</field>
+            <field name="age">41</field>
+            <field name="gender">female</field>
+            <field name="village_id" ref="pandripani_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789034</field>
+            <field name="pan_number">ABCDE1256F</field>
+            <field name="phone">9876543232</field>
+            <field name="bank_name">Canara Bank</field>
+            <field name="account_number">123456789012367</field>
+            <field name="ifsc_code">CNRB0001235</field>
+        </record>
+        
+        <record id="landowner_pandripani_9" model="bhu.landowner">
+            <field name="name">अमित कुमार</field>
+            <field name="father_name">सुनील कुमार</field>
+            <field name="age">28</field>
+            <field name="gender">male</field>
+            <field name="village_id" ref="pandripani_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789035</field>
+            <field name="pan_number">ABCDE1257F</field>
+            <field name="phone">9876543233</field>
+            <field name="bank_name">Indian Bank</field>
+            <field name="account_number">123456789012368</field>
+            <field name="ifsc_code">IDIB0001235</field>
+        </record>
+        
+        <record id="landowner_pandripani_10" model="bhu.landowner">
+            <field name="name">रश्मि देवी</field>
+            <field name="father_name">अनिल कुमार</field>
+            <field name="age">32</field>
+            <field name="gender">female</field>
+            <field name="village_id" ref="pandripani_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789036</field>
+            <field name="pan_number">ABCDE1258F</field>
+            <field name="phone">9876543234</field>
+            <field name="bank_name">Bank of Baroda</field>
+            <field name="account_number">123456789012369</field>
+            <field name="ifsc_code">BARB0001235</field>
+        </record>
+        
+        <record id="landowner_pandripani_11" model="bhu.landowner">
+            <field name="name">विक्रम कुमार</field>
+            <field name="father_name">रामेश कुमार</field>
+            <field name="age">39</field>
+            <field name="gender">male</field>
+            <field name="village_id" ref="pandripani_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789037</field>
+            <field name="pan_number">ABCDE1259F</field>
+            <field name="phone">9876543235</field>
+            <field name="bank_name">Central Bank of India</field>
+            <field name="account_number">123456789012370</field>
+            <field name="ifsc_code">CBIN0001235</field>
+        </record>
+        
+        <record id="landowner_pandripani_12" model="bhu.landowner">
+            <field name="name">अंजू देवी</field>
+            <field name="father_name">मोहन कुमार</field>
+            <field name="age">35</field>
+            <field name="gender">female</field>
+            <field name="village_id" ref="pandripani_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789038</field>
+            <field name="pan_number">ABCDE1260F</field>
+            <field name="phone">9876543236</field>
+            <field name="bank_name">Indian Overseas Bank</field>
+            <field name="account_number">123456789012371</field>
+            <field name="ifsc_code">IOBA0001235</field>
+        </record>
+        
+        <record id="landowner_pandripani_13" model="bhu.landowner">
+            <field name="name">रोहित कुमार</field>
+            <field name="father_name">अजय कुमार</field>
+            <field name="age">26</field>
+            <field name="gender">male</field>
+            <field name="village_id" ref="pandripani_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789039</field>
+            <field name="pan_number">ABCDE1261F</field>
+            <field name="phone">9876543237</field>
+            <field name="bank_name">Oriental Bank of Commerce</field>
+            <field name="account_number">123456789012372</field>
+            <field name="ifsc_code">ORBC0001235</field>
+        </record>
+        
+        <record id="landowner_pandripani_14" model="bhu.landowner">
+            <field name="name">प्रिया देवी</field>
+            <field name="father_name">राजेश कुमार</field>
+            <field name="age">29</field>
+            <field name="gender">female</field>
+            <field name="village_id" ref="pandripani_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789040</field>
+            <field name="pan_number">ABCDE1262F</field>
+            <field name="phone">9876543238</field>
+            <field name="bank_name">Syndicate Bank</field>
+            <field name="account_number">123456789012373</field>
+            <field name="ifsc_code">SYNB0001235</field>
+        </record>
+        
+        <record id="landowner_pandripani_15" model="bhu.landowner">
+            <field name="name">अरुण कुमार</field>
+            <field name="father_name">नीरज कुमार</field>
+            <field name="age">38</field>
+            <field name="gender">male</field>
+            <field name="village_id" ref="pandripani_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789041</field>
+            <field name="pan_number">ABCDE1263F</field>
+            <field name="phone">9876543239</field>
+            <field name="bank_name">UCO Bank</field>
+            <field name="account_number">123456789012374</field>
+            <field name="ifsc_code">UCBA0001235</field>
+        </record>
+        
+        <!-- Landowners for Gopalpur Village (10 landowners) -->
+        <record id="landowner_gopalpur_1" model="bhu.landowner">
+            <field name="name">रवि कुमार</field>
+            <field name="father_name">शिव कुमार</field>
+            <field name="age">49</field>
+            <field name="gender">male</field>
+            <field name="village_id" ref="gopalpur_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789042</field>
+            <field name="pan_number">ABCDE1264F</field>
+            <field name="phone">9876543240</field>
+            <field name="bank_name">State Bank of India</field>
+            <field name="account_number">123456789012375</field>
+            <field name="ifsc_code">SBIN0001236</field>
+        </record>
+        
+        <record id="landowner_gopalpur_2" model="bhu.landowner">
+            <field name="name">लक्ष्मी देवी</field>
+            <field name="father_name">हरि कुमार</field>
+            <field name="age">44</field>
+            <field name="gender">female</field>
+            <field name="village_id" ref="gopalpur_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789043</field>
+            <field name="pan_number">ABCDE1265F</field>
+            <field name="phone">9876543241</field>
+            <field name="bank_name">Punjab National Bank</field>
+            <field name="account_number">123456789012376</field>
+            <field name="ifsc_code">PUNB0001236</field>
+        </record>
+        
+        <record id="landowner_gopalpur_3" model="bhu.landowner">
+            <field name="name">किरण कुमार</field>
+            <field name="father_name">दिलीप कुमार</field>
+            <field name="age">36</field>
+            <field name="gender">male</field>
+            <field name="village_id" ref="gopalpur_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789044</field>
+            <field name="pan_number">ABCDE1266F</field>
+            <field name="phone">9876543242</field>
+            <field name="bank_name">Bank of India</field>
+            <field name="account_number">123456789012377</field>
+            <field name="ifsc_code">BKID0001236</field>
+        </record>
+        
+        <record id="landowner_gopalpur_4" model="bhu.landowner">
+            <field name="name">उर्मिला देवी</field>
+            <field name="father_name">प्रकाश कुमार</field>
+            <field name="age">40</field>
+            <field name="gender">female</field>
+            <field name="village_id" ref="gopalpur_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789045</field>
+            <field name="pan_number">ABCDE1267F</field>
+            <field name="phone">9876543243</field>
+            <field name="bank_name">HDFC Bank</field>
+            <field name="account_number">123456789012378</field>
+            <field name="ifsc_code">HDFC0001236</field>
+        </record>
+        
+        <record id="landowner_gopalpur_5" model="bhu.landowner">
+            <field name="name">सुभाष कुमार</field>
+            <field name="father_name">महेश कुमार</field>
+            <field name="age">33</field>
+            <field name="gender">male</field>
+            <field name="village_id" ref="gopalpur_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789046</field>
+            <field name="pan_number">ABCDE1268F</field>
+            <field name="phone">9876543244</field>
+            <field name="bank_name">ICICI Bank</field>
+            <field name="account_number">123456789012379</field>
+            <field name="ifsc_code">ICIC0001236</field>
+        </record>
+        
+        <record id="landowner_gopalpur_6" model="bhu.landowner">
+            <field name="name">रेनू देवी</field>
+            <field name="father_name">संजय कुमार</field>
+            <field name="age">31</field>
+            <field name="gender">female</field>
+            <field name="village_id" ref="gopalpur_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789047</field>
+            <field name="pan_number">ABCDE1269F</field>
+            <field name="phone">9876543245</field>
+            <field name="bank_name">Axis Bank</field>
+            <field name="account_number">123456789012380</field>
+            <field name="ifsc_code">UTIB0001236</field>
+        </record>
+        
+        <record id="landowner_gopalpur_7" model="bhu.landowner">
+            <field name="name">गौरव कुमार</field>
+            <field name="father_name">विकास कुमार</field>
+            <field name="age">25</field>
+            <field name="gender">male</field>
+            <field name="village_id" ref="gopalpur_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789048</field>
+            <field name="pan_number">ABCDE1270F</field>
+            <field name="phone">9876543246</field>
+            <field name="bank_name">Union Bank of India</field>
+            <field name="account_number">123456789012381</field>
+            <field name="ifsc_code">UBIN0001236</field>
+        </record>
+        
+        <record id="landowner_gopalpur_8" model="bhu.landowner">
+            <field name="name">नीतू देवी</field>
+            <field name="father_name">अमित कुमार</field>
+            <field name="age">28</field>
+            <field name="gender">female</field>
+            <field name="village_id" ref="gopalpur_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789049</field>
+            <field name="pan_number">ABCDE1271F</field>
+            <field name="phone">9876543247</field>
+            <field name="bank_name">Canara Bank</field>
+            <field name="account_number">123456789012382</field>
+            <field name="ifsc_code">CNRB0001236</field>
+        </record>
+        
+        <record id="landowner_gopalpur_9" model="bhu.landowner">
+            <field name="name">अभिषेक कुमार</field>
+            <field name="father_name">रोहित कुमार</field>
+            <field name="age">24</field>
+            <field name="gender">male</field>
+            <field name="village_id" ref="gopalpur_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789050</field>
+            <field name="pan_number">ABCDE1272F</field>
+            <field name="phone">9876543248</field>
+            <field name="bank_name">Indian Bank</field>
+            <field name="account_number">123456789012383</field>
+            <field name="ifsc_code">IDIB0001236</field>
+        </record>
+        
+        <record id="landowner_gopalpur_10" model="bhu.landowner">
+            <field name="name">सोनिया देवी</field>
+            <field name="father_name">अरुण कुमार</field>
+            <field name="age">26</field>
+            <field name="gender">female</field>
+            <field name="village_id" ref="gopalpur_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789051</field>
+            <field name="pan_number">ABCDE1273F</field>
+            <field name="phone">9876543249</field>
+            <field name="bank_name">Bank of Baroda</field>
+            <field name="account_number">123456789012384</field>
+            <field name="ifsc_code">BARB0001236</field>
+        </record>
+        
+        <!-- Landowners for Bhikharimal Village (10 landowners) -->
+        <record id="landowner_bhikharimal_1" model="bhu.landowner">
+            <field name="name">योगेश कुमार</field>
+            <field name="father_name">रवि कुमार</field>
+            <field name="age">51</field>
+            <field name="gender">male</field>
+            <field name="village_id" ref="bhikharimal_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789052</field>
+            <field name="pan_number">ABCDE1274F</field>
+            <field name="phone">9876543250</field>
+            <field name="bank_name">State Bank of India</field>
+            <field name="account_number">123456789012385</field>
+            <field name="ifsc_code">SBIN0001237</field>
+        </record>
+        
+        <record id="landowner_bhikharimal_2" model="bhu.landowner">
+            <field name="name">मधु देवी</field>
+            <field name="father_name">किरण कुमार</field>
+            <field name="age">45</field>
+            <field name="gender">female</field>
+            <field name="village_id" ref="bhikharimal_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789053</field>
+            <field name="pan_number">ABCDE1275F</field>
+            <field name="phone">9876543251</field>
+            <field name="bank_name">Punjab National Bank</field>
+            <field name="account_number">123456789012386</field>
+            <field name="ifsc_code">PUNB0001237</field>
+        </record>
+        
+        <record id="landowner_bhikharimal_3" model="bhu.landowner">
+            <field name="name">नरेश कुमार</field>
+            <field name="father_name">सुभाष कुमार</field>
+            <field name="age">42</field>
+            <field name="gender">male</field>
+            <field name="village_id" ref="bhikharimal_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789054</field>
+            <field name="pan_number">ABCDE1276F</field>
+            <field name="phone">9876543252</field>
+            <field name="bank_name">Bank of India</field>
+            <field name="account_number">123456789012387</field>
+            <field name="ifsc_code">BKID0001237</field>
+        </record>
+        
+        <record id="landowner_bhikharimal_4" model="bhu.landowner">
+            <field name="name">वंदना देवी</field>
+            <field name="father_name">गौरव कुमार</field>
+            <field name="age">38</field>
+            <field name="gender">female</field>
+            <field name="village_id" ref="bhikharimal_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789055</field>
+            <field name="pan_number">ABCDE1277F</field>
+            <field name="phone">9876543253</field>
+            <field name="bank_name">HDFC Bank</field>
+            <field name="account_number">123456789012388</field>
+            <field name="ifsc_code">HDFC0001237</field>
+        </record>
+        
+        <record id="landowner_bhikharimal_5" model="bhu.landowner">
+            <field name="name">अनूप कुमार</field>
+            <field name="father_name">अभिषेक कुमार</field>
+            <field name="age">32</field>
+            <field name="gender">male</field>
+            <field name="village_id" ref="bhikharimal_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789056</field>
+            <field name="pan_number">ABCDE1278F</field>
+            <field name="phone">9876543254</field>
+            <field name="bank_name">ICICI Bank</field>
+            <field name="account_number">123456789012389</field>
+            <field name="ifsc_code">ICIC0001237</field>
+        </record>
+        
+        <record id="landowner_bhikharimal_6" model="bhu.landowner">
+            <field name="name">सुधा देवी</field>
+            <field name="father_name">योगेश कुमार</field>
+            <field name="age">36</field>
+            <field name="gender">female</field>
+            <field name="village_id" ref="bhikharimal_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789057</field>
+            <field name="pan_number">ABCDE1279F</field>
+            <field name="phone">9876543255</field>
+            <field name="bank_name">Axis Bank</field>
+            <field name="account_number">123456789012390</field>
+            <field name="ifsc_code">UTIB0001237</field>
+        </record>
+        
+        <record id="landowner_bhikharimal_7" model="bhu.landowner">
+            <field name="name">राजीव कुमार</field>
+            <field name="father_name">नरेश कुमार</field>
+            <field name="age">29</field>
+            <field name="gender">male</field>
+            <field name="village_id" ref="bhikharimal_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789058</field>
+            <field name="pan_number">ABCDE1280F</field>
+            <field name="phone">9876543256</field>
+            <field name="bank_name">Union Bank of India</field>
+            <field name="account_number">123456789012391</field>
+            <field name="ifsc_code">UBIN0001237</field>
+        </record>
+        
+        <record id="landowner_bhikharimal_8" model="bhu.landowner">
+            <field name="name">अर्चना देवी</field>
+            <field name="father_name">अनूप कुमार</field>
+            <field name="age">27</field>
+            <field name="gender">female</field>
+            <field name="village_id" ref="bhikharimal_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789059</field>
+            <field name="pan_number">ABCDE1281F</field>
+            <field name="phone">9876543257</field>
+            <field name="bank_name">Canara Bank</field>
+            <field name="account_number">123456789012392</field>
+            <field name="ifsc_code">CNRB0001237</field>
+        </record>
+        
+        <record id="landowner_bhikharimal_9" model="bhu.landowner">
+            <field name="name">मनीष कुमार</field>
+            <field name="father_name">राजीव कुमार</field>
+            <field name="age">23</field>
+            <field name="gender">male</field>
+            <field name="village_id" ref="bhikharimal_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789060</field>
+            <field name="pan_number">ABCDE1282F</field>
+            <field name="phone">9876543258</field>
+            <field name="bank_name">Indian Bank</field>
+            <field name="account_number">123456789012393</field>
+            <field name="ifsc_code">IDIB0001237</field>
+        </record>
+        
+        <record id="landowner_bhikharimal_10" model="bhu.landowner">
+            <field name="name">पूजा देवी</field>
+            <field name="father_name">मनीष कुमार</field>
+            <field name="age">25</field>
+            <field name="gender">female</field>
+            <field name="village_id" ref="bhikharimal_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789061</field>
+            <field name="pan_number">ABCDE1283F</field>
+            <field name="phone">9876543259</field>
+            <field name="bank_name">Bank of Baroda</field>
+            <field name="account_number">123456789012394</field>
+            <field name="ifsc_code">BARB0001237</field>
+        </record>
+        
+        <!-- Sample Hindi Content Templates for Section 4 Notification -->
+        <!-- These can be used as reference when filling wizard forms -->
+        
+        <!-- Sample Data Template 1 -->
+        <record id="section4_sample_template_1" model="ir.config_parameter">
+            <field name="key">bhukhadan_core.section4.sample.public_purpose</field>
+            <field name="value"><![CDATA[<p><strong>रिंग रोड रायगढ़</strong> परियोजना के लिए भूमि अर्जन। यह परियोजना शहर के यातायात को सुविधाजनक बनाने और आर्थिक विकास को बढ़ावा देने के लिए है।</p>]]></field>
+        </record>
+        
+        <record id="section4_sample_template_q1" model="ir.config_parameter">
+            <field name="key">bhukhadan_core.section4.sample.q1</field>
+            <field name="value"><![CDATA[<p><strong>लोक प्रयोजन:</strong> रिंग रोड रायगढ़ परियोजना के अंतर्गत जुर्दा ग्राम में <strong>3.0000 हेक्टेयर</strong> भूमि का अर्जन किया जा रहा है। यह परियोजना शहर के यातायात प्रबंधन में सुधार लाएगी और आर्थिक विकास को गति देगी।</p>]]></field>
+        </record>
+        
+        <record id="section4_sample_template_q7" model="ir.config_parameter">
+            <field name="key">bhukhadan_core.section4.sample.q7</field>
+            <field name="value"><![CDATA[<p><strong>विकल्पों का अध्ययन:</strong></p><ul><li>वैकल्पिक मार्गों का सर्वेक्षण किया गया</li><li>न्यूनतम प्रभाव वाला मार्ग चुना गया</li><li>पर्यावरणीय प्रभाव का मूल्यांकन किया गया</li></ul>]]></field>
+        </record>
+        
+        <record id="section4_sample_template_q9" model="ir.config_parameter">
+            <field name="key">bhukhadan_core.section4.sample.q9</field>
+            <field name="value"><![CDATA[<p><strong>परियोजना के लाभ:</strong></p><ul><li>यातायात की सुविधा में सुधार</li><li>आर्थिक विकास में वृद्धि</li><li>रोजगार के अवसरों में वृद्धि</li><li>शहरी विकास में योगदान</li></ul>]]></field>
+        </record>
+        
+        <record id="section4_sample_template_q10" model="ir.config_parameter">
+            <field name="key">bhukhadan_core.section4.sample.q10</field>
+            <field name="value"><![CDATA[<p><strong>प्रतिकर उपाय:</strong></p><ul><li>भूमि मालिकों को उचित मुआवजा</li><li>पुनर्वासन पैकेज</li><li>रोजगार के अवसर</li><li>शिक्षा और स्वास्थ्य सुविधाएं</li></ul><p><strong>अनुमानित व्यय:</strong> ₹ 5 करोड़</p>]]></field>
+        </record>
+        
+        <record id="section4_sample_template_q11" model="ir.config_parameter">
+            <field name="key">bhukhadan_core.section4.sample.q11</field>
+            <field name="value"><![CDATA[<p><strong>अन्य प्रभावित घटक:</strong></p><ul><li>कृषि भूमि</li><li>वन क्षेत्र</li><li>जल स्रोत</li><li>सड़क और बिजली की सुविधाएं</li></ul>]]></field>
+        </record>
+        
+        <!-- Additional Sample Hindi Content for other questions -->
+        <record id="section4_sample_template_q2" model="ir.config_parameter">
+            <field name="key">bhukhadan_core.section4.sample.q2</field>
+            <field name="value">15</field>
+        </record>
+        
+        <record id="section4_sample_template_q3" model="ir.config_parameter">
+            <field name="key">bhukhadan_core.section4.sample.q3</field>
+            <field name="value">25</field>
+        </record>
+        
+        <record id="section4_sample_template_q4" model="ir.config_parameter">
+            <field name="key">bhukhadan_core.section4.sample.q4</field>
+            <field name="value">12 निजी मकान, 8 दुकानें, 5 कृषि भूमि</field>
+        </record>
+        
+        <record id="section4_sample_template_q5" model="ir.config_parameter">
+            <field name="key">bhukhadan_core.section4.sample.q5</field>
+            <field name="value">2 शासकीय मकान, 1 पंचायत भवन</field>
+        </record>
+        
+        <record id="section4_sample_template_q6" model="ir.config_parameter">
+            <field name="key">bhukhadan_core.section4.sample.q6</field>
+            <field name="value">हाँ, प्रस्तावित अर्जन न्यूनतम है और केवल आवश्यक भूमि शामिल है।</field>
+        </record>
+        
+        <record id="section4_sample_template_q8" model="ir.config_parameter">
+            <field name="key">bhukhadan_core.section4.sample.q8</field>
+            <field name="value">₹ 50 करोड़</field>
+        </record>
+        
+        <record id="section4_sample_template_hearing_date" model="ir.config_parameter">
+            <field name="key">bhukhadan_core.section4.sample.hearing_date</field>
+            <field name="value">2024-12-15</field>
+        </record>
+        
+        <record id="section4_sample_template_hearing_time" model="ir.config_parameter">
+            <field name="key">bhukhadan_core.section4.sample.hearing_time</field>
+            <field name="value">10:00 AM</field>
+        </record>
+        
+        <record id="section4_sample_template_hearing_place" model="ir.config_parameter">
+            <field name="key">bhukhadan_core.section4.sample.hearing_place</field>
+            <field name="value">ग्राम पंचायत भवन, जुर्दा</field>
+        </record>
+        
+    </data>
+</odoo>

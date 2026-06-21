@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Form 10 Microsite Template -->
+        <template id="qr_form10_microsite" name="Form 10 Microsite">
+            <t t-call="web.layout">
+                <div class="container mt-4">
+                    <div class="row">
+                        <div class="col-12">
+                            <!-- Header -->
+                            <div class="text-center mb-4">
+                                <h2 class="hindi-text"><strong>भू-अर्जन फार्म-10</strong></h2>
+                                <h4 class="hindi-text">Survey: <span t-field="survey.name"/></h4>
+                                <p class="text-muted">Scan QR Code to view this form</p>
+                            </div>
+                            
+                            <!-- QR Code -->
+                            <div class="text-center mb-4">
+                                <img t-if="qr_code_img" t-att-src="'data:image/png;base64,' + qr_code_img" 
+                                     alt="QR Code" 
+                                     style="max-width: 200px; border: 2px solid #ddd; padding: 10px;"/>
+                                <div t-if="not qr_code_img" class="alert alert-info">
+                                    <p>QR Code generation requires qrcode library. Install with: pip install qrcode[pil]</p>
+                                    <p><strong>Direct Link:</strong> <a t-att-href="qr_code_data" t-esc="qr_code_data"/></p>
+                                </div>
+                            </div>
+                            
+                            <!-- Survey Details -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="hindi-text"><strong>Survey Details / सर्वे विवरण</strong></h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p class="hindi-text"><strong>Project:</strong> <span t-field="survey.project_id.name"/></p>
+                                            <p class="hindi-text"><strong>Village:</strong> <span t-field="survey.village_id.name"/></p>
+                                            <p class="hindi-text"><strong>Tehsil:</strong> <span t-field="survey.tehsil_id.name"/></p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p class="hindi-text"><strong>Khasra Number:</strong> <span t-field="survey.khasra_number"/></p>
+                                            <p class="hindi-text"><strong>Survey Date:</strong> <span t-field="survey.survey_date" t-options="{'widget': 'date', 'format': 'dd/MM/yyyy'}"/></p>
+                                            <p class="hindi-text"><strong>Total Area:</strong> <span t-field="survey.total_area"/> Hectares</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Landowners -->
+                            <div class="card mt-3">
+                                <div class="card-header">
+                                    <h5 class="hindi-text"><strong>Landowners / भूमिस्वामी</strong></h5>
+                                </div>
+                                <div class="card-body">
+                                    <t t-foreach="survey.landowner_ids" t-as="landowner">
+                                        <div class="row mb-2">
+                                            <div class="col-md-4">
+                                                <strong><span t-field="landowner.name"/></strong>
+                                                <span t-if="landowner.gender == 'male' and landowner.father_name">
+                                                    <br/>पिता <span t-field="landowner.father_name"/>
+                                                </span>
+                                                <span t-if="landowner.gender == 'female' and landowner.spouse_name">
+                                                    <br/>बाई पति <span t-field="landowner.spouse_name"/>
+                                                </span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span t-field="landowner.mobile"/>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span t-field="landowner.aadhar_number"/>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                            
+                            <!-- Land Details -->
+                            <div class="card mt-3">
+                                <div class="card-header">
+                                    <h5 class="hindi-text"><strong>Land Details / भूमि विवरण</strong></h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p><strong>Single Crop:</strong> 
+                                                <span t-if="survey.is_single_crop" class="text-success">हाँ</span>
+                                                <span t-if="not survey.is_single_crop">नहीं</span>
+                                            </p>
+                                            <p><strong>Double Crop:</strong> 
+                                                <span t-if="survey.is_double_crop" class="text-success">हाँ</span>
+                                                <span t-if="not survey.is_double_crop">नहीं</span>
+                                            </p>
+                                            <p><strong>Irrigated:</strong> 
+                                                <span t-if="survey.is_irrigated" class="text-success">हाँ</span>
+                                                <span t-if="not survey.is_irrigated">नहीं</span>
+                                            </p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p><strong>Well:</strong> 
+                                                <span t-if="survey.has_well == 'yes' and survey.well_type == 'kachcha'" class="text-success">हाँ-कच्चा</span>
+                                                <span t-if="survey.has_well == 'yes' and survey.well_type == 'pakka'" class="text-success">हाँ-पक्का</span>
+                                                <span t-if="survey.has_well == 'no'">नहीं</span>
+                                            </p>
+                                            <p><strong>Tubewell:</strong> 
+                                                <span t-if="survey.has_tubewell" class="text-success">हाँ</span>
+                                                <span t-if="not survey.has_tubewell">नहीं</span>
+                                            </p>
+                                            <p><strong>Pond:</strong> 
+                                                <span t-if="survey.has_pond" class="text-success">हाँ</span>
+                                                <span t-if="not survey.has_pond">नहीं</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Actions -->
+                            <div class="text-center mt-4">
+                                <a t-att-href="'/form10/' + survey.survey_uuid + '/pdf'" 
+                                   class="btn btn-primary btn-lg">
+                                    <i class="fa fa-download"></i> Download PDF
+                                </a>
+                            </div>
+                            
+                            <!-- Footer -->
+                            <div class="text-center mt-4 text-muted">
+                                <small>Generated on <span t-esc="context_timestamp(datetime.datetime.now())"/></small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <style>
+                    .hindi-text {
+                        font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif;
+                        font-size: 16px;
+                        line-height: 1.4;
+                    }
+                    .text-success {
+                        color: #28a745 !important;
+                        font-weight: bold;
+                    }
+                    .card {
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                        border: 1px solid #ddd;
+                    }
+                    .card-header {
+                        background-color: #f8f9fa;
+                        border-bottom: 1px solid #ddd;
+                    }
+                </style>
+            </t>
+        </template>
+        
+        <!-- Error Template -->
+        <template id="qr_form10_not_found" name="Form 10 Not Found">
+            <t t-call="web.layout">
+                <div class="container mt-4">
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <div class="alert alert-danger">
+                                <h4>Survey Not Found</h4>
+                                <p>The QR code you scanned is invalid or the survey has been removed.</p>
+                                <a href="/" class="btn btn-primary">Go Home</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+        
+        <!-- Error Template -->
+        <template id="qr_form10_error" name="Form 10 Error">
+            <t t-call="web.layout">
+                <div class="container mt-4">
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <div class="alert alert-warning">
+                                <h4>Error Loading Survey</h4>
+                                <p t-esc="error_message"/>
+                                <a href="/" class="btn btn-primary">Go Home</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

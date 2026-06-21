@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Dashboard Form View -->
+    <record id="view_bhuarjan_dashboard_form" model="ir.ui.view">
+        <field name="name">bhuarjan.dashboard.form</field>
+        <field name="model">bhuarjan.dashboard</field>
+        <field name="arch" type="xml">
+            <form string="BhuKhadan Dashboard" create="0" delete="0">
+                <!-- Welcome message for non-admin users -->
+                <div invisible="is_admin" 
+                     style="min-height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <div style="background: white; padding: 60px 80px; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); max-width: 600px;">
+                        <h1 style="color: #667eea; font-size: 48px; font-weight: bold; margin: 0 0 20px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">
+                            Welcome to BhuKhadan
+                        </h1>
+                        <div style="color: #333; font-size: 24px; margin-top: 30px; font-weight: 500;">
+                            <field name="current_datetime" nolabel="1" readonly="1"/>
+                        </div>
+                    </div>
+                </div>
+                <!-- Dashboard content for admin users -->
+                <sheet invisible="not is_admin">
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_refresh" string="Refresh" type="object" class="oe_stat_button" icon="fa-refresh"/>
+                        <button name="%(action_bhu_survey)d" string="Surveys" type="action" class="oe_stat_button" icon="fa-list-alt" context="{}">
+                            <field name="total_surveys" widget="statinfo" string="Total"/>
+                        </button>
+                        <button name="%(action_section4_notification)d" string="Section 4" type="action" class="oe_stat_button" icon="fa-file-text" context="{}">
+                            <field name="total_section4_notifications" widget="statinfo" string="Total"/>
+                        </button>
+                        <button name="%(action_section11_preliminary_report)d" string="Section 11" type="action" class="oe_stat_button" icon="fa-file-pdf" context="{}">
+                            <field name="total_section11_reports" widget="statinfo" string="Total"/>
+                        </button>
+                    </div>
+                    
+                    <div class="dashboard-section-title" invisible="1">
+                        <i class="fa fa-database" title="Master Data Statistics"/> MASTER DATA STATISTICS
+                    </div>
+                    <div class="dashboard-grid" invisible="1">
+                        <button name="action_open_districts" type="object" class="dashboard-kpi-card kpi-card-green">
+                            <div class="kpi-header">
+                                <div class="kpi-label">Districts</div>
+                                <div class="kpi-icon"><i class="fa fa-map-marker" title="Districts"/></div>
+                            </div>
+                            <div class="kpi-value"><field name="total_districts" nolabel="1" readonly="1"/></div>
+                        </button>
+                        <button name="action_open_sub_divisions" type="object" class="dashboard-kpi-card kpi-card-blue" invisible="1">
+                            <div class="kpi-header">
+                                <div class="kpi-label">Sub Divisions</div>
+                                <div class="kpi-icon"><i class="fa fa-sitemap" title="Sub Divisions"/></div>
+                            </div>
+                            <div class="kpi-value"><field name="total_sub_divisions" nolabel="1" readonly="1"/></div>
+                        </button>
+                        <button name="action_open_tehsils" type="object" class="dashboard-kpi-card kpi-card-purple">
+                            <div class="kpi-header">
+                                <div class="kpi-label">Tehsils</div>
+                                <div class="kpi-icon"><i class="fa fa-building" title="Tehsils"/></div>
+                            </div>
+                            <div class="kpi-value"><field name="total_tehsils" nolabel="1" readonly="1"/></div>
+                        </button>
+                        <button name="action_open_villages" type="object" class="dashboard-kpi-card kpi-card-pink">
+                            <div class="kpi-header">
+                                <div class="kpi-label">Villages</div>
+                                <div class="kpi-icon"><i class="fa fa-home" title="Villages"/></div>
+                            </div>
+                            <div class="kpi-value"><field name="total_villages" nolabel="1" readonly="1"/></div>
+                        </button>
+                        <button name="action_open_projects" type="object" class="dashboard-kpi-card kpi-card-yellow">
+                            <div class="kpi-header">
+                                <div class="kpi-label">Projects</div>
+                                <div class="kpi-icon"><i class="fa fa-folder-open" title="Projects"/></div>
+                            </div>
+                            <div class="kpi-value"><field name="total_projects" nolabel="1" readonly="1"/></div>
+                        </button>
+                        <button name="action_open_departments" type="object" class="dashboard-kpi-card kpi-card-green">
+                            <div class="kpi-header">
+                                <div class="kpi-label">Departments</div>
+                                <div class="kpi-icon"><i class="fa fa-building-o" title="Departments"/></div>
+                            </div>
+                            <div class="kpi-value"><field name="total_departments" nolabel="1" readonly="1"/></div>
+                        </button>
+                        <button name="action_open_landowners" type="object" class="dashboard-kpi-card kpi-card-blue">
+                            <div class="kpi-header">
+                                <div class="kpi-label">Landowners</div>
+                                <div class="kpi-icon"><i class="fa fa-users" title="Landowners"/></div>
+                            </div>
+                            <div class="kpi-value"><field name="total_landowners" nolabel="1" readonly="1"/></div>
+                        </button>
+                        <button name="action_open_rate_masters" type="object" class="dashboard-kpi-card kpi-card-orange">
+                            <div class="kpi-header">
+                                <div class="kpi-label">Land Rate Masters</div>
+                                <div class="kpi-icon"><i class="fa fa-money" title="Land Rate Masters"/></div>
+                            </div>
+                            <div class="kpi-value"><field name="total_rate_masters" nolabel="1" readonly="1"/></div>
+                        </button>
+                        <div class="dashboard-kpi-card kpi-card-blue" style="cursor: default;">
+                            <div class="kpi-header">
+                                <div class="kpi-label">Active Mobile Users</div>
+                                <div class="kpi-icon"><i class="fa fa-mobile" title="Active Mobile Users"/></div>
+                            </div>
+                            <div class="kpi-value"><field name="active_mobile_users" nolabel="1" readonly="1"/></div>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-section-title">
+                        <i class="fa fa-clipboard-list" title="Survey Statistics"/> SURVEY STATISTICS
+                    </div>
+                    <div class="dashboard-grid">
+                        <button name="action_open_surveys" type="object" class="dashboard-kpi-card kpi-card-purple">
+                            <div class="kpi-header">
+                                <div class="kpi-label">Total Surveys</div>
+                                <div class="kpi-icon"><i class="fa fa-list-alt" title="Total Surveys"/></div>
+                            </div>
+                            <div class="kpi-value"><field name="total_surveys" nolabel="1" readonly="1"/></div>
+                        </button>
+                        <button name="action_open_surveys_done" type="object" class="dashboard-kpi-card kpi-card-green">
+                            <div class="kpi-header">
+                                <div class="kpi-label">Total Surveys Done</div>
+                                <div class="kpi-icon"><i class="fa fa-check-square" title="Total Surveys Done"/></div>
+                            </div>
+                            <div class="kpi-value"><field name="total_surveys_done" nolabel="1" readonly="1"/></div>
+                        </button>
+                        <button name="action_open_surveys_draft" type="object" class="dashboard-kpi-card kpi-card-pink">
+                            <div class="kpi-header">
+                                <div class="kpi-label">Draft</div>
+                                <div class="kpi-icon"><i class="fa fa-file-o" title="Draft Surveys"/></div>
+                            </div>
+                            <div class="kpi-value"><field name="draft_surveys" nolabel="1" readonly="1"/></div>
+                        </button>
+                        <button name="action_open_surveys_approved" type="object" class="dashboard-kpi-card kpi-card-green">
+                            <div class="kpi-header">
+                                <div class="kpi-label">Approved</div>
+                                <div class="kpi-icon"><i class="fa fa-check-circle" title="Approved Surveys"/></div>
+                            </div>
+                            <div class="kpi-value"><field name="approved_surveys" nolabel="1" readonly="1"/></div>
+                        </button>
+                        <button name="action_open_surveys_rejected" type="object" class="dashboard-kpi-card kpi-card-red">
+                            <div class="kpi-header">
+                                <div class="kpi-label">Rejected</div>
+                                <div class="kpi-icon"><i class="fa fa-times-circle" title="Rejected Surveys"/></div>
+                            </div>
+                            <div class="kpi-value"><field name="rejected_surveys" nolabel="1" readonly="1"/></div>
+                        </button>
+                        <button name="action_open_surveys_pending" type="object" class="dashboard-kpi-card kpi-card-yellow">
+                            <div class="kpi-header">
+                                <div class="kpi-label">Pending</div>
+                                <div class="kpi-icon"><i class="fa fa-clock-o" title="Pending Surveys (Submitted + Rejected)"/></div>
+                            </div>
+                            <div class="kpi-value"><field name="pending_surveys" nolabel="1" readonly="1"/></div>
+                        </button>
+                        <button name="action_open_surveys_submitted" type="object" class="dashboard-kpi-card kpi-card-yellow">
+                            <div class="kpi-header">
+                                <div class="kpi-label">Submitted</div>
+                                <div class="kpi-icon"><i class="fa fa-paper-plane" title="Submitted Surveys"/></div>
+                            </div>
+                            <div class="kpi-value"><field name="submitted_surveys" nolabel="1" readonly="1"/></div>
+                        </button>
+                    </div>
+                    
+                    <div class="dashboard-section-title">
+                        <i class="fa fa-cogs" title="Process Statistics"/> PROCESS STATISTICS
+                    </div>
+                    <div class="dashboard-grid">
+                        <button name="%(action_section4_notification)d" type="action" class="process-card process-card-green">
+                            <div class="process-header">
+                                <div class="kpi-label">Section 4 Notifications</div>
+                                <div class="kpi-icon"><i class="fa fa-file-text" title="Section 4 Notifications"/></div>
+                            </div>
+                            <div class="kpi-value process-value"><field name="total_section4_notifications" nolabel="1" readonly="1"/></div>
+                            <div class="process-sub-stats">
+                                <div class="process-sub-stat">
+                                    <span class="process-sub-stat-value"><field name="draft_section4" nolabel="1" readonly="1"/></span>
+                                    <span class="process-sub-stat-label">Draft</span>
+                                </div>
+                                <div class="process-sub-stat">
+                                    <span class="process-sub-stat-value"><field name="generated_section4" nolabel="1" readonly="1"/></span>
+                                    <span class="process-sub-stat-label">Generated</span>
+                                </div>
+                                <div class="process-sub-stat">
+                                    <span class="process-sub-stat-value"><field name="signed_section4" nolabel="1" readonly="1"/></span>
+                                    <span class="process-sub-stat-label">Signed</span>
+                                </div>
+                            </div>
+                        </button>
+                        <button name="%(action_section11_preliminary_report)d" type="action" class="process-card process-card-brown">
+                            <div class="process-header">
+                                <div class="kpi-label">Section 11 Reports</div>
+                                <div class="kpi-icon"><i class="fa fa-file-pdf" title="Section 11 Reports"/></div>
+                            </div>
+                            <div class="kpi-value process-value"><field name="total_section11_reports" nolabel="1" readonly="1"/></div>
+                            <div class="process-sub-stats">
+                                <div class="process-sub-stat">
+                                    <span class="process-sub-stat-value"><field name="draft_section11" nolabel="1" readonly="1"/></span>
+                                    <span class="process-sub-stat-label">Draft</span>
+                                </div>
+                                <div class="process-sub-stat">
+                                    <span class="process-sub-stat-value"><field name="generated_section11" nolabel="1" readonly="1"/></span>
+                                    <span class="process-sub-stat-label">Generated</span>
+                                </div>
+                                <div class="process-sub-stat">
+                                    <span class="process-sub-stat-value"><field name="signed_section11" nolabel="1" readonly="1"/></span>
+                                    <span class="process-sub-stat-label">Signed</span>
+                                </div>
+                            </div>
+                        </button>
+                        <button name="action_open_section19" type="object" class="process-card process-card-green">
+                            <div class="process-header">
+                                <div class="kpi-label">Section 19 Notifications</div>
+                                <div class="kpi-icon"><i class="fa fa-bell" title="Section 19 Notifications"/></div>
+                            </div>
+                            <div class="kpi-value process-value"><field name="total_section19_notifications" nolabel="1" readonly="1"/></div>
+                            <div class="process-sub-stats">
+                                <div class="process-sub-stat">
+                                    <span class="process-sub-stat-value"><field name="draft_section19" nolabel="1" readonly="1"/></span>
+                                    <span class="process-sub-stat-label">Draft</span>
+                                </div>
+                                <div class="process-sub-stat">
+                                    <span class="process-sub-stat-value"><field name="generated_section19" nolabel="1" readonly="1"/></span>
+                                    <span class="process-sub-stat-label">Generated</span>
+                                </div>
+                                <div class="process-sub-stat">
+                                    <span class="process-sub-stat-value"><field name="signed_section19" nolabel="1" readonly="1"/></span>
+                                    <span class="process-sub-stat-label">Signed</span>
+                                </div>
+                            </div>
+                        </button>
+                        <button name="action_open_expert_committee" type="object" class="dashboard-kpi-card kpi-card-green">
+                            <div class="kpi-header">
+                                <div class="kpi-label">Expert Committee Reports</div>
+                                <div class="kpi-icon"><i class="fa fa-users" title="Expert Committee Reports"/></div>
+                            </div>
+                            <div class="kpi-value"><field name="total_expert_committee_reports" nolabel="1" readonly="1"/></div>
+                        </button>
+                        <button name="action_open_section15" type="object" class="dashboard-kpi-card kpi-card-brown">
+                            <div class="kpi-header">
+                                <div class="kpi-label">Section 15 Objections</div>
+                                <div class="kpi-icon"><i class="fa fa-exclamation-triangle" title="Section 15 Objections"/></div>
+                            </div>
+                            <div class="kpi-value"><field name="total_section15_objections" nolabel="1" readonly="1"/></div>
+                        </button>
+                        <button name="action_open_sia_teams" type="object" class="process-card process-card-blue">
+                            <div class="process-header">
+                                <div class="kpi-label">SIA Teams</div>
+                                <div class="kpi-icon"><i class="fa fa-users" title="SIA Teams"/></div>
+                            </div>
+                            <div class="kpi-value process-value"><field name="total_sia_teams" nolabel="1" readonly="1"/></div>
+                            <div class="process-sub-stats">
+                                <div class="process-sub-stat">
+                                    <span class="process-sub-stat-value"><field name="draft_sia_teams" nolabel="1" readonly="1"/></span>
+                                    <span class="process-sub-stat-label">Draft</span>
+                                </div>
+                                <div class="process-sub-stat">
+                                    <span class="process-sub-stat-value"><field name="submitted_sia_teams" nolabel="1" readonly="1"/></span>
+                                    <span class="process-sub-stat-label">Submitted</span>
+                                </div>
+                                <div class="process-sub-stat">
+                                    <span class="process-sub-stat-value"><field name="approved_sia_teams" nolabel="1" readonly="1"/></span>
+                                    <span class="process-sub-stat-label">Approved</span>
+                                </div>
+                                <div class="process-sub-stat">
+                                    <span class="process-sub-stat-value"><field name="send_back_sia_teams" nolabel="1" readonly="1"/></span>
+                                    <span class="process-sub-stat-label">Send Back</span>
+                                </div>
+                            </div>
+                        </button>
+                        <button name="action_open_documents" type="object" class="dashboard-kpi-card kpi-card-green">
+                            <div class="kpi-header">
+                                <div class="kpi-label">Total Documents</div>
+                                <div class="kpi-icon"><i class="fa fa-folder" title="Total Documents"/></div>
+                            </div>
+                            <div class="kpi-value"><field name="total_documents" nolabel="1" readonly="1"/></div>
+                        </button>
+                    </div>
+                    
+                    <div class="dashboard-section-title">
+                        <i class="fa fa-money" title="Payment &amp; Reconciliation Statistics"/> PAYMENT &amp; RECONCILIATION STATISTICS
+                    </div>
+                    <div class="dashboard-grid">
+                        <button name="action_open_payment_files" type="object" class="process-card process-card-green">
+                            <div class="process-header">
+                                <div class="kpi-label">Payment Files</div>
+                                <div class="kpi-icon"><i class="fa fa-file-excel-o" title="Payment Files"/></div>
+                            </div>
+                            <div class="kpi-value process-value"><field name="total_payment_files" nolabel="1" readonly="1"/></div>
+                            <div class="process-sub-stats">
+                                <div class="process-sub-stat">
+                                    <span class="process-sub-stat-value"><field name="draft_payment_files" nolabel="1" readonly="1"/></span>
+                                    <span class="process-sub-stat-label">Draft</span>
+                                </div>
+                                <div class="process-sub-stat">
+                                    <span class="process-sub-stat-value"><field name="generated_payment_files" nolabel="1" readonly="1"/></span>
+                                    <span class="process-sub-stat-label">Generated</span>
+                                </div>
+                            </div>
+                        </button>
+                        <button name="action_open_payment_reconciliations" type="object" class="process-card process-card-brown">
+                            <div class="process-header">
+                                <div class="kpi-label">Payment Reconciliations</div>
+                                <div class="kpi-icon"><i class="fa fa-check-square-o" title="Payment Reconciliations"/></div>
+                            </div>
+                            <div class="kpi-value process-value"><field name="total_payment_reconciliations" nolabel="1" readonly="1"/></div>
+                            <div class="process-sub-stats">
+                                <div class="process-sub-stat">
+                                    <span class="process-sub-stat-value"><field name="draft_reconciliations" nolabel="1" readonly="1"/></span>
+                                    <span class="process-sub-stat-label">Draft</span>
+                                </div>
+                                <div class="process-sub-stat">
+                                    <span class="process-sub-stat-value"><field name="processed_reconciliations" nolabel="1" readonly="1"/></span>
+                                    <span class="process-sub-stat-label">Processed</span>
+                                </div>
+                                <div class="process-sub-stat">
+                                    <span class="process-sub-stat-value"><field name="completed_reconciliations" nolabel="1" readonly="1"/></span>
+                                    <span class="process-sub-stat-label">Completed</span>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Dashboard Action -->
+    <record id="action_bhuarjan_dashboard" model="ir.actions.server">
+        <field name="name">Dashboard</field>
+        <field name="model_id" ref="base.model_res_users"/>
+        <field name="binding_model_id" eval="False"/>
+        <field name="binding_view_types" eval="False"/>
+        <field name="state">code</field>
+        <field name="code">
+action = env['bhuarjan.dashboard'].action_open_dashboard()
+        </field>
+    </record>
+    
+    <!-- Dashboard Window Action (for direct access) -->
+    <record id="action_bhuarjan_dashboard_window" model="ir.actions.act_window">
+        <field name="name">Dashboard</field>
+        <field name="res_model">bhuarjan.dashboard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_bhuarjan_dashboard_form"/>
+        <field name="target">current</field>
+        <field name="context">{'create': True, 'delete': False}</field>
+    </record>
+    
+    <!-- Admin Dashboard Client Action (OWL) -->
+    <record id="action_admin_dashboard_owl" model="ir.actions.client">
+        <field name="name">Admin Dashboard</field>
+        <field name="tag">bhukhadan_core.admin_dashboard</field>
+    </record>
+
+    <!-- SDM Dashboard Client Action (OWL) -->
+    <record id="action_sdm_dashboard_owl" model="ir.actions.client">
+        <field name="name">SDM Dashboard</field>
+        <field name="tag">bhukhadan_core.sdm_dashboard_tag</field>
+    </record>
+
+    <!-- Department User Dashboard Client Action (OWL) -->
+    <record id="action_department_dashboard_owl" model="ir.actions.client">
+        <field name="name">Department User Dashboard</field>
+        <field name="tag">bhukhadan_core.department_dashboard</field>
+    </record>
+
+    <!-- Collector Dashboard Client Action (OWL) -->
+    <record id="action_collector_dashboard_owl" model="ir.actions.client">
+        <field name="name">Collector Dashboard</field>
+        <field name="tag">bhukhadan_core.collector_dashboard</field>
+    </record>
+    
+    <!-- District Admin Dashboard Client Action (OWL) -->
+    <record id="action_district_dashboard_owl" model="ir.actions.client">
+        <field name="name">District Admin Dashboard</field>
+        <field name="tag">bhukhadan_core.district_dashboard</field>
+    </record>
+    
+    <!-- Role-based Dashboard Action - Returns appropriate dashboard based on user role -->
+    <!-- Delete old server action if it exists -->
+    <delete id="action_role_based_dashboard" model="ir.actions.server"/>
+    
+    <!-- Using client action with JavaScript to call Python method, avoiding server action permission issues -->
+    <record id="action_role_based_dashboard" model="ir.actions.client">
+        <field name="name">Dashboard</field>
+        <field name="tag">bhukhadan_core.role_based_dashboard</field>
+        <!-- Ensure no res_model is set to prevent breadcrumb errors -->
+    </record>
+
+</odoo>

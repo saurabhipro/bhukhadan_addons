@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Section 247.1 (Personal Notice) Views -->
+    <record id="view_section247_1_cglrc_list" model="ir.ui.view">
+        <field name="name">bhu.section247_1.cglrc.list</field>
+        <field name="model">bhu.section247_1.cglrc</field>
+        <field name="arch" type="xml">
+            <list string="Personal Notice generation (247.1)">
+                <field name="name" string="Reference"/>
+                <field name="project_id" string="Project"/>
+                <field name="village_id" string="Village"/>
+                <field name="state" widget="badge" string="Status"
+                       decoration-success="state == 'approved'" 
+                       decoration-warning="state == 'draft'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_section247_1_cglrc_form" model="ir.ui.view">
+        <field name="name">bhu.section247_1.cglrc.form</field>
+        <field name="model">bhu.section247_1.cglrc</field>
+        <field name="arch" type="xml">
+            <form string="Personal Notice generation (247.1)">
+                <header>
+                    <button name="%(bhukhadan_core.action_report_section247_1_notice)d" string="Download Notice Template" type="action" class="btn-info"/>
+                    <button name="action_approve" string="Approve" type="object" class="btn-success" invisible="state != 'draft'" groups="bhukhadan_core.group_bhuarjan_sdm,bhukhadan_core.group_bhuarjan_admin"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,approved"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                        <h3>Personal Notice generation (247.1) / व्यक्तिगत सूचना जनरेशन (247.1)</h3>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="project_id" options="{'no_create': True}"/>
+                            <field name="village_id" domain="[('project_ids', 'in', project_id)]" options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <field name="sdm_signed_file" filename="sdm_signed_filename"/>
+                            <field name="sdm_signed_filename" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Details">
+                            <group>
+                                <field name="approved_date" readonly="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_section247_1_cglrc" model="ir.actions.act_window">
+        <field name="name">Personal Notice (247.1)</field>
+        <field name="res_model">bhu.section247_1.cglrc</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create a new Personal Notice (247.1)</p>
+        </field>
+    </record>
+
+    <!-- Section 247.2 (Istehar Publication) Views -->
+    <record id="view_section247_2_cglrc_list" model="ir.ui.view">
+        <field name="name">bhu.section247_2.cglrc.list</field>
+        <field name="model">bhu.section247_2.cglrc</field>
+        <field name="arch" type="xml">
+            <list string="Istehar प्रकाशन (247.2)">
+                <field name="name" string="Reference"/>
+                <field name="project_id" string="Project"/>
+                <field name="village_id" string="Village"/>
+                <field name="state" widget="badge" string="Status"
+                       decoration-success="state == 'approved'" 
+                       decoration-warning="state == 'draft'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_section247_2_cglrc_form" model="ir.ui.view">
+        <field name="name">bhu.section247_2.cglrc.form</field>
+        <field name="model">bhu.section247_2.cglrc</field>
+        <field name="arch" type="xml">
+            <form string="Istehar प्रकाशन (247.2)">
+                <header>
+                    <button name="%(bhukhadan_core.action_report_section247_2_istehar)d" string="Download Istehar Template" type="action" class="btn-info"/>
+                    <button name="action_approve" string="Approve" type="object" class="btn-success" invisible="state != 'draft'" groups="bhukhadan_core.group_bhuarjan_sdm,bhukhadan_core.group_bhuarjan_admin"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,approved"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                        <h3>Istehar प्रकाशन (247.2) / इश्तेहार प्रकाशन (247.2)</h3>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="project_id" options="{'no_create': True}"/>
+                            <field name="village_id" domain="[('project_ids', 'in', project_id)]" options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <field name="sdm_signed_file" filename="sdm_signed_filename"/>
+                            <field name="sdm_signed_filename" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_section247_2_cglrc" model="ir.actions.act_window">
+        <field name="name">Istehar प्रकाशन (247.2)</field>
+        <field name="res_model">bhu.section247_2.cglrc</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Section 247.3 (Award) Views -->
+    <record id="view_section247_3_cglrc_list" model="ir.ui.view">
+        <field name="name">bhu.section247_3.cglrc.list</field>
+        <field name="model">bhu.section247_3.cglrc</field>
+        <field name="arch" type="xml">
+            <list string="Award (247.3)">
+                <field name="name" string="Reference"/>
+                <field name="project_id" string="Project"/>
+                <field name="village_id" string="Village"/>
+                <field name="state" widget="badge" string="Status"
+                       decoration-success="state == 'approved'" 
+                       decoration-warning="state == 'draft'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_section247_3_cglrc_form" model="ir.ui.view">
+        <field name="name">bhu.section247_3.cglrc.form</field>
+        <field name="model">bhu.section247_3.cglrc</field>
+        <field name="arch" type="xml">
+            <form string="Award (247.3)">
+                <header>
+                    <button name="action_approve" string="Approve" type="object" class="btn-success" invisible="state != 'draft'" groups="bhukhadan_core.group_bhuarjan_sdm,bhukhadan_core.group_bhuarjan_admin"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,approved"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                        <h3>Award (247.3) / अवार्ड (247.3)</h3>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="project_id" options="{'no_create': True}"/>
+                            <field name="village_id" domain="[('project_ids', 'in', project_id)]" options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <field name="sdm_signed_file" filename="sdm_signed_filename"/>
+                            <field name="sdm_signed_filename" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_section247_3_cglrc" model="ir.actions.act_window">
+        <field name="name">Award (247.3)</field>
+        <field name="res_model">bhu.section247_3.cglrc</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

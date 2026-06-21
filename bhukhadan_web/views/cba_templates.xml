@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Shared head assets for CBA guide pages -->
+    <template id="cba_page_assets" name="BhuKhadan CBA Page Assets">
+        <t t-call="bhukhadan_web.seo_head"/>
+        <link rel="stylesheet" type="text/css"
+              t-attf-href="/bhukhadan_web/static/src/css/bhuarjan_website.css?v=18.0.1.2.4"/>
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap"
+              rel="stylesheet"/>
+    </template>
+
+    <template id="cba_overview_page" name="BhuKhadan – CBA Act Guide">
+        <t t-call="website.layout">
+            <t t-set="additional_title">Coal Bearing Areas Act — Digital Workflow Guide</t>
+            <t t-set="meta_description">BhuKhadan digitises land acquisition under the Coal Bearing Areas (Acquisition &amp; Development) Act, 1957 — from Section 4(i) preliminary notification through Section 7(i), Section 9(i), and Section 11(i) acquisition order to award.</t>
+            <t t-set="bhu_page_keywords" t-value="'CBA Act 1957, Coal Bearing Areas, Section 4, Section 7, Section 11, SECL land acquisition, coal block, BhuKhadan'"/>
+            <t t-set="no_header" t-value="1"/>
+            <t t-set="no_footer" t-value="1"/>
+            <t t-set="head">
+                <t t-call="bhukhadan_web.cba_page_assets"/>
+            </t>
+
+            <t t-call="bhukhadan_web.navbar"/>
+
+            <section class="bhu-acts-hero">
+                <span class="tag">Primary Act · CBA(A&amp;D) 1957</span>
+                <h1>Coal Bearing Areas Acquisition Workflow</h1>
+                <p>
+                    BhuKhadan maps the end-to-end statutory journey for coal-bearing land — from Area Level Committee
+                    proposal through SECL HQ, Ministry of Coal, and Gazette publication to land records, DRRC,
+                    asset survey, and award.
+                </p>
+            </section>
+
+            <section class="bhu-acts-wrap">
+                <div class="bhu-acts-head">
+                    <span class="tag">Statutory Pipeline</span>
+                    <h2>CBA sections covered in BhuKhadan</h2>
+                    <p>Each stage tracks documents, approvals, routing through L&amp;R → PLP → CMPDIL → GM(L&amp;R) → DT(PLP), and Gazette milestones.</p>
+                </div>
+                <div class="bhu-acts-grid">
+                    <article class="bhu-act-card">
+                        <div class="bhu-act-top">
+                            <div class="bhu-act-icon"><i class="fa fa-file-contract"/></div>
+                            <div>
+                                <h3><a href="/features/cba/section-4" style="color:inherit;">Section 4(i) — Preliminary Notification</a></h3>
+                                <p>Proposal with DPR, revenue plans, coal occurrence certificates, and draft notification to Gazette.</p>
+                            </div>
+                        </div>
+                        <div class="bhu-act-flow">
+                            <span>Area Committee</span>
+                            <span>SECL HQ</span>
+                            <span>Ministry of Coal</span>
+                            <span>Gazette Publication</span>
+                        </div>
+                    </article>
+                    <article class="bhu-act-card">
+                        <div class="bhu-act-top">
+                            <div class="bhu-act-icon"><i class="fa fa-map"/></div>
+                            <div>
+                                <h3><a href="/features/cba/section-7" style="color:inherit;">Section 7(i) — Notice of Intention</a></h3>
+                                <p>Land schedule, detailed plan (1:4000), boundary consistency, and coal availability certificates.</p>
+                            </div>
+                        </div>
+                        <div class="bhu-act-flow">
+                            <span>Sec 4 Copy</span>
+                            <span>Land Schedule</span>
+                            <span>Form 2A–2D</span>
+                            <span>Gazette Publication</span>
+                        </div>
+                    </article>
+                    <article class="bhu-act-card">
+                        <div class="bhu-act-top">
+                            <div class="bhu-act-icon"><i class="fa fa-gavel"/></div>
+                            <div>
+                                <h3><a href="/features/cba/section-8" style="color:inherit;">Section 8 — Objections</a></h3>
+                                <p>Villager objections, committee report, Coal Controller NOC, and resolution tracking.</p>
+                            </div>
+                        </div>
+                        <div class="bhu-act-flow">
+                            <span>Objection Intake</span>
+                            <span>Area Committee</span>
+                            <span>GM(L&amp;R) HQ</span>
+                            <span>Coal Controller NOC</span>
+                        </div>
+                    </article>
+                    <article class="bhu-act-card">
+                        <div class="bhu-act-top">
+                            <div class="bhu-act-icon"><i class="fa fa-newspaper"/></div>
+                            <div>
+                                <h3><a href="/features/cba/section-9" style="color:inherit;">Section 9(i) — Declaration</a></h3>
+                                <p>Post-declaration newspaper notifications, letters to Collector/SDM/Tehsildar, and drone survey freeze.</p>
+                            </div>
+                        </div>
+                        <div class="bhu-act-flow">
+                            <span>Declaration Proposal</span>
+                            <span>Gazette</span>
+                            <span>Newspaper Notice</span>
+                            <span>Drone Survey</span>
+                        </div>
+                    </article>
+                    <article class="bhu-act-card">
+                        <div class="bhu-act-top">
+                            <div class="bhu-act-icon"><i class="fa fa-landmark"/></div>
+                            <div>
+                                <h3><a href="/features/cba/section-11" style="color:inherit;">Section 11(i) — Acquisition Order</a></h3>
+                                <p>GM(L&amp;R) proposal with Sec 4/7/9 copies, draft order (Format 4A), and terms &amp; conditions.</p>
+                            </div>
+                        </div>
+                        <div class="bhu-act-flow">
+                            <span>Coal Block Details</span>
+                            <span>Prior Notifications</span>
+                            <span>Draft Order 4A</span>
+                            <span>Acquisition Order</span>
+                        </div>
+                    </article>
+                    <article class="bhu-act-card">
+                        <div class="bhu-act-top">
+                            <div class="bhu-act-icon"><i class="fa fa-coins"/></div>
+                            <div>
+                                <h3>Post-Gazette — Award Pipeline</h3>
+                                <p>Land records, DRRC meetings, asset survey MB, land &amp; structure compensation, SECL Board approval.</p>
+                            </div>
+                        </div>
+                        <div class="bhu-act-flow">
+                            <span>Land Records</span>
+                            <span>DRRC</span>
+                            <span>Asset Survey</span>
+                            <span>Award</span>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <t t-call="bhukhadan_web.footer"/>
+        </t>
+    </template>
+
+    <template id="cba_section4_page" name="BhuKhadan – CBA Section 4(i)">
+        <t t-call="website.layout">
+            <t t-set="additional_title">CBA Section 4(i) — Preliminary Notification</t>
+            <t t-set="meta_description">Section 4(i) workflow in BhuKhadan: SECL Area Level Committee proposal, HQ routing, Ministry of Coal approval, and Gazette publication with required forms and revenue plans.</t>
+            <t t-set="no_header" t-value="1"/>
+            <t t-set="no_footer" t-value="1"/>
+            <t t-set="head">
+                <t t-call="bhukhadan_web.cba_page_assets"/>
+            </t>
+            <t t-call="bhukhadan_web.navbar"/>
+            <section class="bhu-features-hero">
+                <span class="tag">CBA(A&amp;D) Act 1957 · Sec 4(i)</span>
+                <h1>Preliminary Notification under Section 4(i)</h1>
+                <p>Digitise the proposal bundle from Area Level Committee through SECL HQ to Ministry of Coal and Gazette publication.</p>
+            </section>
+            <section class="bhu-features-grid-wrap">
+                <div class="bhu-features-grid">
+                    <article class="bhu-feature-card">
+                        <h3>Workflow Route</h3>
+                        <ul class="bhu-feature-points">
+                            <li>SECL Area Level Committee prepares proposal</li>
+                            <li>Submitted to SECL HQ: L&amp;R → PLP → CMPDIL → GM(L&amp;R) → DT(PLP)</li>
+                            <li>Forwarded to Ministry of Coal</li>
+                            <li>Gazette publication of preliminary notification</li>
+                        </ul>
+                    </article>
+                    <article class="bhu-feature-card">
+                        <h3>Required Documents</h3>
+                        <ul class="bhu-feature-points">
+                            <li>DPR and PR approval / prospecting letter</li>
+                            <li>Revenue plans (6 copies) — villagewise from SDM</li>
+                            <li>Coal occurrence certificate (Form 1A)</li>
+                            <li>Non-lease status certificate (Form 1B)</li>
+                            <li>Source of plans certificate (Form 1C)</li>
+                            <li>Draft notification English &amp; Hindi (Form 1D)</li>
+                            <li>Questionnaire</li>
+                        </ul>
+                    </article>
+                    <article class="bhu-feature-card">
+                        <h3>How BhuKhadan helps</h3>
+                        <ul class="bhu-feature-points">
+                            <li>Checklist-driven document vault per coal block</li>
+                            <li>HQ routing status with role-based approvals</li>
+                            <li>Gazette date tracking and downstream Sec 7 linkage</li>
+                        </ul>
+                    </article>
+                </div>
+            </section>
+            <t t-call="bhukhadan_web.footer"/>
+        </t>
+    </template>
+
+    <template id="cba_section7_page" name="BhuKhadan – CBA Section 7(i)">
+        <t t-call="website.layout">
+            <t t-set="additional_title">CBA Section 7(i) — Notice of Intention to Acquire</t>
+            <t t-set="meta_description">Section 7(i) in BhuKhadan: land schedule from SDM, detailed plan, Form 2A–2D certificates, and Gazette publication after Sec 4 notification.</t>
+            <t t-set="no_header" t-value="1"/>
+            <t t-set="no_footer" t-value="1"/>
+            <t t-set="head">
+                <t t-call="bhukhadan_web.cba_page_assets"/>
+            </t>
+            <t t-call="bhukhadan_web.navbar"/>
+            <section class="bhu-features-hero">
+                <span class="tag">CBA(A&amp;D) Act 1957 · Sec 7(i)</span>
+                <h1>Notice of Intention to Acquire — Section 7(i)</h1>
+                <p>Track land schedule, plot-wise acquisition details, and certification forms through HQ to Gazette.</p>
+            </section>
+            <section class="bhu-features-grid-wrap">
+                <div class="bhu-features-grid">
+                    <article class="bhu-feature-card">
+                        <h3>Workflow Route</h3>
+                        <ul class="bhu-feature-points">
+                            <li>Area Committee proposal after Sec 4(i) publication</li>
+                            <li>Same HQ chain: L&amp;R → PLP → CMPDIL → GM(L&amp;R) → DT(PLP)</li>
+                            <li>Ministry of Coal review</li>
+                            <li>Gazette publication of Sec 7(i) notice</li>
+                        </ul>
+                    </article>
+                    <article class="bhu-feature-card">
+                        <h3>Required Documents</h3>
+                        <ul class="bhu-feature-points">
+                            <li>Copy of Section 4 notification</li>
+                            <li>Land schedule — villagewise plot nos., land type, part/full acquired (from SDM)</li>
+                            <li>Detailed plan (1:4000 scale)</li>
+                            <li>Draft notification (Form 2D) English &amp; Hindi</li>
+                            <li>Coal availability certificate (Form 2A)</li>
+                            <li>Boundary consistency certificate (Form 2B)</li>
+                            <li>Plan &amp; schedule source certificate (Form 1C)</li>
+                            <li>Non-lease status certificate (Form 1B)</li>
+                        </ul>
+                    </article>
+                    <article class="bhu-feature-card">
+                        <h3>How BhuKhadan helps</h3>
+                        <ul class="bhu-feature-points">
+                            <li>Land schedule import and village-wise validation</li>
+                            <li>Automatic link to published Sec 4(i) record</li>
+                            <li>Form 2A–2D generation and approval trail</li>
+                        </ul>
+                    </article>
+                </div>
+            </section>
+            <t t-call="bhukhadan_web.footer"/>
+        </t>
+    </template>
+
+    <template id="cba_section8_page" name="BhuKhadan – CBA Section 8">
+        <t t-call="website.layout">
+            <t t-set="additional_title">CBA Section 8 — Objections</t>
+            <t t-set="meta_description">Section 8 objection handling in BhuKhadan: villager objections, committee report, GM(L&amp;R) review, and Coal Controller NOC.</t>
+            <t t-set="no_header" t-value="1"/>
+            <t t-set="no_footer" t-value="1"/>
+            <t t-set="head">
+                <t t-call="bhukhadan_web.cba_page_assets"/>
+            </t>
+            <t t-call="bhukhadan_web.navbar"/>
+            <section class="bhu-features-hero">
+                <span class="tag">CBA(A&amp;D) Act 1957 · Sec 8</span>
+                <h1>Objections under Section 8</h1>
+                <p>Capture objections, committee findings, and Coal Controller NOC in one auditable workflow.</p>
+            </section>
+            <section class="bhu-features-grid-wrap">
+                <div class="bhu-features-grid">
+                    <article class="bhu-feature-card">
+                        <h3>Workflow</h3>
+                        <ul class="bhu-feature-points">
+                            <li>Objections received from affected villagers (if any)</li>
+                            <li>SECL Area Level Committee prepares report</li>
+                            <li>Submit to GM(L&amp;R) SECL HQ</li>
+                            <li>Coal Controller, New Delhi — issue NOC</li>
+                        </ul>
+                    </article>
+                </div>
+            </section>
+            <t t-call="bhukhadan_web.footer"/>
+        </t>
+    </template>
+
+    <template id="cba_section9_page" name="BhuKhadan – CBA Section 9(i)">
+        <t t-call="website.layout">
+            <t t-set="additional_title">CBA Section 9(i) — Declaration</t>
+            <t t-set="meta_description">Section 9(i) declaration workflow and immediate post-publication actions: newspaper notices, SDM letters, and drone survey asset freeze.</t>
+            <t t-set="no_header" t-value="1"/>
+            <t t-set="no_footer" t-value="1"/>
+            <t t-set="head">
+                <t t-call="bhukhadan_web.cba_page_assets"/>
+            </t>
+            <t t-call="bhukhadan_web.navbar"/>
+            <section class="bhu-features-hero">
+                <span class="tag">CBA(A&amp;D) Act 1957 · Sec 9(i)</span>
+                <h1>Declaration under Section 9(i)</h1>
+                <p>From declaration proposal to Gazette, then immediate field actions to protect notified land.</p>
+            </section>
+            <section class="bhu-features-grid-wrap">
+                <div class="bhu-features-grid">
+                    <article class="bhu-feature-card">
+                        <h3>Declaration Proposal</h3>
+                        <ul class="bhu-feature-points">
+                            <li>Coal block details with Sec 4 &amp; Sec 7 copies</li>
+                            <li>Land schedule and detailed plan (1:4000)</li>
+                            <li>Draft notification (Hindi &amp; English)</li>
+                            <li>Coal Controller NOC</li>
+                            <li>Questionnaire</li>
+                        </ul>
+                    </article>
+                    <article class="bhu-feature-card">
+                        <h3>Immediate After Gazette</h3>
+                        <ul class="bhu-feature-points">
+                            <li>Publish notifications in newspapers</li>
+                            <li>Letters to Collector, SDM, Tehsildar, Sarpanch</li>
+                            <li>Stop sale/purchase of notified land</li>
+                            <li>Drone survey to freeze assets on notified land</li>
+                        </ul>
+                    </article>
+                </div>
+            </section>
+            <t t-call="bhukhadan_web.footer"/>
+        </t>
+    </template>
+
+    <template id="cba_section11_page" name="BhuKhadan – CBA Section 11(i)">
+        <t t-call="website.layout">
+            <t t-set="additional_title">CBA Section 11(i) — Acquisition Order</t>
+            <t t-set="meta_description">Section 11(i) acquisition order in BhuKhadan: GM(L&amp;R) proposal with prior notifications, Draft Order Format 4A, and terms &amp; conditions.</t>
+            <t t-set="no_header" t-value="1"/>
+            <t t-set="no_footer" t-value="1"/>
+            <t t-set="head">
+                <t t-call="bhukhadan_web.cba_page_assets"/>
+            </t>
+            <t t-call="bhukhadan_web.navbar"/>
+            <section class="bhu-features-hero">
+                <span class="tag">CBA(A&amp;D) Act 1957 · Sec 11(i)</span>
+                <h1>Acquisition Order — Section 11(i)</h1>
+                <p>Final acquisition order after Sec 4, 7, and 9 Gazette publications — with draft order and terms.</p>
+            </section>
+            <section class="bhu-features-grid-wrap">
+                <div class="bhu-features-grid">
+                    <article class="bhu-feature-card">
+                        <h3>Proposal from GM(L&amp;R) SECL HQ</h3>
+                        <ul class="bhu-feature-points">
+                            <li>Coal block details</li>
+                            <li>Copies of Sec 4(i), 7(i), and 9(i) notifications</li>
+                            <li>Draft Order (Format 4A)</li>
+                            <li>Terms &amp; conditions</li>
+                        </ul>
+                    </article>
+                    <article class="bhu-feature-card">
+                        <h3>After Sec 4, 7, 9 &amp; 11 Gazette</h3>
+                        <ul class="bhu-feature-points">
+                            <li>Land records from SDM (Misal, B-I, P-II, etc.)</li>
+                            <li>DRRC meeting — compensation &amp; R&amp;R agreement</li>
+                            <li>Asset Survey Committee joint team (SECL + State)</li>
+                            <li>Land &amp; structure compensation proposals to Award</li>
+                        </ul>
+                    </article>
+                </div>
+            </section>
+            <t t-call="bhukhadan_web.footer"/>
+        </t>
+    </template>
+
+</odoo>

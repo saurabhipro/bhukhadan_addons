@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_bhuarjan_settings_master_admin,bhuarjan.settings.master.admin,model_bhuarjan.settings.master,base.group_system,1,1,1,1
+access_bhuarjan_settings_master_user,bhuarjan.settings.master.user,model_bhuarjan.settings.master,base.group_user,1,0,0,0
+access_bhuarjan_sequence_settings_admin,bhuarjan.sequence.settings.admin,model_bhuarjan.sequence.settings,base.group_system,1,1,1,1
+access_bhuarjan_sequence_settings_user,bhuarjan.sequence.settings.user,model_bhuarjan.sequence.settings,base.group_user,1,0,0,0
+access_bhuarjan_workflow_settings_admin,bhuarjan.workflow.settings.admin,model_bhuarjan.workflow.settings,base.group_system,1,1,1,1
+access_bhuarjan_workflow_settings_user,bhuarjan.workflow.settings.user,model_bhuarjan.workflow.settings,base.group_user,1,0,0,0

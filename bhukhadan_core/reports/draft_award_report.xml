@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Draft Award Report Action -->
+    <record id="action_report_draft_award" model="ir.actions.report">
+        <field name="name">Draft Award / अवार्ड आदेश</field>
+        <field name="model">bhu.draft.award</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">bhukhadan_core.draft_award_report</field>
+        <field name="report_file">bhukhadan_core.draft_award_report</field>
+        <field name="paperformat_id" ref="bhukhadan_core.bhuarjan_sia_paper_format"/>
+        <field name="print_report_name">'Draft_Award_' + ((object and object.name) or (docs and docs[0] and docs[0].name) or 'All')</field>
+    </record>
+
+    <!-- Custom Layout header for Draft Award -->
+    <template id="draft_award_report_custom_layout">
+        <div class="header-section" style="margin-bottom: 12px;">
+            <style>
+                /* Global Font Settings */
+                body, .header-section, .header-info-table, h2, strong, span, td, th {
+                    font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif !important;
+                }
+                
+                .header-info-table { 
+                    width: 100%; 
+                    border-collapse: collapse; 
+                    font-size: 14px; 
+                    border: 2px solid #000; 
+                    margin-bottom: 0; 
+                }
+                .header-info-table td { 
+                    border: 1px solid #000; 
+                    padding: 6px; 
+                    vertical-align: middle;
+                }
+                .report-content-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-top: 15px;
+                    font-size: 14px;
+                }
+                .report-content-table th, .report-content-table td {
+                    border: 1px solid #000;
+                    padding: 8px;
+                    text-align: left;
+                }
+                .report-content-table th {
+                    background-color: #f2f2f2;
+                    font-weight: bold;
+                }
+                .report-paragraph {
+                    margin-bottom: 10px;
+                    line-height: 1.6;
+                    text-align: justify;
+                }
+                .report-paragraph strong {
+                    font-weight: bold;
+                }
+            </style>
+            <h2 style="text-align: center; margin: 0 0 12px 0; font-size: 28px; font-weight: bold; text-decoration: underline;">
+                <strong>प्रारूप अवार्ड</strong>
+            </h2>
+            <h2 style="text-align: center; margin: 0 0 12px 0; font-size: 18px; font-weight: bold; text-decoration: underline;">
+                <strong>कार्यालय कलेक्टर, जिला <span t-esc="award.district_id.name if award and award.district_id else '........................'"/> (छ.ग.)</strong>
+            </h2>
+            <h2 style="text-align: center; margin: 0 0 12px 0; font-size: 18px; font-weight: bold; text-decoration: underline;">
+                <strong>अधिसूचना</strong>
+            </h2>
+
+            <table class="header-info-table">
+                <tr>
+                    <td rowspan="3" style="width: 10%; padding: 0; text-align: center; vertical-align: middle;">
+                        <!-- Logo - Left Header Box -->
+                        <t t-set="base_url" t-value="request.env['ir.config_parameter'].sudo().get_param('web.base.url')"/>
+                        <img t-att-src="base_url + '/bhukhadan_core/static/img/logo.png'" alt="Logo"
+                             style="display: block; margin: 0 auto; object-fit: contain; width: 80px; height: 80px; max-width: 80px; max-height: 80px;"/>
+                    </td>
+                    <td style="width: 40%; font-size: 14px;">
+                        <strong>परियोजना का नाम :</strong>
+                        <span t-if="award and award.project_id" t-esc="award.project_id.name"/>
+                        <span t-if="not award or not award.project_id">........................</span>
+                    </td>
+                    <td style="width: 40%; font-size: 14px;">
+                        <strong>अवार्ड संख्या :</strong>
+                        <span t-if="award and award.award_number" t-esc="award.award_number"/>
+                        <span t-if="not award or not award.award_number">........................</span>
+                    </td>
+                    <td rowspan="3" style="width: 10%; padding: 0; text-align: center; vertical-align: middle;">
+                        <!-- QR Code - Right Header Box -->
+                        <t t-if="award">
+                            <t t-set="qr_code_img" t-value="award.get_qr_code_data()"/>
+                            <t t-set="qr_download_url" t-value="'https://bhuarjan.com/bhuarjan/draftaward/' + str(award.award_uuid or '') + '/download'"/>
+                            <t t-if="qr_code_img">
+                                <a t-att-href="qr_download_url" style="display: block; width: 100%; margin: 0; padding: 0; text-decoration: none;">
+                                    <img t-att-src="'data:image/png;base64,' + qr_code_img" 
+                                         alt="QR Code - Click to download PDF" 
+                                         style="width: 100%; max-width: 100%; height: auto; aspect-ratio: 1; border: none; display: block; margin: 0; padding: 0;"/>
+                                </a>
+                            </t>
+                            <t t-if="not qr_code_img">
+                                <a t-att-href="qr_download_url" style="display: block; width: 100%; margin: 0; padding: 0; text-decoration: none;">
+                                    <div style="width: 100%; padding-top: 100%; position: relative; border: none; background: white; margin: 0;">
+                                        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                                            <div style="text-align: center; font-size: 7px;">
+                                                <div style="font-weight: bold;">QR Code</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </t>
+                        </t>
+                        <t t-if="not award">
+                            <div style="width: 100%; padding-top: 100%; position: relative; border: none; background: white; margin: 0;">
+                                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                                    <div style="text-align: center; font-size: 7px;">
+                                        <div style="font-weight: bold;">QR Code</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 40%; font-size: 14px;">
+                        <strong>ग्राम का नाम :</strong>
+                        <span t-if="award and award.village_id" t-esc="award.village_id.name"/>
+                        <span t-if="not award or not award.village_id">........................</span>
+                    </td>
+                    <td style="width: 40%; font-size: 14px;">
+                        <!-- Empty cell -->
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 40%; font-size: 14px;">
+                        <strong>तहसील का नाम :</strong>
+                        <span t-if="award and award.tehsil_id" t-esc="award.tehsil_id.name"/>
+                        <span t-if="not award or not award.tehsil_id">........................</span>
+                        <t t-if="award and award.district_id"> जिला-<t t-esc="award.district_id.name"/> (छ.ग.)</t>
+                        <t t-if="not award or not award.district_id"> जिला-........................ (छ.ग.)</t>
+                    </td>
+                    <td style="width: 40%; font-size: 14px;">
+                        <!-- Empty cell -->
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </template>
+
+    <!-- Draft Award Report Template -->
+    <template id="draft_award_report">
+        <t t-call="web.html_container">
+            <meta charset="utf-8"/>
+            <t t-foreach="docs" t-as="award">
+                <t t-call="bhukhadan_core.draft_award_report_custom_layout"/>
+                
+                <style>
+                    /* Global Font Settings for Draft Award Report */
+                    body, .page, div, p, span, td, th, h2, h3, strong, .report-paragraph,
+                    .header-info-table, .report-content-table {
+                        font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif !important;
+                    }
+                    
+                    @page {
+                        margin: 2cm 1.5cm;
+                        font-family: 'Noto Sans Devanagari', 'Mangal', 'Arial Unicode MS', 'DejaVu Sans', sans-serif;
+                    }
+                </style>
+
+                <!-- Include centralized CSS styles -->
+                <t t-call="bhukhadan_core.report_common_styles"/>
+
+                <div class="page" style="font-size: 14px; color: #333; padding: 15px; position: relative;">
+                    <!-- Watermark with Logo - Centered on Page -->
+                    <div class="watermark">
+                        <div class="watermark-circle"></div>
+                        <t t-set="base_url" t-value="request.env['ir.config_parameter'].sudo().get_param('web.base.url')"/>
+                        <img t-att-src="base_url + '/bhukhadan_core/static/img/logo.png'" alt="Logo Watermark"/>
+                    </div>
+
+                <!-- Subject/Reference Line -->
+                <p class="report-paragraph" style="text-align: left; margin-bottom: 15px;">
+                    <strong>विषय:-</strong> <span t-if="award and award.void_title" t-esc="award.void_title"/><span t-if="not award or not award.void_title">........................</span>
+                </p>
+                <p class="report-paragraph" style="text-align: left; margin-bottom: 15px;">
+                    <strong>(छ.ग.) के</strong> <span t-if="award and award.project_id" t-esc="award.project_id.name"/><span t-if="not award or not award.project_id">........................</span>
+                    <strong>हेतु शुसि</strong> <span t-if="award and award.district_id" t-esc="award.district_id.name"/><span t-if="not award or not award.district_id">........................</span>
+                    <strong>देखें</strong> see section 21 (1) के तुहत्, <span t-if="award and award.village_id" t-esc="award.village_id.name"/><span t-if="not award or not award.village_id">........................</span>
+                </p>
+
+                <!-- Parties Section -->
+                <div style="margin-bottom: 20px;">
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                        <tr>
+                            <td style="width: 50%; vertical-align: top; padding-right: 20px;">
+                                <p class="report-paragraph" style="margin-bottom: 5px;">
+                                    <strong>आवेदक :</strong>
+                                </p>
+                                <p class="report-paragraph" style="margin-left: 20px;">
+                                    <span t-if="award and award.applicant_name" t-esc="award.applicant_name"/>
+                                    <span t-if="not award or not award.applicant_name">कार्यपालन अभियंता, केलो परियोजना सर्वेक्षण संभाग, जिला- रायगढ़ (छ.ग.)</span>
+                                </p>
+                            </td>
+                            <td style="width: 50%; vertical-align: top; padding-left: 20px;">
+                                <p class="report-paragraph" style="margin-bottom: 5px;">
+                                    <strong>विरुद्ध / अनावेदक :</strong>
+                                </p>
+                                <div style="margin-left: 20px;">
+                                    <t t-if="award and award.respondent_ids and len(award.respondent_ids) > 0">
+                                        <t t-set="counter" t-value="0"/>
+                                        <t t-foreach="award.respondent_ids" t-as="respondent">
+                                            <t t-set="counter" t-value="counter + 1"/>
+                                            <p class="report-paragraph" style="margin-bottom: 5px;">
+                                                <t t-esc="counter"/>. 
+                                                <span t-esc="respondent.name or ''"/>
+                                                <t t-if="respondent.father_name"> व. <span t-esc="respondent.father_name"/></t>
+                                                <span> सा. दे. भूमिस्वामी</span>
+                                            </p>
+                                        </t>
+                                    </t>
+                                    <t t-if="not award or not award.respondent_ids or len(award.respondent_ids) == 0">
+                                        <p class="report-paragraph">........................</p>
+                                    </t>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- Award Order Title -->
+                <h2 style="text-align: center; margin: 20px 0; font-size: 22px; font-weight: bold; text-decoration: underline;">
+                    <strong>अवार्ड आदेश</strong>
+                </h2>
+                <p style="text-align: center; margin-bottom: 20px;">
+                    <strong>(दिनांक ........................)</strong>
+                </p>
+
+                <!-- Paragraphs -->
+                <div style="margin-bottom: 20px;">
+                    <p class="report-paragraph">
+                        <span t-if="award and award.applicant_name" t-esc="award.applicant_name"/><span t-if="not award or not award.applicant_name">कार्यपालन अभियंता केलो परियोजना सर्वेक्षण संभाग रायगढ़</span> 
+                        दिनांक <span t-if="award and award.section11_report_id and award.section11_report_id.publication_date" t-esc="award.section11_report_id.publication_date.strftime('%d/%m/%Y')"/><span t-if="not award or not award.section11_report_id or not award.section11_report_id.publication_date">........................</span> 
+                        के पत्रांक के अनुसार <span t-if="award and award.project_id" t-esc="award.project_id.name"/><span t-if="not award or not award.project_id">केलो परियोजना</span> 
+                        के लिए <span t-if="award and award.village_id" t-esc="award.village_id.name"/><span t-if="not award or not award.village_id">ग्राम</span> 
+                        में निजी भूमि अर्जन हेतु प्रस्ताव प्रस्तुत किया गया है। प्रस्तावानुसार 
+                        <t t-set="khasra_count" t-value="len(award.land_parcel_ids) if award and award.land_parcel_ids else 0"/>
+                        <span t-if="khasra_count > 0" t-esc="khasra_count"/><span t-if="khasra_count == 0">....</span> 
+                        खसरा नं. <span t-if="award and award.total_land_area" t-esc="'{:.3f}'.format(award.total_land_area)"/><span t-if="not award or not award.total_land_area">..........</span> 
+                        है. क्षेत्र का अर्जन प्रस्तावित है। प्रस्ताव प्रस्तुत किया गया है तथा 
+                        <span t-if="award and award.is_displacement_involved == False">किसी भी व्यक्ति का विस्थापन निहित नहीं है।</span>
+                        <span t-if="award and award.is_displacement_involved == True">विस्थापन शामिल है।</span>
+                        छ.ग. शासन राजस्व एवं आपदा प्रबंधन विभाग मंत्रालय रायपुर दिनांक 12/03/2015 के परिपत्रानुसार 
+                        भूमि अर्जन, पुनर्वासन एवं पुनर्व्यवस्थापन में उचित प्रतिकर एवं पारदर्शिता का अधिकार अधिनियम 2013 
+                        की धारा 2 एवं 3 के तहत कार्यवाही आवश्यक नहीं है।
+                    </p>
+
+                    <p class="report-paragraph">
+                        <strong>3.</strong> उपरोक्त प्रस्तावानुसार अधिनियम 2013 की धारा 11 उपधारा (1) के तहत अधिसूचना का प्रकाशन निम्नानुसार किया गया है :-
+                    </p>
+                    <p class="report-paragraph" style="margin-left: 20px;">
+                        (1) छत्तीसगढ़ राजपत्र में दिनांक 
+                        <span t-if="award and award.section11_gazette_date" t-esc="award.section11_gazette_date.strftime('%d/%m/%Y')"/><span t-if="not award or not award.section11_gazette_date">........................</span>, 
+                        <span t-if="award and award.section11_gazette_part" t-esc="award.section11_gazette_part"/><span t-if="not award or not award.section11_gazette_part">..........</span>, 
+                        पृ.क्र. <span t-if="award and award.section11_gazette_page" t-esc="award.section11_gazette_page"/><span t-if="not award or not award.section11_gazette_page">..........</span> में।
+                    </p>
+                    <p class="report-paragraph" style="margin-left: 20px;">
+                        (2) दैनिक स्थानीय समाचार पत्रों में :-
+                    </p>
+                    <p class="report-paragraph" style="margin-left: 40px;">
+                        (i) <span t-if="award and award.section11_newspaper_1_name" t-esc="award.section11_newspaper_1_name"/><span t-if="not award or not award.section11_newspaper_1_name">नवभारत</span>- 
+                        दिनांक- <span t-if="award and award.section11_newspaper_1_date" t-esc="award.section11_newspaper_1_date.strftime('%d/%m/%Y')"/><span t-if="not award or not award.section11_newspaper_1_date">........................</span>
+                    </p>
+                    <p class="report-paragraph" style="margin-left: 40px;">
+                        (ii) <span t-if="award and award.section11_newspaper_2_name" t-esc="award.section11_newspaper_2_name"/><span t-if="not award or not award.section11_newspaper_2_name">कांतिकारी संकेत</span>- 
+                        दिनांक- <span t-if="award and award.section11_newspaper_2_date" t-esc="award.section11_newspaper_2_date.strftime('%d/%m/%Y')"/><span t-if="not award or not award.section11_newspaper_2_date">........................</span>
+                    </p>
+                    <p class="report-paragraph" style="margin-left: 20px;">
+                        (3) ग्राम <span t-if="award and award.village_id" t-esc="award.village_id.name"/><span t-if="not award or not award.village_id">........................</span> 
+                        में मुनादी दिनांक <span t-if="award and award.section11_munadi_date" t-esc="award.section11_munadi_date.strftime('%d/%m/%Y')"/><span t-if="not award or not award.section11_munadi_date">........................</span> में।
+                    </p>
+
+                    <p class="report-paragraph">
+                        <strong>4.</strong> उपरोक्त धारा 11 (1) की अधिसूचना के प्रकाशन उपरान्त किसी भी रुचि रखने वाले पक्ष से कोई आपत्ति/दावा प्राप्त नहीं हुआ है, 
+                        अतः अधिनियम 2013 की धारा 15 (2) के तहत सुनवाई की आवश्यकता नहीं है।
+                    </p>
+
+                    <p class="report-paragraph">
+                        <strong>5.</strong> अधिनियम 2013 की धारा 19 उपधारा 7 के अनुसार उपयुक्त सरकार को धारा 11 की अधिसूचना के प्रकाशन की तारीख से 12 माह की अवधि के भीतर 
+                        अवार्ड पारित करना होगा, अन्यथा अर्जन प्रक्रिया समाप्त हो जाएगी। सरकार को इस अवधि को 12 माह तक बढ़ाने की शक्ति है।
+                    </p>
+                </div>
+
+                <!-- Land Details Table -->
+                <div style="margin-bottom: 20px;">
+                    <p class="report-paragraph" style="font-weight: bold; margin-bottom: 10px;">
+                        <t t-set="khasra_count" t-value="len(award.land_parcel_ids) if award and award.land_parcel_ids else 0"/>
+                        अर्जित की रही निजी भूमि कुल ख.नं. <span t-if="khasra_count > 0" t-esc="khasra_count"/><span t-if="khasra_count == 0">....</span> 
+                        कुल रकबा <span t-if="award and award.total_land_area" t-esc="'{:.3f}'.format(award.total_land_area)"/><span t-if="not award or not award.total_land_area">..........</span> 
+                        हैं. विस्तृत विवरण इस प्रकार है।
+                    </p>
+                    <table class="report-content-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 50%;">ख.न. / Khasra Number</th>
+                                <th style="width: 50%;">रकबा है. / Area (Hectares)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-if="award and award.land_parcel_ids and len(award.land_parcel_ids) > 0">
+                                <t t-foreach="award.land_parcel_ids" t-as="parcel">
+                                    <tr>
+                                        <td><span t-esc="parcel.khasra_number or ''"/></td>
+                                        <td><span t-esc="'{:.3f}'.format(parcel.area_hectares) if parcel.area_hectares else '0.000'"/></td>
+                                    </tr>
+                                </t>
+                                <tr style="font-weight: bold;">
+                                    <t t-set="khasra_count" t-value="len(award.land_parcel_ids) if award and award.land_parcel_ids else 0"/>
+                                    <td>योग कुल ख.नं. <span t-esc="khasra_count"/></td>
+                                    <td>कुल रकबा <span t-esc="'{:.3f}'.format(award.total_land_area) if award.total_land_area else '0.000'"/> है.</td>
+                                </tr>
+                            </t>
+                            <t t-if="not award or not award.land_parcel_ids or len(award.land_parcel_ids) == 0">
+                                <tr>
+                                    <td colspan="2" style="text-align: center;">No land parcels available</td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Detailed Compensation Table -->
+                <div style="margin-bottom: 20px;">
+                    <p class="report-paragraph" style="font-weight: bold; margin-bottom: 10px; text-align: center;">
+                        <strong>भाग-1 (क) भूमि का मुआवजा पत्रक</strong>
+                    </p>
+                    <p class="report-paragraph" style="margin-bottom: 10px;">
+                        <strong>ग्राम- <span t-if="award and award.village_id" t-esc="award.village_id.name"/><span t-if="not award or not award.village_id">........................</span></strong>
+                    </p>
+                    <t t-if="award and award.compensation_line_ids and len(award.compensation_line_ids) > 0">
+                        <table class="report-content-table" style="font-size: 9px; width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="background-color: #e0e0e0;">
+                                    <th rowspan="2" style="border: 1px solid #000; padding: 4px; text-align: center; width: 2%;">क्र.</th>
+                                    <th rowspan="2" style="border: 1px solid #000; padding: 4px; text-align: center; width: 12%;">भूमिस्वामी का नाम, पिता/पति का नाम, जाति</th>
+                                    <th colspan="3" style="border: 1px solid #000; padding: 4px; text-align: center; width: 10%;">कुल धारित भूमि</th>
+                                    <th colspan="3" style="border: 1px solid #000; padding: 4px; text-align: center; width: 10%;">अर्जित भूमि का विवरण</th>
+                                    <th colspan="3" style="border: 1px solid #000; padding: 4px; text-align: center; width: 8%;">अर्जित भूमि का प्रकार</th>
+                                    <th rowspan="2" style="border: 1px solid #000; padding: 4px; text-align: center; width: 5%;">गाईड लाइन दर</th>
+                                    <th rowspan="2" style="border: 1px solid #000; padding: 4px; text-align: center; width: 4%;">मूल्य</th>
+                                    <th rowspan="2" style="border: 1px solid #000; padding: 4px; text-align: center; width: 5%;">बाजार मूल्य x (कारक-2)</th>
+                                    <th rowspan="2" style="border: 1px solid #000; padding: 4px; text-align: center; width: 5%;">100% सोलेशियम</th>
+                                    <th rowspan="2" style="border: 1px solid #000; padding: 4px; text-align: center; width: 5%;">ब्याज</th>
+                                    <th rowspan="2" style="border: 1px solid #000; padding: 4px; text-align: center; width: 5%;">कुल निर्धारित</th>
+                                    <th colspan="2" style="border: 1px solid #000; padding: 4px; text-align: center; width: 8%;">पुनर्वास नीति</th>
+                                    <th rowspan="2" style="border: 1px solid #000; padding: 4px; text-align: center; width: 5%;">देय मुआवजा</th>
+                                    <th rowspan="2" style="border: 1px solid #000; padding: 4px; text-align: center; width: 3%;">रिमार्क</th>
+                                </tr>
+                                <tr style="background-color: #e0e0e0;">
+                                    <th style="border: 1px solid #000; padding: 4px; text-align: center;">खनं</th>
+                                    <th style="border: 1px solid #000; padding: 4px; text-align: center;">कुल रकबा हेक्टे. में</th>
+                                    <th style="border: 1px solid #000; padding: 4px; text-align: center;">लगान</th>
+                                    <th style="border: 1px solid #000; padding: 4px; text-align: center;">ख.न.</th>
+                                    <th style="border: 1px solid #000; padding: 4px; text-align: center;">अर्जित रकबा हेक्टे. में</th>
+                                    <th style="border: 1px solid #000; padding: 4px; text-align: center;">लगान</th>
+                                    <th style="border: 1px solid #000; padding: 4px; text-align: center;">पड़त</th>
+                                    <th style="border: 1px solid #000; padding: 4px; text-align: center;">असिंचित</th>
+                                    <th style="border: 1px solid #000; padding: 4px; text-align: center;">सिंचित</th>
+                                    <th style="border: 1px solid #000; padding: 4px; text-align: center;">दर प्रति एकड़</th>
+                                    <th style="border: 1px solid #000; padding: 4px; text-align: center;">मुआवजा राशि</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="award.compensation_line_ids" t-as="line">
+                                    <tr>
+                                        <td style="border: 1px solid #000; padding: 3px; text-align: center;"><span t-esc="line.serial_number or ''"/></td>
+                                        <td style="border: 1px solid #000; padding: 3px;">
+                                            <span t-esc="line.landowner_name or ''"/>
+                                            <t t-if="line.father_husband_name"> व. <span t-esc="line.father_husband_name"/></t>
+                                            <t t-if="line.caste"> जाति <span t-esc="line.caste"/></t>
+                                        </td>
+                                        <td style="border: 1px solid #000; padding: 3px; text-align: center;"><span t-esc="line.total_held_khasra or ''"/></td>
+                                        <td style="border: 1px solid #000; padding: 3px; text-align: right;"><span t-esc="'{:.4f}'.format(line.total_held_area) if line.total_held_area else '0.0000'"/></td>
+                                        <td style="border: 1px solid #000; padding: 3px; text-align: right;"><span t-esc="'{:.2f}'.format(line.total_held_revenue) if line.total_held_revenue else '0.00'"/></td>
+                                        <td style="border: 1px solid #000; padding: 3px; text-align: center;"><span t-esc="line.khasra_number or ''"/></td>
+                                        <td style="border: 1px solid #000; padding: 3px; text-align: right;"><span t-esc="'{:.4f}'.format(line.acquired_area) if line.acquired_area else '0.0000'"/></td>
+                                        <td style="border: 1px solid #000; padding: 3px; text-align: right;"><span t-esc="'{:.2f}'.format(line.acquired_revenue) if line.acquired_revenue else '0.00'"/></td>
+                                        <td style="border: 1px solid #000; padding: 3px; text-align: center;"><span t-esc="'पड़त' if line.is_fallow else ''"/></td>
+                                        <td style="border: 1px solid #000; padding: 3px; text-align: center;"><span t-esc="'असिंचित' if line.is_unirrigated else ''"/></td>
+                                        <td style="border: 1px solid #000; padding: 3px; text-align: center;"><span t-esc="'सिंचित' if line.is_irrigated else ''"/></td>
+                                        <td style="border: 1px solid #000; padding: 3px; text-align: right;"><span t-esc="'{:,.0f}'.format(line.guideline_rate_per_hectare) if line.guideline_rate_per_hectare else ''"/></td>
+                                        <td style="border: 1px solid #000; padding: 3px; text-align: right;"><span t-esc="'{:,.2f}'.format(line.market_value) if line.market_value else '0.00'"/></td>
+                                        <td style="border: 1px solid #000; padding: 3px; text-align: right;"><span t-esc="'{:,.2f}'.format(line.market_value_factor_2) if line.market_value_factor_2 else '0.00'"/></td>
+                                        <td style="border: 1px solid #000; padding: 3px; text-align: right;"><span t-esc="'{:,.2f}'.format(line.solatium_amount) if line.solatium_amount else '0.00'"/></td>
+                                        <td style="border: 1px solid #000; padding: 3px; text-align: right;"><span t-esc="'{:,.2f}'.format(line.interest_amount) if line.interest_amount else '0.00'"/></td>
+                                        <td style="border: 1px solid #000; padding: 3px; text-align: right;"><span t-esc="'{:,.2f}'.format(line.total_determined_compensation) if line.total_determined_compensation else '0.00'"/></td>
+                                        <td style="border: 1px solid #000; padding: 3px; text-align: right;"><span t-esc="'{:,.0f}'.format(line.rehab_policy_rate_per_acre) if line.rehab_policy_rate_per_acre else ''"/></td>
+                                        <td style="border: 1px solid #000; padding: 3px; text-align: right;"><span t-esc="'{:,.2f}'.format(line.rehab_policy_compensation) if line.rehab_policy_compensation else '0.00'"/></td>
+                                        <td style="border: 1px solid #000; padding: 3px; text-align: right; font-weight: bold;"><span t-esc="'{:,.2f}'.format(line.payable_compensation_amount) if line.payable_compensation_amount else '0.00'"/></td>
+                                        <td style="border: 1px solid #000; padding: 3px;"><span t-esc="line.remark or ''"/></td>
+                                    </tr>
+                                </t>
+                                <tr style="font-weight: bold; background-color: #f0f0f0;">
+                                    <td colspan="2" style="border: 1px solid #000; padding: 3px; text-align: center;">योग</td>
+                                    <td style="border: 1px solid #000; padding: 3px; text-align: center;"><span t-esc="len(award.compensation_line_ids)"/></td>
+                                    <td style="border: 1px solid #000; padding: 3px; text-align: right;"><span t-esc="'{:.4f}'.format(sum(award.compensation_line_ids.mapped('total_held_area')))"/></td>
+                                    <td style="border: 1px solid #000; padding: 3px;"></td>
+                                    <td style="border: 1px solid #000; padding: 3px; text-align: center;"><span t-esc="len(set(award.compensation_line_ids.mapped('khasra_number')))"/></td>
+                                    <td style="border: 1px solid #000; padding: 3px; text-align: right;"><span t-esc="'{:.4f}'.format(sum(award.compensation_line_ids.mapped('acquired_area')))"/></td>
+                                    <td style="border: 1px solid #000; padding: 3px;"></td>
+                                    <td colspan="3" style="border: 1px solid #000; padding: 3px;"></td>
+                                    <td colspan="2" style="border: 1px solid #000; padding: 3px;"></td>
+                                    <td style="border: 1px solid #000; padding: 3px; text-align: right;"><span t-esc="'{:,.2f}'.format(sum(award.compensation_line_ids.mapped('market_value_factor_2')))"/></td>
+                                    <td style="border: 1px solid #000; padding: 3px; text-align: right;"><span t-esc="'{:,.2f}'.format(sum(award.compensation_line_ids.mapped('solatium_amount')))"/></td>
+                                    <td style="border: 1px solid #000; padding: 3px; text-align: right;"><span t-esc="'{:,.2f}'.format(sum(award.compensation_line_ids.mapped('interest_amount')))"/></td>
+                                    <td style="border: 1px solid #000; padding: 3px; text-align: right;"><span t-esc="'{:,.2f}'.format(sum(award.compensation_line_ids.mapped('total_determined_compensation')))"/></td>
+                                    <td style="border: 1px solid #000; padding: 3px;"></td>
+                                    <td style="border: 1px solid #000; padding: 3px; text-align: right;"><span t-esc="'{:,.2f}'.format(sum(award.compensation_line_ids.mapped('rehab_policy_compensation')))"/></td>
+                                    <td style="border: 1px solid #000; padding: 3px; text-align: right;"><span t-esc="'{:,.2f}'.format(sum(award.compensation_line_ids.mapped('payable_compensation_amount')))"/></td>
+                                    <td style="border: 1px solid #000; padding: 3px;"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </t>
+                    <t t-if="not award or not award.compensation_line_ids or len(award.compensation_line_ids) == 0">
+                        <p class="report-paragraph" style="text-align: center; color: #999;">
+                            No compensation details available
+                        </p>
+                    </t>
+                </div>
+
+                <!-- Total Compensation Summary -->
+                <div style="margin-bottom: 20px;">
+                    <p class="report-paragraph" style="font-weight: bold; margin-bottom: 10px;">
+                        कुल मुआवजा राशि :
+                    </p>
+                    <p class="report-paragraph" style="margin-left: 20px;">
+                        रु. <span t-if="award and award.total_compensation_amount" t-esc="'{:,.2f}'.format(award.total_compensation_amount)"/><span t-if="not award or not award.total_compensation_amount">........................</span> 
+                        (<span t-if="award and award.compensation_amount_text" t-esc="award.compensation_amount_text"/><span t-if="not award or not award.compensation_amount_text">................................................</span>)
+                    </p>
+                </div>
+
+                <!-- Concluding Statement -->
+                <p class="report-paragraph" style="margin-top: 30px; font-weight: bold;">
+                    तदानुसार एतद् द्वारा अवार्ड आदेश पारित किया जाता है।
+                </p>
+
+                <!-- Signature Block -->
+                <div style="margin-top: 50px; text-align: right;">
+                    <p style="margin-bottom: 5px;">
+                        <span t-if="award and award.officer_name" t-esc="award.officer_name"/><span t-if="not award or not award.officer_name">अनुविभागीय अधिकारी (राजस्व) एवं अनुविभागीय अधिकारी (भू-अर्जन) रायगढ़</span>
+                    </p>
+                    <p style="margin-bottom: 5px;">
+                        <span t-if="award and award.district_id" t-esc="award.district_id.name"/><span t-if="not award or not award.district_id">रायगढ़</span> 
+                        दिनांक- ........................
+                    </p>
+                </div>
+
+                </div>
+            </t>
+        </t>
+    </template>
+
+</odoo>
+

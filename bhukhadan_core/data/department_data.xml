@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Sample Department Data -->
+        
+        <record id="dept_public_works" model="bhu.department">
+            <field name="name">Public Works Department</field>
+            <field name="description">Department responsible for public infrastructure projects</field>
+            <field name="head_of_department">Executive Engineer</field>
+            <field name="contact_number">+91-1234567891</field>
+            <field name="email">pwd@chhattisgarh.gov.in</field>
+            <field name="address">Public Works Department, Raigarh, Chhattisgarh</field>
+        </record>
+        
+        <record id="dept_irrigation" model="bhu.department">
+            <field name="name">Irrigation Department</field>
+            <field name="description">Department responsible for irrigation and water management projects</field>
+            <field name="head_of_department">Irrigation Engineer</field>
+            <field name="contact_number">+91-1234567892</field>
+            <field name="email">irrigation@chhattisgarh.gov.in</field>
+            <field name="address">Irrigation Department, Raigarh, Chhattisgarh</field>
+        </record>
+    </data>
+</odoo>

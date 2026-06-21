@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_bhu_payment_voucher_list" model="ir.ui.view">
+        <field name="name">bhu.payment.voucher.list</field>
+        <field name="model">bhu.payment.voucher</field>
+        <field name="arch" type="xml">
+            <list string="R&amp;R Payment Vouchers">
+                <field name="name"/>
+                <field name="award_id"/>
+                <field name="project_id"/>
+                <field name="village_id"/>
+                <field name="payment_files_status" widget="badge"
+                       decoration-warning="payment_files_status == 'pending'"
+                       decoration-success="payment_files_status == 'completed'"/>
+                <field name="state" column_invisible="1"/>
+                <field name="total_determined" sum="Total" widget="monetary" optional="show"/>
+                <field name="export_count" string="Files"/>
+                <field name="pending_account_count" string="Pending acct"/>
+                <field name="line_count" string="Lines"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_bhu_payment_voucher_line_form" model="ir.ui.view">
+        <field name="name">bhu.payment.voucher.line.form</field>
+        <field name="model">bhu.payment.voucher.line</field>
+        <field name="arch" type="xml">
+            <form string="Edit R&amp;R line" class="bhu_payment_voucher_line_form">
+                <header invisible="not is_line_locked">
+                    <button name="action_download_payment_file" type="object"
+                            string="Download payment file" class="btn-primary"
+                            icon="fa-download" invisible="not export_id"/>
+                </header>
+                <sheet>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="allow_split" invisible="1"/>
+                    <field name="is_line_locked" invisible="1"/>
+                    <field name="export_id" invisible="1"/>
+                    <field name="khasra_landowner_ids" invisible="1"/>
+                    <field name="voucher_id" invisible="1"/>
+                    <field name="landowner_id" invisible="1"/>
+                    <field name="bank_name" invisible="1"/>
+                    <field name="owner_count" invisible="1"/>
+                    <field name="payout_summary" invisible="1"/>
+                    <field name="beneficiary_address" invisible="1"/>
+                    <field name="bank_branch" invisible="1"/>
+                    <field name="rr_col8_amount" invisible="1"/>
+                    <field name="rr_col9_amount" invisible="1"/>
+
+                    <div class="bhu_pv_line_readonly_head" invisible="not is_line_locked">
+                        <div class="bhu_pv_locked_strip" role="status">
+                            <i class="fa fa-lock" title="Locked"/>
+                            Payment file generated — view only. Download from header or Payment Files tab.
+                        </div>
+                        <div class="bhu_pv_line_banner">
+                            <div class="bhu_pv_line_banner_top">
+                                <div class="bhu_pv_metric">
+                                    <span class="bhu_pv_metric_k">Serial / क्र.</span>
+                                    <field name="rr_serial" readonly="1" nolabel="1" class="bhu_pv_metric_v"/>
+                                </div>
+                                <div class="bhu_pv_metric">
+                                    <span class="bhu_pv_metric_k">Khasra / खसरा</span>
+                                    <field name="khasra_number" readonly="1" nolabel="1" class="bhu_pv_metric_v"/>
+                                </div>
+                                <div class="bhu_pv_metric">
+                                    <span class="bhu_pv_metric_k">Rakba (ha)</span>
+                                    <field name="acquired_rakba" readonly="1" nolabel="1" class="bhu_pv_metric_v"/>
+                                </div>
+                                <div class="bhu_pv_metric">
+                                    <span class="bhu_pv_metric_k">Owners</span>
+                                    <field name="owner_count" readonly="1" nolabel="1" class="bhu_pv_metric_v"/>
+                                </div>
+                            </div>
+                            <div class="bhu_pv_payable_hero">
+                                <span class="bhu_pv_metric_k">Payable (Col 8+9)</span>
+                                <field name="determined_total" widget="monetary" readonly="1" nolabel="1"
+                                       class="bhu_pv_payable_amt"/>
+                            </div>
+                            <div class="bhu_pv_line_owner_line">
+                                <field name="owner_display" readonly="1" nolabel="1"/>
+                            </div>
+                            <div class="bhu_pv_line_status_row d-flex flex-wrap align-items-center gap-2">
+                                <field name="line_status" widget="badge" readonly="1" nolabel="1"
+                                       decoration-warning="line_status == 'pending_account'"
+                                       decoration-info="line_status == 'account_added'"
+                                       decoration-success="line_status == 'file_generated'"/>
+                                <span class="bhu_pv_ro_export">
+                                    <span class="bhu_pv_line_label">File ref</span>
+                                    <field name="export_ref" readonly="1" nolabel="1" class="oe_inline"/>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <field name="line_editor_html" nolabel="1" readonly="1"
+                           widget="html" class="bhu_pv_line_editor_field"
+                           invisible="is_line_locked"/>
+                    <!-- Hidden: keeps split_ids in DB for compute / triggers -->
+                    <field name="payout_mode" invisible="1"/>
+                    <field name="bank_id" invisible="1"/>
+                    <field name="account_number" invisible="1"/>
+                    <field name="ifsc_code" invisible="1"/>
+                    <field name="split_ids" invisible="1"/>
+                    <field name="split_status_hint" invisible="1"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_bhu_payment_voucher_form" model="ir.ui.view">
+        <field name="name">bhu.payment.voucher.form</field>
+        <field name="model">bhu.payment.voucher</field>
+        <field name="arch" type="xml">
+            <form string="R&amp;R Payment Voucher" class="bhu_payment_voucher_premium bhu_s23_award_premium">
+                <sheet>
+                    <div class="bhu_pv_unified_banner">
+                        <div class="bhu_pv_banner_grid">
+                            <div class="bhu_pv_stat_card bhu_pv_stat_ref">
+                                <span class="bhu_pv_stat_lbl">Reference</span>
+                                <span class="bhu_pv_stat_val">
+                                    <field name="name" readonly="1" nolabel="1" class="bhu_pv_field"/>
+                                </span>
+                            </div>
+                            <div class="bhu_pv_stat_card bhu_pv_stat_money">
+                                <span class="bhu_pv_stat_lbl">Total payable</span>
+                                <span class="bhu_pv_stat_val">
+                                    <field name="total_determined" widget="monetary" readonly="1" nolabel="1" class="bhu_pv_field"/>
+                                </span>
+                            </div>
+                            <div class="bhu_pv_stat_card bhu_pv_stat_status">
+                                <span class="bhu_pv_stat_lbl">Payment files</span>
+                                <span class="bhu_pv_stat_val bhu_pv_status_wrap">
+                                    <field name="payment_files_status" widget="badge" readonly="1" nolabel="1"
+                                           decoration-warning="payment_files_status == 'pending'"
+                                           decoration-success="payment_files_status == 'completed'"/>
+                                    <span class="bhu_pv_progress" invisible="payment_files_status != 'pending'"
+                                          title="Khasra lines with generated payment file">
+                                        <span class="bhu_pv_progress_n">
+                                            <field name="lines_file_generated_count" readonly="1" nolabel="1" class="bhu_pv_field bhu_pv_field_num"/>
+                                        </span>
+                                        <span class="bhu_pv_progress_sep">/</span>
+                                        <span class="bhu_pv_progress_n">
+                                            <field name="line_count" readonly="1" nolabel="1" class="bhu_pv_field bhu_pv_field_num"/>
+                                        </span>
+                                        <span class="bhu_pv_progress_hint">filed</span>
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="bhu_pv_stat_card bhu_pv_stat_counts">
+                                <span class="bhu_pv_stat_lbl">Lines · Files · Pending acct</span>
+                                <span class="bhu_pv_stat_val bhu_pv_counts_val">
+                                    <field name="line_count" readonly="1" nolabel="1" class="bhu_pv_field bhu_pv_field_num"/>
+                                    <span class="bhu_pv_count_sep">·</span>
+                                    <field name="export_count" readonly="1" nolabel="1" class="bhu_pv_field bhu_pv_field_num"/>
+                                    <span class="bhu_pv_count_sep">·</span>
+                                    <field name="pending_account_count" readonly="1" nolabel="1" class="bhu_pv_field bhu_pv_field_num"/>
+                                </span>
+                            </div>
+                            <div class="bhu_pv_stat_card bhu_pv_stat_award">
+                                <span class="bhu_pv_stat_lbl">Award</span>
+                                <span class="bhu_pv_stat_val">
+                                    <field name="award_id" class="bhu_pv_field" options="{'no_create': True}" readonly="1" nolabel="1"/>
+                                </span>
+                            </div>
+                            <div class="bhu_pv_stat_card bhu_pv_stat_project">
+                                <span class="bhu_pv_stat_lbl">Project</span>
+                                <span class="bhu_pv_stat_val">
+                                    <field name="project_id" class="bhu_pv_field" readonly="1" nolabel="1"/>
+                                </span>
+                            </div>
+                            <div class="bhu_pv_stat_card bhu_pv_stat_village">
+                                <span class="bhu_pv_stat_lbl">Village</span>
+                                <span class="bhu_pv_stat_val">
+                                    <field name="village_id" class="bhu_pv_field" readonly="1" nolabel="1"/>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="bhu_pv_banner_footer">
+                            <span class="bhu_pv_debit_lbl">Debit account / डेबिट खाता</span>
+                            <field name="debit_account_number" class="bhu_pv_field bhu_pv_field_debit" nolabel="1" placeholder="Account used in bank bulk file…"/>
+                        </div>
+                    </div>
+
+                    <field name="state" invisible="1"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="payment_file_id" invisible="1"/>
+                    <field name="account_ready_count" invisible="1"/>
+                    <field name="notes" invisible="1"/>
+
+                    <details class="premium_card section-land bhu_pv_section_card" open="open">
+                        <summary class="section_banner sb_land bhu_pv_section_banner">
+                            <span class="bhu_pv_badge">R&amp;R lines</span>
+                            Khasra payout &amp; payment tracking
+                        </summary>
+                        <div class="p-2">
+                            <div class="bhu_pv_count_sources d-none" aria-hidden="true">
+                                <span class="bhu_pv_count_val" data-count-for="pending">
+                                    <field name="export_count" readonly="1" nolabel="1"/>
+                                </span>
+                            </div>
+                            <div class="bhu_pv_rr_header">
+                                <div class="bhu_pv_rr_subtabs" role="tablist">
+                                    <a href="#" role="button" class="bhu_pv_rr_tab active" data-tab="khasra"
+                                       aria-selected="true">
+                                        <i class="fa fa-list-alt me-1" aria-hidden="true"/> Khasra lines
+                                    </a>
+                                    <a href="#" role="button" class="bhu_pv_rr_tab" data-tab="pending"
+                                       aria-selected="false">
+                                        <i class="fa fa-file-excel-o me-1" aria-hidden="true"/> Payment files
+                                        <span class="bhu_pv_tab_badge" data-count-for="pending"></span>
+                                    </a>
+                                </div>
+                                <div class="bhu_pv_khasra_search_wrap">
+                                    <span class="bhu_pv_khasra_search_label">
+                                        <i class="fa fa-search" aria-hidden="true"/> खसरा
+                                    </span>
+                                    <input type="search"
+                                           class="form-control form-control-sm bhu_pv_khasra_search"
+                                           placeholder="Search khasra…"
+                                           autocomplete="off"
+                                           title="Filter rows by khasra number (e.g. 190, 190/1)"/>
+                                </div>
+                                <button name="action_generate_payment_files" type="object"
+                                        string="Generate Payment file"
+                                        class="btn btn-sm btn-success bhu_pv_generate_btn"
+                                        icon="fa-file-excel-o"
+                                        invisible="account_ready_count == 0"
+                                        title="Generate bank Excel for all Account added rows"/>
+                            </div>
+
+                            <div class="bhu_pv_rr_panel" data-tab-panel="khasra">
+                                <div class="bhu_pv_lines_preview_wrap">
+                                    <field name="lines_preview_html" nolabel="1" readonly="1"
+                                           widget="html" class="s23-embed-preview bhu_pv_lines_preview"/>
+                                </div>
+
+                                <div class="bhu_pv_o2many_triggers" aria-hidden="true">
+                                    <field name="line_ids" nolabel="1" context="{'default_voucher_id': id}">
+                                        <list string="R&amp;R lines" create="false" delete="false"
+                                              class="bhu_pv_line_triggers">
+                                            <field name="currency_id" column_invisible="1"/>
+                                            <field name="is_line_locked" column_invisible="1"/>
+                                            <field name="export_id" column_invisible="1"/>
+                                            <field name="line_status" column_invisible="1"/>
+                                            <field name="rr_serial" column_invisible="1"/>
+                                            <field name="id" column_invisible="1"/>
+                                            <button name="action_open_line_editor" type="object"
+                                                    string="Edit"
+                                                    class="bhu_pv_line_edit_trigger"
+                                                    invisible="is_line_locked"/>
+                                            <button name="action_open_line_editor" type="object"
+                                                    string="View"
+                                                    class="bhu_pv_line_view_trigger"
+                                                    invisible="not is_line_locked"/>
+                                        </list>
+                                    </field>
+                                </div>
+                            </div>
+
+                            <div class="bhu_pv_rr_panel d-none" data-tab-panel="pending">
+                                <div class="bhu_pv_pay_empty_state text-center" invisible="export_count &gt; 0">
+                                    <div class="bhu_pv_pay_empty_icon" aria-hidden="true">
+                                        <i class="fa fa-file-excel-o"/>
+                                    </div>
+                                    <p class="bhu_pv_pay_empty_title">No payment files generated yet.</p>
+                                    <p class="bhu_pv_pay_empty_hint text-muted">
+                                        Add bank details on khasra rows in <strong>Khasra lines</strong>,
+                                        then click <strong>Generate Payment file</strong>.
+                                        You can create multiple payment files from one voucher.
+                                    </p>
+                                </div>
+                                <field name="pending_payments_html" nolabel="1" readonly="1"
+                                       widget="html" class="s23-embed-preview bhu_pv_lines_preview"
+                                       invisible="export_count == 0"/>
+                            </div>
+                        </div>
+                    </details>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_bhu_payment_voucher_search" model="ir.ui.view">
+        <field name="name">bhu.payment.voucher.search</field>
+        <field name="model">bhu.payment.voucher</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="award_id"/>
+                <field name="project_id"/>
+                <field name="village_id"/>
+                <field name="payment_files_status"/>
+                <filter name="pv_pending" string="Pending" domain="[('payment_files_status', '=', 'pending')]"/>
+                <filter name="pv_completed" string="Completed" domain="[('payment_files_status', '=', 'completed')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="grp_award" string="Award" context="{'group_by': 'award_id'}"/>
+                    <filter name="grp_project" string="Project" context="{'group_by': 'project_id'}"/>
+                    <filter name="grp_village" string="Village" context="{'group_by': 'village_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_bhu_payment_voucher" model="ir.actions.act_window">
+        <field name="name">R&amp;R Payment Vouchers</field>
+        <field name="res_model">bhu.payment.voucher</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_bhu_payment_voucher_search"/>
+        <field name="context">{'create': False}</field>
+        <field name="help" type="html">
+            <p>
+                One voucher per Section 23 award. Add bank accounts row by row, then
+                <b>Generate payment file</b> from the voucher (you may create multiple bank files per voucher).
+                Payable = R&amp;R column 8 + column 9.
+            </p>
+        </field>
+    </record>
+
+    <record id="view_bhu_payment_voucher_export_list" model="ir.ui.view">
+        <field name="name">bhu.payment.voucher.export.list</field>
+        <field name="model">bhu.payment.voucher.export</field>
+        <field name="arch" type="xml">
+            <list string="Generated payment files" create="false" edit="false">
+                <field name="name"/>
+                <field name="voucher_id"/>
+                <field name="project_id" optional="show"/>
+                <field name="village_id" optional="show"/>
+                <field name="khasra_summary"/>
+                <field name="amount" sum="Total"/>
+                <field name="generation_date"/>
+                <field name="generated_file_filename" string="Excel file" optional="hide"/>
+                <field name="indusind_authorisation_ref" optional="hide"/>
+                <button name="action_download" type="object" string="Download" icon="fa-download"
+                        invisible="not generated_file"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_bhu_payment_voucher_export_form" model="ir.ui.view">
+        <field name="name">bhu.payment.voucher.export.form</field>
+        <field name="model">bhu.payment.voucher.export</field>
+        <field name="arch" type="xml">
+            <form string="Payment file" create="false" edit="false">
+                <header>
+                    <button name="action_download" type="object" string="Download Excel"
+                            class="btn-primary" icon="fa-download" invisible="not generated_file"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="voucher_id"/>
+                            <field name="award_id"/>
+                            <field name="project_id"/>
+                            <field name="village_id"/>
+                        </group>
+                        <group>
+                            <field name="amount"/>
+                            <field name="khasra_count"/>
+                            <field name="khasra_summary"/>
+                            <field name="generation_date"/>
+                            <field name="debit_account_number"/>
+                            <field name="indusind_authorisation_ref"/>
+                            <field name="indusind_authorisation_status"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_bhu_payment_voucher_export_search" model="ir.ui.view">
+        <field name="name">bhu.payment.voucher.export.search</field>
+        <field name="model">bhu.payment.voucher.export</field>
+        <field name="arch" type="xml">
+            <search string="Payment files">
+                <field name="name"/>
+                <field name="voucher_id"/>
+                <field name="project_id"/>
+                <field name="village_id"/>
+                <field name="khasra_summary"/>
+                <filter name="has_excel" string="With Excel" domain="[('generated_file', '!=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter name="grp_voucher" string="Voucher" context="{'group_by': 'voucher_id'}"/>
+                    <filter name="grp_village" string="Village" context="{'group_by': 'village_id'}"/>
+                    <filter name="grp_project" string="Project" context="{'group_by': 'project_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_bhu_payment_voucher_export" model="ir.actions.act_window">
+        <field name="name">Generated Payment Files</field>
+        <field name="res_model">bhu.payment.voucher.export</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_bhu_payment_voucher_export_search"/>
+        <field name="context">{'create': False}</field>
+        <field name="help" type="html">
+            <p>
+                Each row is one bank payment file generated from an R&amp;R payment voucher.
+                One award has one voucher; the same voucher may have several payment files.
+            </p>
+        </field>
+    </record>
+
+</odoo>

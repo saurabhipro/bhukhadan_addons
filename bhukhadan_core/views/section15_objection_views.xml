@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Custom Attachment List View with Preview Button -->
+    <record id="view_ir_attachment_tree_section15" model="ir.ui.view">
+        <field name="name">ir.attachment.list.section15</field>
+        <field name="model">ir.attachment</field>
+        <field name="arch" type="xml">
+            <list string="Attachments">
+                <field name="name"/>
+                <field name="mimetype" invisible="1"/>
+                <field name="file_size"/>
+                <field name="create_date"/>
+                <button name="action_preview_attachment" type="object" 
+                        icon="fa-eye" 
+                        string="Preview" 
+                        class="oe_link"
+                        invisible="mimetype != 'application/pdf'"
+                        title="Preview PDF"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Section 15 Objection List View -->
+    <record id="view_section15_objection_list" model="ir.ui.view">
+        <field name="name">bhu.section15.objection.list</field>
+        <field name="model">bhu.section15.objection</field>
+        <field name="arch" type="xml">
+            <list string="Section 15 Objections">
+                <field name="name" string="Objection Name"/>
+                <field name="project_id" string="Project"/>
+                <field name="village_id" string="Village"/>
+                <field name="survey_id" string="Survey (Khasra)" context="{'show_khasra': True}"/>
+                <field name="objection_date" string="Objection Date"/>
+                <field name="age_days" string="Age (Days)"/>
+                <field name="pending_with" string="Pending With" invisible="state == 'approved'"/>
+                <field name="state" widget="badge" string="Status"
+                       decoration-warning="state == 'draft'"
+                       decoration-success="state == 'approved'"
+                       decoration-danger="state == 'rejected'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Section 15 Objection Form View -->
+    <record id="view_section15_objection_form" model="ir.ui.view">
+        <field name="name">bhu.section15.objection.form</field>
+        <field name="model">bhu.section15.objection</field>
+        <field name="arch" type="xml">
+            <form string="Objection / आपत्ति" class="bhu_approved_form">
+                <field name="is_sdm" invisible="1"/>
+                <field name="is_collector" invisible="1"/>
+                <field name="is_admin" invisible="1"/>
+                <field name="is_approved_readonly" invisible="1"/>
+                <field name="can_sdm_edit" invisible="1"/>
+                <field name="can_collector_edit" invisible="1"/>
+                <div class="row">
+                    <div class="col">
+                        <button name="action_approve" string="Approve / स्वीकृत करें" type="object" class="btn-success" icon="fa-check" style="background-color: #28a745 !important; border-color: #28a745 !important; color: white !important;" groups="bhukhadan_core.group_bhuarjan_sdm,bhukhadan_core.group_bhuarjan_admin" invisible="not survey_id or state != 'draft'" confirm="Are you sure want to approve this objection?"/>
+                        <button name="action_open_reject_wizard" string="Reject Survey / अस्वीकार करें" type="object" class="btn-danger" icon="fa-times-circle" style="background-color: #dc3545 !important; border-color: #dc3545 !important; color: white !important;" groups="bhukhadan_core.group_bhuarjan_department_user,bhukhadan_core.group_bhuarjan_sdm,bhukhadan_core.group_bhuarjan_admin" invisible="not survey_id or state != 'draft'"/>
+                    </div>
+                    <div class="col"  style="text-align:right;">
+                        <field name="state" widget="statusbar" statusbar_visible="draft,approved,rejected" options="{'clickable': True}" groups="bhukhadan_core.group_bhuarjan_sdm,bhukhadan_core.group_bhuarjan_admin"/>
+                    </div>
+                </div>
+                <sheet>
+                    <widget name="web_ribbon" title="Approved" bg_color="text-bg-success" invisible="state != 'approved'"/>
+                    <div class="oe_title" style="margin-bottom: 10px; padding-bottom: 8px;">
+                        <h1 style="font-size: 28px; font-weight: 700; color: #8B4513; margin: 0;">
+                            <i class="fa fa-exclamation-triangle" title="Warning" style="margin-right: 10px;"></i>Section 15 Objection / धारा 15 आपत्ति
+                        </h1>
+                    </div>
+                    <div invisible="not project_id or not village_id" class="mt-2 mb-3 p-2 rounded w-100" style="background-color: #e9ecef; border-left: 4px solid #8B4513; color: #495057;">
+                         <i class="fa fa-info-circle me-1"></i>
+                         Creating Section 15 Objection for Village <field name="village_id" readonly="1" options="{'no_open': True}" class="fw-bold" style="color: #8B4513;"/>
+                    </div>
+
+                    <group>
+                        <field name="pending_with" string="Pending With / लंबित" readonly="1" invisible="1"/>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="name" readonly="1" invisible="1"/>
+                            <field name="project_id" required="1" invisible="1"
+                                   readonly="state in ('approved', 'rejected')"/>
+                            <field name="village_id" required="1" domain="village_domain" options="{'no_create': True, 'no_open': True}" invisible="1"
+                                   readonly="state in ('approved', 'rejected')"/>
+                            <field name="available_survey_ids" invisible="1"/>
+                            <field name="survey_id" string="Survey (Khasra) / सर्वे (खसरा)" required="1"
+                                   readonly="state in ('approved', 'rejected')"
+                                   domain="[('id', 'in', available_survey_ids)]"
+                                   options="{'no_create': True, 'no_open': True}"
+                                   context="{'show_khasra': True}"
+                                   placeholder="Select a khasra number from this village..."/>
+                        </group>
+                        <group>
+                            <field name="objection_date" required="1"
+                                   readonly="state in ('approved', 'rejected')"/>
+                        </group>
+                    </group>
+                    
+                    <!-- Inline Survey Edit Section -->
+                    <div invisible="not survey_id">
+                        <separator string="Edit Survey Details / सर्वे विवरण संपादित करें"/>
+                        
+
+                        
+                        <style>
+                            /* Both table headers - Brown with White Text */
+                            .o_field_widget[name="resolution_landowner_ids"] .o_list_view thead th,
+                            .o_field_widget[name="resolution_khasra_ids"] .o_list_view thead th {
+                                background: linear-gradient(to bottom, #8B4513, #A0522D) !important;
+                                color: white !important;
+                                font-weight: bold !important;
+                                border: 1px solid #7a3d0f !important;
+                            }
+                            /* Ensure text in headers is white */
+                            .o_field_widget[name="resolution_landowner_ids"] .o_list_view thead th *,
+                            .o_field_widget[name="resolution_khasra_ids"] .o_list_view thead th * {
+                                color: white !important;
+                            }
+                            
+                            .o_field_widget[name="resolution_landowner_ids"] .o_list_view tbody tr:hover,
+                            .o_field_widget[name="resolution_khasra_ids"] .o_list_view tbody tr:hover {
+                                background-color: #f5e0d5 !important;
+                            }
+                        </style>
+                        
+                        
+                        <notebook>
+                            <page string="भूमिस्वामी विवरण (Landowner Details)" name="landowner_details">
+                                <field name="resolution_landowner_ids"
+                                       readonly="state in ('approved', 'rejected')"
+                                       widget="many2many"
+                                       mode="tree,form"
+                                       domain="[('village_id', '=', village_id)]"
+                                       nolabel="1"
+                                       options="{'create_text': 'Add Landowner', 'no_quick_create': False}"
+                                       context="{'default_village_id': village_id.id if village_id else False, 'form_view_ref': 'bhukhadan_core.view_landowner_form', 'list_view_ref': 'bhukhadan_core.view_section15_landowner_tree', 'show_khasra': True}"/>
+                            </page>
+                            
+                            <page string="खसरा क्षेत्रफल (Khasra Area)" name="khasra_area">
+                                <field name="resolution_khasra_ids" 
+                                       readonly="state in ('approved', 'rejected')"
+                                       nolabel="1"
+                                       options="{'no_create': True}"
+                                       context="{'default_objection_id': id, 'default_survey_id': survey_id.id if survey_id else False, 'show_khasra': True}">
+                                    <list string="Khasra Area Details" decoration-info="resolved_acquired_area &lt; original_acquired_area" editable="bottom" create="0">
+                                        <field name="objection_id" column_invisible="1"/>
+                                        <field name="survey_id" readonly="1" options="{'no_create': True, 'no_open': True}" required="1" context="{'show_khasra': True}" string="Survey"/>
+                                        <field name="khasra_number" readonly="1" string="Khasra"/>
+                                        <field name="original_acquired_area" readonly="1" widget="float" string="Original Area"/>
+                                        <field name="resolved_acquired_area" widget="float" string="New Area"/>
+                                        <button name="action_open_reject_wizard" type="object" icon="fa-times-circle" class="btn-danger" title="Reject Survey / सर्वे अस्वीकार करें" confirm="This will create and save the objection. Do you want to proceed? / यह आपत्ति बनाएगा और सहेजेगा। क्या आप आगे बढ़ना चाहते हैं?"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+
+                        <group>
+                            <group string="आपत्ति (Objection)">
+                                <field name="objection_comments" 
+                                       readonly="state in ('approved', 'rejected')"
+                                       nolabel="1"
+                                       placeholder="यहाँ अपनी आपत्ति लिखें... (Enter your objection here...)"/>
+                            </group>
+                            
+                            <group string="निराकरण (Resolution)">
+                                <field name="resolution_comments" 
+                                       readonly="state in ('approved', 'rejected')"
+                                       nolabel="1"
+                                       placeholder="यहाँ निराकरण लिखें... (Enter resolution here...)"/>
+                            </group>
+                        </group>
+                    </div>
+
+                    <style>
+                        .custom-btn-success {
+                            background-color: #28a745 !important;
+                            border-color: #28a745 !important;
+                            color: white !important;
+                            border-radius: 5px !important;
+                            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                            font-weight: 600;
+                            transition: all 0.2s;
+                        }
+                        .custom-btn-success:hover {
+                            background-color: #218838 !important;
+                            transform: translateY(-1px);
+                            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+                        }
+                        .custom-btn-danger {
+                            background-color: #dc3545 !important;
+                            border-color: #dc3545 !important;
+                            color: white !important;
+                            border-radius: 5px !important;
+                            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                            font-weight: 600;
+                            transition: all 0.2s;
+                        }
+                        .custom-btn-danger:hover {
+                            background-color: #c82333 !important;
+                            transform: translateY(-1px);
+                            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+                        }
+                    </style>
+
+                    
+
+                </sheet>
+                <chatter groups="bhukhadan_core.group_bhuarjan_sdm,bhukhadan_core.group_bhuarjan_collector,bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Section 15 Objection Search View -->
+    <record id="view_section15_objection_search" model="ir.ui.view">
+        <field name="name">bhu.section15.objection.search</field>
+        <field name="model">bhu.section15.objection</field>
+        <field name="arch" type="xml">
+            <search string="Search Objections">
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="village_id"/>
+                <field name="survey_id"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Submitted" name="submitted" domain="[('state', '=', 'submitted')]"/>
+                <filter string="Approved" name="approved" domain="[('state', '=', 'approved')]"/>
+                <filter string="Sent Back" name="send_back" domain="[('state', '=', 'send_back')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Project" name="group_project" context="{'group_by': 'project_id'}"/>
+                    <filter string="Village" name="group_village" context="{'group_by': 'village_id'}"/>
+                    <filter string="Status" name="group_status" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Section 15 Objection Khasra List View -->
+    <record id="view_section15_objection_khasra_tree" model="ir.ui.view">
+        <field name="name">bhu.section15.objection.khasra.list</field>
+        <field name="model">bhu.section15.objection.khasra</field>
+        <field name="arch" type="xml">
+            <list string="Khasra Area Details" decoration-info="resolved_acquired_area &lt; original_acquired_area" editable="bottom" create="0">
+                <field name="objection_id" column_invisible="1"/>
+                <field name="survey_id" readonly="1" options="{'no_create': True, 'no_open': True}" required="1" context="{'show_khasra': True}" string="Survey"/>
+                <field name="khasra_number" readonly="1" string="Khasra"/>
+                <field name="original_acquired_area" readonly="1" widget="float" string="Original Area"/>
+                <field name="resolved_acquired_area" widget="float" string="New Area"/>
+                <button name="action_open_reject_wizard" type="object" icon="fa-times-circle" class="btn-danger" title="Reject Survey / सर्वे अस्वीकार करें" groups="bhukhadan_core.group_bhuarjan_sdm,bhukhadan_core.group_bhuarjan_admin"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Section 15 Landowner List View (English Headers, No Aadhar/PAN) -->
+    <record id="view_section15_landowner_tree" model="ir.ui.view">
+        <field name="name">bhu.section15.landowner.list</field>
+        <field name="model">bhu.landowner</field>
+        <field name="arch" type="xml">
+            <list string="Landowners">
+                <field name="name" string="Full Name"/>
+                <field name="company_id" string="Company"/>
+                <field name="father_name" string="Father's Name"/>
+                <field name="village_id" string="Village"/>
+                <field name="tehsil_id" string="Tehsil"/>
+                <field name="district_id" string="District"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Section 15 Objection Khasra Form View -->
+    <record id="view_section15_objection_khasra_form" model="ir.ui.view">
+        <field name="name">bhu.section15.objection.khasra.form</field>
+        <field name="model">bhu.section15.objection.khasra</field>
+        <field name="arch" type="xml">
+            <form string="Khasra Resolution Changes / खसरा समाधान परिवर्तन">
+                <sheet>
+                    <group>
+                        <field name="objection_id" invisible="1"/>
+                        <field name="survey_id" readonly="1" options="{'no_create': True, 'no_open': True}" required="1" context="{'show_khasra': True}"/>
+                        <field name="khasra_number" readonly="1"/>
+                        <field name="original_acquired_area" readonly="1" widget="float"/>
+                        <field name="resolved_acquired_area" widget="float"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Update Section 15 Objection Action -->
+    <record id="action_section15_objections" model="ir.actions.act_window">
+        <field name="name">Section 15 Objections</field>
+        <field name="res_model">bhu.section15.objection</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_section15_objection_search"/>
+    </record>
+</odoo>

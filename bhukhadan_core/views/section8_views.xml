@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Section 8 List View -->
+    <record id="view_section8_list" model="ir.ui.view">
+        <field name="name">bhu.section8.list</field>
+        <field name="model">bhu.section8</field>
+        <field name="arch" type="xml">
+            <list string="Section 8">
+                <field name="order_kramank" string="आदेश क्रमांक"/>
+                <field name="department_id" string="Department"/>
+                <field name="project_id" string="Project"/>
+                <field name="is_satisfied" string="Satisfied"/>
+                <field name="state" widget="badge" string="Status"
+                       decoration-danger="state == 'rejected'"
+                       decoration-warning="state == 'draft'"
+                       decoration-success="state == 'approved'"/>
+                <field name="approval_date" string="Approval Date"/>
+                <field name="rejection_date" string="Rejection Date"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Section 8 Form View -->
+    <record id="view_section8_form" model="ir.ui.view">
+        <field name="name">bhu.section8.form</field>
+        <field name="model">bhu.section8</field>
+        <field name="arch" type="xml">
+            <form string="Section 8 / धारा 8">
+                <header>
+                    <button name="action_approve" string="Approve / अनुमोदित करें" type="object" 
+                            class="btn-primary" icon="fa-check"
+                            invisible="state == 'approved' or is_sdm_user"/>
+                    <button name="action_reject" string="Reject / अस्वीकृत करें" type="object" 
+                            class="btn-secondary" icon="fa-times"
+                            invisible="state == 'rejected' or is_sdm_user"/>
+                </header>
+                <sheet>
+                    <div class="oe_title" style="margin-bottom: 10px; padding-bottom: 8px;">
+                        <h1 style="font-size: 28px; font-weight: 700; color: #8B4513; margin: 0;">
+                            <i class="fa fa-file-text-o" style="margin-right: 10px;"></i>Section 8 / धारा 8
+                        </h1>
+                    </div>
+                    
+                    <div invisible="not project_id" class="mt-2 mb-3 p-2 rounded w-100" style="background-color: #e9ecef; border-left: 4px solid #8B4513; color: #495057; clear: both;">
+                         <i class="fa fa-info-circle me-1"></i>
+                         Creating Section 8 for Project <field name="project_id" readonly="1" options="{'no_open': True}" class="fw-bold" style="color: #8B4513;"/>
+                    </div>
+                    <group>
+                        <group string="References / संदर्भ">
+                            <!-- Official क्रमांक on PDF; editable by all users who may edit this form -->
+                            <field name="order_kramank"
+                                   placeholder="उदाहरण: LAND-43/214/2026-COLL RGH BHUKHADAN SEC"/>
+                            <!-- Internal sequence ref kept for backend only (not shown) -->
+                            <field name="name" invisible="1"/>
+                            <field name="village_domain" invisible="1"/>
+                            <field name="project_domain" invisible="1"/>
+                            <field name="is_sdm_user" invisible="1"/>
+                            <field name="department_id" options="{'no_create': True, 'no_create_edit': True}" 
+                                   readonly="1"/>
+                            <field name="project_id" domain="project_domain or [('id', 'in', [])]" 
+                                   options="{'no_create': True, 'no_create_edit': True}"
+                                   readonly="1" force_save="1"/>
+                        </group>
+                    </group>
+                    
+                    <!-- Section 8 order PDF (QWeb) -->
+                    <group string="Section 8 Order PDF / धारा 8 आदेश (PDF)">
+                        <button name="%(bhukhadan_core.action_report_section8_order)d" type="action"
+                                string="Download Section 8 Order (PDF)" class="btn-secondary" icon="fa-file-pdf-o"
+                                title="Generate Section 8 order PDF from database fields"
+                                invisible="not project_id"
+                                colspan="2"/>
+                    </group>
+
+                    <!-- Download Buttons for SIA and Expert Reports -->
+                    <group string="SIA / Expert Team Report / SIA / विशेषज्ञ समिति रिपोर्ट">
+                        <group col="2">
+                            <button name="action_download_sia_report" 
+                                    string="Download SIA Team Report" type="object" 
+                                    class="btn-primary" icon="fa-download"
+                                    title="Download SIA Report"
+                                    invisible="not project_id"
+                                    style="width: 100%;"/>
+                            <button name="action_download_expert_report" 
+                                    string="Download Expert Group Report" type="object" 
+                                    class="btn-primary" icon="fa-download"
+                                    title="Download Expert Committee Report"
+                                    invisible="not project_id"
+                                    style="width: 100%;"/>
+                        </group>
+                    </group>
+                    
+                    <group string="Satisfaction / संतुष्टि">
+                        <field name="is_satisfied" widget="radio"/>
+                        <field name="dissatisfaction_reason" 
+                               invisible="is_satisfied != 'no'"
+                               placeholder="Enter reason for dissatisfaction..."/>
+                    </group>
+                    <group string="Attachment / अनुलग्नक">
+                        <field name="attachment_file" filename="attachment_filename"
+                               readonly="is_sdm_user"/>
+                        <field name="attachment_filename" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="notes" placeholder="Enter any additional notes..."
+                               readonly="is_sdm_user"/>
+                    </group>
+                    <group string="Rejection Details" invisible="state != 'rejected'">
+                        <field name="rejection_reason" required="state == 'rejected'"/>
+                        <field name="rejection_date" readonly="1"/>
+                    </group>
+                    <group string="Approval Details" invisible="state != 'approved'">
+                        <field name="approval_date" readonly="1"/>
+                        <field name="approval_reason" readonly="1"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Section 8 Search View -->
+    <record id="view_section8_search" model="ir.ui.view">
+        <field name="name">bhu.section8.search</field>
+        <field name="model">bhu.section8</field>
+        <field name="arch" type="xml">
+            <search string="Section 8">
+                <field name="order_kramank"/>
+                <field name="department_id"/>
+                <field name="project_id"/>
+                <field name="is_satisfied"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Approved" name="approved" domain="[('state', '=', 'approved')]"/>
+                <filter string="Rejected" name="rejected" domain="[('state', '=', 'rejected')]"/>
+                <filter string="Satisfied" name="satisfied" domain="[('is_satisfied', '=', 'yes')]"/>
+                <filter string="Not Satisfied" name="not_satisfied" domain="[('is_satisfied', '=', 'no')]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Section 8 Action -->
+    <record id="action_section8" model="ir.actions.act_window">
+        <field name="name">Section 8</field>
+        <field name="res_model">bhu.section8</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{}</field>
+        <field name="search_view_id" ref="view_section8_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Section 8
+            </p>
+        </field>
+    </record>
+</odoo>

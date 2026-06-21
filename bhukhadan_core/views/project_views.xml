@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- list View -->
+    <record id="view_bhu_project_list" model="ir.ui.view">
+        <field name="name">bhu.project.list</field>
+        <field name="model">bhu.project</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="department_id" string="Department"/>
+                <field name="name" string="Project Name"/>
+                <field name="district_id" string="District"/>
+                <field name="code" string="Project Code"/>
+                <field name="village_count" string="Village count"/>
+                <field name="law_master_id" string="Act Name"/>
+                <field name="sia_exempt_display" string="SIA Exempt" widget="badge" 
+                       decoration-success="sia_exempt_display == 'Yes'" 
+                       decoration-danger="sia_exempt_display == 'No'"/>
+                <field name="displacement_display" string="Displacement" widget="badge" 
+                       decoration-success="displacement_display == 'Yes'" 
+                       decoration-danger="displacement_display == 'No'"/>
+                <field name="sub_division_id" widget="many2many_tags" string="Sub Division" options="{'no_create_edit': True}"/>
+                <field name="sub_division_sdm_ids" widget="many2many_tags" string="SDM" optional="show" options="{'no_create_edit': True}"/>
+                <field name="tehsildar_ids" widget="many2many_tags" string="Tehsildar" options="{'no_create_edit': True}"/>
+                <field name="state" string="Status" widget="badge" 
+                       decoration-success="state == 'active'"
+                       decoration-info="state == 'draft'"
+                       decoration-warning="state == 'completed'"
+                       decoration-danger="state == 'cancelled'"/>
+                <field name="pipeline_stage_indicator" string="Stages" widget="bhu_project_stage"
+                       options="{'list_compact': true}"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_bhu_project_search" model="ir.ui.view">
+        <field name="name">bhu.project.search</field>
+        <field name="model">bhu.project</field>
+        <field name="arch" type="xml">
+            <search string="Search Projects">
+                <field name="name" string="Project Name"/>
+                <field name="department_id" string="Department"/>
+                <field name="code" string="Project Code"/>
+                <field name="sub_division_id" string="Sub Division"/>
+                <field name="law_master_id" string="Act Name"/>
+                <separator/>
+                <filter name="active_projects" string="Active" domain="[('state', '=', 'active')]"/>
+                <filter name="draft_projects" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <filter name="completed_projects" string="Completed" domain="[('state', '=', 'completed')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_department" string="Department" context="{'group_by': 'department_id'}"/>
+                    <filter name="group_district" string="District" context="{'group_by': 'district_id'}"/>
+                    <filter name="group_sub_division" string="Sub Division" context="{'group_by': 'sub_division_id'}"/>
+                    <filter name="group_status" string="Status" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_bhu_project_form" model="ir.ui.view">
+        <field name="name">bhu.project.form</field>
+        <field name="model">bhu.project</field>
+        <field name="arch" type="xml">
+            <form>
+                
+                <div class="row">
+                        <div class="col">
+                            <button name="action_set_active" string="Set to Active" type="object" class="oe_highlight" invisible="state == 'active'"/>
+                            <button name="action_set_completed" string="Set to Completed" type="object" class="oe_highlight" invisible="state == 'completed'"/>
+                            <button name="action_set_cancelled" string="Set to Cancelled" type="object" invisible="state == 'cancelled'"/>
+                            <button name="action_set_draft" string="Set to Draft" type="object" invisible="state == 'draft'"/>
+                        </div>
+                        <div class="col" style="text-align: right;">
+                            <field name="state" widget="statusbar" statusbar_visible="draft,active,completed,cancelled"/>
+                        </div>
+                    </div>
+
+                    
+
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+
+                        <button name="action_view_tehsils"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-map-marker">
+
+                            <field name="tehsil_count"
+                                string="Tehsils"
+                                widget="statinfo"/>
+                        </button>
+
+                        <button name="action_view_villages"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-map-marker">
+
+                            <field name="village_count"
+                                string="Villages"
+                                widget="statinfo"/>
+                        </button>
+
+                        <button name="action_view_sdm"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-users">
+
+                            <field name="sdm_count"
+                                string="SDM"
+                                widget="statinfo"/>
+                        </button>
+
+                        <button name="action_view_tehsildar"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-users">
+
+                            <field name="tehsildar_count"
+                                string="Tehsildar"
+                                widget="statinfo"/>
+                        </button>
+
+                        <button name="action_view_patwari"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-users">
+
+                            <field name="patwari_count"
+                                string="Patwari"
+                                widget="statinfo"/>
+                        </button>
+
+                        <button name="action_view_surveys"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-list-alt">
+
+                            <field name="survey_count"
+                                string="Surveys"
+                                widget="statinfo"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1><field name="name" placeholder="Project Name..."/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="sdm_domain_json" invisible="1"/>
+                            <field name="tehsil_domain_json" invisible="1"/>
+                            <field name="village_domain_json" invisible="1"/>
+                            <field name="tehsildar_domain_json" invisible="1"/>
+                            <field name="code"/>
+                            <field name="department_id"/>
+                            <field name="district_id"/>
+                            <field name="sub_division_id" domain="[('district_id', '=', district_id)]" widget="many2many_tags"/>
+                            <field name="law_master_id" options="{'no_create': False}"/>
+                            <field name="project_uuid" invisible="1"/>
+                            <field name="id" invisible="1"/>
+                            <button name="action_regenerate_uuid" type="object" string="Regenerate UUID" class="oe_link" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="is_sia_exempt" widget="boolean_toggle"/>
+                            <field name="is_displacement" widget="boolean_toggle"/>
+                            
+                            <!-- Counts shown directly here if displacement is involved -->
+                            <field name="affected_families_count" 
+                                   invisible="not is_displacement"/>
+                            <field name="affected_persons_count" 
+                                   invisible="not is_displacement"/>
+                        </group>
+                    </group>
+                    
+                    <!-- Rehabilitation Allocation Section -->
+                    <group string="Rehabilitation Allocation Details" invisible="not is_displacement">
+                        <group>
+                            <field name="allocated_village" placeholder="Allocated Village"/>
+                            <field name="allocated_tehsil" placeholder="Allocated Tehsil"/>
+                            <field name="allocated_district" placeholder="Allocated District"/>
+                        </group>
+                        <group>
+                            <field name="allocated_khasra_number" placeholder="Allocated Khasra"/>
+                            <field name="allocated_area_hectares" placeholder="0.0000"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Project Details / परियोजना विवरण">
+                            <group>
+                                <group string="(1) Number of Directly Affected Families / प्रत्यक्ष रूप से प्रभावित परिवारों की संख्या">
+                                    <field name="directly_affected" nolabel="1"/>
+                                </group>
+                                <group string="(2) Number of Indirectly Affected Families / अप्रत्यक्ष रूप से प्रभावित परिवारों की संख्या">
+                                    <field name="indirectly_affected" nolabel="1"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group string="(3) Estimated Number of Private Houses and Other Assets / निजी मकानों और अन्य संपत्तियों की अनुमानित संख्या">
+                                    <field name="private_assets" nolabel="1"/>
+                                </group>
+                                <group string="(4) Estimated Number of Government Houses and Other Assets / सरकारी मकानों और अन्य संपत्तियों की अनुमानित संख्या">
+                                    <field name="government_assets" nolabel="1"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group string="(5) Total Cost of the Project / परियोजना की कुल लागत">
+                                    <field name="total_cost" nolabel="1"/>
+                                </group>
+                                <group string="(6) Benefits from the Project / परियोजना से लाभ">
+                                    <field name="project_benefits" widget="text" nolabel="1"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group string="(7) Measures for Compensation and Likely Expenditure / मुआवजे के उपाय और संभावित व्यय">
+                                    <field name="compensation_measures" widget="text" nolabel="1"/>
+                                </group>
+                                <group string="(8) Other Components Affected by the Project / परियोजना से प्रभावित अन्य घटक">
+                                    <field name="other_components" widget="text" nolabel="1"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group string="(9) Land Map Inspection / भूमि मानचित्र निरीक्षण">
+                                    <field name="map_inspection_location" nolabel="1"/>
+                                </group>
+                                <group string="(10) Officer authorized by Section 12 / धारा 12 द्वारा प्राधिकृत अधिकारी">
+                                    <field name="authorized_officer" nolabel="1"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group string="(11) Rehabilitation Administrator / पुनर्वास प्रशासक">
+                                    <field name="rehab_admin_name" nolabel="1"/>
+                                </group>
+                                <group string="(13) Section 5 Text / धारा 5 पाठ">
+                                    <field name="section5_text_type" nolabel="1"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Sub Division">
+                            <field name="sub_division_id" readonly="1" domain="[('district_id', '=', district_id)]"/>
+
+                        </page>
+                        <!-- <page string="SDM / उप-विभागीय मजिस्ट्रेट">
+                            <field name="sdm_ids" nolabel="1" 
+                                readonly="1"
+                                domain="sdm_domain_json" 
+                                options="{'no_create_edit': True, 'no_create': True}">
+                                <list create="0">
+                                    <field name="name"/>
+                                    <field name="login"/>
+                                    <field name="mobile"/>
+                                    <field name="bhuarjan_role"/>
+                                </list>
+                            </field>
+                        </page> -->
+                        <page string="Tehsil / तहसील">
+                            <field name="tehsil_ids" nolabel="1" 
+                                readonly="0" 
+                                domain="tehsil_domain_json" 
+                                options="{'no_create_edit':'True', 'no_create': True}">
+                                <list create="0" string="Tehsils / तहसील">
+                                    <field name="name"/>
+                                    <field name="sub_division_id"/>
+                                    <field name="district_id"/>
+                                    <field name="state_id"/>
+                                    <field name="user_id" string="Tehsildar / तहसीलदार"/>
+                                </list>
+                            </field>
+                        </page>
+                         <!-- <page string="Tehsildar / तहसीलदार">
+                            <field name="tehsildar_ids" nolabel="1"
+                                    readonly="1"    
+                                    domain="tehsildar_domain_json"
+                                    options="{'no_create_edit': True, 'no_create': True}">
+                                <list create="0">
+                                    <field name="name"/>
+                                    <field name="login"/>
+                                    <field name="mobile"/>
+                                    <field name="bhuarjan_role"/>
+                                </list>
+                            </field>
+                        </page> -->
+                        <page string="Villages / ग्राम">
+                            <field mode="list" 
+                                name="village_ids" 
+                                nolabel="1" 
+                                domain="village_domain_json" 
+                                options="{'no_create_edit': True, 'no_create': True}" readonly="0">
+                                <list string="Villages / ग्राम" create="0" delete="1">
+                                    <field name="village_code" string="Village Code"/>
+                                    <field name="name" string="Village Name"/>
+                                    <field name="village_type" string="Type"
+                                        decoration-info="village_type == 'urban'"
+                                        decoration-muted="village_type == 'rural'"/>
+                                    <field name="urban_body_type" string="Urban Body" optional="hide"/>
+                                    <field name="state_id" string="State"/>
+                                    <field name="district_id" string="District"/>
+                                    <field name="sub_division_id" string="Sub Division"/>
+                                    <field name="tehsil_id" string="Tehsil"/>
+                                    <field name="pincode" string="Pincode" optional="hide"/>
+                                    <field name="user_id" string="Patwari"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Patwaris / पटवारी">
+                            <field name="is_patwari_editable" invisible="1"/>
+                            <field name="patwari_ids" nolabel="1"
+                                   options="{'no_create_edit': True, 'no_create': True}"
+                                   readonly="1"
+                                   context="{'default_project_id': id, 'active_model': 'bhu.project', 'active_id': id}">
+                                <list create="0">
+                                    <field name="name"/>
+                                    <field name="login"/>
+                                    <field name="mobile"/>
+                                    <field name="bhuarjan_role"/>
+                                    <button name="action_view_surveys_in_project" 
+                                            type="object"
+                                            string="Surveys"
+                                            icon="fa-list-alt"
+                                            class="oe_stat_button"
+                                            context="{'default_project_id': parent.id, 'active_id': parent.id, 'active_model': 'bhu.project', 'compute_survey_count': True}">
+                                        <field name="survey_count_in_project" widget="statinfo" string="Surveys" options="{'no_open': True}"/>
+                                    </button>
+                                </list>
+                            </field>
+                        </page>                        
+                        <page string="Map View / मानचित्र दृश्य">
+                            <group>
+                                <field name="kml_filename" invisible="1"/>
+                                <field name="kml_file" filename="kml_filename" widget="binary"
+                                       options="{'accepted_file_extensions': '.kml, .kmz'}"
+                                       string="Upload KML/KMZ File / KML/KMZ अपलोड करें"/>
+                            </group>
+                            <!-- Full-width map viewer — no Odoo column constraints -->
+                            <div invisible="not kml_file"
+                                 style="margin: 8px -16px 0 -16px; width: calc(100% + 32px); display: block;">
+                                <field name="kml_file" widget="kml_viewer" nolabel="1"/>
+                            </div>
+                        </page>
+                        
+                    </notebook>
+                </sheet>
+                <chatter groups="bhukhadan_core.group_bhuarjan_ri,bhukhadan_core.group_bhuarjan_nayab_tahsildar,bhukhadan_core.group_bhuarjan_tahsildar,bhukhadan_core.group_bhuarjan_sdm,bhukhadan_core.group_bhuarjan_additional_collector,bhukhadan_core.group_bhuarjan_collector,bhukhadan_core.group_bhuarjan_admin"/>
+
+            </form>
+        </field>
+    </record>
+
+    <!-- Project Graph View -->
+    <record id="view_bhu_project_graph" model="ir.ui.view">
+        <field name="name">bhu.project.graph</field>
+        <field name="model">bhu.project</field>
+        <field name="arch" type="xml">
+            <graph string="Projects Analysis" type="bar" sample="1">
+                <field name="district_id"/>
+                <field name="total_cost" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Project Pivot View -->
+    <record id="view_bhu_project_pivot" model="ir.ui.view">
+        <field name="name">bhu.project.pivot</field>
+        <field name="model">bhu.project</field>
+        <field name="arch" type="xml">
+            <pivot string="Projects Analysis" sample="1">
+                <field name="district_id" type="row"/>
+                <field name="department_id" type="col"/>
+                <field name="total_cost" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_bhu_project" model="ir.actions.act_window">
+        <field name="name">Projects</field>
+        <field name="res_model">bhu.project</field>
+        <field name="view_mode">list,graph,pivot,form</field>
+        <field name="search_view_id" ref="view_bhu_project_search"/>
+    </record>
+</odoo>
