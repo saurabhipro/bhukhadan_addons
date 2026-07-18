@@ -54,7 +54,7 @@
                                    options="{'no_create':True,'no_create_edit':True,'no_open':True}"
                                    readonly="is_district_readonly"/>
                             <field name="user_id" string="Department User"
-                                   domain="[('bhuarjan_role', '=', 'department_user')]"
+                                   domain="[('bhuarjan_role', 'in', ['staff_officer_pp', 'staff_officer_hr', 'staff_officer_civil'])]"
                                    options="{'no_create_edit': True, 'no_create': True}"/>
                             <field name="contact_number" string="Contact Number"/>
                             <field name="email" string="Email" widget="email"/>

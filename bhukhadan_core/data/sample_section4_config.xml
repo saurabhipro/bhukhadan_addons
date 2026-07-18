@@ -47,10 +47,7 @@
             <field name="age">29</field>
             <field name="gender">male</field>
             <field name="village_id" ref="jurda_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789020</field>
-            <field name="pan_number">ABCDE1242F</field>
             <field name="phone">9876543218</field>
             <field name="bank_name">Indian Bank</field>
             <field name="account_number">123456789012353</field>
@@ -63,10 +60,7 @@
             <field name="age">36</field>
             <field name="gender">female</field>
             <field name="village_id" ref="jurda_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789021</field>
-            <field name="pan_number">ABCDE1243F</field>
             <field name="phone">9876543219</field>
             <field name="bank_name">Bank of Baroda</field>
             <field name="account_number">123456789012354</field>
@@ -79,10 +73,7 @@
             <field name="age">44</field>
             <field name="gender">male</field>
             <field name="village_id" ref="jurda_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789022</field>
-            <field name="pan_number">ABCDE1244F</field>
             <field name="phone">9876543220</field>
             <field name="bank_name">Central Bank of India</field>
             <field name="account_number">123456789012355</field>
@@ -95,10 +86,7 @@
             <field name="age">39</field>
             <field name="gender">female</field>
             <field name="village_id" ref="jurda_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789023</field>
-            <field name="pan_number">ABCDE1245F</field>
             <field name="phone">9876543221</field>
             <field name="bank_name">Indian Overseas Bank</field>
             <field name="account_number">123456789012356</field>
@@ -111,10 +99,7 @@
             <field name="age">31</field>
             <field name="gender">male</field>
             <field name="village_id" ref="jurda_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789024</field>
-            <field name="pan_number">ABCDE1246F</field>
             <field name="phone">9876543222</field>
             <field name="bank_name">Oriental Bank of Commerce</field>
             <field name="account_number">123456789012357</field>
@@ -127,10 +112,7 @@
             <field name="age">27</field>
             <field name="gender">female</field>
             <field name="village_id" ref="jurda_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789025</field>
-            <field name="pan_number">ABCDE1247F</field>
             <field name="phone">9876543223</field>
             <field name="bank_name">Syndicate Bank</field>
             <field name="account_number">123456789012358</field>
@@ -143,10 +125,7 @@
             <field name="age">41</field>
             <field name="gender">male</field>
             <field name="village_id" ref="jurda_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789026</field>
-            <field name="pan_number">ABCDE1248F</field>
             <field name="phone">9876543224</field>
             <field name="bank_name">UCO Bank</field>
             <field name="account_number">123456789012359</field>
@@ -160,10 +139,7 @@
             <field name="age">46</field>
             <field name="gender">male</field>
             <field name="village_id" ref="pandripani_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789027</field>
-            <field name="pan_number">ABCDE1249F</field>
             <field name="phone">9876543225</field>
             <field name="bank_name">State Bank of India</field>
             <field name="account_number">123456789012360</field>
@@ -176,10 +152,7 @@
             <field name="age">43</field>
             <field name="gender">female</field>
             <field name="village_id" ref="pandripani_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789028</field>
-            <field name="pan_number">ABCDE1250F</field>
             <field name="phone">9876543226</field>
             <field name="bank_name">Punjab National Bank</field>
             <field name="account_number">123456789012361</field>
@@ -192,10 +165,7 @@
             <field name="age">50</field>
             <field name="gender">male</field>
             <field name="village_id" ref="pandripani_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789029</field>
-            <field name="pan_number">ABCDE1251F</field>
             <field name="phone">9876543227</field>
             <field name="bank_name">Bank of India</field>
             <field name="account_number">123456789012362</field>
@@ -208,10 +178,7 @@
             <field name="age">37</field>
             <field name="gender">female</field>
             <field name="village_id" ref="pandripani_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789030</field>
-            <field name="pan_number">ABCDE1252F</field>
             <field name="phone">9876543228</field>
             <field name="bank_name">HDFC Bank</field>
             <field name="account_number">123456789012363</field>
@@ -224,10 +191,7 @@
             <field name="age">34</field>
             <field name="gender">male</field>
             <field name="village_id" ref="pandripani_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789031</field>
-            <field name="pan_number">ABCDE1253F</field>
             <field name="phone">9876543229</field>
             <field name="bank_name">ICICI Bank</field>
             <field name="account_number">123456789012364</field>
@@ -240,10 +204,7 @@
             <field name="age">30</field>
             <field name="gender">female</field>
             <field name="village_id" ref="pandripani_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789032</field>
-            <field name="pan_number">ABCDE1254F</field>
             <field name="phone">9876543230</field>
             <field name="bank_name">Axis Bank</field>
             <field name="account_number">123456789012365</field>
@@ -256,10 +217,7 @@
             <field name="age">47</field>
             <field name="gender">male</field>
             <field name="village_id" ref="pandripani_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789033</field>
-            <field name="pan_number">ABCDE1255F</field>
             <field name="phone">9876543231</field>
             <field name="bank_name">Union Bank of India</field>
             <field name="account_number">123456789012366</field>
@@ -272,10 +230,7 @@
             <field name="age">41</field>
             <field name="gender">female</field>
             <field name="village_id" ref="pandripani_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789034</field>
-            <field name="pan_number">ABCDE1256F</field>
             <field name="phone">9876543232</field>
             <field name="bank_name">Canara Bank</field>
             <field name="account_number">123456789012367</field>
@@ -288,10 +243,7 @@
             <field name="age">28</field>
             <field name="gender">male</field>
             <field name="village_id" ref="pandripani_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789035</field>
-            <field name="pan_number">ABCDE1257F</field>
             <field name="phone">9876543233</field>
             <field name="bank_name">Indian Bank</field>
             <field name="account_number">123456789012368</field>
@@ -304,10 +256,7 @@
             <field name="age">32</field>
             <field name="gender">female</field>
             <field name="village_id" ref="pandripani_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789036</field>
-            <field name="pan_number">ABCDE1258F</field>
             <field name="phone">9876543234</field>
             <field name="bank_name">Bank of Baroda</field>
             <field name="account_number">123456789012369</field>
@@ -320,10 +269,7 @@
             <field name="age">39</field>
             <field name="gender">male</field>
             <field name="village_id" ref="pandripani_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789037</field>
-            <field name="pan_number">ABCDE1259F</field>
             <field name="phone">9876543235</field>
             <field name="bank_name">Central Bank of India</field>
             <field name="account_number">123456789012370</field>
@@ -336,10 +282,7 @@
             <field name="age">35</field>
             <field name="gender">female</field>
             <field name="village_id" ref="pandripani_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789038</field>
-            <field name="pan_number">ABCDE1260F</field>
             <field name="phone">9876543236</field>
             <field name="bank_name">Indian Overseas Bank</field>
             <field name="account_number">123456789012371</field>
@@ -352,10 +295,7 @@
             <field name="age">26</field>
             <field name="gender">male</field>
             <field name="village_id" ref="pandripani_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789039</field>
-            <field name="pan_number">ABCDE1261F</field>
             <field name="phone">9876543237</field>
             <field name="bank_name">Oriental Bank of Commerce</field>
             <field name="account_number">123456789012372</field>
@@ -368,10 +308,7 @@
             <field name="age">29</field>
             <field name="gender">female</field>
             <field name="village_id" ref="pandripani_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789040</field>
-            <field name="pan_number">ABCDE1262F</field>
             <field name="phone">9876543238</field>
             <field name="bank_name">Syndicate Bank</field>
             <field name="account_number">123456789012373</field>
@@ -384,10 +321,7 @@
             <field name="age">38</field>
             <field name="gender">male</field>
             <field name="village_id" ref="pandripani_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789041</field>
-            <field name="pan_number">ABCDE1263F</field>
             <field name="phone">9876543239</field>
             <field name="bank_name">UCO Bank</field>
             <field name="account_number">123456789012374</field>
@@ -401,10 +335,7 @@
             <field name="age">49</field>
             <field name="gender">male</field>
             <field name="village_id" ref="gopalpur_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789042</field>
-            <field name="pan_number">ABCDE1264F</field>
             <field name="phone">9876543240</field>
             <field name="bank_name">State Bank of India</field>
             <field name="account_number">123456789012375</field>
@@ -417,10 +348,7 @@
             <field name="age">44</field>
             <field name="gender">female</field>
             <field name="village_id" ref="gopalpur_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789043</field>
-            <field name="pan_number">ABCDE1265F</field>
             <field name="phone">9876543241</field>
             <field name="bank_name">Punjab National Bank</field>
             <field name="account_number">123456789012376</field>
@@ -433,10 +361,7 @@
             <field name="age">36</field>
             <field name="gender">male</field>
             <field name="village_id" ref="gopalpur_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789044</field>
-            <field name="pan_number">ABCDE1266F</field>
             <field name="phone">9876543242</field>
             <field name="bank_name">Bank of India</field>
             <field name="account_number">123456789012377</field>
@@ -449,10 +374,7 @@
             <field name="age">40</field>
             <field name="gender">female</field>
             <field name="village_id" ref="gopalpur_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789045</field>
-            <field name="pan_number">ABCDE1267F</field>
             <field name="phone">9876543243</field>
             <field name="bank_name">HDFC Bank</field>
             <field name="account_number">123456789012378</field>
@@ -465,10 +387,7 @@
             <field name="age">33</field>
             <field name="gender">male</field>
             <field name="village_id" ref="gopalpur_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789046</field>
-            <field name="pan_number">ABCDE1268F</field>
             <field name="phone">9876543244</field>
             <field name="bank_name">ICICI Bank</field>
             <field name="account_number">123456789012379</field>
@@ -481,10 +400,7 @@
             <field name="age">31</field>
             <field name="gender">female</field>
             <field name="village_id" ref="gopalpur_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789047</field>
-            <field name="pan_number">ABCDE1269F</field>
             <field name="phone">9876543245</field>
             <field name="bank_name">Axis Bank</field>
             <field name="account_number">123456789012380</field>
@@ -497,10 +413,7 @@
             <field name="age">25</field>
             <field name="gender">male</field>
             <field name="village_id" ref="gopalpur_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789048</field>
-            <field name="pan_number">ABCDE1270F</field>
             <field name="phone">9876543246</field>
             <field name="bank_name">Union Bank of India</field>
             <field name="account_number">123456789012381</field>
@@ -513,10 +426,7 @@
             <field name="age">28</field>
             <field name="gender">female</field>
             <field name="village_id" ref="gopalpur_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789049</field>
-            <field name="pan_number">ABCDE1271F</field>
             <field name="phone">9876543247</field>
             <field name="bank_name">Canara Bank</field>
             <field name="account_number">123456789012382</field>
@@ -529,10 +439,7 @@
             <field name="age">24</field>
             <field name="gender">male</field>
             <field name="village_id" ref="gopalpur_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789050</field>
-            <field name="pan_number">ABCDE1272F</field>
             <field name="phone">9876543248</field>
             <field name="bank_name">Indian Bank</field>
             <field name="account_number">123456789012383</field>
@@ -545,10 +452,7 @@
             <field name="age">26</field>
             <field name="gender">female</field>
             <field name="village_id" ref="gopalpur_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789051</field>
-            <field name="pan_number">ABCDE1273F</field>
             <field name="phone">9876543249</field>
             <field name="bank_name">Bank of Baroda</field>
             <field name="account_number">123456789012384</field>
@@ -562,10 +466,7 @@
             <field name="age">51</field>
             <field name="gender">male</field>
             <field name="village_id" ref="bhikharimal_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789052</field>
-            <field name="pan_number">ABCDE1274F</field>
             <field name="phone">9876543250</field>
             <field name="bank_name">State Bank of India</field>
             <field name="account_number">123456789012385</field>
@@ -578,10 +479,7 @@
             <field name="age">45</field>
             <field name="gender">female</field>
             <field name="village_id" ref="bhikharimal_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789053</field>
-            <field name="pan_number">ABCDE1275F</field>
             <field name="phone">9876543251</field>
             <field name="bank_name">Punjab National Bank</field>
             <field name="account_number">123456789012386</field>
@@ -594,10 +492,7 @@
             <field name="age">42</field>
             <field name="gender">male</field>
             <field name="village_id" ref="bhikharimal_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789054</field>
-            <field name="pan_number">ABCDE1276F</field>
             <field name="phone">9876543252</field>
             <field name="bank_name">Bank of India</field>
             <field name="account_number">123456789012387</field>
@@ -610,10 +505,7 @@
             <field name="age">38</field>
             <field name="gender">female</field>
             <field name="village_id" ref="bhikharimal_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789055</field>
-            <field name="pan_number">ABCDE1277F</field>
             <field name="phone">9876543253</field>
             <field name="bank_name">HDFC Bank</field>
             <field name="account_number">123456789012388</field>
@@ -626,10 +518,7 @@
             <field name="age">32</field>
             <field name="gender">male</field>
             <field name="village_id" ref="bhikharimal_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789056</field>
-            <field name="pan_number">ABCDE1278F</field>
             <field name="phone">9876543254</field>
             <field name="bank_name">ICICI Bank</field>
             <field name="account_number">123456789012389</field>
@@ -642,10 +531,7 @@
             <field name="age">36</field>
             <field name="gender">female</field>
             <field name="village_id" ref="bhikharimal_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789057</field>
-            <field name="pan_number">ABCDE1279F</field>
             <field name="phone">9876543255</field>
             <field name="bank_name">Axis Bank</field>
             <field name="account_number">123456789012390</field>
@@ -658,10 +544,7 @@
             <field name="age">29</field>
             <field name="gender">male</field>
             <field name="village_id" ref="bhikharimal_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789058</field>
-            <field name="pan_number">ABCDE1280F</field>
             <field name="phone">9876543256</field>
             <field name="bank_name">Union Bank of India</field>
             <field name="account_number">123456789012391</field>
@@ -674,10 +557,7 @@
             <field name="age">27</field>
             <field name="gender">female</field>
             <field name="village_id" ref="bhikharimal_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789059</field>
-            <field name="pan_number">ABCDE1281F</field>
             <field name="phone">9876543257</field>
             <field name="bank_name">Canara Bank</field>
             <field name="account_number">123456789012392</field>
@@ -690,10 +570,7 @@
             <field name="age">23</field>
             <field name="gender">male</field>
             <field name="village_id" ref="bhikharimal_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789060</field>
-            <field name="pan_number">ABCDE1282F</field>
             <field name="phone">9876543258</field>
             <field name="bank_name">Indian Bank</field>
             <field name="account_number">123456789012393</field>
@@ -706,10 +583,7 @@
             <field name="age">25</field>
             <field name="gender">female</field>
             <field name="village_id" ref="bhikharimal_village"/>
-            <field name="tehsil_id" ref="raigarh_tehsil"/>
-            <field name="district_id" ref="district_raigarh"/>
             <field name="aadhar_number">123456789061</field>
-            <field name="pan_number">ABCDE1283F</field>
             <field name="phone">9876543259</field>
             <field name="bank_name">Bank of Baroda</field>
             <field name="account_number">123456789012394</field>

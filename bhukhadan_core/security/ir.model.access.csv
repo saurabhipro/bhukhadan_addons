@@ -24,6 +24,8 @@ access_bhu_photo_type_public,access_bhu_photo_type_public,model_bhu_photo_type,b
 access_bhu_survey_photo_public,access_bhu_survey_photo_public,model_bhu_survey_photo,base.group_public,1,1,1,1
 access_bhu_landowner_user,bhu.landowner.model_access,model_bhu_landowner,base.group_user,1,1,1,1
 access_bhu_landowner_public,bhu.landowner.model_access_public,model_bhu_landowner,base.group_public,1,0,0,0
+access_bhu_house_owner_user,bhu.house.owner.model_access,model_bhu_house_owner,base.group_user,1,1,1,1
+access_bhu_house_owner_public,bhu.house.owner.model_access_public,model_bhu_house_owner,base.group_public,1,0,0,0
 access_bhu_land_type,access_bhu_land_type,model_bhu_land_type,base.group_user,1,1,1,1
 access_bhu_land_type_public,access_bhu_land_type_public,model_bhu_land_type,base.group_public,1,0,0,0
 access_bhu_tree_master,access_bhu_tree_master,model_bhu_tree_master,base.group_user,1,1,1,1

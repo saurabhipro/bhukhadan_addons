@@ -28,7 +28,7 @@
                         </group>
                     </group>
                     <group string="Patwari — mapped villages / पटवारी गाँव" colspan="2"
-                           invisible="bhuarjan_role != 'patwari'">
+                           invisible="bhuarjan_role != 'halka_patwari'">
                         <field name="bhu_patwari_village_summary" readonly="1" colspan="2" widget="bhu_comma_pills_villages"/>
                         <field name="bhu_patwari_village_ids" nolabel="1" colspan="2" readonly="1">
                             <list>
@@ -69,11 +69,10 @@
                 <xpath expr="//field[@name='name']" position="after">
                     <field name="name_english" string="Name (English)"/>
                     <field name="bhuarjan_role" string="BhuKhadan Role" widget="badge" 
-                           decoration-info="bhuarjan_role in ('patwari', 'ri', 'revenue_inspector', 'department_user')" 
-                           decoration-warning="bhuarjan_role in ('sdm', 'tahsildar', 'nayab_tahsildar')" 
-                           decoration-danger="bhuarjan_role in ('collector', 'additional_collector')" 
-                           decoration-success="bhuarjan_role == 'administrator'" 
-                           decoration-primary="bhuarjan_role == 'district_administrator'"/>
+                           decoration-info="bhuarjan_role in ('halka_patwari', 'revenue_inspector', 'area_survey_officer', 'staff_officer_pp', 'staff_officer_hr', 'staff_officer_civil')" 
+                           decoration-warning="bhuarjan_role in ('tehsildar', 'nodal_officer_lr', 'sub_area_manager_gm_min')" 
+                           decoration-danger="bhuarjan_role in ('general_manager_oprn', 'area_finance_manager')" 
+                           decoration-success="bhuarjan_role in ('sub_engineer', 'pwd_officer', 'deputy_forest_officer', 'forest_range_officer', 'horticulture_superintendent')"/>
                 </xpath>
                 <xpath expr="//field[@name='login']" position="after">
                     <field name="mobile"/>
@@ -154,7 +153,7 @@
                             </group>
                         </group>
                         <group string="Patwari — mapped villages / पटवारी गाँव" colspan="2"
-                               invisible="bhuarjan_role != 'patwari'">
+                               invisible="bhuarjan_role != 'halka_patwari'">
                             <field name="bhu_patwari_village_summary" readonly="1" colspan="2" widget="bhu_comma_pills_villages"/>
                             <field name="bhu_patwari_village_ids" nolabel="1" colspan="2" readonly="1">
                                 <list>

@@ -172,7 +172,7 @@ class DashboardData(models.AbstractModel):
             }
             
         # 2. Department User - High priority
-        is_dept_by_role = role == 'department_user'
+        is_dept_by_role = role in user_sudo.env['res.users'].BHUKHADAN_STAFF_OFFICER_ROLES
         is_dept_by_group = user.has_group('bhukhadan_core.group_bhuarjan_department_user')
         is_dept_by_project = self.env['bhu.project'].sudo().search_count([('department_user_ids', 'in', user.id)], limit=1) > 0
         
@@ -184,7 +184,7 @@ class DashboardData(models.AbstractModel):
             }
             
         # 3. Collector / Additional Collector
-        is_collector = role in ['collector', 'additional_collector'] or \
+        is_collector = role in ['collector', 'additional_collector', 'general_manager_oprn', 'area_finance_manager'] or \
                        user.has_group('bhukhadan_core.group_bhuarjan_collector') or \
                        user.has_group('bhukhadan_core.group_bhuarjan_additional_collector')
         if is_collector:
@@ -204,7 +204,7 @@ class DashboardData(models.AbstractModel):
             }
             
         # 5. SDM / Patwari fallback
-        is_sdm = role == 'sdm' or user.has_group('bhukhadan_core.group_bhuarjan_sdm')
+        is_sdm = role in ['sdm', 'nodal_officer_lr', 'sub_area_manager_gm_min'] or user.has_group('bhukhadan_core.group_bhuarjan_sdm')
         if is_sdm:
             return {
                 'type': 'ir.actions.client',

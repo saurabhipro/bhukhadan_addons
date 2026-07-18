@@ -237,22 +237,20 @@
                                 </h3>
                                 <div style="margin-bottom: 15px; padding: 12px; background-color: #e3f2fd; border-left: 4px solid #2196f3; border-radius: 4px;">
                                     <i class="fa fa-info-circle" style="color: #1976d2; margin-right: 8px;"/>
-                                    <span style="font-weight: 600; color: #1565c0;">Click "Add" to add new landowners or select existing ones. You can edit details inline.</span>
+                                    <span style="font-weight: 600; color: #1565c0;">Click "Add a line" to add landowners for this survey. Edit details inline.</span>
                                 </div>
-                                <field name="landowner_ids" 
-                                       widget="many2many"
-                                       options="{'no_create': False, 'create_edit': True}" 
-                                       context="{'default_company_id': company_id, 'default_village_id': village_id, 'default_tehsil_id': tehsil_id}"
+                                <field name="landowner_ids"
+                                       context="{'default_survey_id': id, 'default_company_id': company_id, 'default_village_id': village_id, 'form_view_ref': 'bhukhadan_core.view_bhu_landowner_form'}"
                                        readonly="not is_admin and (is_collector_readonly or is_approved_readonly)"
                                        nolabel="1">
-                                    <list string="Landowners" editable="bottom" create="true" delete="true">
+                                    <list string="Landowners">
                                         <field name="name" string="Name" required="1"/>
                                         <field name="father_name" string="Father's Name"/>
                                         <field name="spouse_name" string="Spouse's Name"/>
+                                        <field name="caste" string="Caste"/>
                                         <field name="village_id" string="Village"/>
-                                        <field name="tehsil_id" string="Tehsil"/>
+                                        <field name="rakba" string="Rakba"/>
                                         <field name="aadhar_number" string="Aadhar"/>
-                                        <field name="pan_number" string="PAN"/>
                                         <field name="bank_name" string="Bank"/>
                                         <field name="account_number" string="Account"/>
                                     </list>
@@ -261,63 +259,34 @@
                         </page>
                         
                         <page string="House Owner / मकान मालिक" name="house_owner_details">
-                            <group string="House Owner Details for Measuring Book">
-                                <group>
-                                    <field name="mb_house_owner_name"/>
-                                    <field name="mb_house_owner_aadhar"/>
-                                    <field name="mb_house_owner_mobile"/>
-                                    <field name="mb_house_owner_caste"/>
-                                </group>
-                                <group>
-                                    <field name="mb_house_owner_dob"/>
-                                    <field name="mb_house_owner_village"/>
-                                    <field name="mb_house_number_text"/>
-                                    <field name="mb_mohalla_text"/>
-                                </group>
-                            </group>
-                        </page>
-
-                        <page string="Land Owner / भूमि स्वामी" name="land_owner_details">
-                            <group string="Land Owner Details for Measuring Book">
-                                <group>
-                                    <field name="mb_land_owner_name"/>
-                                    <field name="mb_land_owner_aadhar"/>
-                                    <field name="mb_land_owner_caste"/>
-                                    <field name="mb_land_owner_dob"/>
-                                </group>
-                                <group>
-                                    <field name="mb_relation_text"/>
-                                    <field name="mb_present_landowner_text"/>
-                                    <field name="mb_rakba_text"/>
-                                    <field name="khasra_number" readonly="1"/>
-                                </group>
-                            </group>
+                            <div class="landowner_custom_section" style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 10px 0; border: 2px solid #8B4513;">
+                                <h3 style="margin: 0 0 15px 0; color: #8B4513; font-size: 18px; font-weight: bold; border-bottom: 2px solid #8B4513; padding-bottom: 10px;">
+                                    <i class="fa fa-home" style="margin-right: 8px;"></i>
+                                    Manage House Owners
+                                </h3>
+                                <div style="margin-bottom: 15px; padding: 12px; background-color: #e3f2fd; border-left: 4px solid #2196f3; border-radius: 4px;">
+                                    <i class="fa fa-info-circle" style="color: #1976d2; margin-right: 8px;"/>
+                                    <span style="font-weight: 600; color: #1565c0;">Click "Add a line" to add house owners for this survey. Edit details inline.</span>
+                                </div>
+                                <field name="house_owner_ids"
+                                       context="{'default_survey_id': id, 'default_company_id': company_id, 'default_village_id': village_id, 'form_view_ref': 'bhukhadan_core.view_bhu_house_owner_form'}"
+                                       readonly="not is_admin and (is_collector_readonly or is_approved_readonly)"
+                                       nolabel="1">
+                                    <list string="House Owners">
+                                        <field name="name" string="Name" required="1"/>
+                                        <field name="aadhar_number" string="Aadhar"/>
+                                        <field name="phone" string="Mobile"/>
+                                        <field name="caste" string="Caste"/>
+                                        <field name="dob" string="DOB"/>
+                                        <field name="village_id" string="Village"/>
+                                        <field name="house_number" string="House No."/>
+                                        <field name="mohalla" string="Mohalla"/>
+                                    </list>
+                                </field>
+                            </div>
                         </page>
 
                         <page string="Document Checklist / दस्तावेज़ चेकलिस्ट" name="document_checklist_mb">
-                            <group string="List of Documents Collected from House Owner">
-                                <group>
-                                    <field name="mb_doc_electricity_bill"/>
-                                    <field name="mb_doc_voter_card_owner"/>
-                                    <field name="mb_doc_aadhar_owner"/>
-                                    <field name="mb_doc_aadhar_witness_1"/>
-                                    <field name="mb_doc_aadhar_witness_2"/>
-                                    <field name="mb_doc_ration_owner"/>
-                                    <field name="mb_doc_education_owner"/>
-                                </group>
-                                <group>
-                                    <field name="mb_doc_aadhar_landowner"/>
-                                    <field name="mb_doc_affidavit_noc"/>
-                                    <field name="mb_doc_passport_photos"/>
-                                    <field name="mb_doc_pan_owner"/>
-                                    <field name="mb_doc_pan_landowner"/>
-                                    <field name="mb_doc_bank_passbook"/>
-                                    <field name="mb_doc_bank_neft_form"/>
-                                    <field name="mb_doc_bank_ifsc"/>
-                                    <field name="mb_doc_other"/>
-                                    <field name="mb_doc_other_text" invisible="not mb_doc_other"/>
-                                </group>
-                            </group>
                             <group string="Declaration / शपथ">
                                 <field name="mb_owner_decl_date"/>
                                 <field name="mb_decl_no_claim_pending"/>
@@ -408,7 +377,6 @@
                 <field name="survey_date"/>
                 <field name="survey_uuid"/>
                 
-                <field name="landowner_pan_numbers" string="Pan Number"/>
                 <field name="landowner_aadhar_numbers" string="Aadhar Number"/>
             
                 <filter string="Draft / प्रारूप" name="draft" domain="[('state', '=', 'draft')]"/>

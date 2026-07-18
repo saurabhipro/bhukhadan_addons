@@ -163,7 +163,9 @@ class Section21Notification(models.Model):
                     khasra_data[survey.khasra_number]['landowner'] = landowner
                     khasra_data[survey.khasra_number]['landowner_name'] = landowner.name or ''
                     khasra_data[survey.khasra_number]['landowner_father'] = landowner.father_name or landowner.spouse_name or ''
-                    khasra_data[survey.khasra_number]['landowner_address'] = landowner.owner_address or ''
+                    khasra_data[survey.khasra_number]['landowner_address'] = (
+                        survey.landowner_ids[0].village_id.display_name or ''
+                    ) if survey.landowner_ids[0].village_id else ''
         return [{
             'khasra_number': k,
             'area': v['area'],
@@ -477,7 +479,9 @@ class Section21Notification(models.Model):
                     'area': get_khasra_area(khasra),
                     'landowner_name': landowner.name if landowner else '',
                     'landowner_father': (landowner.father_name or landowner.spouse_name) if landowner else '',
-                    'landowner_address': landowner.owner_address if landowner else '',
+                    'landowner_address': (
+                        landowner.village_id.display_name or ''
+                    ) if landowner and landowner.village_id else '',
                     'notification_uuid': self.notification_uuid
                 }
                 personal_data_list.append(data)

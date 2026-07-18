@@ -1841,7 +1841,7 @@ class BhuPaymentVoucherLine(models.Model):
                     owner.name,
                     owner.father_name,
                     owner.spouse_name,
-                    owner.owner_address,
+                    owner.village_id.display_name if owner.village_id else '',
                 )
                 if block:
                     lines.append(block)
@@ -1912,8 +1912,8 @@ class BhuPaymentVoucherLine(models.Model):
                 vals['bank_branch'] = owner.bank_branch or ''
                 vals['account_number'] = owner.account_number or ''
                 vals['ifsc_code'] = owner.ifsc_code or ''
-            if owner.owner_address:
-                vals['beneficiary_address'] = owner.owner_address
+            if owner.village_id:
+                vals['beneficiary_address'] = owner.village_id.display_name or ''
         return vals
 
     def _prepare_default_split_commands(self):
@@ -2123,8 +2123,8 @@ class BhuPaymentVoucherLineSplit(models.Model):
                 self.bank_branch = owner.bank_branch or ''
                 self.account_number = owner.account_number or ''
                 self.ifsc_code = owner.ifsc_code or ''
-            if owner.owner_address:
-                self.beneficiary_address = owner.owner_address
+            if owner.village_id:
+                self.beneficiary_address = owner.village_id.display_name or ''
 
     @api.depends('split_landowner_id', 'payee_name')
     def _compute_payee_display_name(self):
@@ -2256,7 +2256,9 @@ class Section23AwardPaymentVoucher(models.Model):
             lo_id = lo.id if lo else False
             addr = land_row.get('address') or ''
             if lo:
-                addr = addr or (lo.owner_address or '')
+                addr = addr or (
+                    (lo.village_id.display_name or '') if lo.village_id else ''
+                )
             bank_name = lo.bank_name if lo else ''
             bank_branch = lo.bank_branch if lo else ''
             account_number = lo.account_number if lo else ''

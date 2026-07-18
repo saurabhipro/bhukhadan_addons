@@ -9,11 +9,11 @@
                 <field name="name"/>
                 <field name="company_id"/>
                 <field name="father_name"/>
+                <field name="caste"/>
                 <field name="village_id"/>
-                <field name="tehsil_id"/>
-                <field name="district_id"/>
+                <field name="rakba"/>
+                <field name="survey_id"/>
                 <field name="aadhar_number"/>
-                <field name="pan_number"/>
             </list>
         </field>
     </record>
@@ -26,8 +26,8 @@
             <form string="Landowner" js_class="confirm_save_form">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="action_view_surveys" type="object" class="oe_stat_button" icon="fa-search">
-                            <field name="survey_ids" widget="statinfo" string="Surveys"/>
+                        <button name="action_view_survey" type="object" class="oe_stat_button" icon="fa-search" invisible="not survey_id">
+                            <field name="survey_id" widget="statinfo" string="Survey"/>
                         </button>
                     </div>
                     
@@ -42,6 +42,7 @@
                             <field name="father_name" widget="char"/>
                             <field name="mother_name" widget="char"/>
                             <field name="spouse_name" widget="char"/>
+                            <field name="caste" widget="char"/>
                         </group>
                         <group string="Contact Information">
                             <field name="company_id" widget="selection"/>
@@ -52,14 +53,11 @@
                     <group>
                         <group string="Address Information">
                             <field name="village_id" widget="selection"/>
-                            <field name="tehsil_id" widget="selection"/>
-                            <field name="district_id" widget="selection"/>
-                            <field name="state" widget="char"/>
-                            <field name="owner_address" widget="text" placeholder="Enter complete address of the landowner"/>
+                            <field name="rakba" widget="char"/>
+                            <field name="survey_id" readonly="1" options="{'no_create': True, 'no_open': True}"/>
                         </group>
                         <group string="Identity Documents">
                             <field name="aadhar_number" widget="char"/>
-                            <field name="pan_number" widget="char"/>
                         </group>
                     </group>
                     
@@ -85,16 +83,10 @@
                             </group>
                         </page>
                         
-                        <page string="Related Surveys" name="surveys">
-                            <field name="survey_ids" readonly="1">
-                                <list>
-                                    <field name="name"/>
-                                    <field name="project_id"/>
-                                    <field name="village_id"/>
-                                    <field name="survey_date"/>
-                                    <field name="state"/>
-                                </list>
-                            </field>
+                        <page string="Related Survey" name="surveys" invisible="not survey_id">
+                            <group>
+                                <field name="survey_id" readonly="1" options="{'no_open': True}"/>
+                            </group>
                         </page>
                         <page string="Payment Status / भुगतान की स्थिति" name="payment_status">
                             <field name="payment_status_ids" readonly="1">
@@ -131,18 +123,12 @@
                 <field name="name"/>
                 <field name="father_name"/>
                 <field name="aadhar_number"/>
-                <field name="pan_number"/>
                 <field name="village_id"/>
-                <field name="tehsil_id"/>
-                <field name="district_id"/>
                 
                 <filter string="With Bank Details" name="with_bank" domain="[('bank_name', '!=', False)]"/>
                 <filter string="With Aadhar" name="with_aadhar" domain="[('aadhar_number', '!=', False)]"/>
-                <filter string="With PAN" name="with_pan" domain="[('pan_number', '!=', False)]"/>
                 
                 <group expand="0" string="Group By">
-                    <filter string="District" name="group_district" context="{'group_by': 'district_id'}"/>
-                    <filter string="Tehsil" name="group_tehsil" context="{'group_by': 'tehsil_id'}"/>
                     <filter string="Village" name="group_village" context="{'group_by': 'village_id'}"/>
                 </group>
             </search>
@@ -225,7 +211,6 @@
         <field name="arch" type="xml">
             <pivot string="Landowners Analysis" sample="1">
                 <field name="village_id" type="row"/>
-                <field name="district_id" type="col"/>
             </pivot>
         </field>
     </record>

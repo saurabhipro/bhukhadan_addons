@@ -243,7 +243,7 @@ class BhuProject(models.Model):
                                      help="Select Tehsildars for this project")
     department_user_ids = fields.Many2many('res.users', 'bhu_project_department_user_rel', 'project_id', 'user_id',
                                            string="Department User / विभाग उपयोगकर्ता", 
-                                           domain="[('bhuarjan_role', '=', 'department_user')]", tracking=True,
+                                           domain="[('bhuarjan_role', 'in', ['staff_officer_pp', 'staff_officer_hr', 'staff_officer_civil'])]", tracking=True,
                                            help="Select Department Users for this project. They can approve/reject surveys.")
     
     patwari_ids = fields.Many2many(

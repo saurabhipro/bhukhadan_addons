@@ -25,7 +25,7 @@
                         <field name="state_id" options="{'no_create':True,'no_create_edit':True,'no_open':True}"/>
                         <field name="district_id" options="{'no_create':True,'no_create_edit':True,'no_open':True}" domain="[('state_id', '=', state_id)]"/>
                         <field name="name"/>
-                        <field name="user_id" domain="[('bhuarjan_role','=', 'sdm')]" options="{'no_create_edit':True, 'no_create':True}"/>
+                        <field name="user_id" domain="[('bhuarjan_role','=', 'nodal_officer_lr')]" options="{'no_create_edit':True, 'no_create':True}"/>
                     </group>
                 </sheet>
                 <chatter groups="bhukhadan_core.group_bhuarjan_ri,bhukhadan_core.group_bhuarjan_nayab_tahsildar,bhukhadan_core.group_bhuarjan_tahsildar,bhukhadan_core.group_bhuarjan_sdm,bhukhadan_core.group_bhuarjan_additional_collector,bhukhadan_core.group_bhuarjan_collector,bhukhadan_core.group_bhuarjan_admin"/>

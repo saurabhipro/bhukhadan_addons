@@ -9,15 +9,15 @@
 
 
     <record id="group_bhuarjan_patwari" model="res.groups">
-        <field name="name">Patwari</field>                     
+        <field name="name">Halka Patwari</field>                     
         <field name="category_id" ref="module_category_bhuarjan_bhuarjan"/>
-        <field name="comment">The user will be able to approve document created by employees.</field>
+        <field name="comment">Field patwari for village-level survey work.</field>
     </record>
 
     <record id="group_bhuarjan_ri" model="res.groups">
         <field name="name">Revenue Inspector</field>
         <field name="category_id" ref="module_category_bhuarjan_bhuarjan"/>
-        <field name="comment">The user will be able to approve document created by employees.</field>
+        <field name="comment">Revenue Inspector role.</field>
     </record>
 
     <record id="group_bhuarjan_nayab_tahsildar" model="res.groups">
@@ -27,9 +27,9 @@
     </record>
 
     <record id="group_bhuarjan_tahsildar" model="res.groups">
-        <field name="name">Tahsildar</field>
+        <field name="name">Tehsildar</field>
         <field name="category_id" ref="module_category_bhuarjan_bhuarjan"/>
-        <field name="comment">The user will be able to approve document created by employees.</field>
+        <field name="comment">Tehsildar role.</field>
         <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
     </record>
 
@@ -133,6 +133,84 @@
         <field name="category_id" ref="module_category_bhuarjan_bhuarjan"/>
         <field name="comment">District Rehabilitation and Resettlement Committee member role.</field>
         <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_bhuarjan_sub_engineer" model="res.groups">
+        <field name="name">Sub Engineer</field>
+        <field name="category_id" ref="module_category_bhuarjan_bhuarjan"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_bhuarjan_horticulture_superintendent" model="res.groups">
+        <field name="name">Horticulture Superintendent</field>
+        <field name="category_id" ref="module_category_bhuarjan_bhuarjan"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_bhuarjan_deputy_forest_officer" model="res.groups">
+        <field name="name">Deputy Forest Officer</field>
+        <field name="category_id" ref="module_category_bhuarjan_bhuarjan"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_bhuarjan_forest_range_officer" model="res.groups">
+        <field name="name">Forest Range Officer</field>
+        <field name="category_id" ref="module_category_bhuarjan_bhuarjan"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_bhuarjan_pwd_officer" model="res.groups">
+        <field name="name">PWD Officer</field>
+        <field name="category_id" ref="module_category_bhuarjan_bhuarjan"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_bhuarjan_nodal_officer_lr" model="res.groups">
+        <field name="name">Nodal Officer (L&amp;R)</field>
+        <field name="category_id" ref="module_category_bhuarjan_bhuarjan"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user')), (4, ref('group_bhuarjan_sdm'))]"/>
+    </record>
+
+    <record id="group_bhuarjan_area_survey_officer" model="res.groups">
+        <field name="name">Area Survey Officer</field>
+        <field name="category_id" ref="module_category_bhuarjan_bhuarjan"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_bhuarjan_staff_officer_pp" model="res.groups">
+        <field name="name">Staff Officer (P&amp;P)</field>
+        <field name="category_id" ref="module_category_bhuarjan_bhuarjan"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user')), (4, ref('group_bhuarjan_department_user'))]"/>
+    </record>
+
+    <record id="group_bhuarjan_staff_officer_hr" model="res.groups">
+        <field name="name">Staff Officer (HR)</field>
+        <field name="category_id" ref="module_category_bhuarjan_bhuarjan"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user')), (4, ref('group_bhuarjan_department_user'))]"/>
+    </record>
+
+    <record id="group_bhuarjan_staff_officer_civil" model="res.groups">
+        <field name="name">Staff Officer (Civil)</field>
+        <field name="category_id" ref="module_category_bhuarjan_bhuarjan"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user')), (4, ref('group_bhuarjan_department_user'))]"/>
+    </record>
+
+    <record id="group_bhuarjan_area_finance_manager" model="res.groups">
+        <field name="name">Area Finance Manager</field>
+        <field name="category_id" ref="module_category_bhuarjan_bhuarjan"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user')), (4, ref('group_bhuarjan_collector'))]"/>
+    </record>
+
+    <record id="group_bhuarjan_sub_area_manager_gm_min" model="res.groups">
+        <field name="name">Sub Area Manager/GM (Min)</field>
+        <field name="category_id" ref="module_category_bhuarjan_bhuarjan"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user')), (4, ref('group_bhuarjan_sdm'))]"/>
+    </record>
+
+    <record id="group_bhuarjan_general_manager_oprn" model="res.groups">
+        <field name="name">General Manager (Oprn)</field>
+        <field name="category_id" ref="module_category_bhuarjan_bhuarjan"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user')), (4, ref('group_bhuarjan_collector'))]"/>
     </record>
 
     
@@ -629,7 +707,7 @@
         <record id="record_bhu_landowner_rule" model="ir.rule">
             <field name="name">Patwari can see landowners from assigned villages and their surveys</field>
             <field name="model_id" ref="model_bhu_landowner"/>
-            <field name="domain_force">['&amp;', ('village_id', '!=', False), '|', ('village_id.user_id', '=', user.id), ('survey_ids.user_id', '=', user.id)]</field>
+            <field name="domain_force">['&amp;', ('village_id', '!=', False), '|', ('village_id.user_id', '=', user.id), ('survey_id.user_id', '=', user.id)]</field>
             <field name="groups" eval="[(4, ref('bhukhadan_core.group_bhuarjan_patwari'))]"/>
         </record>
 
@@ -637,7 +715,21 @@
         <record id="record_bhu_landowner_rule_restricted" model="ir.rule">
             <field name="name">SDM/Tehsildar/Collector: landowners in district or linked to assigned projects</field>
             <field name="model_id" ref="model_bhu_landowner"/>
-            <field name="domain_force">['|', ('district_id', '=', user.district_id.id), '|', '|', ('survey_ids.project_id.sdm_ids', 'in', [user.id]), ('survey_ids.project_id.tehsildar_ids', 'in', [user.id]), ('survey_ids.project_id.sub_division_id.user_id', 'in', [user.id])]</field>
+            <field name="domain_force">['|', ('village_id.district_id', '=', user.district_id.id), '|', '|', ('survey_id.project_id.sdm_ids', 'in', [user.id]), ('survey_id.project_id.tehsildar_ids', 'in', [user.id]), ('survey_id.project_id.sub_division_id.user_id', 'in', [user.id])]</field>
+            <field name="groups" eval="[(4, ref('bhukhadan_core.group_bhuarjan_sdm')), (4, ref('bhukhadan_core.group_bhuarjan_tahsildar')), (4, ref('bhukhadan_core.group_bhuarjan_collector')), (4, ref('bhukhadan_core.group_bhuarjan_additional_collector')), (4, ref('bhukhadan_core.group_bhuarjan_district_administrator'))]"/>
+        </record>
+
+        <record id="record_bhu_house_owner_rule" model="ir.rule">
+            <field name="name">Patwari can see house owners from assigned villages and their surveys</field>
+            <field name="model_id" ref="model_bhu_house_owner"/>
+            <field name="domain_force">['&amp;', ('village_id', '!=', False), '|', ('village_id.user_id', '=', user.id), ('survey_id.user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('bhukhadan_core.group_bhuarjan_patwari'))]"/>
+        </record>
+
+        <record id="record_bhu_house_owner_rule_restricted" model="ir.rule">
+            <field name="name">SDM/Tehsildar/Collector: house owners in district or linked to assigned projects</field>
+            <field name="model_id" ref="model_bhu_house_owner"/>
+            <field name="domain_force">['|', ('village_id.district_id', '=', user.district_id.id), '|', '|', ('survey_id.project_id.sdm_ids', 'in', [user.id]), ('survey_id.project_id.tehsildar_ids', 'in', [user.id]), ('survey_id.project_id.sub_division_id.user_id', 'in', [user.id])]</field>
             <field name="groups" eval="[(4, ref('bhukhadan_core.group_bhuarjan_sdm')), (4, ref('bhukhadan_core.group_bhuarjan_tahsildar')), (4, ref('bhukhadan_core.group_bhuarjan_collector')), (4, ref('bhukhadan_core.group_bhuarjan_additional_collector')), (4, ref('bhukhadan_core.group_bhuarjan_district_administrator'))]"/>
         </record>
 
@@ -659,6 +751,13 @@
         <record id="record_bhu_landowner_company_rule" model="ir.rule">
             <field name="name">Company: Admin can see all data</field>
             <field name="model_id" ref="model_bhu_landowner"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('base.group_system'))]"/>
+        </record>
+
+        <record id="record_bhu_house_owner_company_rule" model="ir.rule">
+            <field name="name">Company: Admin can see all house owner data</field>
+            <field name="model_id" ref="model_bhu_house_owner"/>
             <field name="domain_force">[('company_id', 'in', company_ids)]</field>
             <field name="groups" eval="[(4, ref('base.group_system'))]"/>
         </record>

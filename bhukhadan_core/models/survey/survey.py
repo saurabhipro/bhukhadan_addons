@@ -110,18 +110,6 @@ class Survey(models.Model):
             return {'domain': {'village_id': [('id', 'in', village_ids)]}}
         return {'domain': {'village_id': []}}
 
-    @api.onchange('landowner_ids')
-    def _onchange_landowner_ids_fill_mb(self):
-        """Auto-fill MB owner blocks from first selected landowner."""
-        if not self.landowner_ids:
-            return
-        owner = self.landowner_ids[0]
-        self.mb_house_owner_name = self.mb_house_owner_name or owner.name
-        self.mb_house_owner_aadhar = self.mb_house_owner_aadhar or owner.aadhar_number
-        self.mb_house_owner_mobile = self.mb_house_owner_mobile or owner.phone
-        self.mb_house_owner_village = self.mb_house_owner_village or (owner.village_id.name if owner.village_id else False)
-        self.mb_land_owner_name = self.mb_land_owner_name or owner.name
-        self.mb_land_owner_aadhar = self.mb_land_owner_aadhar or owner.aadhar_number
     district_name = fields.Char(string='District / जिला', default='Raigarh (Chhattisgarh)', readonly=True, tracking=True)
     survey_date = fields.Date(string='Survey Date / सर्वे दिनाँक', required=True, tracking=True, default=fields.Date.today)
     
@@ -290,8 +278,12 @@ class Survey(models.Model):
     ], string='Has Pond / तालाब है', default='no', tracking=True)
     
     # Multiple Landowners
-    landowner_ids = fields.Many2many('bhu.landowner', 'bhu_survey_landowner_rel', 
-                                   'survey_id', 'landowner_id', string='Landowners / भूमिस्वामी', tracking=True)
+    landowner_ids = fields.One2many(
+        'bhu.landowner', 'survey_id', string='Landowners / भूमिस्वामी', tracking=True,
+    )
+    house_owner_ids = fields.One2many(
+        'bhu.house.owner', 'survey_id', string='House Owners / मकान मालिक', tracking=True,
+    )
     
     section15_objection_ids = fields.Many2many('bhu.section15.objection',
                                                'bhu_survey_section15_objection_rel',
@@ -574,45 +566,11 @@ class Survey(models.Model):
     remarks = fields.Text(string='Remarks / टिप्पणी', tracking=True)
 
     # Measuring Book checklist/declaration fields
-    mb_house_owner_name = fields.Char(string='House Owner Name (MB)')
-    mb_house_owner_aadhar = fields.Char(string='House Owner Aadhaar (MB)')
-    mb_house_owner_mobile = fields.Char(string='House Owner Mobile (MB)')
-    mb_house_owner_caste = fields.Char(string='House Owner Caste/Category (MB)')
-    mb_house_owner_dob = fields.Date(string='House Owner DOB (MB)')
-    mb_house_owner_village = fields.Char(string='House Owner Village (MB)')
-
-    mb_land_owner_name = fields.Char(string='Land Owner Name (MB)')
-    mb_land_owner_aadhar = fields.Char(string='Land Owner Aadhaar (MB)')
-    mb_land_owner_caste = fields.Char(string='Land Owner Caste/Category (MB)')
-    mb_land_owner_dob = fields.Date(string='Land Owner DOB (MB)')
-
-    mb_doc_electricity_bill = fields.Boolean(string='Electricity Bill - House owner')
-    mb_doc_voter_card_owner = fields.Boolean(string='Voter Card - House owner')
-    mb_doc_aadhar_owner = fields.Boolean(string='Aadhar Card - House owner')
-    mb_doc_aadhar_witness_1 = fields.Boolean(string='Aadhar Card - Witness 01')
-    mb_doc_aadhar_witness_2 = fields.Boolean(string='Aadhar Card - Witness 02')
-    mb_doc_ration_owner = fields.Boolean(string='Ration Card - House owner')
-    mb_doc_education_owner = fields.Boolean(string='Educational Certificate - House owner')
-    mb_doc_aadhar_landowner = fields.Boolean(string='Aadhar Card - Land owner')
-    mb_doc_affidavit_noc = fields.Boolean(string='Affidavit/NOC from landowner')
-    mb_doc_pan_owner = fields.Boolean(string='PAN Card - House owner')
-    mb_doc_pan_landowner = fields.Boolean(string='PAN Card - Land owner')
-    mb_doc_bank_passbook = fields.Boolean(string='Bank Account Passbook')
-    mb_doc_passport_photos = fields.Boolean(string='House owner passport photos')
-    mb_doc_bank_neft_form = fields.Boolean(string='Bank NEFT mandate form')
-    mb_doc_bank_ifsc = fields.Boolean(string='Bank IFSC Details')
-    mb_doc_other = fields.Boolean(string='Other Documents')
-    mb_doc_other_text = fields.Char(string='Other Documents Detail')
-
+    # Measuring Book declaration fields
     mb_owner_decl_date = fields.Date(string='Owner Declaration Date')
     mb_decl_no_claim_pending = fields.Boolean(string='No claim pending declaration')
     mb_decl_documents_received = fields.Boolean(string='Required documents received')
     mb_decl_gps_photo_video = fields.Boolean(string='GPS photo/video captured')
-    mb_house_number_text = fields.Char(string='House Number (MB)')
-    mb_mohalla_text = fields.Char(string='Mohalla (MB)')
-    mb_rakba_text = fields.Char(string='Rakba (MB)')
-    mb_relation_text = fields.Char(string='Relation house owner and land owner')
-    mb_present_landowner_text = fields.Char(string='Present Landowner Name (MB)')
     
     @api.depends('name', 'khasra_number')
     def _compute_display_name(self):
@@ -834,12 +792,11 @@ class Survey(models.Model):
             'name': _('Landowners'),
             'res_model': 'bhu.landowner',
             'view_mode': 'list,form',
-            'domain': [('id', 'in', self.landowner_ids.ids)],
+            'domain': [('survey_id', '=', self.id)],
             'context': {
-                'create': False,
+                'default_survey_id': self.id,
                 'default_company_id': self.company_id.id,
                 'default_village_id': self.village_id.id,
-                'default_tehsil_id': self.tehsil_id.id,
             },
         }
 
@@ -935,30 +892,46 @@ class Survey(models.Model):
         row += 1
 
         # House owner block
-        ws.merge_range(row, 0, row, 9, f"NAME OF HOUSE OWNER : {self.mb_house_owner_name or ''}", hdr_fmt)
-        ws.merge_range(row, 10, row, 12, f"HOUSE NO : {self.mb_house_number_text or ''}", hdr_fmt)
+        house_owner = self.house_owner_ids[:1]
+        house_owner_name = house_owner.name if house_owner else ''
+        house_owner_aadhar = house_owner.aadhar_number if house_owner else ''
+        house_owner_caste = house_owner.caste if house_owner else ''
+        house_owner_dob = house_owner.dob if house_owner else ''
+        house_owner_mobile = house_owner.phone if house_owner else ''
+        house_owner_village = (
+            house_owner.village_id.display_name if house_owner and house_owner.village_id
+            else (self.village_id.name or '')
+        )
+        house_number = house_owner.house_number if house_owner else ''
+        mohalla = house_owner.mohalla if house_owner else ''
+        ws.merge_range(row, 0, row, 9, f"NAME OF HOUSE OWNER : {house_owner_name}", hdr_fmt)
+        ws.merge_range(row, 10, row, 12, f"HOUSE NO : {house_number}", hdr_fmt)
         row += 1
-        ws.merge_range(row, 0, row, 5, f"AADHAR NO : {self.mb_house_owner_aadhar or ''}", subhdr_fmt)
-        ws.merge_range(row, 6, row, 8, f"CASTE/CAT : {self.mb_house_owner_caste or ''}", subhdr_fmt)
-        ws.merge_range(row, 9, row, 12, f"MOHALLA : {self.mb_mohalla_text or ''}", subhdr_fmt)
+        ws.merge_range(row, 0, row, 5, f"AADHAR NO : {house_owner_aadhar}", subhdr_fmt)
+        ws.merge_range(row, 6, row, 8, f"CASTE/CAT : {house_owner_caste}", subhdr_fmt)
+        ws.merge_range(row, 9, row, 12, f"MOHALLA : {mohalla}", subhdr_fmt)
         row += 1
-        ws.merge_range(row, 0, row, 3, f"Date of Birth : {self.mb_house_owner_dob or ''}", subhdr_fmt)
-        ws.merge_range(row, 4, row, 7, f"MOBILE NO : {self.mb_house_owner_mobile or ''}", subhdr_fmt)
-        ws.merge_range(row, 8, row, 12, f"VILLAGE : {self.mb_house_owner_village or self.village_id.name or ''}", subhdr_fmt)
+        ws.merge_range(row, 0, row, 3, f"Date of Birth : {house_owner_dob or ''}", subhdr_fmt)
+        ws.merge_range(row, 4, row, 7, f"MOBILE NO : {house_owner_mobile}", subhdr_fmt)
+        ws.merge_range(row, 8, row, 12, f"VILLAGE : {house_owner_village}", subhdr_fmt)
         row += 1
-        ws.merge_range(row, 0, row, 12, f"RELATION BETWEEN HOUSE OWNER AND LAND OWNER : {self.mb_relation_text or ''}", hdr_fmt)
+        land_owner = self.landowner_ids[:1]
+        land_owner_name = land_owner.name if land_owner else ''
+        land_owner_aadhar = land_owner.aadhar_number if land_owner else ''
+        land_owner_rakba = land_owner.rakba if land_owner else ''
+        ws.merge_range(row, 0, row, 12, 'RELATION BETWEEN HOUSE OWNER AND LAND OWNER :', hdr_fmt)
         row += 1
 
-        # Land owner block
-        ws.merge_range(row, 0, row, 9, f"NAME OF LAND OWNER : {self.mb_land_owner_name or ''}", hdr_fmt)
+        # Land owner block (from linked landowners)
+        ws.merge_range(row, 0, row, 9, f"NAME OF LAND OWNER : {land_owner_name}", hdr_fmt)
         ws.merge_range(row, 10, row, 12, f"KHASRA NO : {self.khasra_number or ''}", hdr_fmt)
         row += 1
-        ws.merge_range(row, 0, row, 5, f"AADHAR NO : {self.mb_land_owner_aadhar or ''}", subhdr_fmt)
-        ws.merge_range(row, 6, row, 8, f"CASTE/CAT : {self.mb_land_owner_caste or ''}", subhdr_fmt)
-        ws.merge_range(row, 9, row, 12, f"RAKBA : {self.mb_rakba_text or ''}", subhdr_fmt)
+        ws.merge_range(row, 0, row, 5, f"AADHAR NO : {land_owner_aadhar}", subhdr_fmt)
+        ws.merge_range(row, 6, row, 8, 'CASTE/CAT :', subhdr_fmt)
+        ws.merge_range(row, 9, row, 12, f"RAKBA : {land_owner_rakba}", subhdr_fmt)
         row += 1
-        ws.merge_range(row, 0, row, 3, f"Date of Birth : {self.mb_land_owner_dob or ''}", subhdr_fmt)
-        ws.merge_range(row, 4, row, 12, f"NAME OF PRESENT LAND OWNER : {self.mb_present_landowner_text or ''}", subhdr_fmt)
+        ws.merge_range(row, 0, row, 3, 'Date of Birth :', subhdr_fmt)
+        ws.merge_range(row, 4, row, 12, 'NAME OF PRESENT LAND OWNER :', subhdr_fmt)
         row += 1
 
         # House details table
@@ -1056,22 +1029,23 @@ class Survey(models.Model):
         ws.write_row(row, 0, ['S.No', 'Document', 'Checked', 'S.No', 'Document', 'Checked'], subhdr_fmt)
         row += 1
         docs_left = [
-            ('1', 'Electricity Bill - House owner', self.mb_doc_electricity_bill),
-            ('2', 'Voter Card - House owner', self.mb_doc_voter_card_owner),
-            ('3', 'Aadhar Card - House owner', self.mb_doc_aadhar_owner),
-            ('4', 'Aadhar Card - Witness 01', self.mb_doc_aadhar_witness_1),
-            ('5', 'Aadhar Card - Witness 02', self.mb_doc_aadhar_witness_2),
-            ('6', 'Ration Card - House owner', self.mb_doc_ration_owner),
-            ('7', 'Educational certificate - House owner', self.mb_doc_education_owner),
+            ('1', 'Electricity Bill - House owner', house_owner.doc_electricity_bill if house_owner else False),
+            ('2', 'Voter Card - House owner', house_owner.doc_voter_card_owner if house_owner else False),
+            ('3', 'Aadhar Card - House owner', house_owner.doc_aadhar_owner if house_owner else False),
+            ('4', 'Aadhar Card - Witness 01', house_owner.doc_aadhar_witness_1 if house_owner else False),
+            ('5', 'Aadhar Card - Witness 02', house_owner.doc_aadhar_witness_2 if house_owner else False),
+            ('6', 'Ration Card - House owner', house_owner.doc_ration_owner if house_owner else False),
+            ('7', 'Educational certificate - House owner', house_owner.doc_education_owner if house_owner else False),
         ]
         docs_right = [
-            ('8', 'Aadhar Card - Land owner', self.mb_doc_aadhar_landowner),
-            ('9', 'Affidavit/NOC', self.mb_doc_affidavit_noc),
-            ('10', 'Passport size photos (4)', self.mb_doc_passport_photos),
-            ('11', 'PAN Card - House owner', self.mb_doc_pan_owner),
-            ('12', 'PAN Card - Land owner', self.mb_doc_pan_landowner),
-            ('13', 'Bank Passbook', self.mb_doc_bank_passbook),
-            ('14', f"NEFT/Other: {self.mb_doc_other_text or ''}", (self.mb_doc_bank_neft_form or self.mb_doc_other)),
+            ('8', 'Aadhar Card - Land owner', house_owner.doc_aadhar_landowner if house_owner else False),
+            ('9', 'Affidavit/NOC', house_owner.doc_affidavit_noc if house_owner else False),
+            ('10', 'Passport size photos (4)', house_owner.doc_passport_photos if house_owner else False),
+            ('11', 'PAN Card - House owner', house_owner.doc_pan_owner if house_owner else False),
+            ('12', 'PAN Card - Land owner', house_owner.doc_pan_landowner if house_owner else False),
+            ('13', 'Bank Passbook', house_owner.doc_bank_passbook if house_owner else False),
+            ('14', f"NEFT/Other: {(house_owner.doc_other_text or '') if house_owner else ''}",
+             ((house_owner.doc_bank_neft_form or house_owner.doc_other) if house_owner else False)),
         ]
         for idx in range(7):
             l = docs_left[idx]
@@ -1283,7 +1257,7 @@ class Survey(models.Model):
         - 10 rows per page, signature section at the end.
         """
         # Respect current user's visibility (patwari: own + assigned villages)
-        if self.env.user.bhuarjan_role == 'patwari':
+        if self.env.user.bhuarjan_role in self.env['res.users'].BHUKHADAN_PATWARI_ROLES:
             domain = ['|', ('user_id', '=', self.env.user.id), ('village_id.user_id', '=', self.env.user.id)]
         else:
             domain = []
@@ -1312,7 +1286,7 @@ class Survey(models.Model):
     def action_form10_preview(self):
         """Preview all Form-10s in a single scrollable HTML view"""
         # Get all surveys for the current user based on their role
-        if self.env.user.bhuarjan_role == 'patwari':
+        if self.env.user.bhuarjan_role in self.env['res.users'].BHUKHADAN_PATWARI_ROLES:
             domain = [
                 '|',
                 ('user_id', '=', self.env.user.id),
@@ -1347,24 +1321,6 @@ class Survey(models.Model):
                 message_type='notification'
             )
     
-    landowner_pan_numbers = fields.Char(
-        string="PAN Numbers",
-        compute="_compute_landowner_pan_numbers",
-        store=True,
-        search="_search_landowner_pan_numbers"
-    )
-
-    def _compute_landowner_pan_numbers(self):
-        for rec in self:
-            if rec.landowner_ids:
-                pan_numbers = [
-                    str(pan or '') for pan in rec.landowner_ids.mapped('pan_number') if pan
-                ]
-                rec.landowner_pan_numbers = ', '.join(pan_numbers)
-            else:
-                rec.landowner_pan_numbers = ''
-
-
     landowner_aadhar_numbers = fields.Char(
         string="Aadhaar Numbers",
         compute="_compute_landowner_aadhar_numbers",
@@ -1396,7 +1352,7 @@ class Survey(models.Model):
     @api.model
     def _search(self, args, offset=0, limit=None, order=None):
         """Override search to apply role-based filtering for Patwari users"""
-        if self.env.user.bhuarjan_role == 'patwari':
+        if self.env.user.bhuarjan_role in self.env['res.users'].BHUKHADAN_PATWARI_ROLES:
             patwari_domain = [
                 '|',
                 ('user_id', '=', self.env.user.id),

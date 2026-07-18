@@ -45,7 +45,7 @@ class UserReportWizard(models.TransientModel):
 
     def _patwari_users_domain(self):
         """Patwari only; district admins are limited to their district."""
-        domain = [('bhuarjan_role', '=', 'patwari')]
+        domain = [('bhuarjan_role', '=', 'halka_patwari')]
         user = self.env.user
         is_full_admin = user.has_group('bhukhadan_core.group_bhuarjan_admin') or user.has_group(
             'base.group_system'

@@ -320,7 +320,7 @@ export class GroupDashboard extends Component {
             // Fetch all global totals in one parallel batch for 100% accuracy (Filtered by Company)
             const [totalPatwaris, totalSurveys, totalLandowners, surveysToday] = await Promise.all([
                 this.orm.searchCount("res.users", [
-                    ["bhuarjan_role", "=", "patwari"],
+                    ["bhuarjan_role", "=", "halka_patwari"],
                     ["company_id", "in", companyIds]
                 ]),
                 this.orm.searchCount("bhu.survey", [

@@ -40,32 +40,16 @@ class SurveyAPILandownerController(SurveyAPIHelperMixin, http.Controller):
                 except (ValueError, TypeError):
                     village_id = None
             
-            tehsil_id = data.get('tehsil_id')
-            if tehsil_id:
-                try:
-                    tehsil_id = int(tehsil_id) if isinstance(tehsil_id, str) else tehsil_id
-                except (ValueError, TypeError):
-                    tehsil_id = None
-            
-            district_id = data.get('district_id')
-            if district_id:
-                try:
-                    district_id = int(district_id) if isinstance(district_id, str) else district_id
-                except (ValueError, TypeError):
-                    district_id = None
-            
             landowner_vals = {
                 'name': data.get('name'),
                 'father_name': data.get('father_name'),
                 'mother_name': data.get('mother_name'),
                 'spouse_name': data.get('spouse_name'),
+                'caste': data.get('caste'),
                 'phone': data.get('phone'),
                 'village_id': village_id,
-                'tehsil_id': tehsil_id,
-                'district_id': district_id,
-                'owner_address': data.get('owner_address'),
+                'rakba': data.get('rakba'),
                 'aadhar_number': data.get('aadhar_number'),
-                'pan_number': data.get('pan_number'),
                 'bank_name': data.get('bank_name'),
                 'bank_branch': data.get('bank_branch'),
                 'account_number': data.get('account_number'),
@@ -74,9 +58,8 @@ class SurveyAPILandownerController(SurveyAPIHelperMixin, http.Controller):
             }
             
             # Remove None values for ID fields only (to avoid invalid references)
-            # Keep all text fields even if empty string or None (Odoo will handle None as not setting the field)
-            landowner_vals = {k: v for k, v in landowner_vals.items() 
-                            if v is not None or k not in ['village_id', 'tehsil_id', 'district_id']}
+            landowner_vals = {k: v for k, v in landowner_vals.items()
+                            if v is not None or k not in ['village_id']}
 
             # Handle document uploads if provided (base64 encoded)
             if data.get('aadhar_card'):
@@ -112,12 +95,12 @@ class SurveyAPILandownerController(SurveyAPIHelperMixin, http.Controller):
                         'father_name': landowner.father_name or '',
                         'mother_name': landowner.mother_name or '',
                         'spouse_name': landowner.spouse_name or '',
+                        'caste': landowner.caste or '',
                         'aadhar_number': landowner.aadhar_number or '',
-                        'pan_number': landowner.pan_number or '',
                         'phone': landowner.phone or '',
                         'village_id': landowner.village_id.id if landowner.village_id else None,
                         'village_name': landowner.village_id.name if landowner.village_id else '',
-                        'owner_address': landowner.owner_address or '',
+                        'rakba': landowner.rakba or '',
                     }
                 }),
                 status=201,
@@ -158,7 +141,7 @@ class SurveyAPILandownerController(SurveyAPIHelperMixin, http.Controller):
                         content_type='application/json'
                     )
                 # Get landowners from the survey
-                domain.append(('survey_ids', 'in', [survey_id]))
+                domain.append(('survey_id', '=', survey_id))
             
             # Filter by village_id if provided
             if village_id:
@@ -181,22 +164,18 @@ class SurveyAPILandownerController(SurveyAPIHelperMixin, http.Controller):
                     'father_name': landowner.father_name or '',
                     'mother_name': landowner.mother_name or '',
                     'spouse_name': landowner.spouse_name or '',
+                    'caste': landowner.caste or '',
                     'phone': landowner.phone or '',
                     'village_id': landowner.village_id.id if landowner.village_id else None,
                     'village_name': landowner.village_id.name if landowner.village_id else '',
-                    'tehsil_id': landowner.tehsil_id.id if landowner.tehsil_id else None,
-                    'tehsil_name': landowner.tehsil_id.name if landowner.tehsil_id else '',
-                    'district_id': landowner.district_id.id if landowner.district_id else None,
-                    'district_name': landowner.district_id.name if landowner.district_id else '',
-                    'owner_address': landowner.owner_address or '',
+                    'rakba': landowner.rakba or '',
                     'aadhar_number': landowner.aadhar_number or '',
-                    'pan_number': landowner.pan_number or '',
                     'bank_name': landowner.bank_name or '',
                     'bank_branch': landowner.bank_branch or '',
                     'account_number': landowner.account_number or '',
                     'ifsc_code': landowner.ifsc_code or '',
                     'account_holder_name': landowner.account_holder_name or '',
-                    'survey_ids': landowner.survey_ids.ids if landowner.survey_ids else [],
+                    'survey_id': landowner.survey_id.id if landowner.survey_id else None,
                 })
 
             total_count = request.env['bhu.landowner'].sudo().search_count(domain)
@@ -258,20 +237,6 @@ class SurveyAPILandownerController(SurveyAPIHelperMixin, http.Controller):
                 except (ValueError, TypeError):
                     village_id = None
             
-            tehsil_id = data.get('tehsil_id')
-            if tehsil_id is not None:
-                try:
-                    tehsil_id = int(tehsil_id) if isinstance(tehsil_id, str) else tehsil_id
-                except (ValueError, TypeError):
-                    tehsil_id = None
-            
-            district_id = data.get('district_id')
-            if district_id is not None:
-                try:
-                    district_id = int(district_id) if isinstance(district_id, str) else district_id
-                except (ValueError, TypeError):
-                    district_id = None
-            
             # Build update values - only include fields that are provided in the request
             landowner_vals = {}
             
@@ -284,14 +249,14 @@ class SurveyAPILandownerController(SurveyAPIHelperMixin, http.Controller):
                 landowner_vals['mother_name'] = data.get('mother_name')
             if 'spouse_name' in data:
                 landowner_vals['spouse_name'] = data.get('spouse_name')
+            if 'caste' in data:
+                landowner_vals['caste'] = data.get('caste')
             if 'phone' in data:
                 landowner_vals['phone'] = data.get('phone')
-            if 'owner_address' in data:
-                landowner_vals['owner_address'] = data.get('owner_address')
             if 'aadhar_number' in data:
                 landowner_vals['aadhar_number'] = data.get('aadhar_number')
-            if 'pan_number' in data:
-                landowner_vals['pan_number'] = data.get('pan_number')
+            if 'rakba' in data:
+                landowner_vals['rakba'] = data.get('rakba')
             if 'bank_name' in data:
                 landowner_vals['bank_name'] = data.get('bank_name')
             if 'bank_branch' in data:
@@ -319,42 +284,6 @@ class SurveyAPILandownerController(SurveyAPIHelperMixin, http.Controller):
                             'error_code': 'INVALID_VILLAGE_ID',
                             'message': f'Village with ID {village_id} not found',
                             'fields': ['village_id']
-                        }),
-                        status=400,
-                        content_type='application/json'
-                    )
-            
-            if tehsil_id is not None:
-                # Validate tehsil exists
-                tehsil = request.env['bhu.tehsil'].sudo().browse(tehsil_id)
-                if tehsil.exists():
-                    landowner_vals['tehsil_id'] = tehsil_id
-                else:
-                    return Response(
-                        json.dumps({
-                            'success': False,
-                            'error': 'VALIDATION_ERROR',
-                            'error_code': 'INVALID_TEHSIL_ID',
-                            'message': f'Tehsil with ID {tehsil_id} not found',
-                            'fields': ['tehsil_id']
-                        }),
-                        status=400,
-                        content_type='application/json'
-                    )
-            
-            if district_id is not None:
-                # Validate district exists
-                district = request.env['bhu.district'].sudo().browse(district_id)
-                if district.exists():
-                    landowner_vals['district_id'] = district_id
-                else:
-                    return Response(
-                        json.dumps({
-                            'success': False,
-                            'error': 'VALIDATION_ERROR',
-                            'error_code': 'INVALID_DISTRICT_ID',
-                            'message': f'District with ID {district_id} not found',
-                            'fields': ['district_id']
                         }),
                         status=400,
                         content_type='application/json'
@@ -406,8 +335,6 @@ class SurveyAPILandownerController(SurveyAPIHelperMixin, http.Controller):
                 # Try to identify which field caused the error
                 if 'aadhar' in error_msg.lower():
                     fields_list.append('aadhar_number')
-                elif 'pan' in error_msg.lower():
-                    fields_list.append('pan_number')
                 elif 'account' in error_msg.lower():
                     fields_list.append('account_number')
                 elif 'ifsc' in error_msg.lower():
@@ -449,16 +376,12 @@ class SurveyAPILandownerController(SurveyAPIHelperMixin, http.Controller):
                         'father_name': landowner.father_name or '',
                         'mother_name': landowner.mother_name or '',
                         'spouse_name': landowner.spouse_name or '',
+                        'caste': landowner.caste or '',
                         'aadhar_number': landowner.aadhar_number or '',
-                        'pan_number': landowner.pan_number or '',
                         'phone': landowner.phone or '',
                         'village_id': landowner.village_id.id if landowner.village_id else None,
                         'village_name': landowner.village_id.name if landowner.village_id else '',
-                        'tehsil_id': landowner.tehsil_id.id if landowner.tehsil_id else None,
-                        'tehsil_name': landowner.tehsil_id.name if landowner.tehsil_id else '',
-                        'district_id': landowner.district_id.id if landowner.district_id else None,
-                        'district_name': landowner.district_id.name if landowner.district_id else '',
-                        'owner_address': landowner.owner_address or '',
+                        'rakba': landowner.rakba or '',
                         'bank_name': landowner.bank_name or '',
                         'bank_branch': landowner.bank_branch or '',
                         'account_number': landowner.account_number or '',

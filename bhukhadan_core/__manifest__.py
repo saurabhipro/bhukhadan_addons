@@ -84,6 +84,7 @@
         'views/master_views.xml',
         'views/res_bank_views.xml',
         'views/landowner_views.xml',
+        'views/house_owner_views.xml',
         'views/survey_views.xml',
         'views/survey_bulk_approval_wizard_views.xml',
         'views/document_vault_views.xml',

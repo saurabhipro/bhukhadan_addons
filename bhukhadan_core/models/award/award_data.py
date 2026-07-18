@@ -14,7 +14,7 @@ class Section23AwardData(models.Model):
             'name': (landowner.name or '').strip(),
             'father_name': (landowner.father_name or '').strip(),
             'spouse_name': (landowner.spouse_name or '').strip(),
-            'address': (landowner.owner_address or '').strip(),
+            'address': (landowner.village_id.display_name or '').strip() if landowner.village_id else '',
         }
 
     def _land_owner_display_from_blocks(self, owner_blocks):
@@ -834,7 +834,7 @@ class Section23AwardData(models.Model):
                 'landowner_name': owner_names,
                 'father_name': first_owner.father_name if first_owner else '',
                 'spouse_name': first_owner.spouse_name if first_owner else '',
-                'address': first_owner.owner_address if first_owner else '',
+                'address': (first_owner.village_id.display_name or '') if first_owner and first_owner.village_id else '',
                 'market_value': total_value,
                 'solatium': total_value,
                 'interest': total_interest,

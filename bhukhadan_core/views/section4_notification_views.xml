@@ -368,7 +368,7 @@
                                         <field name="acquired_area" string="Acquired Area (Ha)"/>
                                         <field name="crop_type_id" string="Crop Type" optional="show"/>
                                         <field name="irrigation_type" string="Irrigation" optional="hide"/>
-                                        <field name="landowner_ids" widget="many2many_tags" string="Landowners / भूमिस्वामी"/>
+                                        <field name="landowner_ids" string="Landowners / भूमिस्वामी"/>
                                         <field name="user_id" string="Patwari" optional="show"/>
                                         <field name="survey_date" string="Survey Date"/>
                                         <field name="state" widget="badge" string="Status / स्थिति"
@@ -392,7 +392,7 @@
                                                     <field name="acquired_area" readonly="1"/>
                                                     <field name="crop_type_id" readonly="1" options="{'no_open': True}"/>
                                                     <field name="irrigation_type" readonly="1"/>
-                                                    <field name="landowner_ids" widget="many2many_tags" readonly="1"/>
+                                                    <field name="landowner_ids" readonly="1"/>
                                                 </group>
                                             </group>
                                             <group string="Location" col="2">

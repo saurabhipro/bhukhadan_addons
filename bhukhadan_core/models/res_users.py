@@ -43,6 +43,41 @@ class BhuUserMobile(models.Model):
 class ResUsers(models.Model):
     _inherit = 'res.users'
 
+    # Role keys stored on res_users.bhuarjan_role
+    BHUKHADAN_ROLE_SELECTION = [
+        ('halka_patwari', 'Halka Patwari'),
+        ('revenue_inspector', 'Revenue Inspector'),
+        ('sub_engineer', 'Sub Engineer'),
+        ('horticulture_superintendent', 'Horticulture Superintendent'),
+        ('deputy_forest_officer', 'Deputy Forest Officer'),
+        ('forest_range_officer', 'Forest Range Officer'),
+        ('pwd_officer', 'PWD Officer'),
+        ('tehsildar', 'Tehsildar'),
+        ('nodal_officer_lr', 'Nodal Officer (L&R)'),
+        ('area_survey_officer', 'Area Survey Officer'),
+        ('staff_officer_pp', 'Staff Officer (P&P)'),
+        ('staff_officer_hr', 'Staff Officer (HR)'),
+        ('staff_officer_civil', 'Staff Officer (Civil)'),
+        ('area_finance_manager', 'Area Finance Manager'),
+        ('sub_area_manager_gm_min', 'Sub Area Manager/GM (Min)'),
+        ('general_manager_oprn', 'General Manager (Oprn)'),
+    ]
+    BHUKHADAN_PATWARI_ROLES = frozenset({'halka_patwari', 'patwari'})
+    BHUKHADAN_STAFF_OFFICER_ROLES = frozenset({
+        'staff_officer_pp', 'staff_officer_hr', 'staff_officer_civil', 'department_user',
+    })
+    BHUKHADAN_DISTRICT_LEADERSHIP_ROLES = frozenset({
+        'general_manager_oprn', 'sub_area_manager_gm_min', 'area_finance_manager',
+        'collector', 'additional_collector', 'district_administrator', 'administrator',
+    })
+    BHUKHADAN_ROLE_MIGRATIONS = {
+        'patwari': 'halka_patwari',
+        'ri': 'revenue_inspector',
+        'nayab_tahsildar': 'tehsildar',
+        'tahsildar': 'tehsildar',
+        'department_user': 'staff_officer_pp',
+    }
+
     parent_id = fields.Many2one('res.users', string="Parent")
     child_ids = fields.One2many('res.users', 'parent_id', string='Direct subordinates')
     # color = fields.Integer(string="Color Index")
@@ -158,25 +193,11 @@ class ResUsers(models.Model):
                     )
     state_id = fields.Many2one('res.country.state', string='State', domain=lambda self: self._get_state_domain(), default=lambda self: self.env.user.state_id.id)
     district_id = fields.Many2one('bhu.district', string='District / जिला', default=lambda self: self.env.user.district_id.id)
-    bhuarjan_role = fields.Selection([
-        ('patwari', 'Patwari'),
-        ('ri', 'Revenue Inspector'),
-        ('revenue_inspector', 'Revenue Inspector'),
-        ('nayab_tahsildar', 'Nayab Tahsildar'),
-        ('tahsildar', 'Tehsildar'),
-        ('sdm', 'SDM'),
-        ('additional_collector', 'Additional Collector'),
-        ('collector', 'Collector'),
-        ('district_administrator', 'District Administrator'),
-        ('administrator', 'Administrator'),
-        ('department_user', 'Department User'),
-        ('coal_area_officer', 'Coal Area Officer'),
-        ('coal_hq_reviewer', 'Coal HQ Reviewer'),
-        ('coal_moc_liaison', 'MoC Liaison'),
-        ('coal_section9_officer', 'Section 9 Officer'),
-        ('coal_asc_member', 'ASC Member'),
-        ('coal_drrc_member', 'DRRC Member'),
-    ], string="BhuKhadan Role", default=False)
+    bhuarjan_role = fields.Selection(
+        selection=BHUKHADAN_ROLE_SELECTION,
+        string="BhuKhadan Role",
+        default=False,
+    )
 
     bhu_patwari_village_ids = fields.One2many(
         comodel_name='bhu.village',
@@ -193,7 +214,7 @@ class ResUsers(models.Model):
     @api.depends('bhu_patwari_village_ids', 'bhu_patwari_village_ids.name', 'bhuarjan_role')
     def _compute_bhu_patwari_village_summary(self):
         for user in self:
-            if user.bhuarjan_role != 'patwari':
+            if user.bhuarjan_role not in self.BHUKHADAN_PATWARI_ROLES:
                 user.bhu_patwari_village_summary = ''
                 continue
             names = [n for n in user.bhu_patwari_village_ids.mapped('name') if n]
@@ -261,6 +282,7 @@ class ResUsers(models.Model):
             odoo_sql.create_column(cr, 'res_users', 'bhu_terms_accepted', 'boolean')
         if not odoo_sql.column_exists(cr, 'res_users', 'bhu_terms_accepted_date'):
             odoo_sql.create_column(cr, 'res_users', 'bhu_terms_accepted_date', 'timestamp without time zone')
+        self._migrate_bhuarjan_roles(cr)
 
     def _register_hook(self):
         """Ensure ``name_english`` exists after code deploy without ``-u`` (runs each registry load)."""
@@ -272,6 +294,17 @@ class ResUsers(models.Model):
             odoo_sql.create_column(cr, 'res_users', 'bhu_terms_accepted', 'boolean')
         if not odoo_sql.column_exists(cr, 'res_users', 'bhu_terms_accepted_date'):
             odoo_sql.create_column(cr, 'res_users', 'bhu_terms_accepted_date', 'timestamp without time zone')
+        self._migrate_bhuarjan_roles(cr)
+
+    @api.model
+    def _migrate_bhuarjan_roles(self, cr):
+        for old_role, new_role in self.BHUKHADAN_ROLE_MIGRATIONS.items():
+            if old_role == new_role:
+                continue
+            cr.execute(
+                "UPDATE res_users SET bhuarjan_role = %s WHERE bhuarjan_role = %s",
+                (new_role, old_role),
+            )
 
     survey_count_in_project = fields.Integer(
         string='Survey Count / सर्वे संख्या',
@@ -296,7 +329,7 @@ class ResUsers(models.Model):
                 project_id = active_id
         
         for user in self:
-            if user.bhuarjan_role == 'patwari' and project_id:
+            if user.bhuarjan_role in self.BHUKHADAN_PATWARI_ROLES and project_id:
                 # Count surveys where:
                 # 1. Created by this patwari, OR
                 # 2. In villages where this user is Patwari (bhu.village.user_id)
@@ -402,22 +435,8 @@ class ResUsers(models.Model):
         """Assign the corresponding group based on selected role"""
         # Clear all previous custom roles (you can add all group XML IDs here)
         all_custom_group_ids = [
-            self.env.ref('bhukhadan_core.group_bhuarjan_patwari').id,
-            self.env.ref('bhukhadan_core.group_bhuarjan_ri').id,
-            self.env.ref('bhukhadan_core.group_bhuarjan_nayab_tahsildar').id,
-            self.env.ref('bhukhadan_core.group_bhuarjan_tahsildar').id,
-            self.env.ref('bhukhadan_core.group_bhuarjan_sdm').id,
-            self.env.ref('bhukhadan_core.group_bhuarjan_additional_collector').id,
-            self.env.ref('bhukhadan_core.group_bhuarjan_collector').id,
-            self.env.ref('bhukhadan_core.group_bhuarjan_district_administrator').id,
-            self.env.ref('bhukhadan_core.group_bhuarjan_admin').id,
-            self.env.ref('bhukhadan_core.group_bhuarjan_department_user').id,
-            self.env.ref('bhukhadan_core.group_coal_area_officer').id,
-            self.env.ref('bhukhadan_core.group_coal_hq_reviewer').id,
-            self.env.ref('bhukhadan_core.group_coal_moc_liaison').id,
-            self.env.ref('bhukhadan_core.group_coal_section9_officer').id,
-            self.env.ref('bhukhadan_core.group_coal_asc_member').id,
-            self.env.ref('bhukhadan_core.group_coal_drrc_member').id,
+            self.env.ref(xml_id).id
+            for xml_id in self._bhuarjan_all_group_xml_ids()
         ]
         if self.groups_id:
             # properly handle removing ids from One2many
@@ -427,31 +446,58 @@ class ResUsers(models.Model):
             self.groups_id = [(6, 0, new_ids)]
 
         # Assign selected group
-        group_map = {
-            'patwari': 'bhukhadan_core.group_bhuarjan_patwari',
-            'ri': 'bhukhadan_core.group_bhuarjan_ri',
-            'revenue_inspector': 'bhukhadan_core.group_bhuarjan_ri',
-            'nayab_tahsildar': 'bhukhadan_core.group_bhuarjan_nayab_tahsildar',
-            'tahsildar': 'bhukhadan_core.group_bhuarjan_tahsildar',
-            'sdm': 'bhukhadan_core.group_bhuarjan_sdm',
-            'additional_collector': 'bhukhadan_core.group_bhuarjan_additional_collector',
-            'collector': 'bhukhadan_core.group_bhuarjan_collector',
-            'district_administrator': 'bhukhadan_core.group_bhuarjan_district_administrator',
-            'administrator': 'bhukhadan_core.group_bhuarjan_admin',
-            'department_user': 'bhukhadan_core.group_bhuarjan_department_user',
-            'coal_area_officer': 'bhukhadan_core.group_coal_area_officer',
-            'coal_hq_reviewer': 'bhukhadan_core.group_coal_hq_reviewer',
-            'coal_moc_liaison': 'bhukhadan_core.group_coal_moc_liaison',
-            'coal_section9_officer': 'bhukhadan_core.group_coal_section9_officer',
-            'coal_asc_member': 'bhukhadan_core.group_coal_asc_member',
-            'coal_drrc_member': 'bhukhadan_core.group_coal_drrc_member',
-        }
-
-        group_ref = group_map.get(self.bhuarjan_role)
+        group_ref = self._bhuarjan_role_group_xml_ids().get(self.bhuarjan_role)
         if group_ref:
             group = self.env.ref(group_ref)
             if group:
                 self.groups_id = [(4, group.id)]
+
+    @api.model
+    def _bhuarjan_role_group_xml_ids(self):
+        return {
+            'halka_patwari': 'bhukhadan_core.group_bhuarjan_patwari',
+            'revenue_inspector': 'bhukhadan_core.group_bhuarjan_ri',
+            'sub_engineer': 'bhukhadan_core.group_bhuarjan_sub_engineer',
+            'horticulture_superintendent': 'bhukhadan_core.group_bhuarjan_horticulture_superintendent',
+            'deputy_forest_officer': 'bhukhadan_core.group_bhuarjan_deputy_forest_officer',
+            'forest_range_officer': 'bhukhadan_core.group_bhuarjan_forest_range_officer',
+            'pwd_officer': 'bhukhadan_core.group_bhuarjan_pwd_officer',
+            'tehsildar': 'bhukhadan_core.group_bhuarjan_tahsildar',
+            'nodal_officer_lr': 'bhukhadan_core.group_bhuarjan_nodal_officer_lr',
+            'area_survey_officer': 'bhukhadan_core.group_bhuarjan_area_survey_officer',
+            'staff_officer_pp': 'bhukhadan_core.group_bhuarjan_staff_officer_pp',
+            'staff_officer_hr': 'bhukhadan_core.group_bhuarjan_staff_officer_hr',
+            'staff_officer_civil': 'bhukhadan_core.group_bhuarjan_staff_officer_civil',
+            'area_finance_manager': 'bhukhadan_core.group_bhuarjan_area_finance_manager',
+            'sub_area_manager_gm_min': 'bhukhadan_core.group_bhuarjan_sub_area_manager_gm_min',
+            'general_manager_oprn': 'bhukhadan_core.group_bhuarjan_general_manager_oprn',
+        }
+
+    @api.model
+    def _bhuarjan_all_group_xml_ids(self):
+        """All BhuKhadan module groups cleared/replaced when role changes."""
+        return list(self._bhuarjan_role_group_xml_ids().values()) + [
+            'bhukhadan_core.group_bhuarjan_nayab_tahsildar',
+            'bhukhadan_core.group_bhuarjan_sdm',
+            'bhukhadan_core.group_bhuarjan_additional_collector',
+            'bhukhadan_core.group_bhuarjan_collector',
+            'bhukhadan_core.group_bhuarjan_district_administrator',
+            'bhukhadan_core.group_bhuarjan_admin',
+            'bhukhadan_core.group_bhuarjan_department_user',
+            'bhukhadan_core.group_bhuarjan_sia_team_member',
+            'bhukhadan_core.group_bhuarjan_banker',
+            'bhukhadan_core.group_bhu_section_officer',
+            'bhukhadan_core.group_coal_area_officer',
+            'bhukhadan_core.group_coal_hq_reviewer',
+            'bhukhadan_core.group_coal_moc_liaison',
+            'bhukhadan_core.group_coal_section9_officer',
+            'bhukhadan_core.group_coal_asc_member',
+            'bhukhadan_core.group_coal_drrc_member',
+        ]
+
+    def _is_bhu_patwari_role(self):
+        self.ensure_one()
+        return self.bhuarjan_role in self.BHUKHADAN_PATWARI_ROLES
 
     def _patwari_assigned_villages(self):
         """Villages where this user is the assigned Patwari (master: bhu.village.user_id)."""

@@ -75,7 +75,7 @@ class ReportWizard(models.TransientModel):
             if wizard.project_id and wizard.project_id.village_ids:
                 # Get project villages
                 project_village_ids = wizard.project_id.village_ids.ids
-                if wizard.env.user.bhuarjan_role == 'patwari':
+                if wizard.env.user.bhuarjan_role in wizard.env['res.users'].BHUKHADAN_PATWARI_ROLES:
                     user_village_ids = wizard.env.user._patwari_assigned_villages().ids
                     allowed_ids = list(set(project_village_ids) & set(user_village_ids))
                 else:
@@ -84,7 +84,7 @@ class ReportWizard(models.TransientModel):
                 wizard.allowed_village_ids = [(6, 0, allowed_ids)]
             else:
                 # No project selected or project has no villages
-                if wizard.env.user.bhuarjan_role == 'patwari':
+                if wizard.env.user.bhuarjan_role in wizard.env['res.users'].BHUKHADAN_PATWARI_ROLES:
                     wizard.allowed_village_ids = [(6, 0, wizard.env.user._patwari_assigned_villages().ids)]
                 else:
                     # For other users, show no villages until project is selected
@@ -100,7 +100,7 @@ class ReportWizard(models.TransientModel):
         if self.project_id and self.project_id.village_ids:
             # Get project villages
             project_village_ids = self.project_id.village_ids.ids
-            if self.env.user.bhuarjan_role == 'patwari':
+            if self.env.user.bhuarjan_role in self.env['res.users'].BHUKHADAN_PATWARI_ROLES:
                 user_village_ids = self.env.user._patwari_assigned_villages().ids
                 allowed_ids = list(set(project_village_ids) & set(user_village_ids))
             else:
@@ -109,7 +109,7 @@ class ReportWizard(models.TransientModel):
             return {'domain': {'village_id': [('id', 'in', allowed_ids)]}}
         else:
             # No project selected or project has no villages
-            if self.env.user.bhuarjan_role == 'patwari':
+            if self.env.user.bhuarjan_role in self.env['res.users'].BHUKHADAN_PATWARI_ROLES:
                 return {'domain': {'village_id': [('id', 'in', self.env.user._patwari_assigned_villages().ids)]}}
             else:
                 # For other users, show no villages until project is selected
@@ -144,7 +144,7 @@ class ReportWizard(models.TransientModel):
         
         # Role-based validation for patwari
         patwari_village_ids = self.env.user._patwari_assigned_villages().ids
-        if self.env.user.bhuarjan_role == 'patwari' and self.village_id.id not in patwari_village_ids:
+        if self.env.user.bhuarjan_role in self.env['res.users'].BHUKHADAN_PATWARI_ROLES and self.village_id.id not in patwari_village_ids:
             raise UserError("You are not allowed to download for this village.")
         
         # Ensure UUIDs exist and are UNIQUE

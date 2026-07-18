@@ -590,7 +590,7 @@ class SurveyAPISurveyReadController(SurveyAPIHelperMixin, http.Controller):
             
             # Add landowners to survey_vals
             if isinstance(landowner_ids, list) and len(landowner_ids) > 0:
-                survey_vals['landowner_ids'] = [(6, 0, landowner_ids)]
+                survey_vals['landowner_ids'] = [(4, lid) for lid in landowner_ids]
             
             # Add tree lines to survey_vals
             if tree_line_vals:
@@ -793,10 +793,10 @@ class SurveyAPISurveyReadController(SurveyAPIHelperMixin, http.Controller):
                     'name': lo.name,
                     'father_name': lo.father_name or '',
                     'spouse_name': lo.spouse_name or '',
+                    'caste': lo.caste or '',
                     'aadhar_number': lo.aadhar_number or '',
-                    'pan_number': lo.pan_number or '',
+                    'rakba': lo.rakba or '',
                     'phone': lo.phone or '',
-                    'owner_address': lo.owner_address or '',
                 } for lo in survey.landowner_ids],
             }
 
@@ -930,7 +930,7 @@ class SurveyAPISurveyReadController(SurveyAPIHelperMixin, http.Controller):
             # village so results match the selected village; otherwise list Surveys would stay
             # empty while Odoo tabs show rows for admins or when master village.user_id differs.
             current_user = getattr(request, 'user', None)
-            if current_user and current_user.bhuarjan_role == 'patwari':
+            if current_user and current_user.bhuarjan_role in current_user.BHUKHADAN_PATWARI_ROLES:
                 if village_id:
                     allowed_villages = set(
                         api_mobile_user_village_ids(request.env, current_user)

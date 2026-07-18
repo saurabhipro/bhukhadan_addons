@@ -116,7 +116,7 @@ def api_mobile_user_village_ids(env, user):
     # Odoo 18+: Environment has no ``.sudo()``; use superuser env via ``(su=True)``.
     sudo = env(su=True)
     ids = set(sudo['bhu.village'].search([('user_id', '=', user.id)]).ids)
-    if getattr(user, 'bhuarjan_role', None) == 'patwari':
+    if getattr(user, 'bhuarjan_role', None) in user.env['res.users'].BHUKHADAN_PATWARI_ROLES:
         ids.update(
             sudo['bhu.survey']
             .search(
@@ -172,7 +172,7 @@ def api_mobile_user_geography(env, user):
     """
     sudo = env(su=True)
     villages = sudo['bhu.village'].search([('user_id', '=', user.id)])
-    if getattr(user, 'bhuarjan_role', None) == 'patwari':
+    if getattr(user, 'bhuarjan_role', None) in user.env['res.users'].BHUKHADAN_PATWARI_ROLES:
         survey_villages = sudo['bhu.survey'].search(
             [
                 '|',

@@ -306,7 +306,7 @@
                                     <field name="khasra_number" string="Khasra"/>
                                     <field name="acquired_area" string="Area (Ha)"/>
                                     <field name="state" widget="badge" string="Status"/>
-                                    <field name="landowner_ids" widget="many2many_tags" string="Landowners"/>
+                                    <field name="landowner_ids" string="Landowners"/>
                                     <field name="approved_objection_id" string="Objection Ref" widget="many2one" optional="show"/>
                                 </list>
                             </field>

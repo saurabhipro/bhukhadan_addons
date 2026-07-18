@@ -261,8 +261,6 @@
                 <field name="company_id" string="Company"/>
                 <field name="father_name" string="Father's Name"/>
                 <field name="village_id" string="Village"/>
-                <field name="tehsil_id" string="Tehsil"/>
-                <field name="district_id" string="District"/>
             </list>
         </field>
     </record>

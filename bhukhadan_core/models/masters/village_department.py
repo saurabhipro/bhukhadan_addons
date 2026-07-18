@@ -99,7 +99,7 @@ class BhuDepartment(models.Model):
     user_id = fields.Many2one(
         'res.users',
         string='Department User',
-        domain="[('bhuarjan_role', '=', 'department_user')]",
+        domain="[('bhuarjan_role', 'in', ['staff_officer_pp', 'staff_officer_hr', 'staff_officer_civil'])]",
         tracking=True,
     )
 

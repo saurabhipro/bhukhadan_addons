@@ -17,6 +17,7 @@ from . import qr_code_mixin
 from .survey import survey
 
 from . import landowner
+from . import house_owner
 
 from .masters import bhu_district
 from .masters import bhu_sub_division

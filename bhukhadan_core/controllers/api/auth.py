@@ -61,7 +61,7 @@ class JWTAuthController(http.Controller):
             # 2. Check for Patwari Role (Auto-Detect Logic)
             # If user is a Patwari, we generate an OTP but return it in the response (skipping SMS)
             # so the app can auto-detect/auto-fill it for easy login.
-            elif user.bhuarjan_role == 'patwari':
+            elif user.bhuarjan_role in request.env['res.users'].BHUKHADAN_PATWARI_ROLES:
                 otp_code = str(random.randint(1000, 9999))
                 use_static_otp_behavior = True # We treat it like static in terms of "return in response, skip SMS"
                 otp_to_return = otp_code

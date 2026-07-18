@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_bhu_house_owner_form" model="ir.ui.view">
+        <field name="name">bhu.house.owner.form</field>
+        <field name="model">bhu.house.owner</field>
+        <field name="arch" type="xml">
+            <form string="House Owner" js_class="confirm_save_form">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Enter full name..." required="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Personal Information">
+                            <field name="aadhar_number"/>
+                            <field name="phone" widget="phone"/>
+                            <field name="caste"/>
+                            <field name="dob"/>
+                        </group>
+                        <group string="Address Information">
+                            <field name="company_id" widget="selection"/>
+                            <field name="village_id" widget="selection" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="house_number"/>
+                            <field name="mohalla"/>
+                            <field name="survey_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <group string="Documents Collected / एकत्रित दस्तावेज़">
+                        <group>
+                            <field name="doc_electricity_bill"/>
+                            <field name="doc_voter_card_owner"/>
+                            <field name="doc_aadhar_owner"/>
+                            <field name="doc_aadhar_witness_1"/>
+                            <field name="doc_aadhar_witness_2"/>
+                            <field name="doc_ration_owner"/>
+                            <field name="doc_education_owner"/>
+                        </group>
+                        <group>
+                            <field name="doc_aadhar_landowner"/>
+                            <field name="doc_affidavit_noc"/>
+                            <field name="doc_passport_photos"/>
+                            <field name="doc_pan_owner"/>
+                            <field name="doc_pan_landowner"/>
+                            <field name="doc_bank_passbook"/>
+                            <field name="doc_bank_neft_form"/>
+                            <field name="doc_bank_ifsc"/>
+                            <field name="doc_other"/>
+                            <field name="doc_other_text" invisible="not doc_other"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Save &amp; Close" special="save" class="btn-primary"/>
+                    <button string="Close" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

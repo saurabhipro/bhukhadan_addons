@@ -78,9 +78,9 @@ class OrgChartController(http.Controller):
 
         # Sub-hierarchy for Users directly under District (e.g. Collector, Admin)
         district_users = users.filtered(
-            lambda u: u.id not in linked_user_ids and u.bhuarjan_role in [
-                'collector', 'additional_collector', 'district_administrator', 'administrator'
-            ]
+            lambda u: u.id not in linked_user_ids and u.bhuarjan_role in list(
+                request.env['res.users'].BHUKHADAN_DISTRICT_LEADERSHIP_ROLES
+            )
         )
         for u in district_users:
             tree['children'].append({

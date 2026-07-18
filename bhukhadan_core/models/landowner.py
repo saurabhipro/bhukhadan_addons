@@ -16,6 +16,7 @@ class BhuLandowner(models.Model):
     father_name = fields.Char(string="Father's Name / पिता का नाम", tracking=True)
     mother_name = fields.Char(string="Mother's Name / माता का नाम", tracking=True)
     spouse_name = fields.Char(string="Spouse's Name / पति/पत्नी का नाम", tracking=True)
+    caste = fields.Char(string='Caste/Category / जाति/श्रेणी', tracking=True)
     
     # Contact Information
     phone = fields.Char(string='Phone Number / फोन नंबर', tracking=True)
@@ -26,15 +27,10 @@ class BhuLandowner(models.Model):
     
     # Address Information
     village_id = fields.Many2one('bhu.village', string='Village / ग्राम', required=False, tracking=True)
-    tehsil_id = fields.Many2one('bhu.tehsil', string='Tehsil / तहसील', tracking=True)
-    district_id = fields.Many2one('bhu.district', string='District / जिला', tracking=True)
-    state = fields.Char(string='State / राज्य', default='Chhattisgarh', readonly=True)
-    owner_address = fields.Text(string='Owner Address / मालिक का पता', tracking=True,
-                                help='Complete address of the landowner')
+    rakba = fields.Char(string='Rakba / रकबा', tracking=True)
     
     # Identity Documents
     aadhar_number = fields.Char(string='Aadhar Number / आधार नंबर', tracking=True)
-    pan_number = fields.Char(string='PAN Number / पैन नंबर', tracking=True)
     
     # Bank Details
     bank_name = fields.Char(string='Bank Name / बैंक का नाम', tracking=True)
@@ -47,8 +43,9 @@ class BhuLandowner(models.Model):
     aadhar_card = fields.Binary(string='Aadhar Card / आधार कार्ड')
     pan_card = fields.Binary(string='PAN Card / पैन कार्ड')
     
-    survey_ids = fields.Many2many('bhu.survey', 'bhu_survey_landowner_rel', 
-                                 'landowner_id', 'survey_id', string='Related Surveys / संबंधित सर्वे')
+    survey_id = fields.Many2one(
+        'bhu.survey', string='Survey / सर्वे', ondelete='cascade', index=True, tracking=True,
+    )
     
     # Payment Status Tracking
     payment_status_ids = fields.One2many('bhu.landowner.payment.status', 'landowner_id', 
@@ -56,24 +53,46 @@ class BhuLandowner(models.Model):
     
     # Validation Methods removed - no validations for aadhar, pan, account_number
     
-    # Auto-fill methods
-    @api.onchange('village_id')
-    def _onchange_village_id(self):
-        if self.village_id:
-            self.tehsil_id = self.village_id.tehsil_id
-            self.district_id = self.village_id.district_id
-    
-    @api.onchange('tehsil_id')
-    def _onchange_tehsil_id(self):
-        if self.tehsil_id:
-            self.district_id = self.tehsil_id.district_id
-    
-    def action_view_surveys(self):
-        """Action to view related surveys"""
-        action = self.env.ref('bhukhadan_core.action_bhu_survey').read()[0]
-        action['domain'] = [('landowner_ids', 'in', self.ids)]
-        action['context'] = {'default_landowner_ids': [(6, 0, self.ids)]}
-        return action
+    def action_view_survey(self):
+        """Open the survey this landowner belongs to."""
+        self.ensure_one()
+        if not self.survey_id:
+            return {'type': 'ir.actions.act_window_close'}
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Survey'),
+            'res_model': 'bhu.survey',
+            'view_mode': 'form',
+            'res_id': self.survey_id.id,
+        }
+
+    @api.model
+    def _migrate_survey_m2m_to_o2m(self):
+        """One-time migration from bhu_survey_landowner_rel to survey_id."""
+        cr = self._cr
+        cr.execute("SELECT to_regclass('public.bhu_survey_landowner_rel')")
+        if not cr.fetchone()[0]:
+            return
+        cr.execute("""
+            SELECT rel.landowner_id, rel.survey_id
+            FROM bhu_survey_landowner_rel rel
+            ORDER BY rel.landowner_id, rel.survey_id
+        """)
+        primary_survey = {}
+        for landowner_id, survey_id in cr.fetchall():
+            landowner = self.browse(landowner_id)
+            if not landowner.exists():
+                continue
+            if landowner_id not in primary_survey:
+                landowner.survey_id = survey_id
+                primary_survey[landowner_id] = survey_id
+            elif primary_survey[landowner_id] != survey_id:
+                landowner.copy({'survey_id': survey_id})
+        cr.execute("DROP TABLE IF EXISTS bhu_survey_landowner_rel")
+
+    def init(self):
+        super().init()
+        self._migrate_survey_m2m_to_o2m()
 
     @api.model
     def _search(self, args, offset=0, limit=None, order=None):
@@ -84,24 +103,22 @@ class BhuLandowner(models.Model):
         if user.has_group('bhukhadan_core.group_bhuarjan_admin') or user.has_group('base.group_system'):
             return super(BhuLandowner, self)._search(args, offset=offset, limit=limit, order=order)
 
-        # SDM / Tehsildar: record rules (district OR surveys on assigned projects) must apply; a blanket
-        # district_id filter here would block landowners tied to their projects when district_id is
-        # unset or out of sync with res.users.district_id.
+        # SDM / Tehsildar: record rules (district OR surveys on assigned projects) must apply.
         if user.has_group('bhukhadan_core.group_bhuarjan_sdm') or user.has_group('bhukhadan_core.group_bhuarjan_tahsildar'):
             return super(BhuLandowner, self)._search(args, offset=offset, limit=limit, order=order)
             
         # For all other users, restrict to their assigned district if they have one
         if user.district_id:
-            args = [('district_id', '=', user.district_id.id)] + args
+            args = [('village_id.district_id', '=', user.district_id.id)] + args
             
         # Apply additional Patwari-specific filtering
-        if user.bhuarjan_role == 'patwari':
+        if user.bhuarjan_role in self.env['res.users'].BHUKHADAN_PATWARI_ROLES:
             # Patwari can only see landowners from their assigned villages
             # and landowners who are in surveys they created
             patwari_domain = [
                 '|',
                 ('village_id.user_id', '=', user.id),
-                ('survey_ids.user_id', '=', user.id),
+                ('survey_id.user_id', '=', user.id),
             ]
             args = patwari_domain + args
         
@@ -111,30 +128,22 @@ class BhuLandowner(models.Model):
         """Override unlink to handle survey relationships properly
         
         When a landowner is deleted:
-        - The Many2many links to surveys are automatically removed by Odoo
-        - Surveys themselves are NOT deleted (only the relationship is removed)
-        - We warn the user if there are approved/submitted surveys
+        - The survey itself is NOT deleted
+        - We warn the user if the parent survey is approved/submitted
         """
         for landowner in self:
-            # Check if landowner has linked surveys
-            if landowner.survey_ids:
-                survey_count = len(landowner.survey_ids)
-                # Get survey states for warning
-                approved_surveys = landowner.survey_ids.filtered(lambda s: s.state == 'approved')
-                submitted_surveys = landowner.survey_ids.filtered(lambda s: s.state == 'submitted')
-                
-                # Log warning (surveys will not be deleted, links will be removed automatically by Odoo)
+            survey = landowner.survey_id
+            if survey:
                 import logging
                 _logger = logging.getLogger(__name__)
-                warning_msg = f"Deleting landowner '{landowner.name}' (ID: {landowner.id}) with {survey_count} linked survey(s). "
-                warning_msg += "Surveys will NOT be deleted - only the relationship links will be removed."
-                
-                if approved_surveys:
-                    warning_msg += f" WARNING: {len(approved_surveys)} survey(s) are APPROVED."
-                
-                if submitted_surveys:
-                    warning_msg += f" WARNING: {len(submitted_surveys)} survey(s) are SUBMITTED."
-                
+                warning_msg = (
+                    f"Deleting landowner '{landowner.name}' (ID: {landowner.id}) "
+                    f"from survey '{survey.name}' (ID: {survey.id})."
+                )
+                if survey.state == 'approved':
+                    warning_msg += ' WARNING: survey is APPROVED.'
+                elif survey.state == 'submitted':
+                    warning_msg += ' WARNING: survey is SUBMITTED.'
                 _logger.warning(warning_msg)
                 
         return super(BhuLandowner, self).unlink()
