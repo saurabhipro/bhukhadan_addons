@@ -240,7 +240,7 @@
 }
 
 .o_payment_dashboard .card-header.custom-card-header {
-    background: linear-gradient(135deg, #8B4513 0%, #5D2E0C 100%);
+    background: linear-gradient(135deg, var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))) 0%, color-mix(in srgb, var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))) 72%, black) 100%);
     color: white !important;
     border-bottom: none;
     padding: 0.75rem 1rem;
@@ -265,7 +265,7 @@
 
 .o_payment_dashboard .header-search-container:focus-within {
     box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15) !important;
-    border-color: #8B4513;
+    border-color: var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B)));
 }
 
 .o_payment_dashboard .header-search-input {
@@ -329,7 +329,7 @@
 }
 
 .o_payment_dashboard .dashboard-link {
-    color: #8B4513;
+    color: var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B)));
     text-decoration: none;
     transition: all 0.2s ease;
     border-bottom: 2px solid transparent;
@@ -413,7 +413,7 @@
     overflow-y: auto;
     padding-bottom: 24px;
     scrollbar-width: thin;
-    scrollbar-color: #8B4513 #f5f5f5;
+    scrollbar-color: var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))) #f5f5f5;
 }
 
 .o_payment_dashboard .scrollable-dashboard::-webkit-scrollbar {
@@ -425,7 +425,7 @@
 }
 
 .o_payment_dashboard .scrollable-dashboard::-webkit-scrollbar-thumb {
-    background-color: #8B4513;
+    background-color: var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B)));
     border-radius: 20px;
     border: 2px solid #f5f5f5;
 }
@@ -442,7 +442,7 @@
 }
 
 .o_payment_dashboard .empty-state-wrapper i {
-    color: #8B4513 !important;
+    color: var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))) !important;
     opacity: 0.2;
 }
 
@@ -460,7 +460,7 @@
 }
 
 .o_payment_dashboard .text-primary-gradient {
-    background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+    background: linear-gradient(135deg, var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))) 0%, color-mix(in srgb, var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))) 78%, #fbbf24) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -495,7 +495,7 @@
 .o_payment_dashboard .steam span {
     width: 3px;
     height: 15px;
-    background: #8B4513;
+    background: var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B)));
     margin: 0 3px;
     border-radius: 50%;
     opacity: 0;

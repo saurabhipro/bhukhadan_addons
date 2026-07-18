@@ -23,7 +23,7 @@
 
 .o_dashboard_header h2 {
     margin: 0;
-    color: #8B4513;
+    color: var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B)));
     font-weight: 600;
     font-size: 18px;
     flex-shrink: 0;
@@ -73,7 +73,7 @@
     align-items: center;
     gap: 8px;
     margin-bottom: 12px;
-    color: #8B4513;
+    color: var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B)));
     font-weight: 600;
     font-size: 16px;
 }

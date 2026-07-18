@@ -18,16 +18,18 @@ class ReportWizard(models.TransientModel):
     _name = 'report.wizard'
     _description = 'Report Wizard'
 
-    form_10 = fields.Boolean(string="Form 10 Download")
+    report_type = fields.Selection([
+        ('form5', 'Form 5'),
+        ('form6', 'Form 6'),
+        ('dols', 'DOLS'),
+    ], string='Report Type', default='form5', required=True)
     export_type = fields.Selection([
         ('pdf', 'PDF'),
-        ('excel', 'Excel'),
-        ('csv', 'CSV')
     ], string='Export Type', default='pdf', required=True)
     project_id = fields.Many2one('bhu.project', string='Project ID')
     village_id = fields.Many2one('bhu.village', string='Village ID')
-    project_name = fields.Char(string='Project / परियोजना', readonly=True, required=True)
-    village_name = fields.Char(string='Village / ग्राम', readonly=True, required=True)
+    project_name = fields.Char(string='Project / परियोजना', readonly=True)
+    village_name = fields.Char(string='Village / ग्राम', readonly=True)
     allowed_village_ids = fields.Many2many(
         'bhu.village',
         string='Allowed Villages',
@@ -39,10 +41,16 @@ class ReportWizard(models.TransientModel):
     def default_get(self, fields_list):
         """Override to populate project and village names from context"""
         res = super(ReportWizard, self).default_get(fields_list)
+        if self.env.context.get('default_report_type'):
+            res['report_type'] = self.env.context.get('default_report_type')
         
-        # Get project and village from context
+        # Get project and village from context; fallback to dashboard selection
         project_id = self.env.context.get('default_project_id')
         village_id = self.env.context.get('default_village_id')
+        if not project_id or not village_id:
+            saved_selection = self.env['bhuarjan.dashboard'].get_dashboard_selection() or {}
+            project_id = project_id or saved_selection.get('project_id')
+            village_id = village_id or saved_selection.get('village_id')
         
         # Fetch project name
         if project_id:
@@ -86,7 +94,9 @@ class ReportWizard(models.TransientModel):
     @api.onchange('project_id')
     def _onchange_project_id(self):
         """Reset village when project changes and update domain to filter by project villages"""
+        self.project_name = self.project_id.name if self.project_id else False
         self.village_id = False
+        self.village_name = False
         if self.project_id and self.project_id.village_ids:
             # Get project villages
             project_village_ids = self.project_id.village_ids.ids
@@ -105,8 +115,12 @@ class ReportWizard(models.TransientModel):
                 # For other users, show no villages until project is selected
                 return {'domain': {'village_id': [('id', '=', False)]}}
 
+    @api.onchange('village_id')
+    def _onchange_village_id(self):
+        self.village_name = self.village_id.name if self.village_id else False
+
     def action_print_report(self):
-        """Generate Form 10 report in selected format (PDF/Excel/CSV)"""
+        """Generate selected report (Form 5/6/DOLS/Form 10) in selected format."""
         # If Many2one fields are empty but we have names, reconstruct them
         # This can happen when invisible fields don't save properly
         if not self.project_id and self.project_name:
@@ -221,20 +235,17 @@ class ReportWizard(models.TransientModel):
         all_records = correct_records
 
         if self.export_type == 'pdf':
-            # Use the same controller route as QR code for consistency
-            # Redirect to the download URL with project and village UUIDs
-            project_uuid = self.project_id.project_uuid
-            village_uuid = self.village_id.village_uuid
-            download_url = f'/bhuarjan/form10/{project_uuid}/{village_uuid}/download'
-            return {
-                'type': 'ir.actions.act_url',
-                'url': download_url,
-                'target': 'new',
-            }
+            if self.report_type == 'form5':
+                return self.env.ref('bhukhadan_core.action_report_form5_bulk').report_action(all_records)
+            if self.report_type == 'form6':
+                return self.env.ref('bhukhadan_core.action_report_form6_bulk').report_action(all_records)
+            if self.report_type == 'dols':
+                return self.env.ref('bhukhadan_core.action_report_dols_bulk').report_action(all_records)
+            raise UserError(_("Unsupported report type selected."))
         elif self.export_type == 'excel':
-            return self._export_to_excel(all_records)
+            raise UserError(_("Excel export is not available for Coal Act report downloads."))
         elif self.export_type == 'csv':
-            return self._export_to_csv(all_records)
+            raise UserError(_("CSV export is not available for Coal Act report downloads."))
 
     def _export_to_excel(self, surveys):
         """Export surveys to Excel format matching PDF structure"""

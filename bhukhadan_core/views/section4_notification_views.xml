@@ -28,7 +28,7 @@
         <field name="name">bhu.section4.notification.form</field>
         <field name="model">bhu.section4.notification</field>
         <field name="arch" type="xml">
-            <form string="Section 4 Notification" class="bhu_approved_form">
+            <form string="Section 7 Notification" class="bhu_approved_form">
                     <div class="row w-100">
                         <div class="col w-100">
                                 <!-- Approve Button (Collector only) -->
@@ -54,7 +54,7 @@
                 <div class="alert alert-success" role="alert" invisible="state != 'submitted'" 
                      style="margin: 10px; padding: 12px; background-color: #d4edda; border: 1px solid #c3e6cb; border-radius: 4px; color: #155724;">
                     <i class="fa fa-check-circle me-1" title="Success"></i>
-                    <strong>Success:</strong> Section 4 Notification submitted successfully. Pending with Collector for approval.
+                    <strong>Success:</strong> Section 7 Notification submitted successfully. Pending with Collector for approval.
                 </div>
                 <field name="is_sdm" invisible="1"/>
                 <field name="is_collector" invisible="1"/>
@@ -67,13 +67,13 @@
                     <widget name="web_ribbon" title="Approved" bg_color="text-bg-success" invisible="state != 'approved'"/>
                     <div class="oe_title" style="margin-bottom: 10px; padding-bottom: 8px;">
                         <h1 style="font-size: 28px; font-weight: 700; color: #8B4513; margin: 0;">
-                            <i class="fa fa-bell" style="margin-right: 10px;"></i>Section 4 Notification / धारा 4 अधिसूचना
+                            <i class="fa fa-bell" style="margin-right: 10px;"></i>Section 7 Notification / धारा 7 अधिसूचना
                         </h1>
                     </div>
                     
                     <div invisible="not project_id or not village_id" class="mt-2 mb-3 p-2 rounded w-100" style="background-color: #e9ecef; border-left: 4px solid #8B4513; color: #495057; clear: both;">
                          <i class="fa fa-info-circle me-1"></i>
-                         Creating Section 4 Notification for Village <field name="village_id" readonly="1" options="{'no_open': True}" class="fw-bold" style="color: #8B4513;"/>, 
+                         Creating Section 7 Notification for Village <field name="village_id" readonly="1" options="{'no_open': True}" class="fw-bold" style="color: #8B4513;"/>, 
                          Project <field name="project_id" readonly="1" options="{'no_open': True}" class="fw-bold" style="color: #8B4513;"/>
                     </div>
                     <!-- Hidden Fields (Auto-populated from context) -->

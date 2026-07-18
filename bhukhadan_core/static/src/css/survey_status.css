@@ -35,6 +35,14 @@
     padding: 10px 0 !important;
 }
 
+/* Keep Survey form vertically scrollable in all themes/layouts */
+.o_form_view.bhu_survey_form,
+.o_form_view.bhu_survey_form .o_form_sheet_bg,
+.o_form_view.bhu_survey_form .o_form_sheet {
+    overflow: auto !important;
+    max-height: none !important;
+}
+
 /* Kanban Card Approved Status */
 .o_kanban_record .badge[style*="background: linear-gradient(135deg, #10b981"] {
     background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;

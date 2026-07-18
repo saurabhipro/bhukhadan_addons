@@ -3,6 +3,8 @@ from odoo.exceptions import ValidationError
 import uuid
 import logging
 from datetime import datetime, timezone
+import io
+import base64
 
 _logger = logging.getLogger(__name__)
 
@@ -107,6 +109,19 @@ class Survey(models.Model):
                 village_ids.append(self.village_id.id)
             return {'domain': {'village_id': [('id', 'in', village_ids)]}}
         return {'domain': {'village_id': []}}
+
+    @api.onchange('landowner_ids')
+    def _onchange_landowner_ids_fill_mb(self):
+        """Auto-fill MB owner blocks from first selected landowner."""
+        if not self.landowner_ids:
+            return
+        owner = self.landowner_ids[0]
+        self.mb_house_owner_name = self.mb_house_owner_name or owner.name
+        self.mb_house_owner_aadhar = self.mb_house_owner_aadhar or owner.aadhar_number
+        self.mb_house_owner_mobile = self.mb_house_owner_mobile or owner.phone
+        self.mb_house_owner_village = self.mb_house_owner_village or (owner.village_id.name if owner.village_id else False)
+        self.mb_land_owner_name = self.mb_land_owner_name or owner.name
+        self.mb_land_owner_aadhar = self.mb_land_owner_aadhar or owner.aadhar_number
     district_name = fields.Char(string='District / जिला', default='Raigarh (Chhattisgarh)', readonly=True, tracking=True)
     survey_date = fields.Date(string='Survey Date / सर्वे दिनाँक', required=True, tracking=True, default=fields.Date.today)
     
@@ -557,6 +572,47 @@ class Survey(models.Model):
 
     # Remarks
     remarks = fields.Text(string='Remarks / टिप्पणी', tracking=True)
+
+    # Measuring Book checklist/declaration fields
+    mb_house_owner_name = fields.Char(string='House Owner Name (MB)')
+    mb_house_owner_aadhar = fields.Char(string='House Owner Aadhaar (MB)')
+    mb_house_owner_mobile = fields.Char(string='House Owner Mobile (MB)')
+    mb_house_owner_caste = fields.Char(string='House Owner Caste/Category (MB)')
+    mb_house_owner_dob = fields.Date(string='House Owner DOB (MB)')
+    mb_house_owner_village = fields.Char(string='House Owner Village (MB)')
+
+    mb_land_owner_name = fields.Char(string='Land Owner Name (MB)')
+    mb_land_owner_aadhar = fields.Char(string='Land Owner Aadhaar (MB)')
+    mb_land_owner_caste = fields.Char(string='Land Owner Caste/Category (MB)')
+    mb_land_owner_dob = fields.Date(string='Land Owner DOB (MB)')
+
+    mb_doc_electricity_bill = fields.Boolean(string='Electricity Bill - House owner')
+    mb_doc_voter_card_owner = fields.Boolean(string='Voter Card - House owner')
+    mb_doc_aadhar_owner = fields.Boolean(string='Aadhar Card - House owner')
+    mb_doc_aadhar_witness_1 = fields.Boolean(string='Aadhar Card - Witness 01')
+    mb_doc_aadhar_witness_2 = fields.Boolean(string='Aadhar Card - Witness 02')
+    mb_doc_ration_owner = fields.Boolean(string='Ration Card - House owner')
+    mb_doc_education_owner = fields.Boolean(string='Educational Certificate - House owner')
+    mb_doc_aadhar_landowner = fields.Boolean(string='Aadhar Card - Land owner')
+    mb_doc_affidavit_noc = fields.Boolean(string='Affidavit/NOC from landowner')
+    mb_doc_pan_owner = fields.Boolean(string='PAN Card - House owner')
+    mb_doc_pan_landowner = fields.Boolean(string='PAN Card - Land owner')
+    mb_doc_bank_passbook = fields.Boolean(string='Bank Account Passbook')
+    mb_doc_passport_photos = fields.Boolean(string='House owner passport photos')
+    mb_doc_bank_neft_form = fields.Boolean(string='Bank NEFT mandate form')
+    mb_doc_bank_ifsc = fields.Boolean(string='Bank IFSC Details')
+    mb_doc_other = fields.Boolean(string='Other Documents')
+    mb_doc_other_text = fields.Char(string='Other Documents Detail')
+
+    mb_owner_decl_date = fields.Date(string='Owner Declaration Date')
+    mb_decl_no_claim_pending = fields.Boolean(string='No claim pending declaration')
+    mb_decl_documents_received = fields.Boolean(string='Required documents received')
+    mb_decl_gps_photo_video = fields.Boolean(string='GPS photo/video captured')
+    mb_house_number_text = fields.Char(string='House Number (MB)')
+    mb_mohalla_text = fields.Char(string='Mohalla (MB)')
+    mb_rakba_text = fields.Char(string='Rakba (MB)')
+    mb_relation_text = fields.Char(string='Relation house owner and land owner')
+    mb_present_landowner_text = fields.Char(string='Present Landowner Name (MB)')
     
     @api.depends('name', 'khasra_number')
     def _compute_display_name(self):
@@ -829,6 +885,223 @@ class Survey(models.Model):
                 'default_survey_id': self.id,
                 'create': False,
             },
+        }
+
+    def action_print_measuring_book(self):
+        """Print House & Other Asset Measurement Book in PDF format."""
+        self.ensure_one()
+        return self.env.ref('bhukhadan_core.action_report_measuring_book').report_action(self)
+
+    def action_export_measuring_book_excel(self):
+        """Export Measuring Book in sheet layout similar to scanned format."""
+        self.ensure_one()
+        try:
+            import xlsxwriter
+        except ImportError:
+            raise ValidationError(_("Python library 'xlsxwriter' is not installed."))
+
+        output = io.BytesIO()
+        workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+        ws = workbook.add_worksheet('Measuring Book')
+        # Column widths A:M
+        col_widths = [6, 30, 12, 12, 12, 12, 12, 10, 24, 10, 12, 12, 14]
+        for col, width in enumerate(col_widths):
+            ws.set_column(col, col, width)
+
+        title_fmt = workbook.add_format({
+            'bold': True, 'font_size': 12, 'align': 'center', 'valign': 'vcenter',
+            'border': 2, 'bg_color': '#D9D9D9',
+        })
+        hdr_fmt = workbook.add_format({
+            'bold': True, 'align': 'center', 'valign': 'vcenter',
+            'border': 2, 'bg_color': '#D9D9D9',
+        })
+        subhdr_fmt = workbook.add_format({
+            'bold': True, 'align': 'center', 'valign': 'vcenter',
+            'border': 1, 'bg_color': '#E6E6E6',
+        })
+        cell_fmt = workbook.add_format({'border': 1, 'align': 'left', 'valign': 'vcenter'})
+        cell_center = workbook.add_format({'border': 1, 'align': 'center', 'valign': 'vcenter'})
+        num_fmt = workbook.add_format({'border': 1, 'align': 'right', 'valign': 'vcenter', 'num_format': '#,##0.00'})
+        total_fmt = workbook.add_format({'bold': True, 'border': 2, 'align': 'right', 'valign': 'vcenter', 'num_format': '#,##0.00'})
+        label_total_fmt = workbook.add_format({'bold': True, 'border': 2, 'align': 'center', 'valign': 'vcenter', 'bg_color': '#D9D9D9'})
+
+        row = 0
+        ws.set_row(row, 26)
+        ws.merge_range(row, 0, row, 12,
+                       f"COMPENSATION OF HOUSE AND OTHER ASSETS OF {(self.village_id.name or '').upper()} "
+                       f"VILLAGE ACQUIRED IN YEAR 2004 & 2010 BY {(self.project_id.name or '').upper()}",
+                       title_fmt)
+        row += 1
+
+        # House owner block
+        ws.merge_range(row, 0, row, 9, f"NAME OF HOUSE OWNER : {self.mb_house_owner_name or ''}", hdr_fmt)
+        ws.merge_range(row, 10, row, 12, f"HOUSE NO : {self.mb_house_number_text or ''}", hdr_fmt)
+        row += 1
+        ws.merge_range(row, 0, row, 5, f"AADHAR NO : {self.mb_house_owner_aadhar or ''}", subhdr_fmt)
+        ws.merge_range(row, 6, row, 8, f"CASTE/CAT : {self.mb_house_owner_caste or ''}", subhdr_fmt)
+        ws.merge_range(row, 9, row, 12, f"MOHALLA : {self.mb_mohalla_text or ''}", subhdr_fmt)
+        row += 1
+        ws.merge_range(row, 0, row, 3, f"Date of Birth : {self.mb_house_owner_dob or ''}", subhdr_fmt)
+        ws.merge_range(row, 4, row, 7, f"MOBILE NO : {self.mb_house_owner_mobile or ''}", subhdr_fmt)
+        ws.merge_range(row, 8, row, 12, f"VILLAGE : {self.mb_house_owner_village or self.village_id.name or ''}", subhdr_fmt)
+        row += 1
+        ws.merge_range(row, 0, row, 12, f"RELATION BETWEEN HOUSE OWNER AND LAND OWNER : {self.mb_relation_text or ''}", hdr_fmt)
+        row += 1
+
+        # Land owner block
+        ws.merge_range(row, 0, row, 9, f"NAME OF LAND OWNER : {self.mb_land_owner_name or ''}", hdr_fmt)
+        ws.merge_range(row, 10, row, 12, f"KHASRA NO : {self.khasra_number or ''}", hdr_fmt)
+        row += 1
+        ws.merge_range(row, 0, row, 5, f"AADHAR NO : {self.mb_land_owner_aadhar or ''}", subhdr_fmt)
+        ws.merge_range(row, 6, row, 8, f"CASTE/CAT : {self.mb_land_owner_caste or ''}", subhdr_fmt)
+        ws.merge_range(row, 9, row, 12, f"RAKBA : {self.mb_rakba_text or ''}", subhdr_fmt)
+        row += 1
+        ws.merge_range(row, 0, row, 3, f"Date of Birth : {self.mb_land_owner_dob or ''}", subhdr_fmt)
+        ws.merge_range(row, 4, row, 12, f"NAME OF PRESENT LAND OWNER : {self.mb_present_landowner_text or ''}", subhdr_fmt)
+        row += 1
+
+        # House details table
+        ws.merge_range(row, 0, row, 7, "HOUSE / WELLS (A)", hdr_fmt)
+        ws.merge_range(row, 8, row, 12, "TREES (B)", hdr_fmt)
+        row += 1
+        headers = ['SL NO', 'DETAILS OF HOUSE', 'LENGTH (Ft.)', 'WIDTH (Ft.)', 'AREA (Sq. Ft.)', 'Rate/sq. ft', 'AMOUNT', 'DEDUCTION', 'FINAL AMOUNT', 'NAME OF TREE', 'SIZE', 'NO. OF TREE', 'TREE AMOUNT']
+        for c, h in enumerate(headers):
+            ws.write(row, c, h, subhdr_fmt)
+        row += 1
+
+        house_rows = self.award_structure_ids[:8]
+        house_total = 0.0
+        sl = 1
+        for line in house_rows:
+            area_val = (line.area_sqm or 0.0) * 10.7639
+            rate_val = line.market_rate_per_sqm or 0.0
+            amt = line.asset_value or 0.0
+            house_total += amt
+            ws.write(row, 0, sl, cell_center)
+            ws.write(row, 1, (line.description or line.structure_type or '').upper(), cell_fmt)
+            ws.write(row, 2, '', cell_center)
+            ws.write(row, 3, '', cell_center)
+            ws.write_number(row, 4, area_val, num_fmt)
+            ws.write_number(row, 5, rate_val, num_fmt)
+            ws.write_number(row, 6, amt, num_fmt)
+            ws.write_number(row, 7, 0.0, num_fmt)
+            ws.write_number(row, 8, amt, num_fmt)
+            ws.write(row, 9, '', cell_fmt)
+            ws.write(row, 10, '', cell_center)
+            ws.write(row, 11, '', cell_center)
+            ws.write(row, 12, '', cell_center)
+            sl += 1
+            row += 1
+
+        tree_total = 0.0
+        tree_line = self.tree_line_ids[:1]
+        if tree_line:
+            t = tree_line[0]
+            tree_amt = 0.0
+            tree_total += tree_amt
+            ws.write(row, 0, sl, cell_center)
+            ws.write(row, 1, '', cell_fmt)
+            ws.write(row, 2, '', cell_center)
+            ws.write(row, 3, '', cell_center)
+            ws.write(row, 4, '', cell_center)
+            ws.write(row, 5, '', cell_center)
+            ws.write(row, 6, '', cell_center)
+            ws.write(row, 7, '', cell_center)
+            ws.write(row, 8, '', cell_center)
+            ws.write(row, 9, (t.tree_master_id.name or '').upper(), cell_fmt)
+            ws.write(row, 10, t.girth_cm or '', cell_center)
+            ws.write(row, 11, t.quantity or 0, cell_center)
+            ws.write_number(row, 12, tree_amt, num_fmt)
+            row += 1
+
+        ws.merge_range(row, 0, row, 7, "TOTAL OF HOUSES (A)", label_total_fmt)
+        ws.write_number(row, 8, house_total, total_fmt)
+        ws.merge_range(row, 9, row, 11, "TOTAL OF TREES (B)", label_total_fmt)
+        ws.write_number(row, 12, tree_total, total_fmt)
+        row += 1
+
+        grand_total = house_total + tree_total
+        ws.merge_range(row, 0, row, 11, "TOTAL OF HOUSE AND TREE (A+B)", label_total_fmt)
+        ws.write_number(row, 12, grand_total, total_fmt)
+        row += 1
+        ws.merge_range(row, 0, row, 11, "% SOLATIUM IF HOUSE/ASSETS ON OWN LAND AND LINEAR DEPENDENT (C)", label_total_fmt)
+        ws.write_number(row, 12, grand_total, total_fmt)
+        row += 1
+        ws.merge_range(row, 0, row, 11, "GRAND TOTAL OF ASSET COMPENSATION (A+B+C)", label_total_fmt)
+        ws.write_number(row, 12, grand_total * 2, total_fmt)
+        row += 2
+
+        # Committee section
+        ws.merge_range(row, 0, row, 12, "STATE AUTHORITY COMMITTEE MEMBERS", hdr_fmt)
+        row += 1
+        ws.merge_range(row, 0, row, 12, "All committee members must sign with DATE, SEAL AND NAME", subhdr_fmt)
+        row += 1
+        ws.merge_range(row, 0, row + 1, 2, "PATWARI", cell_center)
+        ws.merge_range(row, 3, row + 1, 5, "REVENUE INSPECTOR", cell_center)
+        ws.merge_range(row, 6, row + 1, 8, "HORTICULTURE", cell_center)
+        ws.merge_range(row, 9, row + 1, 12, "SUB DIVISIONAL MAGISTRATE", cell_center)
+        row += 2
+        ws.merge_range(row, 0, row, 12, "SECL DIPKA AREA SCREENING COMMITTEE MEMBERS", hdr_fmt)
+        row += 1
+        ws.merge_range(row, 0, row + 1, 3, "SECL CIVIL", cell_center)
+        ws.merge_range(row, 4, row + 1, 7, "SECL SURVEY", cell_center)
+        ws.merge_range(row, 8, row + 1, 12, "SECL MINING/EXCV", cell_center)
+        row += 2
+
+        # Document checklist as annexure block
+        row += 1
+        ws.merge_range(row, 0, row, 12, "LIST OF DOCUMENTS COLLECTED FROM HOUSE OWNER", hdr_fmt)
+        row += 1
+        ws.write_row(row, 0, ['S.No', 'Document', 'Checked', 'S.No', 'Document', 'Checked'], subhdr_fmt)
+        row += 1
+        docs_left = [
+            ('1', 'Electricity Bill - House owner', self.mb_doc_electricity_bill),
+            ('2', 'Voter Card - House owner', self.mb_doc_voter_card_owner),
+            ('3', 'Aadhar Card - House owner', self.mb_doc_aadhar_owner),
+            ('4', 'Aadhar Card - Witness 01', self.mb_doc_aadhar_witness_1),
+            ('5', 'Aadhar Card - Witness 02', self.mb_doc_aadhar_witness_2),
+            ('6', 'Ration Card - House owner', self.mb_doc_ration_owner),
+            ('7', 'Educational certificate - House owner', self.mb_doc_education_owner),
+        ]
+        docs_right = [
+            ('8', 'Aadhar Card - Land owner', self.mb_doc_aadhar_landowner),
+            ('9', 'Affidavit/NOC', self.mb_doc_affidavit_noc),
+            ('10', 'Passport size photos (4)', self.mb_doc_passport_photos),
+            ('11', 'PAN Card - House owner', self.mb_doc_pan_owner),
+            ('12', 'PAN Card - Land owner', self.mb_doc_pan_landowner),
+            ('13', 'Bank Passbook', self.mb_doc_bank_passbook),
+            ('14', f"NEFT/Other: {self.mb_doc_other_text or ''}", (self.mb_doc_bank_neft_form or self.mb_doc_other)),
+        ]
+        for idx in range(7):
+            l = docs_left[idx]
+            r = docs_right[idx]
+            ws.write(row, 0, l[0], cell_center)
+            ws.merge_range(row, 1, row, 4, l[1], cell_fmt)
+            ws.write(row, 5, 'Yes' if l[2] else 'No', cell_center)
+            ws.write(row, 6, r[0], cell_center)
+            ws.merge_range(row, 7, row, 11, r[1], cell_fmt)
+            ws.write(row, 12, 'Yes' if r[2] else 'No', cell_center)
+            row += 1
+
+        workbook.close()
+        output.seek(0)
+        file_data = base64.b64encode(output.read())
+        output.close()
+
+        filename = f"Measuring_Book_{(self.name or 'Survey').replace('/', '_')}.xlsx"
+        attachment = self.env['ir.attachment'].create({
+            'name': filename,
+            'type': 'binary',
+            'datas': file_data,
+            'mimetype': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'res_model': self._name,
+            'res_id': self.id,
+        })
+        return {
+            'type': 'ir.actions.act_url',
+            'url': f'/web/content/{attachment.id}?download=true',
+            'target': 'self',
         }
 
     def action_submit(self):

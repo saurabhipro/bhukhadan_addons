@@ -808,6 +808,23 @@
             <field name="account_number">123456789012394</field>
             <field name="ifsc_code">BARB0001237</field>
         </record>
+
+        <!-- Additional sample landowner -->
+        <record id="landowner_sample_extra_1" model="bhu.landowner">
+            <field name="name">सुरेश कुमार</field>
+            <field name="father_name">धनीराम कुमार</field>
+            <field name="age">40</field>
+            <field name="gender">male</field>
+            <field name="village_id" ref="bhikharimal_village"/>
+            <field name="tehsil_id" ref="raigarh_tehsil"/>
+            <field name="district_id" ref="district_raigarh"/>
+            <field name="aadhar_number">123456789062</field>
+            <field name="pan_number">ABCDE1284F</field>
+            <field name="phone">9876543260</field>
+            <field name="bank_name">State Bank of India</field>
+            <field name="account_number">123456789012395</field>
+            <field name="ifsc_code">SBIN0005678</field>
+        </record>
         
     </data>
 </odoo>

@@ -44,7 +44,7 @@ export class PaymentDashboard extends Component {
         if (document.getElementById('bhu_pay_loader')) return;
         const el = document.createElement('div');
         el.id = 'bhu_pay_loader';
-        el.style.cssText = 'position:fixed!important;inset:0!important;z-index:99999!important;display:flex!important;align-items:center!important;justify-content:center!important;flex-direction:column!important;background:linear-gradient(135deg,#3b1a0e 0%,#6b2f0f 40%,#8B4513 70%,#c47c3e 100%)!important;';
+        el.style.cssText = 'position:fixed!important;inset:0!important;z-index:99999!important;display:flex!important;align-items:center!important;justify-content:center!important;flex-direction:column!important;background:linear-gradient(135deg,var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))) 0%,color-mix(in srgb, var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))) 78%, #000) 100%)!important;';
         el.innerHTML = `
             <style>
                 #bhu_pay_loader .bpl-ring {

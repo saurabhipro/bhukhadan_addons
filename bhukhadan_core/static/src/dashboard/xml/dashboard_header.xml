@@ -1,12 +1,12 @@
 <templates xml:space="preserve">
     <!-- Common Dashboard Header Template -->
     <t t-name="bhukhadan_core.DashboardHeader" owl="1">
-        <div class="o_dashboard_header" style="background: linear-gradient(135deg, #FFF8F0 0%, #FDF5E6 50%, #FAF0E6 100%); color: #8B4513; padding: 10px; border-radius: 8px; margin-bottom: 20px; border: 1.5px solid #8B4513;">
+        <div class="o_dashboard_header" style="background: linear-gradient(135deg, color-mix(in srgb, var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))) 10%, white) 0%, color-mix(in srgb, var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))) 6%, white) 100%); color: var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))); padding: 10px; border-radius: 8px; margin-bottom: 20px; border: 1.5px solid var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B)));">
             <div class="w-100 o_dashboard_header_row" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: nowrap; gap: 10px; min-width: 0;">
                 <div class="o_dashboard_title_section" style="min-width: 0; flex: 1 1 auto; overflow: hidden;">
-                    <h2 style="margin: 0; color: #8B4513; font-weight: bold; font-size: 18px;">
+                    <h2 style="margin: 0; color: var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))); font-weight: bold; font-size: 18px;">
                         <t t-if="iconClass">
-                            <span><i t-att-class="iconClass" style="font-size: 20px; color: #8B4513;"/></span>
+                            <span><i t-att-class="iconClass" style="font-size: 20px; color: var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B)));"/></span>
                             <t t-if="iconClass == 'fa fa-shield'">
                                 <span style="margin-left: -0.5rem;"> </span>
                             </t>
@@ -109,7 +109,7 @@
                                 <option
                                     t-att-value="this.toString(project.id)"
                                     t-att-title="this.getProjectOptionTitle(project)"
-                                    t-att-style="(project.survey_count || 0) > 0 ? 'background-color:#fff3e0; color:#7b3200; font-weight:700;' : 'background-color:#fff; color:#999;'"
+                                    t-att-style="(project.survey_count || 0) > 0 ? 'background-color:color-mix(in srgb, var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))) 14%, white); color:var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))); font-weight:700;' : 'background-color:#fff; color:#999;'"
                                 >
                                     <t t-esc="`${project.code ? '[' + project.code + '] ' : ''}${project.name || ''} (${project.survey_count || 0})`"/>
                                 </option>
@@ -129,7 +129,7 @@
                                 <option
                                     t-att-value="this.toString(village.id)"
                                     t-att-title="this.getVillageOptionTitle(village)"
-                                    t-att-style="(village.survey_count || 0) > 0 ? 'background-color:#fff3e0; color:#7b3200; font-weight:700;' : 'background-color:#fff; color:#999;'"
+                                    t-att-style="(village.survey_count || 0) > 0 ? 'background-color:color-mix(in srgb, var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))) 14%, white); color:var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))); font-weight:700;' : 'background-color:#fff; color:#999;'"
                                 >
                                     <t t-esc="this.getVillageOptionTitle(village)"/>
                                 </option>

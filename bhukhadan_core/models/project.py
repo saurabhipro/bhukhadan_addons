@@ -5,8 +5,8 @@ import zlib
 from collections import defaultdict
 
 _BHU_PIPELINE_DOT_IDS = (
-    'survey', 'section4', 'sia_team', 'expert_committee',
-    'section11', 'section15', 'section19', 'section21', 'section23',
+    'survey', 'section4', 'sia_team',
+    'section8', 'section9', 'section11', 'section15', 'section19', 'section21', 'section23',
     'payment_voucher', 'payment_file',
 )
 
@@ -14,7 +14,8 @@ _BHU_PIPELINE_DOT_SHORT_LABELS = {
     'survey': '10',
     'section4': '4',
     'sia_team': 'SI',
-    'expert_committee': 'EC',
+    'section8': '8',
+    'section9': '9',
     'section11': '11',
     'section15': '15',
     'section19': '19',
@@ -718,7 +719,7 @@ class BhuProject(models.Model):
         s4_info = get_village_info('bhu.section4.notification')
         stages.append({
             'id': 'section4',
-            'name': 'Section 4 / धारा 4',
+            'name': 'Sec 4(i) Notification of intention to prospect',
             'status': s4_info['status'],
             'icon': 'fa-bullhorn',
             'count': s4_info['count'],
@@ -730,26 +731,37 @@ class BhuProject(models.Model):
             sia_info = get_project_level_info('bhu.sia.team')
             stages.append({
                 'id': 'sia_team',
-                'name': 'SIA Team / SIA टीम',
+                'name': 'Sec 7(i) Notification of intention to acquire land',
                 'status': sia_info['status'],
                 'icon': 'fa-users',
                 'details': sia_info['details']
             })
-            
-            expert_info = get_project_level_info('bhu.expert.committee.report')
-            stages.append({
-                'id': 'expert_committee',
-                'name': 'Expert Committee / विशेषज्ञ समिति',
-                'status': expert_info['status'],
-                'icon': 'fa-balance-scale',
-                'details': expert_info['details']
-            })
+
+        s8_info = get_project_level_info('bhu.section8')
+        stages.append({
+            'id': 'section8',
+            'name': 'Sec 8 Objections',
+            'status': s8_info['status'],
+            'icon': 'fa-gavel',
+            'details': s8_info['details']
+        })
+
+        s9_info = get_village_info('bhu.section9.notification')
+        stages.append({
+            'id': 'section9',
+            'name': 'Sec 9(i) Declaration of acquisition',
+            'status': s9_info['status'],
+            'icon': 'fa-flag',
+            'count': s9_info['count'],
+            'total': s9_info['total'],
+            'details': s9_info['details']
+        })
 
         # Section 11
         s11_info = get_village_info('bhu.section11.preliminary.report')
         stages.append({
             'id': 'section11',
-            'name': 'Section 11 / धारा 11',
+            'name': 'Sec 11(i) Vesting order',
             'status': s11_info['status'],
             'icon': 'fa-file-text-o',
             'count': s11_info['count'],
@@ -761,7 +773,7 @@ class BhuProject(models.Model):
         s15_info = get_village_info('bhu.section15.objection')
         stages.append({
             'id': 'section15',
-            'name': 'Section 15 / धारा 15',
+            'name': 'Post-Gazette Step 1 Land Records',
             'status': s15_info['status'],
             'icon': 'fa-comments-o',
             'count': s15_info['count'],
@@ -773,7 +785,7 @@ class BhuProject(models.Model):
         s19_info = get_village_info('bhu.section19.notification')
         stages.append({
             'id': 'section19',
-            'name': 'Section 19 / धारा 19',
+            'name': 'Post-Gazette Step 2 DRRC Meeting',
             'status': s19_info['status'],
             'icon': 'fa-newspaper-o',
             'count': s19_info['count'],
@@ -785,7 +797,7 @@ class BhuProject(models.Model):
         s21_info = get_village_info('bhu.section21.notification')
         stages.append({
             'id': 'section21',
-            'name': 'Section 21 / धारा 21',
+            'name': 'Post-Gazette Step 3 Asset Survey Committee Formation',
             'status': s21_info['status'],
             'icon': 'fa-map-marker',
             'count': s21_info['count'],
@@ -797,7 +809,7 @@ class BhuProject(models.Model):
         s23_info = get_village_info('bhu.section23.award')
         stages.append({
             'id': 'section23',
-            'name': 'Section 23 / धारा 23',
+            'name': 'Post-Gazette Step 5 Land Compensation & Award',
             'status': s23_info['status'],
             'icon': 'fa-trophy',
             'count': s23_info['count'],
@@ -1048,7 +1060,7 @@ class BhuProject(models.Model):
         s4_info = village_stage_aggregate('bhu.section4.notification')
         stages.append({
             'id': 'section4',
-            'name': _('Section 4 / धारा 4'),
+            'name': _('Sec 4(i) Notification of intention to prospect'),
             'status': s4_info['status'],
             'icon': 'fa-bullhorn',
             'count': s4_info['count'],
@@ -1060,24 +1072,36 @@ class BhuProject(models.Model):
             sia_info = project_level_info('bhu.sia.team')
             stages.append({
                 'id': 'sia_team',
-                'name': _('SIA Team / SIA टीम'),
+                'name': _('Sec 7(i) Notification of intention to acquire land'),
                 'status': sia_info['status'],
                 'icon': 'fa-users',
                 'details': sia_info['details'],
             })
-            expert_info = project_level_info('bhu.expert.committee.report')
-            stages.append({
-                'id': 'expert_committee',
-                'name': _('Expert Committee / विशेषज्ञ समिति'),
-                'status': expert_info['status'],
-                'icon': 'fa-balance-scale',
-                'details': expert_info['details'],
-            })
+
+        s8_info = project_level_info('bhu.section8')
+        stages.append({
+            'id': 'section8',
+            'name': _('Sec 8 Objections'),
+            'status': s8_info['status'],
+            'icon': 'fa-gavel',
+            'details': s8_info['details'],
+        })
+
+        s9_info = village_stage_aggregate('bhu.section9.notification')
+        stages.append({
+            'id': 'section9',
+            'name': _('Sec 9(i) Declaration of acquisition'),
+            'status': s9_info['status'],
+            'icon': 'fa-flag',
+            'count': s9_info['count'],
+            'total': s9_info['total'],
+            'details': s9_info['details'],
+        })
 
         s11_info = village_stage_aggregate('bhu.section11.preliminary.report')
         stages.append({
             'id': 'section11',
-            'name': _('Section 11 / धारा 11'),
+            'name': _('Sec 11(i) Vesting order'),
             'status': s11_info['status'],
             'icon': 'fa-file-text-o',
             'count': s11_info['count'],
@@ -1088,7 +1112,7 @@ class BhuProject(models.Model):
         s15_info = village_stage_aggregate('bhu.section15.objection')
         stages.append({
             'id': 'section15',
-            'name': _('Section 15 / धारा 15'),
+            'name': _('Post-Gazette Step 1 Land Records'),
             'status': s15_info['status'],
             'icon': 'fa-comments-o',
             'count': s15_info['count'],
@@ -1099,7 +1123,7 @@ class BhuProject(models.Model):
         s19_info = village_stage_aggregate('bhu.section19.notification')
         stages.append({
             'id': 'section19',
-            'name': _('Section 19 / धारा 19'),
+            'name': _('Post-Gazette Step 2 DRRC Meeting'),
             'status': s19_info['status'],
             'icon': 'fa-newspaper-o',
             'count': s19_info['count'],
@@ -1110,7 +1134,7 @@ class BhuProject(models.Model):
         s21_info = village_stage_aggregate('bhu.section21.notification')
         stages.append({
             'id': 'section21',
-            'name': _('Section 21 / धारा 21'),
+            'name': _('Post-Gazette Step 3 Asset Survey Committee Formation'),
             'status': s21_info['status'],
             'icon': 'fa-map-marker',
             'count': s21_info['count'],
@@ -1121,7 +1145,7 @@ class BhuProject(models.Model):
         s23_info = village_stage_aggregate('bhu.section23.award')
         stages.append({
             'id': 'section23',
-            'name': _('Section 23 / धारा 23'),
+            'name': _('Post-Gazette Step 5 Land Compensation & Award'),
             'status': s23_info['status'],
             'icon': 'fa-trophy',
             'count': s23_info['count'],

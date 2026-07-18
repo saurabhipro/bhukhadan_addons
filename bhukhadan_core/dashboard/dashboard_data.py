@@ -248,3 +248,119 @@ class DashboardData(models.AbstractModel):
             'project_id': int(project_id) if project_id and project_id.isdigit() else False,
             'village_id': int(village_id) if village_id and village_id.isdigit() else False,
         }
+
+    @api.model
+    def ensure_sample_master_scope_xml(self):
+        """Create baseline sample master scope via XML function import."""
+        Department = self.env['bhu.department'].sudo()
+        Project = self.env['bhu.project'].sudo()
+        Village = self.env['bhu.village'].sudo()
+        Tehsil = self.env['bhu.tehsil'].sudo()
+        District = self.env['bhu.district'].sudo()
+
+        dept = Department.search([('name', '=', 'Coal India Ltd.')], limit=1)
+        if not dept:
+            dept = Department.create({
+                'name': 'Coal India Ltd.',
+                'code': 'CIL',
+                'icon': 'fa fa-industry',
+                'description': 'Sample department for dashboard scope.',
+            })
+
+        village = Village.search([('name', '=', 'Hardibazar')], limit=1)
+        if not village:
+            tehsil = Tehsil.search([], limit=1)
+            district = tehsil.district_id if tehsil and tehsil.district_id else District.search([], limit=1)
+            vals = {
+                'name': 'Hardibazar',
+                'village_code': 'HARDIBAZAR',
+                'village_type': 'rural',
+            }
+            if district:
+                vals['district_id'] = district.id
+            if tehsil:
+                vals['tehsil_id'] = tehsil.id
+            village = Village.create(vals)
+
+        project = Project.search([
+            ('name', '=', 'SECL Korba'),
+            ('department_id', '=', dept.id),
+        ], limit=1)
+        if not project:
+            project = Project.create({
+                'name': 'SECL Korba',
+                'code': 'SECL-KORBA',
+                'department_id': dept.id,
+                'state': 'active',
+            })
+
+        if village and village.id not in project.village_ids.ids:
+            project.write({'village_ids': [(4, village.id)]})
+        return True
+
+    @api.model
+    def apply_coal_runtime_gating(self):
+        """Disable legacy NH/Railway law sections from active runtime use."""
+        Section = self.env['bhu.section.master'].sudo()
+        Law = self.env['bhu.law.master'].sudo()
+        Project = self.env['bhu.project'].sudo()
+
+        legacy_section_domain = [
+            '|', '|',
+            ('name', 'ilike', 'Railways'),
+            ('name', 'ilike', '(NH)'),
+            ('name', 'ilike', 'Sec 3A'),
+        ]
+        legacy_sections = Section.search(legacy_section_domain)
+        if legacy_sections:
+            legacy_sections.write({'active': False})
+
+        legacy_laws = Law.search([
+            '|',
+            ('name', 'ilike', 'Railway'),
+            ('name', 'ilike', 'National Highway'),
+        ])
+        if legacy_laws:
+            legacy_laws.write({'active': False})
+
+        # Section Master sync for coal-only mode:
+        # keep only Coal Act sections active, hide legacy LARR/CGLRC/NH/Railways.
+        coal_section_xmlids = [
+            'bhukhadan_core.section_coal_surveys',
+            'bhukhadan_core.section_coal_4',
+            'bhukhadan_core.section_coal_7',
+            'bhukhadan_core.section_coal_8',
+            'bhukhadan_core.section_coal_9',
+            'bhukhadan_core.section_coal_11',
+            'bhukhadan_core.section_coal_land_records',
+            'bhukhadan_core.section_coal_drrc',
+            'bhukhadan_core.section_coal_asset_survey',
+            'bhukhadan_core.section_coal_conduct_asset_survey',
+            'bhukhadan_core.section_coal_compensation',
+            'bhukhadan_core.section_coal_award',
+        ]
+        coal_sections = self.env['bhu.section.master'].sudo()
+        for xmlid in coal_section_xmlids:
+            rec = self.env.ref(xmlid, raise_if_not_found=False)
+            if rec and rec._name == 'bhu.section.master':
+                coal_sections |= rec
+        if coal_sections:
+            (Section.search([('id', 'not in', coal_sections.ids)])).write({'active': False})
+            coal_sections.write({'active': True})
+
+        # Ensure existing projects without a configured law get Coal Act by default.
+        coal_law = Law.search([('name', '=', 'Coal Bearing Areas (A&D) Act, 1957')], limit=1)
+        if coal_law:
+            Project.search([('law_master_id', '=', False)]).write({'law_master_id': coal_law.id})
+            # Coal-only migration guard: remap legacy project laws to Coal law.
+            legacy_projects = Project.search([
+                ('law_master_id', '!=', False),
+                '|', '|', '|',
+                ('law_master_id.name', 'ilike', 'cglrc'),
+                ('law_master_id.name', 'ilike', '247'),
+                ('law_master_id.name', 'ilike', 'railway'),
+                ('law_master_id.name', 'ilike', 'national highway'),
+            ])
+            if legacy_projects:
+                legacy_projects.write({'law_master_id': coal_law.id})
+        return True

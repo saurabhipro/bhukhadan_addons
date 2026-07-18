@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+    <!-- Standalone login shell: avoid website.layout (needs website qcontext + full chrome). -->
+    <template id="bhuarjan_login_layout_standalone" inherit_id="website.login_layout"
+              name="BhuKhadan Login Layout" priority="1000">
+        <xpath expr="//t[@t-call='website.layout']" position="replace">
+            <t t-call="web.frontend_layout">
+                <t t-set="html_data" t-value="{'style': 'height: 100%;'}"/>
+                <t t-set="body_classname" t-value="'bg-100 bhu-login-body'"/>
+                <t t-set="no_header" t-value="True"/>
+                <t t-set="no_footer" t-value="True"/>
+                <div class="oe_website_login_container" t-out="0"/>
+            </t>
+        </xpath>
+    </template>
+
     <!-- Fully replace web.login with an immersive split-screen template -->
     <template id="login_standalone_markup" inherit_id="web.login" priority="999">
         <xpath expr="//t[@t-call='web.login_layout']" position="replace">
@@ -88,7 +102,7 @@
 
                         <!-- Brand bar -->
                         <div class="bhu-lp-brand">
-                            <img src="/bhukhadan_web/static/src/img/bhuarjan_logo.png" alt="" class="bhu-lp-logo"/>
+                            <img src="/bhukhadan_web/static/src/img/logo.png" alt="" class="bhu-lp-logo"/>
                             <div class="bhu-lp-brand-text">
                                 <span class="bhu-lp-brand-name">BHUKHADAN</span>
                                 <span class="bhu-lp-brand-sub">Land Acquisition Management System</span>
@@ -209,7 +223,7 @@
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
                                 </a>
                                 <div class="bhu-login-appbar-brand">
-                                    <img src="/bhukhadan_web/static/src/img/bhuarjan_logo.png" alt=""/>
+                                    <img src="/bhukhadan_web/static/src/img/logo.png" alt=""/>
                                     <span>BHUKHADAN</span>
                                 </div>
                                 <span class="bhu-login-appbar-spacer" aria-hidden="true"/>
@@ -219,7 +233,7 @@
 
                             <!-- Logos (desktop only) -->
                             <div class="bhu-login-logos bhu-login-logos--desktop">
-                                <img src="/bhukhadan_web/static/src/img/bhuarjan_logo.png" alt="BHUKHADAN" class="bhu-logo-left"/>
+                                <img src="/bhukhadan_web/static/src/img/logo.png" alt="BHUKHADAN" class="bhu-logo-left"/>
                             </div>
 
                             <!-- Heading -->

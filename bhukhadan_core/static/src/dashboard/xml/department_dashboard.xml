@@ -154,8 +154,8 @@
                             </div>
                             <div class="o_section_list_content">
                                 <div class="o_section_list_title">
-                                    <i class="fa fa-clipboard" style="margin-right: 8px; color: #8B4513;"/>
-                                    Surveys
+                                    <i class="fa fa-clipboard" style="margin-right: 8px; color: var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B)));"/>
+                                    Sec 4(i) Notification of intention to prospect
                                     <t t-if="state.stats &amp;&amp; state.stats.survey_info &amp;&amp; state.stats.survey_info.is_completed">
                                         <span class="o_completion_tick" title="All surveys completed">
                                             <i class="fa fa-check-circle"/>

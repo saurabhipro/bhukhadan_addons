@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="section_coal_surveys" model="bhu.section.master">
+            <field name="name">Surveys (Coal Act)</field>
+            <field name="description">Survey baseline for Coal Bearing Areas acquisition workflow.</field>
+            <field name="active">True</field>
+        </record>
+        <record id="section_coal_4" model="bhu.section.master">
+            <field name="name">Sec 4(i) Notification of intention to prospect</field>
+            <field name="description">Section 4(i) notification of intention to prospect.</field>
+            <field name="active">True</field>
+        </record>
+        <record id="section_coal_7" model="bhu.section.master">
+            <field name="name">Sec 7(i) Notification of intention to acquire land</field>
+            <field name="description">Section 7(i) notification of intention to acquire land.</field>
+            <field name="active">True</field>
+        </record>
+        <record id="section_coal_8" model="bhu.section.master">
+            <field name="name">Sec 8 Objections</field>
+            <field name="description">Section 8 objections from villagers.</field>
+            <field name="active">True</field>
+        </record>
+        <record id="section_coal_9" model="bhu.section.master">
+            <field name="name">Sec 9(i) Declaration of acquisition</field>
+            <field name="description">Section 9(i) declaration of acquisition.</field>
+            <field name="active">True</field>
+        </record>
+        <record id="section_coal_11" model="bhu.section.master">
+            <field name="name">Sec 11(i) Vesting order</field>
+            <field name="description">Section 11(i) vesting order stage.</field>
+            <field name="active">True</field>
+        </record>
+        <record id="section_coal_land_records" model="bhu.section.master">
+            <field name="name">Post-Gazette Step 1 Land Records</field>
+            <field name="description">Post-gazette step 1: land records.</field>
+            <field name="active">True</field>
+        </record>
+        <record id="section_coal_drrc" model="bhu.section.master">
+            <field name="name">Post-Gazette Step 2 DRRC Meeting</field>
+            <field name="description">Post-gazette step 2: DRRC meeting.</field>
+            <field name="active">True</field>
+        </record>
+        <record id="section_coal_asset_survey" model="bhu.section.master">
+            <field name="name">Post-Gazette Step 3 Asset Survey Committee Formation</field>
+            <field name="description">Post-gazette step 3: asset survey committee formation.</field>
+            <field name="active">True</field>
+        </record>
+        <record id="section_coal_conduct_asset_survey" model="bhu.section.master">
+            <field name="name">Post-Gazette Step 4 Conduct Asset Survey</field>
+            <field name="description">Post-gazette step 4: conduct asset survey.</field>
+            <field name="active">True</field>
+        </record>
+        <record id="section_coal_compensation" model="bhu.section.master">
+            <field name="name">Post-Gazette Step 5 Land Compensation &amp; Award</field>
+            <field name="description">Post-gazette step 5: land compensation and award.</field>
+            <field name="active">True</field>
+        </record>
+        <record id="section_coal_award" model="bhu.section.master">
+            <field name="name">Post-Gazette Step 6 Structure/Asset Assessment &amp; Award</field>
+            <field name="description">Post-gazette step 6: structure/asset assessment and award.</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="law_coal_bearing_areas_1957" model="bhu.law.master">
+            <field name="name">Coal Bearing Areas (A&amp;D) Act, 1957</field>
+            <field name="active">True</field>
+            <field name="section_ids" eval="[(6, 0, [
+                ref('section_coal_surveys'),
+                ref('section_coal_4'),
+                ref('section_coal_7'),
+                ref('section_coal_8'),
+                ref('section_coal_9'),
+                ref('section_coal_11'),
+                ref('section_coal_land_records'),
+                ref('section_coal_drrc'),
+                ref('section_coal_asset_survey'),
+                ref('section_coal_conduct_asset_survey'),
+                ref('section_coal_compensation'),
+                ref('section_coal_award')
+            ])]"/>
+        </record>
+    </data>
+</odoo>

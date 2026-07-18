@@ -48,21 +48,21 @@
                     .bhu-chart-tabs { display:flex; gap:8px; flex-wrap:wrap; }
                     .bhu-tab-btn {
                         padding: 6px 16px; border-radius: 999px; font-size:0.85rem;
-                        font-weight: 600; border: 2px solid #8B4513;
-                        background: white; color: #8B4513; cursor: pointer;
+                        font-weight: 600; border: 2px solid var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B)));
+                        background: white; color: var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))); cursor: pointer;
                         transition: all 0.2s ease;
                     }
                     .bhu-tab-btn.active, .bhu-tab-btn:hover {
-                        background: linear-gradient(135deg, #8B4513, #C87941);
+                        background: linear-gradient(135deg, var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))), color-mix(in srgb, var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))) 70%, black));
                         color: white; border-color: transparent;
-                        box-shadow: 0 2px 8px rgba(139,69,19,0.3);
+                        box-shadow: 0 2px 8px color-mix(in srgb, var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))) 30%, transparent);
                     }
                     .bhu-chart-summary { display:flex; gap:12px; flex-wrap:wrap; }
                     .bhu-summary-chip {
                         background: rgba(139,69,19,0.07); border: 1px solid rgba(139,69,19,0.18);
                         border-radius: 8px; padding: 5px 14px; font-size:0.85rem; color:#5D2E0C;
                     }
-                    .bhu-summary-chip strong { color:#8B4513; }
+                    .bhu-summary-chip strong { color:var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))); }
                     .bhu-chart-canvas-wrap {
                         background: #fffaf5; border-radius: 12px;
                         border: 1px solid rgba(139,69,19,0.12);

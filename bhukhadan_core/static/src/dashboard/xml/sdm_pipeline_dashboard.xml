@@ -133,7 +133,7 @@
                                         <span class="o_sdm_pd_kpi_chip o_sdm_pd_kpi_chip_surveys">
                                             <i class="fa fa-clipboard"/>
                                             <b t-esc="sdSum.survey_count || 0"/>
-                                            <span class="o_sdm_pd_kpi_chip_lbl">Surveys</span>
+                                            <span class="o_sdm_pd_kpi_chip_lbl">Sec 4(i) Prospect Notification</span>
                                         </span>
                                         <span class="o_sdm_pd_kpi_chip o_sdm_pd_kpi_chip_stage"
                                               t-att-title="'Latest stage: ' + (sdSum.latest_section || '—')">
@@ -198,7 +198,7 @@
                                                 <th class="text-start"><i class="fa fa-building me-1"/>Department</th>
                                                 <th class="text-start"><i class="fa fa-briefcase me-1"/>Project</th>
                                                 <th class="text-start"><i class="fa fa-home me-1"/>Villages</th>
-                                                <th class="text-start"><i class="fa fa-clipboard me-1"/>Surveys</th>
+                                                <th class="text-start"><i class="fa fa-clipboard me-1"/>Sec 4(i) Prospect Notification</th>
                                                 <th class="text-start">Pipeline</th>
                                                 <th t-if="state.showProjectPct" class="text-start">%</th>
                                                 <th class="text-center" style="width:56px"/>
@@ -317,7 +317,7 @@
                                                                         <tr>
                                                                             <th class="text-start">Code</th>
                                                                             <th class="text-start"><i class="fa fa-home me-1"/>Village</th>
-                                                                            <th class="text-start"><i class="fa fa-clipboard me-1"/>Surveys</th>
+                                                                            <th class="text-start"><i class="fa fa-clipboard me-1"/>Sec 4(i) Prospect Notification</th>
                                                                             <th class="text-start"><i class="fa fa-user me-1"/>Patwari</th>
                                                                             <th class="text-start"><i class="fa fa-phone me-1"/>Mobile</th>
                                                                             <th class="text-start">Pipeline</th>

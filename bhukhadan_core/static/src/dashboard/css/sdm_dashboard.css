@@ -35,7 +35,7 @@
 
 .o_dashboard_header h2 {
     margin: 0;
-    color: #8B4513;
+    color: var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B)));
     font-weight: 600;
     font-size: 18px;
     line-height: 1.2;
@@ -146,7 +146,7 @@
     align-items: center;
     gap: 6px;
     font-weight: 600;
-    color: #8B4513;
+    color: var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B)));
     font-size: 14px;
     flex-shrink: 0;
     margin: 0;
@@ -155,7 +155,7 @@
 
 .o_status_legend_title i {
     font-size: 16px;
-    color: #8B4513;
+    color: var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B)));
 }
 
 .o_status_legend_items {
@@ -171,7 +171,7 @@
 
 .o_legend_title {
     font-weight: 600;
-    color: #8B4513;
+    color: var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B)));
     font-size: 13px;
     margin-right: 3px;
     white-space: nowrap;
@@ -239,7 +239,7 @@
     align-items: center;
     gap: 8px;
     margin-bottom: 12px;
-    color: #8B4513;
+    color: var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B)));
     font-weight: 600;
     font-size: 16px;
 }
@@ -383,7 +383,7 @@
 
 .o_create_btn i {
     font-size: 12px;
-    color: #8B4513;
+    color: var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B)));
 }
 
 /* Card Background Images - using old dashboard patterns */
@@ -450,7 +450,7 @@
 .o_dashboard_actions .o_project_selector,
 .o_dashboard_actions .o_village_selector {
     padding: 8px 14px;
-    border: 2px solid #8B4513;
+    border: 2px solid var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B)));
     border-radius: 4px;
     background: #f8f9fa;
     font-size: 15px;
@@ -466,7 +466,7 @@
     line-height: 22px;
     box-sizing: border-box;
     text-align: left;
-    color: #8B4513;
+    color: var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B)));
     letter-spacing: 0.3px;
     transition: all 0.2s ease;
 }
@@ -774,7 +774,7 @@
 
 .o_section_list_icon {
     font-size: 20px;
-    color: #8B4513;
+    color: var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B)));
     width: 32px;
     text-align: center;
     flex-shrink: 0;
@@ -1138,7 +1138,7 @@
 /* Make survey icon visible in list view */
 .o_section_list_item .o_section_list_icon .fa-clipboard {
     font-size: 28px;
-    color: #8B4513;
+    color: var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B)));
     opacity: 1;
 }
 

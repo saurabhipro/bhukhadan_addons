@@ -108,16 +108,27 @@ class DocumentVaultNavigator(models.Model):
         'Payment File',
         'Payment Reconciliation',
     )
+    _DASHBOARD_ORDER_COAL = (
+        'Surveys (Coal Act)',
+        '(Sec 4) CBA Notification',
+        '(Sec 7) Land Schedule',
+        '(Sec 8) Objection Decision',
+        '(Sec 9) Declaration',
+        'Land Records',
+        'DRRC',
+        'Asset Survey',
+        'Compensation',
+        'Award (Coal Act)',
+        'Payment Voucher',
+        'Payment File',
+        'Payment Reconciliation',
+    )
     _PAYMENT_SECTIONS = frozenset({'Payment Voucher', 'Payment File', 'Payment Reconciliation'})
     _PROJECT_LEVEL_MODELS = frozenset({
         'bhu.section4.notification',
         'bhu.expert.committee.report',
         'bhu.section8',
         'bhu.section18.rr.scheme',
-        'bhu.section20a.railways',
-        'bhu.section20e.railways',
-        'bhu.section3a.nh',
-        'bhu.section3d.nh',
     })
 
     @api.depends('focused_step_no', 'section_line_ids', 'section_line_ids.step_no')
@@ -687,23 +698,14 @@ class DocumentVaultNavigator(models.Model):
         if not self.project_id or not self.project_id.law_master_id:
             return []
         names = list(self.project_id.law_master_id.section_ids.mapped('name'))
-        if 'Sec 20 A (Railways)' in names:
-            names = [n for n in names if n != 'Sec 20 D (Objection) (Railways)']
-            if 'Section 23 Award' not in names:
-                names.append('Section 23 Award')
-        if 'Sec 3A (NH)' in names:
-            names = [n for n in names if n != 'Sec 3C (Objection) (NH)']
-            if 'Section 23 Award' not in names:
-                names.append('Section 23 Award')
+        names = [n for n in names if '(Railways)' not in n and '(NH)' not in n]
         return names
 
     def _get_dashboard_section_order(self):
         self.ensure_one()
         allowed = set(self._get_allowed_section_names())
-        if 'Sec 20 A (Railways)' in allowed:
-            template = self._DASHBOARD_ORDER_RAILWAY
-        elif 'Sec 3A (NH)' in allowed:
-            template = self._DASHBOARD_ORDER_NH
+        if '(Sec 4) CBA Notification' in allowed:
+            template = self._DASHBOARD_ORDER_COAL
         elif 'Personal Notice generation (247.1)' in allowed:
             template = self._DASHBOARD_ORDER_CGLRC
         else:
@@ -992,10 +994,16 @@ class DocumentVaultNavigator(models.Model):
                 cmds, step, seen, _('SIA Team'), 'bhu.sia.team'),
             '(Sec 4) Section 4 Notifications': lambda nav, cmds, step, seen: nav._append_signed_workflow_step(
                 cmds, step, seen, _('Section 4'), 'bhu.section4.notification'),
+            '(Sec 4) CBA Notification': lambda nav, cmds, step, seen: nav._append_signed_workflow_step(
+                cmds, step, seen, _('Section 4 (Coal)'), 'bhu.section4.notification'),
             'Expert Group': lambda nav, cmds, step, seen: nav._append_signed_workflow_step(
                 cmds, step, seen, _('Expert Group'), 'bhu.expert.committee.report'),
             'Section 8': lambda nav, cmds, step, seen: nav._append_binary_workflow_step(
                 cmds, step, seen, _('Section 8'), 'bhu.section8', 'attachment_file', 'attachment_filename'),
+            '(Sec 8) Objection Decision': lambda nav, cmds, step, seen: nav._append_binary_workflow_step(
+                cmds, step, seen, _('Section 8 (Coal)'), 'bhu.section8', 'attachment_file', 'attachment_filename'),
+            '(Sec 9) Declaration': lambda nav, cmds, step, seen: nav._append_signed_workflow_step(
+                cmds, step, seen, _('Section 9'), 'bhu.section9.notification'),
             'Section 11 Notifications': lambda nav, cmds, step, seen: nav._append_signed_workflow_step(
                 cmds, step, seen, _('Section 11'), 'bhu.section11.preliminary.report'),
             '(Sec 15) Objections': lambda nav, cmds, step, seen: nav._append_signed_workflow_step(
@@ -1007,14 +1015,7 @@ class DocumentVaultNavigator(models.Model):
             'Sec 21 notice': lambda nav, cmds, step, seen: nav._append_signed_workflow_step(
                 cmds, step, seen, _('Section 21'), 'bhu.section21.notification'),
             'Section 23 Award': lambda nav, cmds, step, seen: nav._append_section23_award_step(cmds, step, seen),
-            'Sec 20 A (Railways)': lambda nav, cmds, step, seen: nav._append_signed_workflow_step(
-                cmds, step, seen, _('Sec 20 A (Railways)'), 'bhu.section20a.railways', collector=False),
-            'Sec 20 E (Railways)': lambda nav, cmds, step, seen: nav._append_signed_workflow_step(
-                cmds, step, seen, _('Sec 20 E (Railways)'), 'bhu.section20e.railways', collector=False),
-            'Sec 3A (NH)': lambda nav, cmds, step, seen: nav._append_signed_workflow_step(
-                cmds, step, seen, _('Sec 3A (NH)'), 'bhu.section3a.nh', collector=False),
-            'Sec 3D (NH)': lambda nav, cmds, step, seen: nav._append_signed_workflow_step(
-                cmds, step, seen, _('Sec 3D (NH)'), 'bhu.section3d.nh', collector=False),
+            'Award (Coal Act)': lambda nav, cmds, step, seen: nav._append_section23_award_step(cmds, step, seen),
             'Personal Notice generation (247.1)': lambda nav, cmds, step, seen: nav._append_signed_workflow_step(
                 cmds, step, seen, _('Personal Notice (247.1)'), 'bhu.section247_1.cglrc'),
             'Istehar प्रकाशन (247.2)': lambda nav, cmds, step, seen: nav._append_signed_workflow_step(

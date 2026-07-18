@@ -38,7 +38,7 @@
       "@id": "<t t-esc='bhu_site_url'/>/#organization",
       "name": "BhuKhadan",
       "url": "<t t-esc='bhu_site_url'/>",
-      "logo": "<t t-esc='bhu_site_url'/>/bhukhadan_web/static/src/img/bhuarjan_logo.png",
+      "logo": "<t t-esc='bhu_site_url'/>/bhukhadan_web/static/src/img/logo.png",
       "description": "Coal Bearing Areas land acquisition management under CBA(A&amp;D) Act 1957.",
       "contactPoint": {
         "@type": "ContactPoint",
@@ -102,85 +102,124 @@
             <div class="bhu-home-v2">
 
             <!-- ============================================================
-                 HERO — editorial / centered layout
+                 HERO — split copy + product visual
                  ============================================================ -->
             <section class="bhu-home-v2-hero">
                 <div class="bhu-home-v2-hero-bg" aria-hidden="true"/>
                 <div class="bhu-home-v2-hero-inner">
-                    <div class="bhu-home-v2-hero-copy">
-                        <span class="bhu-home-v2-kicker">
-                            <i class="fa fa-gem"/> Coal Bearing Land Acquisition · CBA(A&amp;D) Act 1957
-                        </span>
-                        <h1>
-                            Digitise every stage from
-                            <span class="accent">notification</span>
-                            to <span class="accent">award</span>
-                        </h1>
-                        <p class="bhu-home-v2-lead">
-                            BhuKhadan connects field survey, statutory workflows, and compensation
-                            on one auditable platform built for SECL and coal-bearing area administration.
-                        </p>
-                        <div class="bhu-home-v2-actions">
-                            <a href="/odoo" class="bhu-btn primary bhu-home-v2-btn-main">
-                                Launch Portal <i class="fa fa-arrow-right"/>
-                            </a>
-                            <a href="/features/cba" class="bhu-btn ghost bhu-home-v2-btn-alt">
-                                Explore CBA Guide
-                            </a>
-                            <a href="/contact" class="bhu-home-v2-link-demo">
-                                <i class="fa fa-calendar-check"/> Book a demo
-                            </a>
+                    <div class="bhu-home-v2-hero-grid">
+                        <div class="bhu-home-v2-hero-copy">
+                            <span class="bhu-home-v2-kicker">
+                                <i class="fa fa-gem"/> Coal Bearing Land Acquisition · CBA(A&amp;D) Act 1957
+                            </span>
+                            <h1>
+                                Digitise every stage from
+                                <span class="accent">notification</span>
+                                to <span class="accent">award</span>
+                            </h1>
+                            <p class="bhu-home-v2-lead">
+                                BhuKhadan connects field survey, statutory workflows, and compensation
+                                on one auditable platform built for SECL and coal-bearing area administration.
+                            </p>
+                            <div class="bhu-home-v2-actions">
+                                <a href="/odoo" class="bhu-btn primary bhu-home-v2-btn-main">
+                                    Launch Portal <i class="fa fa-arrow-right"/>
+                                </a>
+                                <a href="/features/cba" class="bhu-btn ghost bhu-home-v2-btn-alt">
+                                    Explore CBA Guide
+                                </a>
+                                <a href="/contact" class="bhu-home-v2-link-demo">
+                                    <i class="fa fa-calendar-check"/> Book a demo
+                                </a>
+                            </div>
+
+                            <div class="bhu-home-v2-metrics bhu-home-v2-metrics--inline">
+                                <div class="bhu-home-v2-metric">
+                                    <strong>120+</strong>
+                                    <span>Projects</span>
+                                </div>
+                                <div class="bhu-home-v2-metric">
+                                    <strong>5K+</strong>
+                                    <span>Parcels</span>
+                                </div>
+                                <div class="bhu-home-v2-metric accent">
+                                    <strong>99%</strong>
+                                    <span>Uptime</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bhu-home-v2-hero-visual">
+                            <div class="bhu-home-v2-hero-glow" aria-hidden="true"/>
+                            <img src="/bhukhadan_web/static/src/img/bhuarjan_image_3.webp"
+                                 alt="BhuKhadan platform on laptop and mobile"
+                                 class="bhu-home-v2-hero-shot"/>
+                            <div class="bhu-home-v2-hero-badge badge-top">
+                                <i class="fa fa-circle-check"/>
+                                <div><strong>1,118</strong><span>Surveys Approved</span></div>
+                            </div>
+                            <div class="bhu-home-v2-hero-badge badge-bottom">
+                                <i class="fa fa-arrow-trend-up"/>
+                                <div><strong>+47%</strong><span>Faster Turnaround</span></div>
+                            </div>
                         </div>
                     </div>
 
                     <div class="bhu-home-v2-pipeline" aria-label="CBA acquisition stages">
                         <a href="/features/cba/section-4" class="bhu-home-v2-stage">
+                            <span class="ico"><i class="fa fa-bullhorn"/></span>
                             <span class="num">01</span>
                             <strong>Sec 4(i)</strong>
                             <small>Notification</small>
                         </a>
                         <span class="bhu-home-v2-stage-arrow"><i class="fa fa-chevron-right"/></span>
                         <a href="/features/cba/section-7" class="bhu-home-v2-stage">
+                            <span class="ico"><i class="fa fa-file-circle-exclamation"/></span>
                             <span class="num">02</span>
                             <strong>Sec 7(i)</strong>
                             <small>Intention</small>
                         </a>
                         <span class="bhu-home-v2-stage-arrow"><i class="fa fa-chevron-right"/></span>
                         <a href="/features/cba/section-8" class="bhu-home-v2-stage">
+                            <span class="ico"><i class="fa fa-gavel"/></span>
                             <span class="num">03</span>
                             <strong>Sec 8</strong>
                             <small>Objections</small>
                         </a>
                         <span class="bhu-home-v2-stage-arrow"><i class="fa fa-chevron-right"/></span>
                         <a href="/features/cba/section-9" class="bhu-home-v2-stage">
+                            <span class="ico"><i class="fa fa-file-signature"/></span>
                             <span class="num">04</span>
                             <strong>Sec 9(i)</strong>
                             <small>Declaration</small>
                         </a>
                         <span class="bhu-home-v2-stage-arrow"><i class="fa fa-chevron-right"/></span>
                         <a href="/features/cba/section-11" class="bhu-home-v2-stage">
+                            <span class="ico"><i class="fa fa-award"/></span>
                             <span class="num">05</span>
                             <strong>Sec 11(i)</strong>
                             <small>Order &amp; Award</small>
                         </a>
                     </div>
-
-                    <div class="bhu-home-v2-metrics bhu-home-v2-metrics--inline">
-                        <div class="bhu-home-v2-metric">
-                            <strong>120+</strong>
-                            <span>Projects</span>
-                        </div>
-                        <div class="bhu-home-v2-metric">
-                            <strong>5K+</strong>
-                            <span>Parcels</span>
-                        </div>
-                        <div class="bhu-home-v2-metric accent">
-                            <strong>99%</strong>
-                            <span>Uptime</span>
-                        </div>
-                    </div>
                 </div>
             </section>
+
+            <!-- ============================================================
+                 GOV / SECL TRUST STRIP
+                 ============================================================ -->
+            <div class="bhu-home-v2-govstrip">
+                <span class="lbl">Built for</span>
+                <div class="bhu-home-v2-govstrip-logos">
+                    <img src="/bhukhadan_web/static/src/img/chattisgarh_logo.png" alt="Government of Chhattisgarh"/>
+                    <strong>Government of Chhattisgarh</strong>
+                </div>
+                <span class="bhu-home-v2-govstrip-divider"/>
+                <div class="bhu-home-v2-govstrip-logos">
+                    <span class="secl-mark"><i class="fa fa-industry"/></span>
+                    <strong>SECL</strong>
+                    <span class="sub">South Eastern Coalfields Limited</span>
+                </div>
+            </div>
 
             <!-- ============================================================
                  TRUST GRID — card chips instead of flat bar
@@ -247,8 +286,8 @@
                     </div>
                     <div class="bhu-home-v2-bento">
                         <div class="bhu-home-v2-bento-visual">
-                            <img src="/bhukhadan_web/static/src/img/bhuarjan_image_3.webp"
-                                 alt="BhuKhadan dashboard on tablet and mobile"/>
+                            <img src="/bhukhadan_web/static/src/img/land_management.jpg"
+                                 alt="BhuKhadan field and office collaboration"/>
                         </div>
                         <div class="bhu-home-v2-bento-tile">
                             <i class="fa fa-eye"/>
@@ -337,21 +376,25 @@
                     </div>
                     <div class="bhu-why-grid">
                         <div class="bhu-why-card">
+                            <span class="step-num">01</span>
                             <img class="wi-img" src="/bhukhadan_web/static/src/img/efficiancy.webp" alt="Efficiency"/>
                             <h4>Efficiency</h4>
                             <p>"Streamlines workflow and reduces manual effort across all departments."</p>
                         </div>
                         <div class="bhu-why-card">
+                            <span class="step-num">02</span>
                             <img class="wi-img" src="/bhukhadan_web/static/src/img/transparency.webp" alt="Transparency"/>
                             <h4>Transparency</h4>
                             <p>"Every process is fully traceable through immutable digital records."</p>
                         </div>
                         <div class="bhu-why-card">
+                            <span class="step-num">03</span>
                             <img class="wi-img" src="/bhukhadan_web/static/src/img/timeliness.webp" alt="Timeliness"/>
                             <h4>Timeliness</h4>
                             <p>"Real-time progress visibility ensures no delays across all stages."</p>
                         </div>
                         <div class="bhu-why-card">
+                            <span class="step-num">04</span>
                             <img class="wi-img" src="/bhukhadan_web/static/src/img/colaboration.webp" alt="Collaboration"/>
                             <h4>Collaboration</h4>
                             <p>"Seamless coordination between field teams and administration."</p>
@@ -393,7 +436,7 @@
                         </div>
                     </div>
                     <div class="bhu-insights-visual">
-                        <img src="/bhukhadan_web/static/src/img/land_management.jpg"
+                        <img src="/bhukhadan_web/static/src/img/dashboard_1.png"
                              alt="BHUKHADAN Dashboard"/>
                         <div class="bhu-insights-stat-card">
                             <div class="ico"><i class="fa fa-arrow-trend-up"/></div>
@@ -473,18 +516,22 @@
             <section class="bhu-stats">
                 <div class="bhu-stats-inner">
                     <div class="bhu-stat-item">
+                        <div class="ico"><i class="fa fa-diagram-project"/></div>
                         <h3><span data-count="120" data-suffix="+">120+</span></h3>
                         <p>Projects Managed</p>
                     </div>
                     <div class="bhu-stat-item">
+                        <div class="ico"><i class="fa fa-map-location-dot"/></div>
                         <h3><span data-count="5000" data-suffix="+">5,000+</span></h3>
                         <p>Land Parcels Processed</p>
                     </div>
                     <div class="bhu-stat-item">
+                        <div class="ico"><i class="fa fa-users-gear"/></div>
                         <h3><span data-count="200" data-suffix="+">200+</span></h3>
                         <p>Government Users</p>
                     </div>
                     <div class="bhu-stat-item">
+                        <div class="ico"><i class="fa fa-shield-halved"/></div>
                         <h3><span data-count="99" data-suffix="%">99%</span></h3>
                         <p>Platform Uptime</p>
                     </div>
@@ -912,7 +959,7 @@
         </style>
         <nav t-attf-class="bhu-navbar {{ 'bhu-navbar--cream' if bhu_nav_light else '' }}">
             <a href="/" class="bhu-logo-wrap">
-                <img src="/bhukhadan_web/static/src/img/bhuarjan_logo.png" alt="BhuKhadan"/>
+                <img src="/bhukhadan_web/static/src/img/logo.png" alt="BhuKhadan"/>
                 <div class="bhu-logo-text">
                     <span class="lt-1">BHUKHADAN</span>
                     <span class="lt-2">Land Acquisition Mgmt</span>
@@ -998,7 +1045,7 @@
                 <div class="bhu-footer-top">
                     <div class="bhu-footer-brand">
                         <div class="logo-wrap">
-                            <img src="/bhukhadan_web/static/src/img/bhuarjan_logo.png" alt="BhuKhadan"/>
+                            <img src="/bhukhadan_web/static/src/img/logo.png" alt="BhuKhadan"/>
                             <span class="ft-name">BHUKHADAN</span>
                         </div>
                         <p>

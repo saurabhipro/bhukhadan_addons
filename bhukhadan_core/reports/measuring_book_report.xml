@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="paperformat_measuring_book_portrait" model="report.paperformat">
+            <field name="name">Measuring Book A4 Portrait</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">6</field>
+            <field name="margin_bottom">6</field>
+            <field name="margin_left">6</field>
+            <field name="margin_right">6</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">96</field>
+        </record>
+
+        <record id="action_report_measuring_book" model="ir.actions.report">
+            <field name="name">Measuring Book PDF</field>
+            <field name="model">bhu.survey</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">bhukhadan_core.measuring_book_report</field>
+            <field name="report_file">bhukhadan_core.measuring_book_report</field>
+            <field name="paperformat_id" ref="paperformat_measuring_book_portrait"/>
+            <field name="print_report_name">'Measuring_Book_' + (object.name or 'Survey')</field>
+        </record>
+
+        <template id="measuring_book_report">
+            <t t-call="web.html_container">
+                <meta charset="utf-8"/>
+                <t t-foreach="docs" t-as="doc">
+                    <div class="page">
+                        <style>
+                            .mb-root { font-size: 9px; border: 2px solid #000; padding: 4px; color: #000; font-family: 'Noto Sans Devanagari', 'Mangal', 'Nirmala UI', 'Arial Unicode MS', 'DejaVu Sans', sans-serif; }
+                            .mb-row { width: 100%; border-collapse: collapse; margin: 0; }
+                            .mb-row td, .mb-row th { border: 1.4px solid #000; padding: 1px 2px; vertical-align: middle; line-height: 1.1; }
+                            .mb-title { text-align: center; font-weight: 700; font-size: 11px; letter-spacing: 0.2px; }
+                            .mb-sub { text-align: center; font-size: 10px; font-weight: 700; }
+                            .mb-label { font-weight: 700; white-space: nowrap; }
+                            .mb-cell { height: 16px; }
+                            .mb-grid td { height: 15px; }
+                            .mb-photo { height: 76px; text-align: center; vertical-align: middle; font-weight: 700; }
+                            .mb-check { text-align: center; width: 3%; }
+                            .mb-sign td { height: 25px; text-align: center; vertical-align: bottom; }
+                            .mt4 { margin-top: 4px; }
+                            .mt2 { margin-top: 2px; }
+                            .center { text-align: center; }
+                            .mb-checkbox { display:inline-block; width: 10px; height: 10px; border: 1.6px solid #000; line-height: 9px; text-align: center; font-size: 9px; font-weight: 700; vertical-align: middle; }
+                            .mb-checkbox.checked::after { content: "X"; }
+                            .mb-bold-head td, .mb-bold-head th { border-width: 2px; }
+                            .mb-hi { font-family: 'Noto Sans Devanagari', 'Mangal', 'Nirmala UI', 'Arial Unicode MS', 'DejaVu Sans', sans-serif; unicode-bidi: embed; direction: ltr; }
+                        </style>
+
+                        <div class="mb-root">
+                            <table class="mb-row mb-bold-head">
+                                <tr>
+                                    <td style="width:38%;">
+                                        <div class="mb-title">SOUTH EASTERN COALFIELDS LIMITED</div>
+                                        <div class="mb-sub"><t t-esc="doc.project_id.name or 'DIPKA AREA'"/></div>
+                                    </td>
+                                    <td style="width:44%;" class="mb-title">HOUSE AND OTHER ASSET MEASUREMENT BOOK</td>
+                                    <td style="width:18%;">
+                                        <table class="mb-row">
+                                            <tr><td class="mb-label">BOOK NO</td><td><t t-esc="doc.name or ''"/></td></tr>
+                                            <tr><td class="mb-label">PAGE NO</td><td>1</td></tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table class="mb-row mt2">
+                                <tr>
+                                    <td style="width:79%;">
+                                        <span class="mb-label">NAME OF HOUSE OWNER:</span>
+                                        <t t-esc="doc.mb_house_owner_name or ((doc.landowner_ids and doc.landowner_ids[0].name) or '')"/>
+                                    </td>
+                                    <td style="width:21%;"><span class="mb-label">HOUSE NO:</span> <t t-esc="doc.mb_house_number_text or ''"/></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="mb-label">AADHAR NO:</span>
+                                        <span style="display:inline-block; min-width:105px;"><t t-esc="doc.mb_house_owner_aadhar or ''"/></span>
+                                        <span class="mb-label" style="margin-left:16px;">MOBILE NO:</span>
+                                        <span style="display:inline-block; min-width:90px;"><t t-esc="doc.mb_house_owner_mobile or ''"/></span>
+                                        <span class="mb-label" style="margin-left:12px;">CASTE/CATEGORY:</span>
+                                        <span style="display:inline-block; min-width:70px;"><t t-esc="doc.mb_house_owner_caste or ''"/></span>
+                                    </td>
+                                    <td><span class="mb-label">MOHALLA:</span> <t t-esc="doc.mb_mohalla_text or ''"/></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="mb-label">Date of Birth:</span>
+                                        <span style="display:inline-block; min-width:160px;"><t t-esc="doc.mb_house_owner_dob or ''"/></span>
+                                        <span class="mb-label">VILLAGE:</span>
+                                        <t t-esc="doc.mb_house_owner_village or doc.village_id.name or ''"/>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </table>
+
+                            <table class="mb-row mt2">
+                                <tr>
+                                    <td class="center" colspan="2"><span class="mb-label">RELATION BETWEEN HOUSE OWNER AND LAND OWNER</span> : <t t-esc="doc.mb_relation_text or ''"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="width:79%;">
+                                        <span class="mb-label">NAME OF LAND OWNER:</span>
+                                        <t t-esc="doc.mb_land_owner_name or ((doc.landowner_ids and doc.landowner_ids[0].name) or '')"/>
+                                    </td>
+                                    <td style="width:21%;"><span class="mb-label">KHASRA NO:</span> <t t-esc="doc.khasra_number or ''"/></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="mb-label">AADHAR NO:</span>
+                                        <span style="display:inline-block; min-width:105px;"><t t-esc="doc.mb_land_owner_aadhar or ''"/></span>
+                                        <span class="mb-label" style="margin-left:16px;">CASTE/CATEGORY:</span>
+                                        <span style="display:inline-block; min-width:70px;"><t t-esc="doc.mb_land_owner_caste or ''"/></span>
+                                    </td>
+                                    <td><span class="mb-label">RAKBA:</span> <t t-esc="doc.mb_rakba_text or ''"/></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="mb-label">Date of Birth:</span>
+                                        <span style="display:inline-block; min-width:160px;"><t t-esc="doc.mb_land_owner_dob or ''"/></span>
+                                        <span class="mb-label">NAME OF PRESENT LAND OWNER:</span>
+                                        <t t-esc="doc.mb_present_landowner_text or ''"/>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </table>
+
+                            <table class="mb-row mt2 mb-grid">
+                                <tr>
+                                    <th colspan="5" class="center">HOUSE AND OTHER ASSETS</th>
+                                    <th colspan="4" class="center">TREES</th>
+                                </tr>
+                                <tr>
+                                    <th style="width:5%;">SL NO</th>
+                                    <th style="width:26%;">DETAILS OF HOUSE</th>
+                                    <th style="width:8%;">LENGTH (Ft.)</th>
+                                    <th style="width:8%;">WIDTH (Ft.)</th>
+                                    <th style="width:10%;">AREA (Sq. Ft.)</th>
+                                    <th style="width:5%;">SL NO</th>
+                                    <th style="width:24%;">DETAILS OF TREE</th>
+                                    <th style="width:7%;">QTY.</th>
+                                    <th style="width:7%;">SIZE (cm)</th>
+                                </tr>
+                                <tr t-foreach="range(14)" t-as="i">
+                                    <td class="center"><t t-esc="i + 1"/></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="center"><t t-esc="i + 1"/></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" class="center"><span class="mb-label">CONSTRUCTION AREA</span></td>
+                                    <td colspan="2" class="center"><span class="mb-label">OPEN SPACE AREA</span></td>
+                                    <td colspan="5" class="center"><span class="mb-label">TOTAL AREA IN SQ FT. (CONSTRUCTION + OPEN) =</span></td>
+                                </tr>
+                            </table>
+
+                            <table class="mb-row mt2">
+                                <tr>
+                                    <td class="mb-photo" style="width:50%;">AFFIX GPS ENABLED PHOTOGRAPH 01</td>
+                                    <td class="mb-photo" style="width:50%;">AFFIX GPS ENABLED PHOTOGRAPH 02</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:0;">
+                                        <table class="mb-row">
+                                            <tr><td class="center" style="width:50%;">LATITUDE</td><td class="center" style="width:50%;">LONGITUDE</td></tr>
+                                        </table>
+                                    </td>
+                                    <td style="padding:0;">
+                                        <table class="mb-row">
+                                            <tr><td class="center" style="width:50%;">LATITUDE</td><td class="center" style="width:50%;">LONGITUDE</td></tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table class="mb-row mt2">
+                                <tr>
+                                    <th class="center" colspan="4">LIST OF DOCUMENTS COLLECTED FROM HOUSE OWNER</th>
+                                    <th class="center" colspan="4"> </th>
+                                </tr>
+                                <tr>
+                                    <td style="width:4%;" class="center">1</td>
+                                    <td style="width:40%;">Electricity Bill - House owner (photocopy)</td>
+                                    <td class="mb-check"><span t-attf-class="mb-checkbox #{'checked' if doc.mb_doc_electricity_bill else ''}"></span></td>
+                                    <td class="mb-check"><span t-attf-class="mb-checkbox #{'checked' if doc.mb_doc_electricity_bill else ''}"></span></td>
+                                    <td style="width:4%;" class="center">8</td>
+                                    <td style="width:40%;">Aadhar Card - Land owner (photocopy)</td>
+                                    <td class="mb-check"><span t-attf-class="mb-checkbox #{'checked' if doc.mb_doc_aadhar_landowner else ''}"></span></td>
+                                    <td class="mb-check"><span t-attf-class="mb-checkbox #{'checked' if doc.mb_doc_aadhar_landowner else ''}"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="center">2</td>
+                                    <td>Voter Card - House owner (photocopy)</td>
+                                    <td class="mb-check"><span t-attf-class="mb-checkbox #{'checked' if doc.mb_doc_voter_card_owner else ''}"></span></td>
+                                    <td class="mb-check"><span t-attf-class="mb-checkbox #{'checked' if doc.mb_doc_voter_card_owner else ''}"></span></td>
+                                    <td class="center">9</td>
+                                    <td>Affidavit / NOC from landowner in prescribed format (original)</td>
+                                    <td class="mb-check"><span t-attf-class="mb-checkbox #{'checked' if doc.mb_doc_affidavit_noc else ''}"></span></td>
+                                    <td class="mb-check"><span t-attf-class="mb-checkbox #{'checked' if doc.mb_doc_affidavit_noc else ''}"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="center">3</td>
+                                    <td>AADHAR Card - House owner (photocopy)</td>
+                                    <td class="mb-check"><span t-attf-class="mb-checkbox #{'checked' if doc.mb_doc_aadhar_owner else ''}"></span></td>
+                                    <td class="mb-check"><span t-attf-class="mb-checkbox #{'checked' if doc.mb_doc_aadhar_owner else ''}"></span></td>
+                                    <td class="center">10</td>
+                                    <td>Houseowner's Passport size photographs 04 nos</td>
+                                    <td class="mb-check"><span t-attf-class="mb-checkbox #{'checked' if doc.mb_doc_passport_photos else ''}"></span></td>
+                                    <td class="mb-check"><span t-attf-class="mb-checkbox #{'checked' if doc.mb_doc_passport_photos else ''}"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="center">4</td>
+                                    <td>AADHAR Card - Witness 01 (photocopy)</td>
+                                    <td class="mb-check"><span t-attf-class="mb-checkbox #{'checked' if doc.mb_doc_aadhar_witness_1 else ''}"></span></td>
+                                    <td class="mb-check"><span t-attf-class="mb-checkbox #{'checked' if doc.mb_doc_aadhar_witness_1 else ''}"></span></td>
+                                    <td class="center">11</td>
+                                    <td>PAN Card - House owner (photocopy)</td>
+                                    <td class="mb-check"><span t-attf-class="mb-checkbox #{'checked' if doc.mb_doc_pan_owner else ''}"></span></td>
+                                    <td class="mb-check"><span t-attf-class="mb-checkbox #{'checked' if doc.mb_doc_pan_owner else ''}"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="center">5</td>
+                                    <td>AADHAR Card - Witness 02 (photocopy)</td>
+                                    <td class="mb-check"><span t-attf-class="mb-checkbox #{'checked' if doc.mb_doc_aadhar_witness_2 else ''}"></span></td>
+                                    <td class="mb-check"><span t-attf-class="mb-checkbox #{'checked' if doc.mb_doc_aadhar_witness_2 else ''}"></span></td>
+                                    <td class="center">12</td>
+                                    <td>PAN Card - Land owner (photocopy)</td>
+                                    <td class="mb-check"><span t-attf-class="mb-checkbox #{'checked' if doc.mb_doc_pan_landowner else ''}"></span></td>
+                                    <td class="mb-check"><span t-attf-class="mb-checkbox #{'checked' if doc.mb_doc_pan_landowner else ''}"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="center">6</td>
+                                    <td>Ration Card - House owner (photocopy)</td>
+                                    <td class="mb-check"><span t-attf-class="mb-checkbox #{'checked' if doc.mb_doc_ration_owner else ''}"></span></td>
+                                    <td class="mb-check"><span t-attf-class="mb-checkbox #{'checked' if doc.mb_doc_ration_owner else ''}"></span></td>
+                                    <td class="center">13</td>
+                                    <td>Bank Account Passbook (photocopy)</td>
+                                    <td class="mb-check"><span t-attf-class="mb-checkbox #{'checked' if doc.mb_doc_bank_passbook else ''}"></span></td>
+                                    <td class="mb-check"><span t-attf-class="mb-checkbox #{'checked' if doc.mb_doc_bank_passbook else ''}"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="center">7</td>
+                                    <td>Educational certificate - House owner (photocopy)</td>
+                                    <td class="mb-check"><span t-attf-class="mb-checkbox #{'checked' if doc.mb_doc_education_owner else ''}"></span></td>
+                                    <td class="mb-check"><span t-attf-class="mb-checkbox #{'checked' if doc.mb_doc_education_owner else ''}"></span></td>
+                                    <td class="center">14</td>
+                                    <td>Bank NEFT mandate form / Other Documents (specify): <t t-esc="doc.mb_doc_other_text or ''"/></td>
+                                    <td class="mb-check"><span t-attf-class="mb-checkbox #{'checked' if (doc.mb_doc_bank_neft_form or doc.mb_doc_other) else ''}"></span></td>
+                                    <td class="mb-check"><span t-attf-class="mb-checkbox #{'checked' if (doc.mb_doc_bank_neft_form or doc.mb_doc_other) else ''}"></span></td>
+                                </tr>
+                            </table>
+
+                            <table class="mb-row mt2 mb-bold-head mb-hi">
+                                <tr>
+                                    <td style="height:24px;">
+                                        मकान मालिक द्वारा 02 गवाहों के समक्ष शपथ / Owner declaration in presence of two witnesses.
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table class="mb-row mt2 mb-hi">
+                                <tr>
+                                    <td style="width:65%; height:20px;">
+                                        <span class="mb-label">मकान मालिक का हस्ताक्षर / Signature/Thumb impression of house owner:</span>
+                                    </td>
+                                    <td style="width:35%;"><span class="mb-label">Date:</span> <t t-esc="doc.mb_owner_decl_date or doc.survey_date or ''"/></td>
+                                </tr>
+                            </table>
+
+                            <table class="mb-row mt2 mb-bold-head mb-hi">
+                                <tr>
+                                    <td style="height:16px;">1) यह पुष्टि की जाती है कि मकान एवं अन्य परिसम्पत्तियों का पूर्ण नामाप/सर्वे किया गया। <span t-attf-class="mb-checkbox #{'checked' if doc.mb_decl_no_claim_pending else ''}"></span></td>
+                                </tr>
+                                <tr>
+                                    <td style="height:16px;">2) मकान मालिक द्वारा सभी टिक किए गए जरूरी दस्तावेज प्राप्त किए गए। <span t-attf-class="mb-checkbox #{'checked' if doc.mb_decl_documents_received else ''}"></span></td>
+                                </tr>
+                                <tr>
+                                    <td style="height:16px;">3) GPS फोटो/वीडियो ग्राफी की गई है और सभी डेटा सुरक्षित रखा गया है। <span t-attf-class="mb-checkbox #{'checked' if doc.mb_decl_gps_photo_video else ''}"></span></td>
+                                </tr>
+                            </table>
+
+                            <table class="mb-row mt2 mb-sign">
+                                <tr>
+                                    <td>Patwari</td>
+                                    <td>Revenue Inspector</td>
+                                    <td>State Forest</td>
+                                    <td>State PWD</td>
+                                    <td>SECL Civil</td>
+                                </tr>
+                                <tr>
+                                    <td>SECL Survey</td>
+                                    <td>SECL Mining/Excv</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

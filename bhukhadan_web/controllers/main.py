@@ -1,7 +1,16 @@
 from odoo import http
 from odoo.http import request, content_disposition
-from odoo.addons.web.controllers.session import Session
+from odoo.addons.auth_oauth.controllers.main import OAuthLogin
+from odoo.addons.website.controllers.main import WebsiteSession
 import base64
+
+
+class BhuKhadanLogin(OAuthLogin):
+    """auth_oauth registers /web/login without website=True, which breaks website.layout."""
+
+    @http.route(website=True, auth='public', sitemap=False)
+    def web_login(self, *args, **kw):
+        return super().web_login(*args, **kw)
 
 
 class BhuKhadanWebsite(http.Controller):
@@ -108,9 +117,9 @@ class BhuKhadanWebsite(http.Controller):
         return request.redirect('/')
 
 
-class BhuKhadanSession(Session):
+class BhuKhadanSession(WebsiteSession):
     """Override Odoo's default logout so users land on our homepage instead of /odoo."""
 
-    @http.route('/web/session/logout', type='http', auth="none")
+    @http.route('/web/session/logout', type='http', auth='public', website=True, multilang=False, sitemap=False)
     def logout(self, redirect='/'):
         return super().logout(redirect=redirect)

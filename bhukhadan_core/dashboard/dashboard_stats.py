@@ -42,21 +42,22 @@ def _completion_pct_from_pipeline_dots(dots):
 
 
 _PIPELINE_STAGE_ORDER = (
-    'survey', 'section4', 'sia_team', 'expert_committee',
-    'section11', 'section15', 'section19', 'section21', 'section23',
+    'survey', 'section4', 'sia_team',
+    'section8', 'section9', 'section11', 'section15', 'section19', 'section21', 'section23',
     'payment_voucher', 'payment_file',
 )
 
 _PIPELINE_STAGE_LABELS = {
     'survey': 'Form 10',
-    'section4': 'Sec 4',
-    'sia_team': 'SIA',
-    'expert_committee': 'EC',
-    'section11': 'Sec 11',
-    'section15': 'Sec 15',
-    'section19': 'Sec 19',
-    'section21': 'Sec 21',
-    'section23': 'Sec 23',
+    'section4': 'Sec 4(i)',
+    'sia_team': 'Sec 7(i)',
+    'section8': 'Sec 8',
+    'section9': 'Sec 9(i)',
+    'section11': 'Sec 11(i)',
+    'section15': 'Post-1',
+    'section19': 'Post-2',
+    'section21': 'Post-3',
+    'section23': 'Post-5/6',
     'payment_voucher': 'Pay Voucher',
     'payment_file': 'Pay File',
 }
@@ -140,15 +141,21 @@ class DashboardStats(models.AbstractModel):
             'bhukhadan_core.group_bhuarjan_collector',       # Collector users
             'bhukhadan_core.group_bhuarjan_additional_collector',  # Additional Collector users
             'bhukhadan_core.group_bhuarjan_district_administrator',  # District Administrator users
+            'bhukhadan_core.group_coal_hq_reviewer',
+            'bhukhadan_core.group_coal_moc_liaison',
         ],
         'sdm_groups': [
             'bhukhadan_core.group_bhuarjan_sdm',             # SDM users
+            'bhukhadan_core.group_coal_area_officer',
+            'bhukhadan_core.group_coal_section9_officer',
         ],
         'tehsildar_groups': [
             'bhukhadan_core.group_bhuarjan_tahsildar',
         ],
         'department_groups': [
             'bhukhadan_core.group_bhuarjan_department_user',  # Department users
+            'bhukhadan_core.group_coal_asc_member',
+            'bhukhadan_core.group_coal_drrc_member',
         ],
     }
 
@@ -159,6 +166,7 @@ class DashboardStats(models.AbstractModel):
         'bhu.section11.preliminary.report',
         'bhu.section15.objection',
         'bhu.section19.notification',
+        'bhu.section9.notification',
         'bhu.section21.notification',
         'bhu.payment.file',
         'bhu.payment.voucher',
@@ -569,6 +577,7 @@ class DashboardStats(models.AbstractModel):
             'expert': self._get_section_counts('bhu.expert.committee.report', domain_without_village, states=workflow_states),
             'sia': self._get_section_counts('bhu.sia.team', domain_without_village, states=workflow_states),
             'section8': self._get_section_counts('bhu.section8', domain_without_village, state_field='state', states=['draft', 'approved', 'rejected']),  # Section 8 is per project, not per village
+            'section9': self._get_section_counts('bhu.section9.notification', domain_with_village, states=workflow_states),
             # Railway Act Sections (all have village_id)
             # Sections 20A and 20E have no workflow - simple count only
             'section20a_railways': self._get_simple_section_counts('bhu.section20a.railways', domain_with_village),
@@ -709,22 +718,46 @@ class DashboardStats(models.AbstractModel):
                     if project.law_master_id and project.law_master_id.section_ids:
                         allowed_section_names = list(project.law_master_id.section_ids.mapped('name'))
                         _logger.info(f"Dashboard Stats - Project {project_id} has law '{project.law_master_id.name}' with sections: {allowed_section_names}")
-                        # Dashboard workflow: Railway drops Sec 20 D in favour of Award (Section 23).
-                        if 'Sec 20 A (Railways)' in allowed_section_names:
-                            allowed_section_names = [
-                                n for n in allowed_section_names
-                                if n != 'Sec 20 D (Objection) (Railways)'
-                            ]
-                            if 'Section 23 Award' not in allowed_section_names:
-                                allowed_section_names.append('Section 23 Award')
-                        # NH: drop Sec 3C Objection in favour of Award (Section 23).
-                        if 'Sec 3A (NH)' in allowed_section_names:
-                            allowed_section_names = [
-                                n for n in allowed_section_names
-                                if n != 'Sec 3C (Objection) (NH)'
-                            ]
-                            if 'Section 23 Award' not in allowed_section_names:
-                                allowed_section_names.append('Section 23 Award')
+                        # Coal-only runtime: do not surface NH/Railway section tracks.
+                        allowed_section_names = [
+                            n for n in allowed_section_names
+                            if '(Railways)' not in n and '(NH)' not in n
+                        ]
+                        # Coal dashboard label bridge
+                        if 'Sec 4(i) Notification of intention to prospect' in allowed_section_names:
+                            allowed_section_names.extend([
+                                'Sec 4(i) Notification of intention to prospect',
+                                'Sec 7(i) Notification of intention to acquire land',
+                                'Sec 8 Objections',
+                                'Sec 9(i) Declaration of acquisition',
+                                'Sec 11(i) Vesting order',
+                                'Post-Gazette Step 1 Land Records',
+                                'Post-Gazette Step 2 DRRC Meeting',
+                                'Post-Gazette Step 3 Asset Survey Committee Formation',
+                                'Post-Gazette Step 4 Conduct Asset Survey',
+                                'Post-Gazette Step 5 Land Compensation & Award',
+                                'Post-Gazette Step 6 Structure/Asset Assessment & Award',
+                            ])
+                    # Coal-only safety fallback when project law is not configured.
+                    if not allowed_section_names:
+                        allowed_section_names = [
+                            'Surveys (Coal Act)',
+                            'Surveys',
+                            'Sec 4(i) Notification of intention to prospect',
+                            'Sec 7(i) Notification of intention to acquire land',
+                            'Sec 8 Objections',
+                            'Sec 9(i) Declaration of acquisition',
+                            'Sec 11(i) Vesting order',
+                            'Post-Gazette Step 1 Land Records',
+                            'Post-Gazette Step 2 DRRC Meeting',
+                            'Post-Gazette Step 3 Asset Survey Committee Formation',
+                            'Post-Gazette Step 4 Conduct Asset Survey',
+                            'Post-Gazette Step 5 Land Compensation & Award',
+                            'Post-Gazette Step 6 Structure/Asset Assessment & Award',
+                            'Payment Voucher',
+                            'Payment File',
+                            'Payment Reconciliation',
+                        ]
             
             # Get total villages for completion calculations
             total_villages = self._get_total_villages(domains['project_ids_from_domain'])
@@ -875,6 +908,17 @@ class DashboardStats(models.AbstractModel):
                     counts['section8']['approved'], counts['section8']['rejected'], counts['section8']['total'], is_survey=False
                 ),
                 'section8_info': self._get_section_info('bhu.section8', domains['domain_without_village']),
+
+                # Section 9 (Coal Act)
+                'section9_total': counts['section9']['total'],
+                'section9_draft': counts['section9']['draft'],
+                'section9_submitted': counts['section9']['submitted'],
+                'section9_approved': counts['section9']['approved'],
+                'section9_send_back': counts['section9']['send_back'],
+                'section9_completion_percent': self._calculate_village_based_completion(
+                    'bhu.section9.notification', domains['project_ids_from_domain'], total_villages
+                ) if domains['project_ids_from_domain'] else 0.0,
+                'section9_info': self._get_section_info('bhu.section9.notification', domains['final_domain']),
                 
                 # Draft Award
                 'draft_award_total': counts['draft_award']['total'],
@@ -1100,6 +1144,8 @@ class DashboardStats(models.AbstractModel):
             'sia_completion_percent': 0, 'sia_info': empty_info.copy(),
             'section8_total': 0, 'section8_draft': 0, 'section8_approved': 0, 'section8_rejected': 0,
             'section8_completion_percent': 0, 'section8_info': empty_info.copy(),
+            'section9_total': 0, 'section9_draft': 0, 'section9_submitted': 0, 'section9_approved': 0, 'section9_send_back': 0,
+            'section9_completion_percent': 0, 'section9_info': empty_info.copy(),
             'draft_award_total': 0, 'draft_award_draft': 0, 'draft_award_submitted': 0, 'draft_award_approved': 0, 'draft_award_send_back': 0,
             'draft_award_completion_percent': 0, 'draft_award_info': empty_info.copy(),
             # Railway Act Sections

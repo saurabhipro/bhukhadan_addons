@@ -31,6 +31,7 @@
             name="Insights"
             parent="menu_bhu_root"
             sequence="97"
+            active="False"
             groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_collector,bhukhadan_core.group_bhuarjan_additional_collector,bhukhadan_core.group_bhuarjan_district_administrator,bhukhadan_core.group_bhuarjan_sdm"/>
 
         <!-- SDM subdivision portfolio + village pipeline (OWL) -->

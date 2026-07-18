@@ -1351,6 +1351,7 @@ export class UnifiedDashboard extends Component {
             'bhu.payment.reconciliation.bank',
             'bhu.payment.reconciliation.bank.line',
             'bhu.section8',
+            'bhu.section9.notification',
         ];
 
         // Only add department_id if model has this field
@@ -1386,6 +1387,7 @@ export class UnifiedDashboard extends Component {
             'bhu.payment.reconciliation.bank',
             'bhu.payment.reconciliation.bank.line',
             'bhu.section8',
+            'bhu.section9.notification',
         ];
 
         const villageId = parseInt(this.state.selectedVillage);
@@ -2181,6 +2183,7 @@ export class UnifiedDashboard extends Component {
             'bhu.expert.committee.report': 'Expert Committee Reports',
             'bhu.sia.team': 'SIA Teams',
             'bhu.section18.rr.scheme': 'Section 18 R and R Scheme',
+            'bhu.section9.notification': 'Section 9 Notifications',
             'bhu.section21.notification': 'Section 21 Notifications',
             'bhu.section23.award': 'Award',
             'bhu.section20a.railways': 'Section 20 A (Railways)',
@@ -2199,18 +2202,23 @@ export class UnifiedDashboard extends Component {
     getSectionMasterName(dashboardSectionName) {
         const mapping = {
             'Surveys': 'Surveys',
-            'Create SIA Team': '(Sec 4) Create SIA Team',  // Map to backend name (with Sec 4 prefix)
-            '(Sec 4) Create SIA Team': '(Sec 4) Create SIA Team',
-            '(Sec 4) Section 4 Notifications': '(Sec 4) Section 4 Notifications',
-            'Expert Group': 'Expert Group',
-            'Section 8': 'Section 8',
-            'Section 11 Notifications': 'Section 11 Notifications',
-            '(Sec 15) Objections': '(Sec 15) Objections',
-            'Section 18 R and R Scheme': 'Section 18 R and R Scheme',
-            '(Sec 19) Section 19 Notifications': '(Sec 19) Section 19 Notifications',
-            'Award': 'Section 23 Award',
-            'Sec 21 notice': 'Sec 21 notice',
-            'Section 23 Award': 'Section 23 Award',
+            'Sec 4(i) Notification of intention to prospect': 'Sec 4(i) Notification of intention to prospect',
+            'Sec 7(i) Notification of intention to acquire land': 'Sec 7(i) Notification of intention to acquire land',
+            'Sec 8 Objections': 'Sec 8 Objections',
+            'Sec 9(i) Declaration of acquisition': 'Sec 9(i) Declaration of acquisition',
+            'Sec 11(i) Vesting order': 'Sec 11(i) Vesting order',
+            'Land Records': 'Post-Gazette Step 1 Land Records',
+            'DRRC Meeting': 'Post-Gazette Step 2 DRRC Meeting',
+            'Asset Survey Committee Formation': 'Post-Gazette Step 3 Asset Survey Committee Formation',
+            'Conduct Asset Survey': 'Post-Gazette Step 4 Conduct Asset Survey',
+            'Land Compensation & Award': 'Post-Gazette Step 5 Land Compensation & Award',
+            'Structure/Asset Assessment & Award': 'Post-Gazette Step 6 Structure/Asset Assessment & Award',
+            'Post-Gazette Step 1 Land Records': 'Post-Gazette Step 1 Land Records',
+            'Post-Gazette Step 2 DRRC Meeting': 'Post-Gazette Step 2 DRRC Meeting',
+            'Post-Gazette Step 3 Asset Survey Committee Formation': 'Post-Gazette Step 3 Asset Survey Committee Formation',
+            'Post-Gazette Step 4 Conduct Asset Survey': 'Post-Gazette Step 4 Conduct Asset Survey',
+            'Post-Gazette Step 5 Land Compensation & Award': 'Post-Gazette Step 5 Land Compensation & Award',
+            'Post-Gazette Step 6 Structure/Asset Assessment & Award': 'Post-Gazette Step 6 Structure/Asset Assessment & Award',
             'Sec 20 A (Railways)': 'Sec 20 A (Railways)',
             'Sec 20 E (Railways)': 'Sec 20 E (Railways)',
             'Sec 3A (NH)': 'Sec 3A (NH)',
@@ -2232,18 +2240,23 @@ export class UnifiedDashboard extends Component {
         const key = this.getSectionMasterName(sectionName || '');
         const scopes = {
             'Surveys': 'village',
-            '(Sec 4) Create SIA Team': 'project',
-            'Create SIA Team': 'project',
-            '(Sec 4) Section 4 Notifications': 'project',
-            'Expert Group': 'project',
-            'Section 8': 'project',
-            'Section 11 Notifications': 'project',
-            '(Sec 15) Objections': 'village',
-            'Section 18 R and R Scheme': 'project',
-            '(Sec 19) Section 19 Notifications': 'village',
-            'Sec 21 notice': 'village',
-            'Section 23 Award': 'village',
-            'Award': 'village',
+            'Sec 4(i) Notification of intention to prospect': 'project',
+            'Sec 7(i) Notification of intention to acquire land': 'project',
+            'Sec 8 Objections': 'project',
+            'Sec 9(i) Declaration of acquisition': 'village',
+            'Sec 11(i) Vesting order': 'project',
+            'Land Records': 'village',
+            'DRRC Meeting': 'village',
+            'Asset Survey Committee Formation': 'village',
+            'Conduct Asset Survey': 'project',
+            'Land Compensation & Award': 'village',
+            'Structure/Asset Assessment & Award': 'village',
+            'Post-Gazette Step 1 Land Records': 'village',
+            'Post-Gazette Step 2 DRRC Meeting': 'village',
+            'Post-Gazette Step 3 Asset Survey Committee Formation': 'village',
+            'Post-Gazette Step 4 Conduct Asset Survey': 'project',
+            'Post-Gazette Step 5 Land Compensation & Award': 'village',
+            'Post-Gazette Step 6 Structure/Asset Assessment & Award': 'village',
             'Payment Voucher': 'village',
             'Payment File': 'project',
             'Payment Reconciliation': 'project',
@@ -2296,7 +2309,7 @@ export class UnifiedDashboard extends Component {
         if (names.includes('Personal Notice generation (247.1)')) {
             return false;
         }
-        return names.includes('(Sec 4) Section 4 Notifications');
+        return names.includes('Sec 4(i) Notification of intention to prospect');
     }
 
     // Check if a section should be visible based on project's law
@@ -2339,6 +2352,32 @@ export class UnifiedDashboard extends Component {
             if (steps[masterName]) return steps[masterName];
         }
 
+        // Coal Act
+        const isCoal = this.state.allowedSectionNames.includes('Sec 4(i) Notification of intention to prospect');
+        if (isCoal) {
+            const masterName = this.getSectionMasterName(sectionName);
+            const coalOrder = [
+                'Sec 4(i) Notification of intention to prospect',
+                'Sec 7(i) Notification of intention to acquire land',
+                'Sec 8 Objections',
+                'Sec 11(i) Vesting order',
+                'Post-Gazette Step 1 Land Records',
+                'Post-Gazette Step 2 DRRC Meeting',
+                'Post-Gazette Step 3 Asset Survey Committee Formation',
+                'Post-Gazette Step 4 Conduct Asset Survey',
+                'Post-Gazette Step 5 Land Compensation & Award',
+                'Post-Gazette Step 6 Structure/Asset Assessment & Award',
+                'Payment Voucher',
+                'Payment File',
+                'Payment Reconciliation',
+            ];
+            const visibleCoalSteps = coalOrder.filter((name) => this.isSectionVisible(name));
+            const index = visibleCoalSteps.indexOf(masterName);
+            if (index >= 0) {
+                return `Step ${index + 1}`;
+            }
+        }
+
         // Check for CGLRC 247
         const isCGLRC = this.state.allowedSectionNames.includes('Personal Notice generation (247.1)');
         if (isCGLRC) {
@@ -2361,6 +2400,18 @@ export class UnifiedDashboard extends Component {
 
     isSectionVisible(dashboardSectionName) {
         try {
+            // Coal-only runtime: strict section set for process dashboard.
+            // Hide all non-Coal cards even if old law master data exists.
+            const coalHidden = new Set([
+                'Personal Notice generation (247.1)',
+                'Istehar प्रकाशन (247.2)',
+                'Award (247.3)',
+                'Create SIA Team',
+                'Expert Group',
+                '(Sec 15) Objections',
+                'Section 18 R and R Scheme',
+            ]);
+
             // Railway and NH sections require department to be selected
             // Check both dashboard names and mapped names
             const railwayNhSections = [
@@ -2376,10 +2427,8 @@ export class UnifiedDashboard extends Component {
                 dashboardSectionName.includes('(NH)');
 
             if (isRailwayNh) {
-                // For Railway and NH sections, require department to be selected
-                if (!this.state || !this.state.selectedDepartment) {
-                    return false;
-                }
+                // Coal-only runtime: always hide NH/Railway flow cards.
+                return false;
             }
 
             // If no project is selected, show all sections (except Railway/NH which need department)
@@ -2397,18 +2446,44 @@ export class UnifiedDashboard extends Component {
                 return true;
             }
 
-            // If project is selected but no allowed sections configured, hide all sections
-            // This prevents showing all sections when law master is not configured
+            // Strict Coal-mode visibility for selected project.
+            // This hides CGLRC, SIA, Expert Committee, Sec 15, NH, Railways, etc.
+            if (this.state && this.state.selectedProject) {
+                return !coalHidden.has(dashboardSectionName);
+            }
+
+            // If project is selected but no law sections are configured yet,
+            // default to showing core Coal/LARR cards (except legacy NH/Railway already hidden).
             if (!this.state.allowedSectionNames || this.state.allowedSectionNames.length === 0) {
-                console.warn(`Project ${this.state.selectedProject} has no law master sections configured. Hiding all sections.`);
-                return false;
+                console.warn(`Project ${this.state.selectedProject} has no law master sections configured. Using fallback section visibility.`);
+                return true;
             }
 
             // Get the section master name for this dashboard section
             const sectionMasterName = this.getSectionMasterName(dashboardSectionName);
-
+            const aliases = {
+                'Surveys': ['Surveys', 'Surveys (Coal Act)'],
+                'Sec 4(i) Notification of intention to prospect': ['Sec 4(i) Notification of intention to prospect'],
+                'Sec 7(i) Notification of intention to acquire land': ['Sec 7(i) Notification of intention to acquire land'],
+                'Sec 8 Objections': ['Sec 8 Objections'],
+                'Sec 9(i) Declaration of acquisition': ['Sec 9(i) Declaration of acquisition'],
+                'Sec 11(i) Vesting order': ['Sec 11(i) Vesting order'],
+                'Land Records': ['Land Records', 'Post-Gazette Step 1 Land Records'],
+                'DRRC Meeting': ['DRRC Meeting', 'Post-Gazette Step 2 DRRC Meeting'],
+                'Asset Survey Committee Formation': ['Asset Survey Committee Formation', 'Post-Gazette Step 3 Asset Survey Committee Formation'],
+                'Conduct Asset Survey': ['Conduct Asset Survey', 'Post-Gazette Step 4 Conduct Asset Survey'],
+                'Land Compensation & Award': ['Land Compensation & Award', 'Post-Gazette Step 5 Land Compensation & Award'],
+                'Structure/Asset Assessment & Award': ['Structure/Asset Assessment & Award', 'Post-Gazette Step 6 Structure/Asset Assessment & Award'],
+                'Post-Gazette Step 1 Land Records': ['Land Records', 'Post-Gazette Step 1 Land Records'],
+                'Post-Gazette Step 2 DRRC Meeting': ['DRRC Meeting', 'Post-Gazette Step 2 DRRC Meeting'],
+                'Post-Gazette Step 3 Asset Survey Committee Formation': ['Asset Survey Committee Formation', 'Post-Gazette Step 3 Asset Survey Committee Formation'],
+                'Post-Gazette Step 4 Conduct Asset Survey': ['Conduct Asset Survey', 'Post-Gazette Step 4 Conduct Asset Survey'],
+                'Post-Gazette Step 5 Land Compensation & Award': ['Land Compensation & Award', 'Post-Gazette Step 5 Land Compensation & Award'],
+                'Post-Gazette Step 6 Structure/Asset Assessment & Award': ['Structure/Asset Assessment & Award', 'Post-Gazette Step 6 Structure/Asset Assessment & Award'],
+            };
+            const candidates = [sectionMasterName].concat(aliases[dashboardSectionName] || []);
             // Check if this section is in the allowed list
-            const isVisible = this.state.allowedSectionNames.includes(sectionMasterName);
+            const isVisible = candidates.some((name) => this.state.allowedSectionNames.includes(name));
 
             return isVisible;
         } catch (error) {
@@ -2596,7 +2671,7 @@ export class UnifiedDashboard extends Component {
         if (document.getElementById('bhu_dash_loader')) return;
         const el = document.createElement('div');
         el.id = 'bhu_dash_loader';
-        el.style.cssText = 'position:fixed!important;inset:0!important;z-index:99999!important;display:flex!important;align-items:center!important;justify-content:center!important;flex-direction:column!important;background:linear-gradient(135deg,#3b1a0e 0%,#6b2f0f 40%,#8B4513 70%,#c47c3e 100%)!important;';
+        el.style.cssText = 'position:fixed!important;inset:0!important;z-index:99999!important;display:flex!important;align-items:center!important;justify-content:center!important;flex-direction:column!important;background:linear-gradient(135deg,var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))) 0%,color-mix(in srgb, var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))) 78%, #000) 100%)!important;';
         el.innerHTML = `
             <style>
                 #bhu_dash_loader {
@@ -2607,7 +2682,7 @@ export class UnifiedDashboard extends Component {
                     align-items: center !important;
                     justify-content: center !important;
                     flex-direction: column !important;
-                    background: linear-gradient(135deg, #3b1a0e 0%, #6b2f0f 40%, #8B4513 70%, #c47c3e 100%) !important;
+                    background: linear-gradient(135deg, var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))) 0%, color-mix(in srgb, var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))) 78%, #000) 100%) !important;
                 }
                 #bhu_dash_loader .bdl-ring {
                     width: 96px; height: 96px;

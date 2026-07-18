@@ -170,6 +170,12 @@ class ResUsers(models.Model):
         ('district_administrator', 'District Administrator'),
         ('administrator', 'Administrator'),
         ('department_user', 'Department User'),
+        ('coal_area_officer', 'Coal Area Officer'),
+        ('coal_hq_reviewer', 'Coal HQ Reviewer'),
+        ('coal_moc_liaison', 'MoC Liaison'),
+        ('coal_section9_officer', 'Section 9 Officer'),
+        ('coal_asc_member', 'ASC Member'),
+        ('coal_drrc_member', 'DRRC Member'),
     ], string="BhuKhadan Role", default=False)
 
     bhu_patwari_village_ids = fields.One2many(
@@ -406,6 +412,12 @@ class ResUsers(models.Model):
             self.env.ref('bhukhadan_core.group_bhuarjan_district_administrator').id,
             self.env.ref('bhukhadan_core.group_bhuarjan_admin').id,
             self.env.ref('bhukhadan_core.group_bhuarjan_department_user').id,
+            self.env.ref('bhukhadan_core.group_coal_area_officer').id,
+            self.env.ref('bhukhadan_core.group_coal_hq_reviewer').id,
+            self.env.ref('bhukhadan_core.group_coal_moc_liaison').id,
+            self.env.ref('bhukhadan_core.group_coal_section9_officer').id,
+            self.env.ref('bhukhadan_core.group_coal_asc_member').id,
+            self.env.ref('bhukhadan_core.group_coal_drrc_member').id,
         ]
         if self.groups_id:
             # properly handle removing ids from One2many
@@ -427,6 +439,12 @@ class ResUsers(models.Model):
             'district_administrator': 'bhukhadan_core.group_bhuarjan_district_administrator',
             'administrator': 'bhukhadan_core.group_bhuarjan_admin',
             'department_user': 'bhukhadan_core.group_bhuarjan_department_user',
+            'coal_area_officer': 'bhukhadan_core.group_coal_area_officer',
+            'coal_hq_reviewer': 'bhukhadan_core.group_coal_hq_reviewer',
+            'coal_moc_liaison': 'bhukhadan_core.group_coal_moc_liaison',
+            'coal_section9_officer': 'bhukhadan_core.group_coal_section9_officer',
+            'coal_asc_member': 'bhukhadan_core.group_coal_asc_member',
+            'coal_drrc_member': 'bhukhadan_core.group_coal_drrc_member',
         }
 
         group_ref = group_map.get(self.bhuarjan_role)

@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_report_form5_bulk" model="ir.actions.report">
+            <field name="name">Form 5</field>
+            <field name="model">bhu.survey</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">bhukhadan_core.form5_bulk_report</field>
+            <field name="report_file">bhukhadan_core.form5_bulk_report</field>
+            <field name="print_report_name">'Form5_' + (object.project_id.name or 'Project')</field>
+        </record>
+
+        <record id="action_report_form6_bulk" model="ir.actions.report">
+            <field name="name">Form 6</field>
+            <field name="model">bhu.survey</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">bhukhadan_core.form6_bulk_report</field>
+            <field name="report_file">bhukhadan_core.form6_bulk_report</field>
+            <field name="print_report_name">'Form6_' + (object.project_id.name or 'Project')</field>
+        </record>
+
+        <record id="paperformat_dols_landscape" model="report.paperformat">
+            <field name="name">DOLS Landscape</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">6</field>
+            <field name="margin_bottom">6</field>
+            <field name="margin_left">6</field>
+            <field name="margin_right">6</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">96</field>
+        </record>
+
+        <record id="action_report_dols_bulk" model="ir.actions.report">
+            <field name="name">DOLS</field>
+            <field name="model">bhu.survey</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">bhukhadan_core.dols_bulk_report</field>
+            <field name="report_file">bhukhadan_core.dols_bulk_report</field>
+            <field name="paperformat_id" ref="paperformat_dols_landscape"/>
+            <field name="print_report_name">'DOLS_' + (object.project_id.name or 'Project')</field>
+        </record>
+
+        <template id="form5_bulk_report">
+            <t t-call="web.html_container">
+                <div class="page">
+                    <h3 style="text-align:center;">Form 5</h3>
+                    <p><strong>Project:</strong> <t t-esc="docs and docs[0].project_id.name or ''"/></p>
+                    <p><strong>Village:</strong> <t t-esc="docs and docs[0].village_id.name or ''"/></p>
+                    <table class="table table-sm table-bordered" style="width:100%; border-collapse:collapse;">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Khasra</th>
+                                <th>Landowner</th>
+                                <th>Total Area</th>
+                                <th>Acquired Area</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="docs" t-as="s" t-key="s.id">
+                                <td><t t-esc="s.id"/></td>
+                                <td><t t-esc="s.khasra_number or ''"/></td>
+                                <td><t t-esc="(s.landowner_ids and s.landowner_ids[0].name) or ''"/></td>
+                                <td><t t-esc="s.total_area or 0.0"/></td>
+                                <td><t t-esc="s.acquired_area or 0.0"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </template>
+
+        <template id="form6_bulk_report">
+            <t t-call="web.html_container">
+                <div class="page">
+                    <h3 style="text-align:center;">Form 6</h3>
+                    <p><strong>Project:</strong> <t t-esc="docs and docs[0].project_id.name or ''"/></p>
+                    <p><strong>Village:</strong> <t t-esc="docs and docs[0].village_id.name or ''"/></p>
+                    <table class="table table-sm table-bordered" style="width:100%; border-collapse:collapse;">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Khasra</th>
+                                <th>Survey No</th>
+                                <th>Owner</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="docs" t-as="s" t-key="s.id">
+                                <td><t t-esc="s.id"/></td>
+                                <td><t t-esc="s.khasra_number or ''"/></td>
+                                <td><t t-esc="s.name or ''"/></td>
+                                <td><t t-esc="(s.landowner_ids and s.landowner_ids[0].name) or ''"/></td>
+                                <td><t t-esc="s.state or ''"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </template>
+
+        <template id="dols_bulk_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs[:1]" t-as="first">
+                    <div class="page">
+                        <style>
+                            .dols-root { font-size: 10px; }
+                            .dols-table { width:100%; border-collapse: collapse; table-layout: fixed; }
+                            .dols-table td, .dols-table th { border:1px solid #000; padding:2px 3px; vertical-align: middle; }
+                            .dols-hd { font-weight:700; text-align:center; background:#e6e6e6; }
+                            .dols-title { border:2px solid #000; font-weight:700; text-align:center; font-size:14px; padding:6px; margin-bottom:4px; }
+                            .dols-sub { border:2px solid #000; font-weight:700; text-align:center; padding:4px; margin-bottom:6px; }
+                            .d-right { text-align:right; }
+                            .d-center { text-align:center; }
+                        </style>
+
+                        <div class="dols-root">
+                            <div class="dols-title">
+                                COMPENSATION OF HOUSE AND OTHER ASSETS OF
+                                <t t-esc="(first.village_id.name or '').upper()"/> VILLAGE ACQUIRED IN YEAR 2004 &amp; 2010
+                            </div>
+                            <div class="dols-sub">
+                                BY <t t-esc="(first.project_id.name or '').upper()"/>
+                            </div>
+
+                            <table class="dols-table">
+                                <colgroup>
+                                    <col style="width:3%"/>
+                                    <col style="width:6%"/>
+                                    <col style="width:20%"/>
+                                    <col style="width:6%"/>
+                                    <col style="width:6%"/>
+                                    <col style="width:6%"/>
+                                    <col style="width:6%"/>
+                                    <col style="width:7%"/>
+                                    <col style="width:6%"/>
+                                    <col style="width:8%"/>
+                                    <col style="width:7%"/>
+                                    <col style="width:7%"/>
+                                    <col style="width:12%"/>
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th class="dols-hd">क्र.सं.</th>
+                                        <th class="dols-hd">ख.न.</th>
+                                        <th class="dols-hd">भू.स्वामी का नाम</th>
+                                        <th class="dols-hd">प्लॉट</th>
+                                        <th class="dols-hd">कुल रकबा</th>
+                                        <th class="dols-hd">अर्जित रकबा</th>
+                                        <th class="dols-hd">दर/इकाई</th>
+                                        <th class="dols-hd">राशि (A)</th>
+                                        <th class="dols-hd">वृक्ष राशि (B)</th>
+                                        <th class="dols-hd">कटौती</th>
+                                        <th class="dols-hd">अंतिम राशि</th>
+                                        <th class="dols-hd">जाति</th>
+                                        <th class="dols-hd">टिप्पणी</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="sum_a" t-value="0.0"/>
+                                    <t t-set="sum_b" t-value="0.0"/>
+                                    <tr t-foreach="docs" t-as="s" t-key="s.id">
+                                        <t t-set="house_amt" t-value="sum(s.award_structure_ids.mapped('asset_value')) if s.award_structure_ids else 0.0"/>
+                                        <t t-set="tree_amt" t-value="0.0"/>
+                                        <t t-set="final_amt" t-value="house_amt + tree_amt"/>
+                                        <t t-set="sum_a" t-value="sum_a + house_amt"/>
+                                        <t t-set="sum_b" t-value="sum_b + tree_amt"/>
+                                        <td class="d-center"><t t-esc="s.id"/></td>
+                                        <td class="d-center"><t t-esc="s.khasra_number or ''"/></td>
+                                        <td><t t-esc="(s.landowner_ids and s.landowner_ids[0].name) or ''"/></td>
+                                        <td class="d-center"><t t-esc="s.khasra_number or ''"/></td>
+                                        <td class="d-right"><t t-esc="('%.3f' % (s.total_area or 0.0))"/></td>
+                                        <td class="d-right"><t t-esc="('%.3f' % (s.acquired_area or 0.0))"/></td>
+                                        <td class="d-right"><t t-esc="('%.2f' % ((sum(s.award_structure_ids.mapped('market_rate_per_sqm')) if s.award_structure_ids else 0.0)))"/></td>
+                                        <td class="d-right"><t t-esc="('%.2f' % house_amt)"/></td>
+                                        <td class="d-right"><t t-esc="('%.2f' % tree_amt)"/></td>
+                                        <td class="d-right">0.00</td>
+                                        <td class="d-right"><t t-esc="('%.2f' % final_amt)"/></td>
+                                        <td class="d-center">-</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="7" class="dols-hd">TOTAL OF HOUSE (A)</td>
+                                        <td class="d-right"><strong><t t-esc="('%.2f' % sum_a)"/></strong></td>
+                                        <td colspan="5"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="8" class="dols-hd">TOTAL OF TREES (B)</td>
+                                        <td class="d-right"><strong><t t-esc="('%.2f' % sum_b)"/></strong></td>
+                                        <td colspan="4"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="10" class="dols-hd">TOTAL OF HOUSE AND TREE (A+B)</td>
+                                        <td class="d-right"><strong><t t-esc="('%.2f' % (sum_a + sum_b))"/></strong></td>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="10" class="dols-hd">% SOLATIUM IF HOUSE AND OTHER ASSETS CONSTRUCTED ON OWN LAND AND LINEAR DEPENDENT (C)</td>
+                                        <td class="d-right"><strong><t t-esc="('%.2f' % (sum_a + sum_b))"/></strong></td>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="10" class="dols-hd">GRAND TOTAL OF ASSET COMPENSATION (A+B+C)</td>
+                                        <td class="d-right"><strong><t t-esc="('%.2f' % ((sum_a + sum_b) * 2))"/></strong></td>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <table class="dols-table" style="margin-top:8px;">
+                                <tr>
+                                    <td colspan="7" class="dols-hd">STATE AUTHORITY COMMITTEE MEMBERS</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="7" class="d-center"><strong>All committee members must sign with DATE, SEAL AND NAME</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="d-center" style="height:44px;">ALKA PATWARI</td>
+                                    <td class="d-center">REVENUE INSPECTOR</td>
+                                    <td class="d-center">SUB ENGINEER, PWD</td>
+                                    <td class="d-center">HORTICULTURE SUPERINTENDENT</td>
+                                    <td class="d-center">SUB DIVISIONAL MAGISTRATE</td>
+                                    <td class="d-center">DFO / FOREST</td>
+                                    <td class="d-center">TEHSILDAR</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="7" class="dols-hd">SECL DIPKA AREA SCREENING COMMITTEE MEMBERS</td>
+                                </tr>
+                                <tr>
+                                    <td class="d-center" style="height:38px;">SECL CIVIL</td>
+                                    <td class="d-center">SECL SURVEY</td>
+                                    <td class="d-center">SECL MINING/EXCV</td>
+                                    <td class="d-center"></td>
+                                    <td class="d-center"></td>
+                                    <td class="d-center"></td>
+                                    <td class="d-center"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

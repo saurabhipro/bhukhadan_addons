@@ -23,7 +23,7 @@
 /* ── Outer box ── */
 .o_timeline_gradient_box {
     position: relative;
-    border: 1.5px solid rgba(139, 69, 19, 0.28) !important;
+    border: 1.5px solid color-mix(in srgb, var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))) 28%, white) !important;
     border-radius: 12px !important;
     background:
         radial-gradient(ellipse at 0% 0%,   rgba(205, 133, 63, 0.18)  0%, transparent 50%),
@@ -35,8 +35,8 @@
             #fef8f0 60%,
             #fff9f4 100%);
     box-shadow:
-        0 4px 20px rgba(139, 69, 19, 0.12),
-        0 1px 4px  rgba(139, 69, 19, 0.08),
+        0 4px 20px color-mix(in srgb, var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))) 12%, transparent),
+        0 1px 4px  color-mix(in srgb, var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))) 8%, transparent),
         inset 0 0 0 1px rgba(255, 235, 200, 0.5);
 }
 
@@ -63,10 +63,10 @@
     position: relative;
     z-index: 1;
     background: linear-gradient(90deg,
-        rgba(139, 69, 19, 0.07) 0%,
+        color-mix(in srgb, var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))) 7%, transparent) 0%,
         rgba(205, 133, 63, 0.06) 50%,
-        rgba(139, 69, 19, 0.05) 100%);
-    border-bottom: 1.5px solid rgba(139, 69, 19, 0.15) !important;
+        color-mix(in srgb, var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))) 5%, transparent) 100%);
+    border-bottom: 1.5px solid color-mix(in srgb, var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))) 15%, white) !important;
 }
 
 .o_timeline_header_actions {
@@ -90,9 +90,11 @@
     color: #fff;
     cursor: pointer;
     white-space: nowrap;
-    box-shadow: 0 2px 8px rgba(139, 69, 19, 0.35);
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))) 35%, transparent);
     letter-spacing: 0.2px;
-    background: linear-gradient(135deg, #8B4513, #a0522d);
+    background: linear-gradient(135deg,
+        var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))),
+        color-mix(in srgb, var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))) 72%, black));
 }
 
 .o_docvault_timeline_btn:hover,
@@ -137,6 +139,6 @@
         #c8894e 60%,
         #c4956c 100%);
     box-shadow:
-        0 1px 3px rgba(139, 69, 19, 0.25),
+        0 1px 3px color-mix(in srgb, var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B))) 25%, transparent),
         0 0 0 1px rgba(200, 140, 80, 0.15);
 }

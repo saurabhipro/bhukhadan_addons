@@ -81,6 +81,8 @@
                     </div>
                     <!-- Approve / Reject actions -->
                     <div class="bhu_survey_action_bar">
+                        <button name="action_print_measuring_book" string="Download Measuring Book PDF" type="object" class="btn btn-info"/>
+                        <button name="action_export_measuring_book_excel" string="Export Measuring Book Excel" type="object" class="btn btn-secondary"/>
                         <button name="action_approve" string="Approve / अनुमोदित करें" type="object" class="btn btn-success bhu_survey_btn_approve" invisible="state == 'approved' or (state == 'rejected' and not is_admin)" groups="bhukhadan_core.group_bhuarjan_department_user,bhukhadan_core.group_bhuarjan_admin" confirm="Are you sure you want to approve this survey? / क्या आप इस सर्वे को अनुमोदित करना चाहते हैं?"/>
                         <button name="action_reject" string="Reject / अस्वीकृत करें" type="object" class="btn btn-danger bhu_survey_btn_reject" invisible="state in ('approved', 'rejected')" groups="bhukhadan_core.group_bhuarjan_department_user,bhukhadan_core.group_bhuarjan_admin" confirm="Are you sure you want to reject this survey? / क्या आप इस सर्वे को अस्वीकृत करना चाहते हैं?"/>
                         <button name="action_reset_to_submitted" string="Reset to Submitted / प्रस्तुत में रीसेट" type="object" class="btn btn-secondary" invisible="state != 'rejected'" groups="bhukhadan_core.group_bhuarjan_department_user,bhukhadan_core.group_bhuarjan_admin" confirm="Are you sure you want to reset this survey to submitted? / क्या आप इस सर्वे को प्रस्तुत में रीसेट करना चाहते हैं?"/>
@@ -88,24 +90,6 @@
 
                     <field name="is_approved_readonly" invisible="1"/>
                     <field name="is_admin" invisible="1"/>
-
-                    <div class="bhu_survey_form_hero">
-                        <div class="bhu_survey_form_hero_icon" aria-hidden="true">
-                            <i class="fa fa-map-o"/>
-                        </div>
-                        <div class="bhu_survey_form_hero_body">
-                            <span class="bhu_survey_form_hero_kicker">Form 10 · Land Survey / भूमि सर्वे</span>
-                            <h1 class="bhu_survey_form_hero_title"><field name="name" readonly="1"/></h1>
-                            <div class="bhu_survey_form_hero_badges">
-                                <field name="state" widget="badge"
-                                       decoration-success="state == 'approved'"
-                                       decoration-info="state == 'draft'"
-                                       decoration-warning="state == 'submitted'"
-                                       decoration-danger="state == 'rejected'"
-                                       nolabel="1"/>
-                            </div>
-                        </div>
-                    </div>
 
                     <!-- Compact summary strip (key context at a glance) -->
                     <div class="bhu_survey_summary_strip">
@@ -274,6 +258,72 @@
                                     </list>
                                 </field>
                             </div>
+                        </page>
+                        
+                        <page string="House Owner / मकान मालिक" name="house_owner_details">
+                            <group string="House Owner Details for Measuring Book">
+                                <group>
+                                    <field name="mb_house_owner_name"/>
+                                    <field name="mb_house_owner_aadhar"/>
+                                    <field name="mb_house_owner_mobile"/>
+                                    <field name="mb_house_owner_caste"/>
+                                </group>
+                                <group>
+                                    <field name="mb_house_owner_dob"/>
+                                    <field name="mb_house_owner_village"/>
+                                    <field name="mb_house_number_text"/>
+                                    <field name="mb_mohalla_text"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Land Owner / भूमि स्वामी" name="land_owner_details">
+                            <group string="Land Owner Details for Measuring Book">
+                                <group>
+                                    <field name="mb_land_owner_name"/>
+                                    <field name="mb_land_owner_aadhar"/>
+                                    <field name="mb_land_owner_caste"/>
+                                    <field name="mb_land_owner_dob"/>
+                                </group>
+                                <group>
+                                    <field name="mb_relation_text"/>
+                                    <field name="mb_present_landowner_text"/>
+                                    <field name="mb_rakba_text"/>
+                                    <field name="khasra_number" readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Document Checklist / दस्तावेज़ चेकलिस्ट" name="document_checklist_mb">
+                            <group string="List of Documents Collected from House Owner">
+                                <group>
+                                    <field name="mb_doc_electricity_bill"/>
+                                    <field name="mb_doc_voter_card_owner"/>
+                                    <field name="mb_doc_aadhar_owner"/>
+                                    <field name="mb_doc_aadhar_witness_1"/>
+                                    <field name="mb_doc_aadhar_witness_2"/>
+                                    <field name="mb_doc_ration_owner"/>
+                                    <field name="mb_doc_education_owner"/>
+                                </group>
+                                <group>
+                                    <field name="mb_doc_aadhar_landowner"/>
+                                    <field name="mb_doc_affidavit_noc"/>
+                                    <field name="mb_doc_passport_photos"/>
+                                    <field name="mb_doc_pan_owner"/>
+                                    <field name="mb_doc_pan_landowner"/>
+                                    <field name="mb_doc_bank_passbook"/>
+                                    <field name="mb_doc_bank_neft_form"/>
+                                    <field name="mb_doc_bank_ifsc"/>
+                                    <field name="mb_doc_other"/>
+                                    <field name="mb_doc_other_text" invisible="not mb_doc_other"/>
+                                </group>
+                            </group>
+                            <group string="Declaration / शपथ">
+                                <field name="mb_owner_decl_date"/>
+                                <field name="mb_decl_no_claim_pending"/>
+                                <field name="mb_decl_documents_received"/>
+                                <field name="mb_decl_gps_photo_video"/>
+                            </group>
                         </page>
                         
                         <page string="Tree Details / वृक्ष विवरण" name="tree_details">

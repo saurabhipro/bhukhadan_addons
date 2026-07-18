@@ -85,6 +85,7 @@
               parent="menu_bhu_root"
               action="action_bhuarjan_my_issues"
               sequence="90"
+              active="False"
               groups="base.group_user"/>
               
     <!-- Wizard View -->

@@ -53,6 +53,7 @@ from .sections import section19_notification
 from .sections import section21_notification
 from .sections import section18_rr_scheme
 from .sections import section8
+from .sections import section9_notification
 
 from . import award
 
@@ -91,3 +92,4 @@ from .survey import form10_export_utils
 from . import issue
 from . import compat_theme_placeholders
 from . import ir_http
+from . import ir_qweb

@@ -90,6 +90,26 @@ class ProcessWorkflowMixin(models.AbstractModel):
                                    help='SDM can edit when state is draft or send_back, readonly when approved')
     can_collector_edit = fields.Boolean(string='Can Collector Edit', compute='_compute_edit_permissions', store=False,
                                         help='Collector can edit when state is submitted, readonly when approved')
+
+    def _is_submitter_user(self, user=None):
+        user = user or self.env.user
+        return bool(
+            user.has_group('bhukhadan_core.group_bhuarjan_sdm')
+            or user.has_group('bhukhadan_core.group_coal_area_officer')
+            or user.has_group('bhukhadan_core.group_coal_section9_officer')
+            or user.has_group('bhukhadan_core.group_bhuarjan_admin')
+            or user.has_group('base.group_system')
+        )
+
+    def _is_approver_user(self, user=None):
+        user = user or self.env.user
+        return bool(
+            user.has_group('bhukhadan_core.group_bhuarjan_collector')
+            or user.has_group('bhukhadan_core.group_coal_hq_reviewer')
+            or user.has_group('bhukhadan_core.group_coal_moc_liaison')
+            or user.has_group('bhukhadan_core.group_bhuarjan_admin')
+            or user.has_group('base.group_system')
+        )
     
     @api.onchange('collector_signed_file')
     def _onchange_collector_signed_file(self):
@@ -117,8 +137,8 @@ class ProcessWorkflowMixin(models.AbstractModel):
     def _compute_user_roles(self):
         """Compute if current user is SDM, Collector, or Admin"""
         current_user = self.env.user
-        is_sdm_user = current_user.has_group('bhukhadan_core.group_bhuarjan_sdm')
-        is_collector_user = current_user.has_group('bhukhadan_core.group_bhuarjan_collector')
+        is_sdm_user = self._is_submitter_user(current_user)
+        is_collector_user = self._is_approver_user(current_user)
         is_admin_user = current_user.has_group('bhukhadan_core.group_bhuarjan_admin') or current_user.has_group('base.group_system')
         
         for record in self:
@@ -139,8 +159,8 @@ class ProcessWorkflowMixin(models.AbstractModel):
     def _compute_edit_permissions(self):
         """Compute edit permissions based on state and user role"""
         current_user = self.env.user
-        is_sdm_user = current_user.has_group('bhukhadan_core.group_bhuarjan_sdm')
-        is_collector_user = current_user.has_group('bhukhadan_core.group_bhuarjan_collector')
+        is_sdm_user = self._is_submitter_user(current_user)
+        is_collector_user = self._is_approver_user(current_user)
         is_admin_user = current_user.has_group('bhukhadan_core.group_bhuarjan_admin') or current_user.has_group('base.group_system')
         # Any user who is not exclusively a Collector can fill in draft/send_back records
         is_non_collector = not is_collector_user or is_admin_user
@@ -235,9 +255,8 @@ class ProcessWorkflowMixin(models.AbstractModel):
         self.ensure_one()
         
         # Check if user is SDM
-        if not (self.env.user.has_group('bhukhadan_core.group_bhuarjan_sdm') or 
-                self.env.user.has_group('bhukhadan_core.group_bhuarjan_admin')):
-            raise ValidationError(_('Only SDM can submit for approval.'))
+        if not self._is_submitter_user():
+            raise ValidationError(_('Only submitter roles can submit for approval.'))
         
         # Validate that SDM signed file is uploaded
         if not self.sdm_signed_file:
@@ -266,9 +285,8 @@ class ProcessWorkflowMixin(models.AbstractModel):
         self.ensure_one()
         
         # Check if user is Collector
-        if not (self.env.user.has_group('bhukhadan_core.group_bhuarjan_collector') or 
-                self.env.user.has_group('bhukhadan_core.group_bhuarjan_admin')):
-            raise ValidationError(_('Only Collector can approve.'))
+        if not self._is_approver_user():
+            raise ValidationError(_('Only approver roles can approve.'))
         
         # Validate that Collector signed file is uploaded
         if not self.collector_signed_file:
@@ -301,9 +319,8 @@ class ProcessWorkflowMixin(models.AbstractModel):
         self.ensure_one()
         
         # Check if user is Collector
-        if not (self.env.user.has_group('bhukhadan_core.group_bhuarjan_collector') or 
-                self.env.user.has_group('bhukhadan_core.group_bhuarjan_admin')):
-            raise ValidationError(_('Only Collector can send back.'))
+        if not self._is_approver_user():
+            raise ValidationError(_('Only approver roles can send back.'))
         
         # Validate state is submitted
         if self.state != 'submitted':
@@ -350,9 +367,8 @@ class ProcessWorkflowMixin(models.AbstractModel):
         if self.state != 'draft':
             raise ValidationError(_('Cannot change status to Submitted from current state. Only draft records can be submitted.'))
         # Check if user is SDM
-        if not (self.env.user.has_group('bhukhadan_core.group_bhuarjan_sdm') or 
-                self.env.user.has_group('bhukhadan_core.group_bhuarjan_admin')):
-            raise ValidationError(_('Only SDM can submit for approval.'))
+        if not self._is_submitter_user():
+            raise ValidationError(_('Only submitter roles can submit for approval.'))
         # Validate that SDM signed file is uploaded
         if not self.sdm_signed_file:
             raise ValidationError(_('Please upload the SDM signed document before submitting.'))
@@ -364,9 +380,8 @@ class ProcessWorkflowMixin(models.AbstractModel):
         if self.state != 'submitted':
             raise ValidationError(_('Cannot change status to Approved from current state. Only submitted records can be approved.'))
         # Check if user is Collector
-        if not (self.env.user.has_group('bhukhadan_core.group_bhuarjan_collector') or 
-                self.env.user.has_group('bhukhadan_core.group_bhuarjan_admin')):
-            raise ValidationError(_('Only Collector can approve.'))
+        if not self._is_approver_user():
+            raise ValidationError(_('Only approver roles can approve.'))
         # Validate that Collector signed file is uploaded
         if not self.collector_signed_file:
             raise ValidationError(_('Please upload the Collector signed document before approving.'))
@@ -378,9 +393,8 @@ class ProcessWorkflowMixin(models.AbstractModel):
         if self.state != 'submitted':
             raise ValidationError(_('Cannot change status to Sent Back from current state. Only submitted records can be sent back.'))
         # Check if user is Collector
-        if not (self.env.user.has_group('bhukhadan_core.group_bhuarjan_collector') or 
-                self.env.user.has_group('bhukhadan_core.group_bhuarjan_admin')):
-            raise ValidationError(_('Only Collector can send back.'))
+        if not self._is_approver_user():
+            raise ValidationError(_('Only approver roles can send back.'))
         # Note: For send_back, we might want to open a wizard, but for statusbar clicks, we'll just validate
     
     # Methods for statusbar click handling (kept for backward compatibility)
@@ -399,10 +413,9 @@ class ProcessWorkflowMixin(models.AbstractModel):
         self.ensure_one()
         # Allow going to submitted from draft state
         if self.state == 'draft':
-            # Check if user is SDM
-            if not (self.env.user.has_group('bhukhadan_core.group_bhuarjan_sdm') or 
-                    self.env.user.has_group('bhukhadan_core.group_bhuarjan_admin')):
-                raise ValidationError(_('Only SDM can submit for approval.'))
+            # Check if user is submitter
+            if not self._is_submitter_user():
+                raise ValidationError(_('Only submitter roles can submit for approval.'))
             # Validate that SDM signed file is uploaded
             if not self.sdm_signed_file:
                 raise ValidationError(_('Please upload the SDM signed document before submitting.'))
@@ -422,10 +435,9 @@ class ProcessWorkflowMixin(models.AbstractModel):
         self.ensure_one()
         # Allow going to approved from submitted state
         if self.state == 'submitted':
-            # Check if user is Collector
-            if not (self.env.user.has_group('bhukhadan_core.group_bhuarjan_collector') or 
-                    self.env.user.has_group('bhukhadan_core.group_bhuarjan_admin')):
-                raise ValidationError(_('Only Collector can approve.'))
+            # Check if user is approver
+            if not self._is_approver_user():
+                raise ValidationError(_('Only approver roles can approve.'))
             # Validate that Collector signed file is uploaded
             if not self.collector_signed_file:
                 raise ValidationError(_('Please upload the Collector signed document before approving.'))
@@ -445,10 +457,9 @@ class ProcessWorkflowMixin(models.AbstractModel):
         self.ensure_one()
         # Allow going to send_back from submitted state
         if self.state == 'submitted':
-            # Check if user is Collector
-            if not (self.env.user.has_group('bhukhadan_core.group_bhuarjan_collector') or 
-                    self.env.user.has_group('bhukhadan_core.group_bhuarjan_admin')):
-                raise ValidationError(_('Only Collector can send back.'))
+            # Check if user is approver
+            if not self._is_approver_user():
+                raise ValidationError(_('Only approver roles can send back.'))
             # Open wizard for send back
             return self.action_send_back()
         elif self.state == 'send_back':
@@ -508,9 +519,8 @@ class ProcessWorkflowMixin(models.AbstractModel):
         if self.state not in ('draft', 'send_back'):
             raise ValidationError(_('Cannot delete SDM signed file in current state. Only allowed in Draft or Sent Back state.'))
         
-        if not (self.env.user.has_group('bhukhadan_core.group_bhuarjan_sdm') or 
-                self.env.user.has_group('bhukhadan_core.group_bhuarjan_admin')):
-            raise ValidationError(_('Only SDM can delete SDM signed file.'))
+        if not self._is_submitter_user():
+            raise ValidationError(_('Only submitter roles can delete submitter signed file.'))
         
         self.write({
             'sdm_signed_file': False,
@@ -538,9 +548,8 @@ class ProcessWorkflowMixin(models.AbstractModel):
         if self.state != 'submitted':
             raise ValidationError(_('Cannot delete Collector signed file in current state. Only allowed in Submitted state.'))
         
-        if not (self.env.user.has_group('bhukhadan_core.group_bhuarjan_collector') or 
-                self.env.user.has_group('bhukhadan_core.group_bhuarjan_admin')):
-            raise ValidationError(_('Only Collector can delete Collector signed file.'))
+        if not self._is_approver_user():
+            raise ValidationError(_('Only approver roles can delete approver signed file.'))
         
         self.write({
             'collector_signed_file': False,
@@ -579,8 +588,17 @@ class ProcessWorkflowMixin(models.AbstractModel):
                 record.pending_with = ''
             elif record.state == 'submitted':
                 # Pending with Collector - get collector name and department
+                approver_group_ids = []
+                for xmlid in (
+                    'bhukhadan_core.group_bhuarjan_collector',
+                    'bhukhadan_core.group_coal_hq_reviewer',
+                    'bhukhadan_core.group_coal_moc_liaison',
+                ):
+                    grp = self.env.ref(xmlid, raise_if_not_found=False)
+                    if grp:
+                        approver_group_ids.append(grp.id)
                 collector_users = self.env['res.users'].search([
-                    ('groups_id', 'in', self.env.ref('bhukhadan_core.group_bhuarjan_collector').id)
+                    ('groups_id', 'in', approver_group_ids)
                 ], limit=1)
                 if collector_users:
                     collector = collector_users[0]
@@ -634,12 +652,20 @@ class ProcessWorkflowMixin(models.AbstractModel):
         self.ensure_one()
         
         # Get all Collector users
-        collector_group = self.env.ref('bhukhadan_core.group_bhuarjan_collector', raise_if_not_found=False)
-        if not collector_group:
+        approver_group_ids = []
+        for xmlid in (
+            'bhukhadan_core.group_bhuarjan_collector',
+            'bhukhadan_core.group_coal_hq_reviewer',
+            'bhukhadan_core.group_coal_moc_liaison',
+        ):
+            grp = self.env.ref(xmlid, raise_if_not_found=False)
+            if grp:
+                approver_group_ids.append(grp.id)
+        if not approver_group_ids:
             return
         
         collector_users = self.env['res.users'].search([
-            ('groups_id', 'in', collector_group.id)
+            ('groups_id', 'in', approver_group_ids)
         ])
         
         if not collector_users:
@@ -718,10 +744,18 @@ class ProcessWorkflowMixin(models.AbstractModel):
             sdm_users = self.project_id.sdm_ids
         else:
             # Fallback: get all SDM users
-            sdm_group = self.env.ref('bhukhadan_core.group_bhuarjan_sdm', raise_if_not_found=False)
-            if sdm_group:
+            submitter_group_ids = []
+            for xmlid in (
+                'bhukhadan_core.group_bhuarjan_sdm',
+                'bhukhadan_core.group_coal_area_officer',
+                'bhukhadan_core.group_coal_section9_officer',
+            ):
+                grp = self.env.ref(xmlid, raise_if_not_found=False)
+                if grp:
+                    submitter_group_ids.append(grp.id)
+            if submitter_group_ids:
                 sdm_users = self.env['res.users'].search([
-                    ('groups_id', 'in', sdm_group.id)
+                    ('groups_id', 'in', submitter_group_ids)
                 ])
         
         if not sdm_users:
@@ -794,10 +828,18 @@ class ProcessWorkflowMixin(models.AbstractModel):
             sdm_users = self.project_id.sdm_ids
         else:
             # Fallback: get all SDM users
-            sdm_group = self.env.ref('bhukhadan_core.group_bhuarjan_sdm', raise_if_not_found=False)
-            if sdm_group:
+            submitter_group_ids = []
+            for xmlid in (
+                'bhukhadan_core.group_bhuarjan_sdm',
+                'bhukhadan_core.group_coal_area_officer',
+                'bhukhadan_core.group_coal_section9_officer',
+            ):
+                grp = self.env.ref(xmlid, raise_if_not_found=False)
+                if grp:
+                    submitter_group_ids.append(grp.id)
+            if submitter_group_ids:
                 sdm_users = self.env['res.users'].search([
-                    ('groups_id', 'in', sdm_group.id)
+                    ('groups_id', 'in', submitter_group_ids)
                 ])
         
         if not sdm_users:

@@ -4608,10 +4608,161 @@ body:has(#website_cookies_bar.bhu-cookie-bar) #wrapwrap {
     padding: 0;
     margin-bottom: 12px;
 }
+.bhu-home-v2-hero-grid {
+    display: grid;
+    grid-template-columns: 1.08fr 0.92fr;
+    gap: 56px;
+    align-items: center;
+    margin-bottom: 56px;
+}
 .bhu-home-v2-hero-copy {
-    text-align: center;
-    max-width: 820px;
-    margin: 0 auto 40px;
+    text-align: left;
+    max-width: none;
+    margin: 0;
+}
+.bhu-home-v2-hero-copy .bhu-home-v2-lead { margin: 0 0 28px; }
+.bhu-home-v2-hero-copy .bhu-home-v2-actions { justify-content: flex-start; }
+.bhu-home-v2-hero-copy .bhu-home-v2-metrics--inline {
+    justify-content: flex-start;
+    margin-top: 36px;
+}
+
+/* Hero product visual */
+.bhu-home-v2-hero-visual {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+}
+.bhu-home-v2-hero-glow {
+    position: absolute;
+    inset: -30px;
+    background:
+        radial-gradient(circle at 65% 35%, rgba(184, 115, 51, 0.30), transparent 60%),
+        radial-gradient(circle at 15% 85%, rgba(30, 58, 47, 0.20), transparent 55%);
+    z-index: 0;
+}
+.bhu-home-v2-hero-shot {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+    filter: drop-shadow(0 30px 54px rgba(30, 58, 47, 0.25));
+    animation: bhuHeroFloat 6s ease-in-out infinite;
+}
+@keyframes bhuHeroFloat {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-12px); }
+}
+.bhu-home-v2-hero-badge {
+    position: absolute;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--home-card);
+    border: 1px solid rgba(30, 58, 47, 0.1);
+    border-radius: 16px;
+    padding: 12px 18px;
+    box-shadow: 0 16px 40px rgba(30, 58, 47, 0.16);
+    animation: bhuHeroFloat 6s ease-in-out infinite;
+}
+.bhu-home-v2-hero-badge i {
+    width: 36px;
+    height: 36px;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1E3A2F, #2D5A47);
+    color: #fff;
+    font-size: .95rem;
+    flex-shrink: 0;
+}
+.bhu-home-v2-hero-badge strong {
+    display: block;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--home-ink);
+    line-height: 1;
+}
+.bhu-home-v2-hero-badge span {
+    font-size: .68rem;
+    color: #6B7F76;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+}
+.bhu-home-v2-hero-badge.badge-top {
+    top: 4%;
+    right: 2%;
+    animation-delay: 1s;
+}
+.bhu-home-v2-hero-badge.badge-bottom {
+    bottom: 6%;
+    left: -2%;
+    animation-delay: 2.5s;
+}
+
+/* Gov / SECL trust strip */
+.bhu-home-v2-govstrip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    max-width: 900px;
+    margin: 0 auto 8px;
+    padding: 16px 28px;
+    background: var(--home-card);
+    border: 1px solid rgba(30, 58, 47, 0.08);
+    border-radius: 16px;
+    position: relative;
+    z-index: 1;
+}
+.bhu-home-v2-govstrip .lbl {
+    font-size: .72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: #6B7F76;
+}
+.bhu-home-v2-govstrip-logos {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.bhu-home-v2-govstrip-logos img {
+    height: 36px;
+    width: 36px;
+    object-fit: contain;
+}
+.bhu-home-v2-govstrip-logos .secl-mark {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--home-sage);
+    color: var(--home-copper);
+    font-size: 1rem;
+}
+.bhu-home-v2-govstrip-logos strong {
+    font-size: .92rem;
+    font-weight: 800;
+    color: var(--home-ink);
+}
+.bhu-home-v2-govstrip-logos .sub {
+    font-size: .76rem;
+    color: #6B7F76;
+}
+.bhu-home-v2-govstrip-divider {
+    width: 1px;
+    height: 26px;
+    background: rgba(30, 58, 47, 0.15);
 }
 .bhu-home-v2-hero-copy h1 {
     font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
@@ -4666,7 +4817,7 @@ body:has(#website_cookies_bar.bhu-cookie-bar) #wrapwrap {
 .bhu-home-v2-pipeline {
     display: flex;
     align-items: stretch;
-    justify-content: center;
+    justify-content: flex-start;
     flex-wrap: wrap;
     gap: 8px;
     margin-bottom: 44px;
@@ -4689,6 +4840,23 @@ body:has(#website_cookies_bar.bhu-cookie-bar) #wrapwrap {
     transform: translateY(-3px);
     border-color: rgba(184, 115, 51, 0.45);
     box-shadow: 0 12px 28px rgba(30, 58, 47, 0.1);
+}
+.bhu-home-v2-stage .ico {
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--home-sage);
+    color: var(--home-copper);
+    font-size: .82rem;
+    margin-bottom: 6px;
+    transition: background .2s, color .2s;
+}
+.bhu-home-v2-stage:hover .ico {
+    background: var(--home-copper);
+    color: #fff;
 }
 .bhu-home-v2-stage .num {
     font-size: .65rem;
@@ -4773,6 +4941,7 @@ body:has(#website_cookies_bar.bhu-cookie-bar) #wrapwrap {
     gap: 14px;
 }
 .bhu-home-v2-trust-card {
+    position: relative;
     display: flex;
     align-items: flex-start;
     gap: 14px;
@@ -4780,11 +4949,24 @@ body:has(#website_cookies_bar.bhu-cookie-bar) #wrapwrap {
     background: var(--home-card);
     border: 1px solid rgba(30, 58, 47, 0.08);
     border-radius: 16px;
-    transition: border-color .2s, transform .2s;
+    overflow: hidden;
+    transition: border-color .2s, transform .2s, box-shadow .2s;
 }
+.bhu-home-v2-trust-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--home-copper), var(--home-gold));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .3s;
+}
+.bhu-home-v2-trust-card:hover::before { transform: scaleX(1); }
 .bhu-home-v2-trust-card:hover {
     border-color: rgba(184, 115, 51, 0.35);
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: 0 16px 34px rgba(30, 58, 47, 0.1);
 }
 .bhu-home-v2-trust-card > i {
     width: 40px;
@@ -4793,7 +4975,7 @@ body:has(#website_cookies_bar.bhu-cookie-bar) #wrapwrap {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--home-sage);
+    background: linear-gradient(135deg, rgba(184, 115, 51, 0.18), rgba(30, 58, 47, 0.1));
     color: var(--home-copper);
     font-size: 1rem;
     flex-shrink: 0;
@@ -4858,18 +5040,33 @@ body:has(#website_cookies_bar.bhu-cookie-bar) #wrapwrap {
     height: 100%;
     object-fit: cover;
     min-height: 280px;
+    transition: transform .5s ease;
 }
+.bhu-home-v2-bento-visual:hover img { transform: scale(1.05); }
 .bhu-home-v2-bento-tile {
     padding: 22px 20px;
     background: var(--home-card);
     border: 1px solid rgba(30, 58, 47, 0.08);
     border-radius: 16px;
+    transition: transform .25s, box-shadow .25s, border-color .25s;
+}
+.bhu-home-v2-bento-tile:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 34px rgba(30, 58, 47, 0.1);
+    border-color: rgba(184, 115, 51, 0.3);
 }
 .bhu-home-v2-bento-tile.wide { grid-column: span 2; }
 .bhu-home-v2-bento-tile > i {
-    font-size: 1.1rem;
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(184, 115, 51, 0.16), rgba(30, 58, 47, 0.1));
+    font-size: 1rem;
     color: var(--home-copper);
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 .bhu-home-v2-bento-tile h4 {
     font-size: .95rem;
@@ -4892,6 +5089,32 @@ body:has(#website_cookies_bar.bhu-cookie-bar) #wrapwrap {
     background: rgba(212, 168, 83, 0.15);
     color: var(--home-gold);
 }
+.bhu-home-v2 .bhu-feature .ico {
+    background: linear-gradient(135deg, rgba(212, 168, 83, 0.2), rgba(184, 115, 51, 0.1));
+    border-color: rgba(212, 168, 83, 0.3);
+    color: var(--home-gold);
+}
+.bhu-home-v2 .bhu-feature:hover {
+    border-color: rgba(212, 168, 83, 0.4);
+}
+
+/* Why-choose cards — numbered pillars */
+.bhu-home-v2 .bhu-why-card { position: relative; }
+.bhu-home-v2 .bhu-why-card .step-num {
+    position: absolute;
+    top: 18px;
+    right: 22px;
+    font-size: .78rem;
+    font-weight: 800;
+    letter-spacing: .06em;
+    color: rgba(30, 58, 47, 0.22);
+}
+.bhu-home-v2 .bhu-why-card .wi-img {
+    padding: 16px;
+    background: var(--home-sage);
+    border-radius: 50%;
+}
+
 .bhu-home-v2 .bhu-roadmap {
     background: var(--home-card);
 }
@@ -4901,11 +5124,32 @@ body:has(#website_cookies_bar.bhu-cookie-bar) #wrapwrap {
 .bhu-home-v2 .bhu-roadmap-step.done .dot {
     background: #2D5A47;
 }
+
+/* Stats — icon badges */
 .bhu-home-v2 .bhu-stats {
     background: var(--home-sage);
 }
+.bhu-home-v2 .bhu-stat-item .ico {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 14px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(184, 115, 51, 0.16), rgba(30, 58, 47, 0.1));
+    color: var(--home-copper);
+    font-size: 1.2rem;
+}
+
 .bhu-home-v2 .bhu-cta {
     background: linear-gradient(135deg, #1E3A2F, #2D5A47);
+}
+.bhu-home-v2 .bhu-cta::before {
+    background: radial-gradient(circle, rgba(212, 168, 83, 0.25), transparent 70%);
+}
+.bhu-home-v2 .bhu-cta::after {
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.06), transparent 70%);
 }
 .bhu-home-v2 .bhu-cta .bhu-btn.primary {
     background: var(--home-gold) !important;
@@ -4918,6 +5162,16 @@ body:has(#website_cookies_bar.bhu-cookie-bar) #wrapwrap {
     .bhu-home-v2-bento { grid-template-columns: repeat(2, 1fr); }
     .bhu-home-v2-bento-visual { grid-column: 1 / -1; grid-row: auto; }
     .bhu-home-v2-bento-tile.wide { grid-column: span 2; }
+
+    .bhu-home-v2-hero-grid { grid-template-columns: 1fr; gap: 44px; }
+    .bhu-home-v2-hero-copy { text-align: center; }
+    .bhu-home-v2-hero-copy .bhu-home-v2-actions,
+    .bhu-home-v2-hero-copy .bhu-home-v2-metrics--inline { justify-content: center; }
+    .bhu-home-v2-hero-copy .bhu-home-v2-lead { margin-left: auto; margin-right: auto; }
+    .bhu-home-v2-hero-visual { max-width: 460px; margin: 0 auto; padding: 32px 12px 12px; }
+    .bhu-home-v2-hero-badge.badge-top { top: -4%; right: 0; }
+    .bhu-home-v2-hero-badge.badge-bottom { bottom: 2%; left: 0; }
+    .bhu-home-v2-pipeline { justify-content: center; }
 }
 
 @media (max-width: 768px) {
@@ -4939,4 +5193,12 @@ body:has(#website_cookies_bar.bhu-cookie-bar) #wrapwrap {
     .bhu-home-v2-bento-tile.wide { grid-column: span 1; }
     .bhu-home-v2-actions { flex-direction: column; }
     .bhu-home-v2-link-demo { margin-top: 4px; }
+
+    .bhu-home-v2-govstrip { padding: 14px 18px; gap: 14px; }
+    .bhu-home-v2-govstrip-divider { display: none; }
+    .bhu-home-v2-hero-badge { padding: 10px 14px; gap: 8px; }
+    .bhu-home-v2-hero-badge strong { font-size: .92rem; }
+    .bhu-home-v2-hero-badge.badge-top { position: static; margin: 0 0 10px auto; width: fit-content; }
+    .bhu-home-v2-hero-badge.badge-bottom { position: static; margin: 10px auto 0; width: fit-content; }
+    .bhu-home-v2-hero-shot { animation: none; }
 }

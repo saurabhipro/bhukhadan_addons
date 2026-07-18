@@ -72,7 +72,7 @@
                         <div class="o_sections_column">
                         <!-- Surveys -->
                         <t t-if="this.isSectionVisible('Surveys')">
-                        <div class="o_section_list_item o_card_no_click">
+                        <div class="o_section_list_item o_card_no_click" style="order: 1;">
                             <div class="o_section_list_step">
                                 <span class="o_step_number bg-primary"><t t-esc="this.getStepNumber('Surveys', 'Step 1')"/></span>
                             </div>
@@ -81,8 +81,8 @@
                             </div>
                             <div class="o_section_list_content">
                                 <div class="o_section_list_title">
-                                    <i class="fa fa-clipboard" style="margin-right: 8px; color: #8B4513;"/>
-                                    Surveys
+                                    <i class="fa fa-clipboard" style="margin-right: 8px; color: var(--bd-theme-primary, var(--spiffy-primary-color, var(--o-brand-odoo, #875A7B)));"/>
+                                    Sec 4(i) Notification of intention to prospect
                                     <t t-if="state.stats &amp;&amp; state.stats.survey_info &amp;&amp; state.stats.survey_info.is_completed">
                                         <span class="o_completion_tick" title="All surveys completed">
                                             <i class="fa fa-check-circle"/>
@@ -114,17 +114,13 @@
                                 <button class="btn btn-sm btn-info" t-on-click.stop="() => this.openSectionList('bhu.survey')">
                                     <i class="fa fa-eye"/> View
                                 </button>
-                                <button class="btn btn-sm btn-success" t-on-click.stop="() => this.downloadForm10()" 
-                                        t-att-disabled="!state.selectedVillage">
-                                    <i class="fa fa-download"/> Download Form 10
-                                </button>
                             </div>
                         </div>
                         </t>
 
                         <!-- Section 247.1 (Personal Notice) -->
                         <t t-if="this.isSectionVisible('Personal Notice generation (247.1)')">
-                        <div class="o_section_list_item o_card_no_click">
+                        <div class="o_section_list_item o_card_no_click" style="order: 2;">
                             <div class="o_section_list_step">
                                 <span class="o_step_number bg-primary"><t t-esc="this.getStepNumber('Personal Notice generation (247.1)', 'Step 2')"/></span>
                             </div>
@@ -402,7 +398,7 @@
                         <t t-if="this.isSectionVisible('Create SIA Team')">
                         <div class="o_section_list_item o_card_no_click">
                             <div class="o_section_list_step">
-                                <span class="o_step_number bg-primary">Step 2</span>
+                                <span class="o_step_number bg-primary"><t t-esc="this.getStepNumber('Create SIA Team', 'Step 2')"/></span>
                             </div>
                             <div class="o_section_list_icon">
                                 <i class="fa fa-users"/>
@@ -457,16 +453,16 @@
 
                         <!-- Section 4 -->
                         <t t-if="this.isSectionVisible('(Sec 4) Section 4 Notifications')">
-                        <div class="o_section_list_item o_card_no_click">
+                        <div class="o_section_list_item o_card_no_click" style="order: 2;">
                             <div class="o_section_list_step">
-                                <span class="o_step_number bg-primary">Step 3</span>
+                                <span class="o_step_number bg-primary"><t t-esc="this.getStepNumber('Sec 7(i) Notification of intention to acquire land', 'Step 2')"/></span>
                             </div>
                             <div class="o_section_list_icon">
                                 <i class="fa fa-bell"/>
                             </div>
                             <div class="o_section_list_content">
                                 <div class="o_section_list_title">
-                                    <span class="o_section_list_title_label">(Sec 4) Section 4 Notifications</span>
+                                    <span class="o_section_list_title_label">Sec 7(i) Notification of intention to acquire land</span>
                                     <t t-if="state.stats &amp;&amp; state.stats.section4_info &amp;&amp; state.stats.section4_info.is_completed">
                                         <span class="o_completion_tick" title="All Section 4 Notifications completed">
                                             <i class="fa fa-check-circle"/>
@@ -577,16 +573,16 @@
 
                         <!-- Section 8 (Only for Collector, after Expert Group) -->
                         <t t-if="this.isSectionVisible('Section 8')">
-                        <div t-if="state.isCollector or state.isAdmin" class="o_section_list_item o_card_no_click">
+                        <div t-if="state.isCollector or state.isAdmin" class="o_section_list_item o_card_no_click" style="order: 3;">
                             <div class="o_section_list_step">
-                                <span class="o_step_number bg-primary">Step 5</span>
+                                <span class="o_step_number bg-primary"><t t-esc="this.getStepNumber('Sec 8 Objections', 'Step 5')"/></span>
                             </div>
                             <div class="o_section_list_icon">
                                 <i class="fa fa-check-square-o"/>
                             </div>
                             <div class="o_section_list_content">
                                 <div class="o_section_list_title">
-                                    Section 8
+                                    Sec 8 Objections
                                     <t t-if="state.selectedProjectCode or state.selectedVillageName">
                                         <span class="o_section_list_context">
                                             <t t-if="state.selectedProjectCode">
@@ -623,14 +619,14 @@
                         <t t-if="this.isSectionVisible('Section 11 Notifications')">
                         <div t-if="!state.isCollector and !state.isAdmin" class="o_section_list_item o_card_no_click">
                             <div class="o_section_list_step">
-                                <span class="o_step_number bg-primary">Step 5</span>
+                                <span class="o_step_number bg-primary"><t t-esc="this.getStepNumber('Sec 11(i) Vesting order', 'Step 5')"/></span>
                             </div>
                             <div class="o_section_list_icon">
                                 <i class="fa fa-file-text"/>
                             </div>
                             <div class="o_section_list_content">
                                 <div class="o_section_list_title">
-                                    Section 11 Notifications
+                                    Sec 11(i) Vesting order
                                     <t t-if="state.stats &amp;&amp; state.stats.section11_info &amp;&amp; state.stats.section11_info.is_completed">
                                         <span class="o_completion_tick" title="All Section 11 Notifications completed">
                                             <i class="fa fa-check-circle"/>
@@ -685,16 +681,16 @@
 
                         <!-- Section 11 (Step 6 for Collector/Admin - now in Column 1) -->
                         <t t-if="this.isSectionVisible('Section 11 Notifications')">
-                        <div t-if="state.isCollector or state.isAdmin" class="o_section_list_item o_card_no_click">
+                        <div t-if="state.isCollector or state.isAdmin" class="o_section_list_item o_card_no_click" style="order: 4;">
                             <div class="o_section_list_step">
-                                <span class="o_step_number bg-primary">Step 6</span>
+                                <span class="o_step_number bg-primary"><t t-esc="this.getStepNumber('Sec 11(i) Vesting order', 'Step 6')"/></span>
                             </div>
                             <div class="o_section_list_icon">
                                 <i class="fa fa-file-text"/>
                             </div>
                             <div class="o_section_list_content">
                                 <div class="o_section_list_title">
-                                    Section 11 Notifications
+                                    Sec 11(i) Vesting order
                                     <t t-if="state.stats &amp;&amp; state.stats.section11_info &amp;&amp; state.stats.section11_info.is_completed">
                                         <span class="o_completion_tick" title="All Section 11 Notifications completed">
                                             <i class="fa fa-check-circle"/>
@@ -746,23 +742,89 @@
                             </div>
                         </div>
                         </t>
+                        <t t-if="state.isAdmin and this.isSectionVisible('Land Records')">
+                        <div class="o_section_list_item o_card_no_click" style="order: 5;">
+                            <div class="o_section_list_step">
+                                <span class="o_step_number bg-primary"><t t-esc="this.getStepNumber('Land Records', 'Step 5')"/></span>
+                            </div>
+                            <div class="o_section_list_icon"><i class="fa fa-exclamation-triangle"/></div>
+                            <div class="o_section_list_content">
+                                <div class="o_section_list_title">Land Records</div>
+                            </div>
+                            <div class="o_section_list_actions">
+                                <button class="btn btn-sm btn-primary" t-on-click.stop="() => this.createSectionRecord('bhu.section15.objection')">
+                                    <i class="fa fa-bolt"/> Action
+                                </button>
+                                <button class="btn btn-sm btn-info"
+                                        t-on-click.stop="() => this.openFirstDocument('bhu.section15.objection', state.stats &amp;&amp; state.stats.section15_info ? state.stats.section15_info : null)"
+                                        t-att-disabled="!(state.stats &amp;&amp; state.stats.section15_info &amp;&amp; state.stats.section15_info.total > 0)">
+                                    <i class="fa fa-eye"/> View/Edit
+                                </button>
+                                <button class="btn btn-sm btn-success"
+                                        t-on-click.stop="() => this.openFirstPending('bhu.section15.objection', state.stats &amp;&amp; state.stats.section15_info ? state.stats.section15_info.first_pending_id : false, state.stats &amp;&amp; state.stats.section15_info ? state.stats.section15_info : null)"
+                                        t-att-disabled="state.stats &amp;&amp; state.stats.section15_info ? this.isAllApproved(state.stats.section15_info) : true"
+                                        title="Approve First Pending">
+                                    <i class="fa fa-check"/> Approve
+                                </button>
+                                <button class="btn btn-sm btn-danger"
+                                        t-on-click.stop="() => this.openFirstPending('bhu.section15.objection', state.stats &amp;&amp; state.stats.section15_info ? state.stats.section15_info.first_pending_id : false, state.stats &amp;&amp; state.stats.section15_info ? state.stats.section15_info : null)"
+                                        t-att-disabled="state.stats &amp;&amp; state.stats.section15_info ? this.isAllApproved(state.stats.section15_info) : true"
+                                        title="Return First Pending">
+                                    <i class="fa fa-times"/> Return
+                                </button>
+                            </div>
+                        </div>
+                        </t>
+                        <t t-if="state.isAdmin and this.isSectionVisible('(Sec 19) Section 19 Notifications')">
+                        <div class="o_section_list_item o_card_no_click" style="order: 6;">
+                            <div class="o_section_list_step">
+                                <span class="o_step_number bg-primary"><t t-esc="this.getStepNumber('DRRC Meeting', 'Step 6')"/></span>
+                            </div>
+                            <div class="o_section_list_icon"><i class="fa fa-bullhorn"/></div>
+                            <div class="o_section_list_content">
+                                <div class="o_section_list_title">DRRC Meeting</div>
+                            </div>
+                            <div class="o_section_list_actions">
+                                <button class="btn btn-sm btn-primary" t-on-click.stop="() => this.createSectionRecord('bhu.section19.notification')">
+                                    <i class="fa fa-plus"/> Create
+                                </button>
+                                <button class="btn btn-sm btn-info"
+                                        t-on-click.stop="() => this.openFirstDocument('bhu.section19.notification', state.stats &amp;&amp; state.stats.section19_info ? state.stats.section19_info : null)"
+                                        t-att-disabled="!(state.stats &amp;&amp; state.stats.section19_info &amp;&amp; state.stats.section19_info.total > 0)">
+                                    <i class="fa fa-eye"/> View/Edit
+                                </button>
+                                <button class="btn btn-sm btn-success"
+                                        t-on-click.stop="() => this.openFirstPending('bhu.section19.notification', state.stats &amp;&amp; state.stats.section19_info ? state.stats.section19_info.first_pending_id : false, state.stats &amp;&amp; state.stats.section19_info ? state.stats.section19_info : null)"
+                                        t-att-disabled="state.stats &amp;&amp; state.stats.section19_info ? this.isAllApproved(state.stats.section19_info) : true"
+                                        title="Approve First Pending">
+                                    <i class="fa fa-check"/> Approve
+                                </button>
+                                <button class="btn btn-sm btn-danger"
+                                        t-on-click.stop="() => this.openFirstPending('bhu.section19.notification', state.stats &amp;&amp; state.stats.section19_info ? state.stats.section19_info.first_pending_id : false, state.stats &amp;&amp; state.stats.section19_info ? state.stats.section19_info : null)"
+                                        t-att-disabled="state.stats &amp;&amp; state.stats.section19_info ? this.isAllApproved(state.stats.section19_info) : true"
+                                        title="Return First Pending">
+                                    <i class="fa fa-times"/> Return
+                                </button>
+                            </div>
+                        </div>
+                        </t>
                         </div>
                         <!-- End Column 1 -->
 
                         <!-- Column 2: Steps 7-13 -->
                         <div class="o_sections_column">
                         <!-- Section 15 -->
-                        <t t-if="this.isSectionVisible('(Sec 15) Objections')">
-                        <div class="o_section_list_item o_card_no_click">
+                        <t t-if="this.isSectionVisible('Land Records') and !state.isAdmin">
+                        <div class="o_section_list_item o_card_no_click" style="order: 8;">
                             <div class="o_section_list_step">
-                                <span class="o_step_number bg-primary"><t t-esc="(state.isCollector or state.isAdmin) ? 'Step 7' : 'Step 6'"/></span>
+                                <span class="o_step_number bg-primary"><t t-esc="this.getStepNumber('Land Records', (state.isCollector or state.isAdmin) ? 'Step 7' : 'Step 6')"/></span>
                             </div>
                             <div class="o_section_list_icon">
                                 <i class="fa fa-exclamation-triangle"/>
                             </div>
                             <div class="o_section_list_content">
                                 <div class="o_section_list_title">
-                                    (Sec 15) Objections
+                                    Land Records
                                     <t t-if="state.stats &amp;&amp; state.stats.section15_info &amp;&amp; state.stats.section15_info.is_completed">
                                         <span class="o_completion_tick" title="All Section 15 Objections completed">
                                             <i class="fa fa-check-circle"/>
@@ -815,18 +877,18 @@
                         </div>
                         </t>
 
-                        <!-- Section 18 R and R Scheme -->
-                        <t t-if="this.isSectionVisible('Section 18 R and R Scheme')">
+                        <!-- Conduct Asset Survey -->
+                        <t t-if="this.isSectionVisible('Conduct Asset Survey')">
                         <div class="o_section_list_item o_card_no_click">
                             <div class="o_section_list_step">
-                                <span class="o_step_number bg-primary"><t t-esc="(state.isCollector or state.isAdmin) ? 'Step 8' : 'Step 7'"/></span>
+                                <span class="o_step_number bg-primary"><t t-esc="this.getStepNumber('Conduct Asset Survey', (state.isCollector or state.isAdmin) ? 'Step 8' : 'Step 7')"/></span>
                             </div>
                             <div class="o_section_list_icon">
                                 <i class="fa fa-file-pdf-o"/>
                             </div>
                             <div class="o_section_list_content">
                                 <div class="o_section_list_title">
-                                    Section 18 R and R Scheme
+                                    Conduct Asset Survey
                                     <t t-if="state.selectedProjectCode">
                                         <span class="o_section_list_context">
                                             <i class="fa fa-briefcase"/> <t t-esc="state.selectedProjectCode"/>
@@ -836,34 +898,24 @@
                                 <div class="o_completion_widget_list o_completion_single_line">
                                     <div class="o_completion_percent_list">-</div>
                                     <div class="o_section_list_count">
-                                        <span class="o_count_badge o_count_draft"><i class="fa fa-file-o"/> <t t-esc="state.stats ? (state.stats.section18_rr_scheme_total || 0) : 0"/></span>
+                                        <span class="o_count_badge o_count_draft"><i class="fa fa-file-o"/> <t t-esc="state.stats ? (state.stats.survey_info ? state.stats.survey_info.total : 0) : 0"/></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="o_section_list_actions">
-                                <button t-if="!state.isCollector or state.isAdmin" class="btn btn-sm btn-primary" t-on-click.stop="() => this.createSectionRecord('bhu.section18.rr.scheme')">
-                                    <i class="fa fa-upload"/> Upload
+                                <button class="btn btn-sm btn-primary" t-on-click.stop="() => this.createSectionRecord('bhu.survey')">
+                                    <i class="fa fa-plus"/> Create Survey
                                 </button>
-                                <button class="btn btn-sm btn-info" t-on-click.stop="() => this.openSectionList('bhu.section18.rr.scheme')">
+                                <button class="btn btn-sm btn-info" t-on-click.stop="() => this.openSectionList('bhu.survey')">
                                     <i class="fa fa-eye"/> View
-                                </button>
-                                <button t-if="state.isCollector or state.isAdmin" class="btn btn-sm btn-success" 
-                                        t-on-click.stop="() => this.openFirstPending('bhu.section18.rr.scheme', state.stats &amp;&amp; state.stats.section18_rr_scheme_first_pending_id ? state.stats.section18_rr_scheme_first_pending_id : false)"
-                                        title="Approve First Pending">
-                                    <i class="fa fa-check"/> Approve
-                                </button>
-                                <button t-if="state.isCollector or state.isAdmin" class="btn btn-sm btn-danger" 
-                                        t-on-click.stop="() => this.openFirstPending('bhu.section18.rr.scheme', state.stats &amp;&amp; state.stats.section18_rr_scheme_first_pending_id ? state.stats.section18_rr_scheme_first_pending_id : false)"
-                                        title="Return First Pending">
-                                    <i class="fa fa-times"/> Return
                                 </button>
                             </div>
                         </div>
                         </t>
 
                         <!-- Section 19 -->
-                        <t t-if="this.isSectionVisible('(Sec 19) Section 19 Notifications')">
-                        <div class="o_section_list_item o_card_no_click">
+                        <t t-if="this.isSectionVisible('(Sec 19) Section 19 Notifications') and !state.isAdmin">
+                        <div class="o_section_list_item o_card_no_click" style="order: 6;">
                             <div class="o_section_list_step">
                                 <span class="o_step_number bg-primary"><t t-esc="(state.isCollector or state.isAdmin) ? 'Step 9' : 'Step 8'"/></span>
                             </div>
@@ -872,7 +924,7 @@
                             </div>
                             <div class="o_section_list_content">
                                 <div class="o_section_list_title">
-                                    (Sec 19) Section 19 Notifications
+                                    DRRC Meeting
                                     <t t-if="state.stats &amp;&amp; state.stats.section19_info &amp;&amp; state.stats.section19_info.is_completed">
                                         <span class="o_completion_tick" title="All Section 19 Notifications completed">
                                             <i class="fa fa-check-circle"/>
@@ -927,16 +979,16 @@
 
                         <!-- Sec 21 notice -->
                         <t t-if="this.isSectionVisible('Sec 21 notice')">
-                        <div class="o_section_list_item o_card_no_click">
+                        <div class="o_section_list_item o_card_no_click" style="order: 7;">
                             <div class="o_section_list_step">
-                                <span class="o_step_number bg-primary"><t t-esc="(state.isCollector or state.isAdmin) ? 'Step 10' : 'Step 9'"/></span>
+                                <span class="o_step_number bg-primary"><t t-esc="this.getStepNumber('Asset Survey Committee Formation', (state.isCollector or state.isAdmin) ? 'Step 10' : 'Step 9')"/></span>
                             </div>
                             <div class="o_section_list_icon">
                                 <i class="fa fa-gavel"/>
                             </div>
                             <div class="o_section_list_content">
                                 <div class="o_section_list_title">
-                                    Sec 21 notice
+                                    Asset Survey Committee Formation
                                     <t t-if="state.stats &amp;&amp; state.stats.draft_award_info &amp;&amp; state.stats.draft_award_info.is_completed">
                                         <span class="o_completion_tick" title="All Sec 21 notice completed">
                                             <i class="fa fa-check-circle"/>
@@ -991,16 +1043,16 @@
 
                         <!-- Section 23 Award (other acquisition acts — not Railway / NH NHAI dashboard slots) -->
                         <t t-if="this.isSectionVisible('Section 23 Award') and !this.isRailwayLaw() and !this.isNHLaw()">
-                        <div class="o_section_list_item o_card_no_click">
+                        <div class="o_section_list_item o_card_no_click" style="order: 9;">
                             <div class="o_section_list_step">
-                                <span class="o_step_number bg-primary"><t t-esc="(state.isCollector or state.isAdmin) ? 'Step 11' : 'Step 10'"/></span>
+                                <span class="o_step_number bg-primary"><t t-esc="this.getStepNumber('Land Compensation &amp; Award', (state.isCollector or state.isAdmin) ? 'Step 11' : 'Step 10')"/></span>
                             </div>
                             <div class="o_section_list_icon">
                                 <i class="fa fa-trophy"/>
                             </div>
                             <div class="o_section_list_content">
                                 <div class="o_section_list_title">
-                                    Section 23 Award
+                                    Land Compensation &amp; Award
                                     <t t-if="state.stats &amp;&amp; state.stats.section23_award_info &amp;&amp; state.stats.section23_award_info.is_completed">
                                         <span class="o_completion_tick" title="All Section 23 Awards completed">
                                             <i class="fa fa-check-circle"/>
@@ -1040,9 +1092,26 @@
 
 
 
+                        <t t-if="this.isSectionVisible('Structure/Asset Assessment &amp; Award') and !this.isRailwayLaw() and !this.isNHLaw()">
+                        <div class="o_section_list_item o_card_no_click" style="order: 10;">
+                            <div class="o_section_list_step">
+                                <span class="o_step_number bg-primary"><t t-esc="this.getStepNumber('Structure/Asset Assessment &amp; Award', (state.isCollector or state.isAdmin) ? 'Step 12' : 'Step 11')"/></span>
+                            </div>
+                            <div class="o_section_list_icon"><i class="fa fa-cubes"/></div>
+                            <div class="o_section_list_content">
+                                <div class="o_section_list_title">Structure/Asset Assessment &amp; Award</div>
+                            </div>
+                            <div class="o_section_list_actions">
+                                <button class="btn btn-sm btn-info" t-on-click.stop="() => this.openSectionList('bhu.section23.award')">
+                                    <i class="fa fa-eye"/> View/Edit
+                                </button>
+                            </div>
+                        </div>
+                        </t>
+
                         <!-- Payment Voucher (non-Railway / non-NH — Railway/NH shown in column 1) -->
                         <t t-if="this.isSectionVisible('Payment Voucher') and !this.isRailwayLaw() and !this.isNHLaw()">
-                        <div class="o_section_list_item o_card_no_click">
+                        <div class="o_section_list_item o_card_no_click" style="order: 11;">
                             <div class="o_section_list_step">
                                 <span class="o_step_number bg-primary"><t t-esc="this.getStepNumber('Payment Voucher', (state.isCollector or state.isAdmin) ? 'Step 12' : 'Step 11')"/></span>
                             </div>
@@ -1090,7 +1159,7 @@
 
                         <!-- Payment File -->
                         <t t-if="this.isSectionVisible('Payment File')">
-                        <div class="o_section_list_item o_card_no_click" t-att-style="(this.isRailwayLaw() or this.isNHLaw()) ? 'order: 41;' : ''">
+                        <div class="o_section_list_item o_card_no_click" t-att-style="(this.isRailwayLaw() or this.isNHLaw()) ? 'order: 41;' : 'order: 12;'">
                             <div class="o_section_list_step">
                                 <span class="o_step_number bg-primary"><t t-esc="this.getStepNumber('Payment File', (state.isCollector or state.isAdmin) ? 'Step 13' : 'Step 12')"/></span>
                             </div>
@@ -1136,7 +1205,7 @@
 
                         <!-- Bank Recon -->
                         <t t-if="this.isSectionVisible('Bank Recon')">
-                        <div class="o_section_list_item o_card_no_click" t-att-style="this.isSectionVisible('Sec 20 A (Railways)') ? 'order: 50;' : ''">
+                        <div class="o_section_list_item o_card_no_click" t-att-style="this.isSectionVisible('Sec 20 A (Railways)') ? 'order: 50;' : 'order: 13;'">
                             <div class="o_section_list_step">
                                 <span class="o_step_number bg-primary"><t t-esc="this.getStepNumber('Bank Recon', 'Step 14')"/></span>
                             </div>

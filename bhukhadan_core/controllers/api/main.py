@@ -1,22 +1,17 @@
-import jwt
 import datetime
-import random
-import logging
-import requests  # Import requests to send API call
-from odoo import http
-from odoo.http import request, Response
-from odoo import models, fields
 import json
+import logging
 import random
+from functools import wraps
+
+import jwt
+import requests
+from odoo import fields, http, models
+from odoo.exceptions import AccessError, UserError
+from odoo.http import Response, request
 
 _logger = logging.getLogger(__name__)
 
-import jwt
-
-from odoo.exceptions import AccessError, UserError
-
-
-from functools import wraps
 
 def check_permission(func):
     @wraps(func)
@@ -43,8 +38,5 @@ def check_permission(func):
 
         return func(*args, **kwargs)
     return wrapper
-
-
-
 
 
