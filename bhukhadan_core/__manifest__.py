@@ -145,6 +145,7 @@
         'wizard/time_savings_report_wizard_views.xml',
         'wizard/report_wizard.xml',
         'wizard/user_report_wizard.xml',
+        'wizard/survey_import_wizard_views.xml',
         'views/qr_microsite_templates.xml',
         'views/menu_root.xml',
         'views/group_dashboard_views.xml',

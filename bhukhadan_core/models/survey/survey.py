@@ -137,6 +137,11 @@ class Survey(models.Model):
     # Single Khasra Details - One survey per khasra
     khasra_number = fields.Char(string='Khasra Number / खसरा नंबर', required=True, tracking=True, index=True)
     khata_no = fields.Char(string='Khata No / खाता नंबर', tracking=True)
+    land_acquire_year = fields.Char(
+        string='Land Acquire Year / भू-अर्जन वर्ष',
+        tracking=True,
+        help='Government order reference for land acquisition (e.g. SO. No.- 3095 dated 24-11-2004)',
+    )
     total_area = fields.Float(string='Total Area (Hectares) / कुल क्षेत्रफल (हेक्टेयर)', digits=(10, 4), tracking=True)
     acquired_area = fields.Float(string='Acquired Area (Hectares) / अर्जन हेतु प्रस्तावित क्षेत्रफल (हेक्टेयर)', digits=(10, 4), tracking=True)
     has_traded_land = fields.Selection([
@@ -156,6 +161,24 @@ class Survey(models.Model):
         ('irrigated', 'Irrigated / सिंचित'),
         ('unirrigated', 'Unirrigated / असिंचित'),
     ], string='Irrigation Type / सिंचाई का प्रकार', default='irrigated', tracking=True)
+
+    @api.onchange('crop_type_id')
+    def _onchange_crop_type_id_irrigation(self):
+        """Sync irrigation selection from linked land type master."""
+        if not self.crop_type_id:
+            return
+        name = (self.crop_type_id.name or '').lower()
+        code = (self.crop_type_id.code or '').lower()
+        if (
+            'asin' in name or 'unirrig' in name or 'असिंचित' in (self.crop_type_id.name or '')
+            or 'asin' in code or code in ('002', 'asinchit', 'unirrigated')
+        ):
+            self.irrigation_type = 'unirrigated'
+        elif (
+            'sinch' in name or 'irrig' in name or 'सिंचित' in (self.crop_type_id.name or '')
+            or 'sinch' in code or code in ('001', 'sinchit', 'irrigated')
+        ):
+            self.irrigation_type = 'irrigated'
     
     # Award-related fields (editable only from award section)
     land_type_for_award = fields.Selection([

@@ -167,9 +167,9 @@
                                 <group string="Land Information / भूमि की जानकारी" class="survey-icon-land">
                                     <field name="khasra_number" widget="char" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)" required="1" string="Khasra Number * / खसरा नंबर *"/>
                                     <field name="khata_no" widget="char" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)" string="Khata No / खाता नंबर"/>
+                                    <field name="land_acquire_year" widget="char" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)" string="Land Acquire Year / भू-अर्जन वर्ष"/>
                                     <field name="total_area" widget="float" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)"/>
                                     <field name="acquired_area" widget="float" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)" string="Acquired Area (Hectares) / अर्जन हेतु प्रस्तावित क्षेत्रफल (हेक्टेयर)"/>
-                                    <field name="crop_type_id" widget="selection" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)" options="{'no_create_edit': True}" string="Crop Type / फसल का प्रकार"/>
                                     <field name="has_traded_land" widget="radio" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)" options="{'horizontal': true}"/>
                                     <field name="traded_land_area" widget="float" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)" 
                                            invisible="has_traded_land != 'yes'" required="has_traded_land == 'yes'"/>
@@ -178,7 +178,8 @@
                                            string="Distance from Main Road (m) / मुख्य मार्ग से दूरी (मीटर)"/>
                                 </group>
                                 <group string="Crop Information / फसल की जानकारी" class="survey-icon-crop">
-                                    <field name="irrigation_type" widget="radio" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)" options="{'horizontal': true}"/>
+                                    <field name="crop_type_id" widget="selection" readonly="not is_admin and (is_approved_readonly or is_notification_4_generated or state == 'submitted' or is_collector_readonly)" options="{'no_create': True}" string="Land Type / भूमि का प्रकार"/>
+                                    <field name="irrigation_type" invisible="1"/>
                                 </group>
                             </group>
                             

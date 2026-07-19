@@ -27,8 +27,8 @@ HOUSE_OWNER_WRITABLE = (
 )
 
 SURVEY_WRITABLE = {
-    'project_id', 'department_id', 'village_id', 'tehsil_id', 'survey_date',
-    'survey_type', 'khasra_number', 'total_area', 'acquired_area',
+    'project_id', 'department_id', 'village_id', 'tehsil_id', 'area_id', 'survey_date',
+    'survey_type', 'khasra_number', 'khata_no', 'land_acquire_year', 'total_area', 'acquired_area',
     'has_traded_land', 'traded_land_area', 'distance_from_main_road',
     'crop_type_id', 'irrigation_type',
     'has_house', 'house_type', 'house_area', 'has_shed', 'shed_area',
@@ -344,6 +344,13 @@ def api_build_survey_vals(env, data, user_id=None):
         'state': data.get('state') or 'draft',
         'landowner_ids': landowner_commands,
     }
+
+    if data.get('khata_no'):
+        vals['khata_no'] = str(data['khata_no']).strip()
+    if data.get('land_acquire_year'):
+        vals['land_acquire_year'] = str(data['land_acquire_year']).strip()
+    if data.get('area_id'):
+        vals['area_id'] = int(data['area_id'])
 
     crop_type_id = api_resolve_crop_type_id(env, data)
     if crop_type_id:
@@ -668,6 +675,8 @@ def api_serialize_survey(survey, include_image=False, summary=False):
         'district_name': survey.district_name or '',
         'survey_type': survey.survey_type or 'rural',
         'khasra_number': survey.khasra_number or '',
+        'khata_no': survey.khata_no or '',
+        'land_acquire_year': survey.land_acquire_year or '',
         'total_area': survey.total_area,
         'acquired_area': survey.acquired_area,
         'has_traded_land': survey.has_traded_land or 'no',

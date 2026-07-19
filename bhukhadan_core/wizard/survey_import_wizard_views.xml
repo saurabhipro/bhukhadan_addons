@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_bhu_survey_import_wizard_form" model="ir.ui.view">
+        <field name="name">bhu.survey.import.wizard.form</field>
+        <field name="model">bhu.survey.import.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Import Surveys from Excel">
+                <sheet>
+                    <group invisible="state != 'draft'">
+                        <div class="alert alert-info" role="alert">
+                            <p><strong>Expected sheet layout</strong> (one row = one khasra/plot survey):</p>
+                            <ul>
+                                <li><strong>C</strong> खाता क्र. → Khata No (master, merged cells supported)</li>
+                                <li><strong>D</strong> भूमिस्वामी / पिता / पति → Landowner name, father, spouse</li>
+                                <li><strong>E</strong> प्लांट नं./खसरा नं. → Khasra Number (required per row)</li>
+                                <li><strong>F</strong> भूमि का प्रकार → Land Type master (Sinchit / Asinchit)</li>
+                                <li><strong>G/H</strong> Area / Acquired area (hectares)</li>
+                                <li><strong>K</strong> भू-अर्जन वर्ष → Land Acquire Year (e.g. SO. No.- 3095 dated 24-11-2004)</li>
+                                <li><strong>L</strong> जाति / वर्ग → Landowner caste</li>
+                            </ul>
+                            <p>Select project, village, and area once; each khasra row creates (or updates) a survey and links a landowner.</p>
+                        </div>
+                    </group>
+                    <group invisible="state != 'draft'">
+                        <group>
+                            <field name="project_id" options="{'no_create': True}"/>
+                            <field name="department_id" options="{'no_create': True}"/>
+                            <field name="allowed_village_ids" invisible="1"/>
+                            <field name="village_id"
+                                   domain="[('id', 'in', allowed_village_ids)]"
+                                   options="{'no_create': True}"/>
+                            <field name="area_id" options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <field name="data_file" filename="data_file_filename"/>
+                            <field name="update_existing"/>
+                            <field name="dry_run"/>
+                        </group>
+                    </group>
+                    <group invisible="state != 'done'">
+                        <group>
+                            <field name="created_count"/>
+                            <field name="updated_count"/>
+                        </group>
+                        <group>
+                            <field name="skipped_count"/>
+                            <field name="error_count"/>
+                        </group>
+                    </group>
+                    <group invisible="state != 'done'">
+                        <field name="log_text" nolabel="1" widget="text"/>
+                    </group>
+                    <field name="state" invisible="1"/>
+                </sheet>
+                <footer invisible="state != 'draft'">
+                    <button name="action_import" string="Import" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+                <footer invisible="state != 'done'">
+                    <button string="Close" class="btn-primary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_bhu_survey_import_wizard" model="ir.actions.act_window">
+        <field name="name">Import Surveys</field>
+        <field name="res_model">bhu.survey.import.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>
