@@ -89,6 +89,58 @@ def api_resolve_survey(env, survey_id=None, survey_uuid=None):
     return survey
 
 
+def _api_int_query_arg(args, name):
+    raw = args.get(name)
+    if raw in (None, ''):
+        return None
+    try:
+        return int(raw)
+    except (TypeError, ValueError):
+        raise ValidationError(f'Invalid {name}: must be an integer')
+
+
+def api_build_survey_list_domain(env, args):
+    """Build list domain with optional department → project → village filters."""
+    domain = []
+    department_id = _api_int_query_arg(args, 'department_id')
+    project_id = _api_int_query_arg(args, 'project_id')
+    village_id = _api_int_query_arg(args, 'village_id')
+    project = env['bhu.project'].sudo().browse()
+
+    if department_id:
+        if not env['bhu.department'].sudo().browse(department_id).exists():
+            raise ValidationError(f'department_id {department_id} does not exist')
+        domain.append(('department_id', '=', department_id))
+
+    if project_id:
+        project = env['bhu.project'].sudo().browse(project_id)
+        if not project.exists():
+            raise ValidationError(f'project_id {project_id} does not exist')
+        if department_id and project.department_id.id != department_id:
+            raise ValidationError('project_id does not belong to the specified department_id')
+        domain.append(('project_id', '=', project_id))
+
+    if village_id:
+        village = env['bhu.village'].sudo().browse(village_id)
+        if not village.exists():
+            raise ValidationError(f'village_id {village_id} does not exist')
+        if project_id and village_id not in project.village_ids.ids:
+            raise ValidationError('village_id does not belong to the specified project_id')
+        domain.append(('village_id', '=', village_id))
+
+    state = args.get('state')
+    if state:
+        if state.lower() == 'pending':
+            domain.append(('state', '!=', 'approved'))
+        else:
+            domain.append(('state', '=', state))
+
+    if args.get('q'):
+        domain.append(('khasra_number', 'ilike', args.get('q')))
+
+    return domain
+
+
 def _vals_from_dict(data, fields, default_village_id=None):
     vals = {}
     for field in fields:
@@ -364,6 +416,160 @@ def api_build_survey_update_vals(env, survey, data):
     return vals
 
 
+def api_assert_survey_editable(survey):
+    if survey.state not in ('draft', 'submitted'):
+        raise ValidationError(
+            f'Survey cannot be edited in state "{survey.state}". '
+            'Only draft or submitted surveys can be edited.'
+        )
+
+
+def api_add_survey_landowners(env, survey, data):
+    """Create new or link existing landowners to a survey."""
+    Landowner = env['bhu.landowner'].sudo()
+    default_village_id = survey.village_id.id
+    linked = Landowner.browse()
+    has_payload = False
+
+    owners = data.get('landowners')
+    if owners is not None:
+        if not isinstance(owners, list):
+            raise ValidationError('landowners must be an array')
+        if owners:
+            has_payload = True
+            for index, item in enumerate(owners):
+                if not isinstance(item, dict):
+                    raise ValidationError(f'landowners[{index}] must be an object')
+                vals = _vals_from_dict(item, LANDOWNER_WRITABLE, default_village_id)
+                if not vals.get('name'):
+                    raise ValidationError(f'landowners[{index}].name is required')
+                vals['survey_id'] = survey.id
+                linked |= Landowner.create(vals)
+
+    ids = data.get('landowner_ids')
+    if ids is not None:
+        if not isinstance(ids, list):
+            raise ValidationError('landowner_ids must be an array')
+        if ids:
+            has_payload = True
+            for lid in ids:
+                landowner = Landowner.browse(int(lid))
+                if not landowner.exists():
+                    raise ValidationError(f'Landowner ID {lid} does not exist')
+                if landowner.survey_id and landowner.survey_id.id != survey.id:
+                    raise ValidationError(f'Landowner ID {lid} is already linked to another survey')
+                if not landowner.survey_id:
+                    landowner.write({'survey_id': survey.id})
+                linked |= landowner
+
+    if not has_payload:
+        raise ValidationError('Provide landowners[] and/or landowner_ids[]')
+    if not linked:
+        raise ValidationError('No landowners were added')
+    return linked
+
+
+def api_add_survey_house_owners(env, survey, data):
+    """Create new or link existing house owners to a survey."""
+    HouseOwner = env['bhu.house.owner'].sudo()
+    default_village_id = survey.village_id.id
+    linked = HouseOwner.browse()
+    has_payload = False
+
+    owners = data.get('house_owners')
+    if owners is not None:
+        if not isinstance(owners, list):
+            raise ValidationError('house_owners must be an array')
+        if owners:
+            has_payload = True
+            for index, item in enumerate(owners):
+                if not isinstance(item, dict):
+                    raise ValidationError(f'house_owners[{index}] must be an object')
+                vals = _vals_from_dict(item, HOUSE_OWNER_WRITABLE, default_village_id)
+                if not vals.get('name'):
+                    raise ValidationError(f'house_owners[{index}].name is required')
+                vals['survey_id'] = survey.id
+                linked |= HouseOwner.create(vals)
+
+    ids = data.get('house_owner_ids')
+    if ids is not None:
+        if not isinstance(ids, list):
+            raise ValidationError('house_owner_ids must be an array')
+        if ids:
+            has_payload = True
+            for hid in ids:
+                house_owner = HouseOwner.browse(int(hid))
+                if not house_owner.exists():
+                    raise ValidationError(f'House owner ID {hid} does not exist')
+                if house_owner.survey_id and house_owner.survey_id.id != survey.id:
+                    raise ValidationError(f'House owner ID {hid} is already linked to another survey')
+                if not house_owner.survey_id:
+                    house_owner.write({'survey_id': survey.id})
+                linked |= house_owner
+
+    if not has_payload:
+        raise ValidationError('Provide house_owners[] and/or house_owner_ids[]')
+    if not linked:
+        raise ValidationError('No house owners were added')
+    return linked
+
+
+def api_add_survey_tree_lines(env, survey, data):
+    """Append tree lines to a survey."""
+    tree_lines = data.get('tree_lines')
+    if not isinstance(tree_lines, list) or not tree_lines:
+        raise ValidationError('tree_lines must be a non-empty array')
+
+    TreeLine = env['bhu.survey.tree.line'].sudo()
+    TreeMaster = env['bhu.tree.master'].sudo()
+    created = TreeLine.browse()
+
+    for index, line in enumerate(tree_lines):
+        if not isinstance(line, dict):
+            raise ValidationError(f'tree_lines[{index}] must be an object')
+        tree_master_id = line.get('tree_master_id')
+        if not tree_master_id:
+            raise ValidationError(f'tree_lines[{index}].tree_master_id is required')
+        master = TreeMaster.browse(int(tree_master_id))
+        if not master.exists():
+            raise ValidationError(f'Tree master ID {tree_master_id} does not exist')
+        development_stage = line.get('development_stage')
+        if development_stage not in ('undeveloped', 'semi_developed', 'fully_developed'):
+            raise ValidationError(f'tree_lines[{index}].development_stage is invalid')
+        vals = {
+            'survey_id': survey.id,
+            'tree_master_id': master.id,
+            'development_stage': development_stage,
+            'quantity': int(line.get('quantity') or 1),
+        }
+        girth = line.get('girth_cm')
+        if girth not in (None, ''):
+            vals['girth_cm'] = float(girth)
+        record_id = line.get('id')
+        if record_id:
+            existing = TreeLine.browse(int(record_id))
+            if not existing.exists() or existing.survey_id.id != survey.id:
+                raise ValidationError(f'Tree line ID {record_id} does not belong to this survey')
+            existing.write({key: val for key, val in vals.items() if key != 'survey_id'})
+            created |= existing
+        else:
+            created |= TreeLine.create(vals)
+
+    return created
+
+
+def api_serialize_tree_line(line):
+    return {
+        'id': line.id,
+        'tree_type': line.tree_type,
+        'tree_master_id': line.tree_master_id.id if line.tree_master_id else None,
+        'tree_name': line.tree_master_id.name if line.tree_master_id else '',
+        'development_stage': line.development_stage,
+        'girth_cm': line.girth_cm,
+        'quantity': line.quantity,
+    }
+
+
 def api_serialize_landowner(record):
     return {
         'id': record.id,
@@ -407,6 +613,10 @@ def api_serialize_house_owner(record):
     return data
 
 
+def api_serialize_tree_lines(survey):
+    return [api_serialize_tree_line(line) for line in survey.tree_line_ids]
+
+
 def api_serialize_survey(survey, include_image=False, summary=False):
     if summary:
         return {
@@ -430,6 +640,11 @@ def api_serialize_survey(survey, include_image=False, summary=False):
             'landowners_count': len(survey.landowner_ids),
             'house_owners_count': len(survey.house_owner_ids),
             'photos_count': len(survey.photo_ids),
+            'landowners': [api_serialize_landowner(lo) for lo in survey.landowner_ids],
+            'landowner_ids': survey.landowner_ids.ids,
+            'house_owners': [api_serialize_house_owner(ho) for ho in survey.house_owner_ids],
+            'house_owner_ids': survey.house_owner_ids.ids,
+            'tree_lines': api_serialize_tree_lines(survey),
         }
 
     survey_image = None
@@ -464,15 +679,7 @@ def api_serialize_survey(survey, include_image=False, summary=False):
         'crop_type_id': survey.crop_type_id.id if survey.crop_type_id else None,
         'crop_type_name': survey.crop_type_id.name if survey.crop_type_id else '',
         'irrigation_type': survey.irrigation_type,
-        'tree_lines': [{
-            'id': line.id,
-            'tree_type': line.tree_type,
-            'tree_master_id': line.tree_master_id.id,
-            'tree_name': line.tree_master_id.name,
-            'development_stage': line.development_stage,
-            'girth_cm': line.girth_cm,
-            'quantity': line.quantity,
-        } for line in survey.tree_line_ids],
+        'tree_lines': api_serialize_tree_lines(survey),
         'photos': [{
             'id': photo.id,
             'photo_type_id': photo.photo_type_id.id if photo.photo_type_id else None,

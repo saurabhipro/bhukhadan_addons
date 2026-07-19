@@ -605,7 +605,9 @@ class BhuProject(models.Model):
         
         # Get current user
         user = self.env.user
-        
+        if not user:
+            return super()._search(args, offset=offset, limit=limit, order=order)
+
         # Allow public users to access all projects if they have access rights
         # This is needed for API endpoints that use auth='public' with sudo()
         if user.has_group('base.group_public') and not user.has_group('base.group_user'):

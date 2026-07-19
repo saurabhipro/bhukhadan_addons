@@ -204,6 +204,5 @@
 
     <!-- Move Settings Master to Master Data section -->
     <menuitem id="menu_bhu_settings_master" name="Settings Master" action="action_bhuarjan_settings_master_tree" parent="menu_bhu_master" sequence="100" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
-    <menuitem id="menu_bhu_sequence_settings" name="Sequence Settings" action="action_bhuarjan_sequence_settings_tree" parent="base.menu_administration" sequence="101" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
     </data>
 </odoo>

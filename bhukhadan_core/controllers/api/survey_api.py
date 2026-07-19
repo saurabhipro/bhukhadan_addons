@@ -11,6 +11,11 @@ from odoo.osv.expression import AND
 
 from .main import check_permission
 from odoo.addons.bhukhadan_core.utils.survey_api import (
+    api_add_survey_house_owners,
+    api_add_survey_landowners,
+    api_add_survey_tree_lines,
+    api_assert_survey_editable,
+    api_build_survey_list_domain,
     api_build_survey_update_vals,
     api_build_survey_vals,
     api_json_error,
@@ -18,6 +23,9 @@ from odoo.addons.bhukhadan_core.utils.survey_api import (
     api_resolve_survey,
     api_serialize_survey,
     api_user_can_access_survey,
+    api_serialize_landowner,
+    api_serialize_house_owner,
+    api_serialize_tree_line,
 )
 from odoo.addons.bhukhadan_core.utils.survey_s3 import register_survey_photos
 
@@ -34,6 +42,20 @@ class SurveyAPIController(http.Controller):
 
     def _parse_json_body(self):
         return json.loads(request.httprequest.data.decode('utf-8') or '{}')
+
+    def _list_request_args(self):
+        """Merge JSON body and query-string params (query wins on conflict)."""
+        merged = {}
+        if request.httprequest.data:
+            try:
+                data = json.loads(request.httprequest.data.decode('utf-8') or '{}')
+                if isinstance(data, dict):
+                    merged.update(data)
+            except json.JSONDecodeError:
+                pass
+        for key in request.httprequest.args:
+            merged[key] = request.httprequest.args.get(key)
+        return merged
 
     @http.route('/api/bhukhadan/survey', type='http', auth='public', methods=['POST'], csrf=False)
     @check_permission
@@ -66,25 +88,12 @@ class SurveyAPIController(http.Controller):
             _logger.exception('Survey create failed')
             return self._json_response({'success': False, 'error': str(err)}, status=500)
 
-    @http.route('/api/bhukhadan/surveys', type='http', auth='public', methods=['GET'], csrf=False)
     @http.route('/api/bhukhadan/survey', type='http', auth='public', methods=['GET'], csrf=False)
     @check_permission
     def list_surveys(self, **kwargs):
         try:
-            args = request.httprequest.args
-            domain = []
-            if args.get('project_id'):
-                domain.append(('project_id', '=', int(args.get('project_id'))))
-            if args.get('village_id'):
-                domain.append(('village_id', '=', int(args.get('village_id'))))
-            if args.get('state'):
-                state = args.get('state')
-                if state.lower() == 'pending':
-                    domain.append(('state', '!=', 'approved'))
-                else:
-                    domain.append(('state', '=', state))
-            if args.get('q'):
-                domain.append(('khasra_number', 'ilike', args.get('q')))
+            args = self._list_request_args()
+            domain = api_build_survey_list_domain(request.env, args)
 
             user = self._current_user()
             if user.bhuarjan_role in request.env['res.users'].BHUKHADAN_PATWARI_ROLES:
@@ -104,6 +113,9 @@ class SurveyAPIController(http.Controller):
                 'limit': limit,
                 'offset': offset,
             })
+        except ValidationError as err:
+            payload, status = api_json_error(str(err))
+            return self._json_response(payload, status=status)
         except Exception as err:
             _logger.exception('Survey list failed')
             return self._json_response({'success': False, 'error': str(err)}, status=500)
@@ -144,6 +156,78 @@ class SurveyAPIController(http.Controller):
             'success': True,
             'data': api_serialize_survey(survey, include_image=include_image),
         })
+
+    def _get_survey_for_mutation(self, survey_id):
+        survey = request.env['bhu.survey'].sudo().browse(survey_id)
+        if not survey.exists():
+            payload, status = api_json_error('Survey not found', error_code='NOT_FOUND', status=404)
+            return None, self._json_response(payload, status=status)
+        user = self._current_user()
+        if not api_user_can_access_survey(user, survey):
+            raise AccessError('You do not have access to this survey')
+        api_assert_survey_editable(survey)
+        return survey, None
+
+    def _has_survey_append_payload(self, data):
+        return bool(
+            data.get('landowners')
+            or data.get('landowner_ids')
+            or data.get('house_owners')
+            or data.get('house_owner_ids')
+            or data.get('tree_lines')
+        )
+
+    @http.route(
+        '/api/bhukhadan/survey/<int:survey_id>/owners',
+        type='http', auth='public', methods=['POST'], csrf=False,
+    )
+    @check_permission
+    def add_survey_owners(self, survey_id, **kwargs):
+        try:
+            survey, error_response = self._get_survey_for_mutation(survey_id)
+            if error_response:
+                return error_response
+
+            data = self._parse_json_body()
+            if not self._has_survey_append_payload(data):
+                payload, status = api_json_error(
+                    'Provide at least one of: landowners[], landowner_ids[], '
+                    'house_owners[], house_owner_ids[], tree_lines[]',
+                )
+                return self._json_response(payload, status=status)
+
+            added_landowners = request.env['bhu.landowner'].sudo().browse()
+            added_house_owners = request.env['bhu.house.owner'].sudo().browse()
+            added_tree_lines = request.env['bhu.survey.tree.line'].sudo().browse()
+
+            if data.get('landowners') or data.get('landowner_ids'):
+                added_landowners = api_add_survey_landowners(request.env, survey, data)
+            if data.get('house_owners') or data.get('house_owner_ids'):
+                added_house_owners = api_add_survey_house_owners(request.env, survey, data)
+            if data.get('tree_lines'):
+                added_tree_lines = api_add_survey_tree_lines(request.env, survey, data)
+
+            return self._json_response({
+                'success': True,
+                'message': 'Survey data added successfully',
+                'data': {
+                    'survey_id': survey.id,
+                    'landowners': [api_serialize_landowner(lo) for lo in added_landowners],
+                    'house_owners': [api_serialize_house_owner(ho) for ho in added_house_owners],
+                    'tree_lines': [api_serialize_tree_line(line) for line in added_tree_lines],
+                },
+            }, status=201)
+        except AccessError as err:
+            return self._json_response({'success': False, 'error': str(err)}, status=403)
+        except ValidationError as err:
+            payload, status = api_json_error(str(err))
+            return self._json_response(payload, status=status)
+        except json.JSONDecodeError:
+            payload, status = api_json_error('Invalid JSON body', error_code='INVALID_JSON')
+            return self._json_response(payload, status=status)
+        except Exception as err:
+            _logger.exception('Add survey owners failed for %s', survey_id)
+            return self._json_response({'success': False, 'error': str(err)}, status=500)
 
     @http.route('/api/bhukhadan/survey/<int:survey_id>', type='http', auth='public', methods=['PATCH'], csrf=False)
     @check_permission

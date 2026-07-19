@@ -28,6 +28,7 @@ def check_permission(func):
             if not user:
                 raise AccessError('User not found')
             request.user = user
+            request.update_env(user=user.id)
         except jwt.ExpiredSignatureError as err:
             raise AccessError('JWT token has expired') from err
         except jwt.InvalidTokenError as err:

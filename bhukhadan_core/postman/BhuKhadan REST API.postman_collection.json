@@ -1,0 +1,831 @@
+{
+  "info": {
+    "_postman_id": "bhu-khadan-rest-api-2026",
+    "name": "BhuKhadan REST API",
+    "description": "BhuKhadan mobile REST API (current codebase).\n\n## Quick start\n1. Import `BhuKhadan Local.postman_environment.json`\n2. Select **BhuKhadan Local** environment\n3. Run **Request OTP** \u2192 **Login** (saves `{{token}}`)\n4. Use survey endpoints\n\n## Auth\nProtected routes: `Authorization: Bearer {{token}}`\n\n## POST /survey/{id}/owners\nAdd data to an existing survey. Send **any one** or a combination:\n- `landowners[]` or `landowner_ids[]`\n- `house_owners[]` or `house_owner_ids[]`\n- `tree_lines[]`\n\nEach block is independent \u2014 you do NOT need all three.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8069"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "mobile",
+      "value": "9999999999"
+    },
+    {
+      "key": "otp",
+      "value": "1234"
+    },
+    {
+      "key": "survey_id",
+      "value": "1"
+    },
+    {
+      "key": "department_id",
+      "value": "1"
+    },
+    {
+      "key": "project_id",
+      "value": "1"
+    },
+    {
+      "key": "village_id",
+      "value": "1"
+    },
+    {
+      "key": "tree_master_id",
+      "value": "1"
+    },
+    {
+      "key": "landowner_id",
+      "value": "379"
+    },
+    {
+      "key": "house_owner_id",
+      "value": "15"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "description": "No Bearer token required.",
+      "item": [
+        {
+          "name": "Request OTP",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"mobile\": \"{{mobile}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/request_otp",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "request_otp"
+              ]
+            },
+            "description": "Send OTP. With static OTP enabled, code is in `details`."
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"mobile\": \"{{mobile}}\",\n    \"otp_input\": \"{{otp}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Login with mobile + OTP. Auto-saves JWT to {{token}}."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const json = pm.response.json();",
+                  "    if (json.token) {",
+                  "        pm.collectionVariables.set('token', json.token);",
+                  "        pm.environment.set('token', json.token);",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Register User",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Test Patwari\",\n    \"mobile\": \"8888888888\",\n    \"login\": \"test_patwari\",\n    \"password\": \"Test@1234\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            },
+            "description": "Register a new user (setup/admin use)."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Survey",
+      "description": "Survey list, create, read, update. Requires Bearer token.",
+      "item": [
+        {
+          "name": "List Surveys",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/bhukhadan/survey?limit=100&offset=0",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "bhukhadan",
+                "survey"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "100"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                },
+                {
+                  "key": "state",
+                  "value": "draft",
+                  "disabled": true
+                },
+                {
+                  "key": "q",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "List surveys. Response includes landowners[], house_owners[], tree_lines[] per survey."
+          },
+          "response": []
+        },
+        {
+          "name": "List - Filter by Department",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/bhukhadan/survey?department_id={{department_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "bhukhadan",
+                "survey"
+              ],
+              "query": [
+                {
+                  "key": "department_id",
+                  "value": "{{department_id}}"
+                }
+              ]
+            },
+            "description": "All surveys in a department."
+          },
+          "response": []
+        },
+        {
+          "name": "List - Department + Project + Village",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/bhukhadan/survey?department_id={{department_id}}&project_id={{project_id}}&village_id={{village_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "bhukhadan",
+                "survey"
+              ],
+              "query": [
+                {
+                  "key": "department_id",
+                  "value": "{{department_id}}"
+                },
+                {
+                  "key": "project_id",
+                  "value": "{{project_id}}"
+                },
+                {
+                  "key": "village_id",
+                  "value": "{{village_id}}"
+                }
+              ]
+            },
+            "description": "Filter by department AND project AND village."
+          },
+          "response": []
+        },
+        {
+          "name": "List - Body Filters (GET)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"department_id\": \"{{department_id}}\",\n    \"project_id\": \"{{project_id}}\",\n    \"village_id\": \"{{village_id}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/bhukhadan/survey",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "bhukhadan",
+                "survey"
+              ]
+            },
+            "description": "Filters via JSON body on GET (query params also work)."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Survey",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"project_id\": \"{{project_id}}\",\n    \"village_id\": \"{{village_id}}\",\n    \"department_id\": \"{{department_id}}\",\n    \"khasra_number\": \"103/90\",\n    \"total_area\": 2.5,\n    \"acquired_area\": 2.0,\n    \"state\": \"draft\",\n    \"landowners\": [\n        {\n            \"name\": \"Ram Kumar\",\n            \"phone\": \"9876543210\"\n        }\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/bhukhadan/survey",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "bhukhadan",
+                "survey"
+              ]
+            },
+            "description": "Create survey. At least one landowner required. Saves {{survey_id}}."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const json = pm.response.json();",
+                  "    if (json.data && json.data.id) {",
+                  "        pm.collectionVariables.set('survey_id', String(json.data.id));",
+                  "        pm.environment.set('survey_id', String(json.data.id));",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Survey by ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/bhukhadan/survey/{{survey_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "bhukhadan",
+                "survey",
+                "{{survey_id}}"
+              ]
+            },
+            "description": "Full survey detail."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Survey Detail",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/bhukhadan/survey/detail?survey_id={{survey_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "bhukhadan",
+                "survey",
+                "detail"
+              ],
+              "query": [
+                {
+                  "key": "survey_id",
+                  "value": "{{survey_id}}"
+                }
+              ]
+            },
+            "description": "Detail by survey_id or survey_uuid query param."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Survey",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"remarks\": \"Updated via API\",\n    \"state\": \"submitted\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/bhukhadan/survey/{{survey_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "bhukhadan",
+                "survey",
+                "{{survey_id}}"
+              ]
+            },
+            "description": "PATCH survey. Draft/submitted only (except state-only)."
+          },
+          "response": []
+        },
+        {
+          "name": "Append to Survey",
+          "description": "POST /api/bhukhadan/survey/{{survey_id}}/owners\n\nSend any ONE block independently, or combine them.",
+          "item": [
+            {
+              "name": "Add Landowners Only",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"landowners\": [\n        {\n            \"name\": \"New Landowner\",\n            \"father_name\": \"Father Name\",\n            \"phone\": \"9876500000\",\n            \"aadhar_number\": \"111122223333\"\n        }\n    ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/bhukhadan/survey/{{survey_id}}/owners",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "bhukhadan",
+                    "survey",
+                    "{{survey_id}}",
+                    "owners"
+                  ]
+                },
+                "description": "Add new landowners only. Do not send empty landowners[] array."
+              },
+              "response": []
+            },
+            {
+              "name": "Add House Owners Only",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"house_owners\": [\n        {\n            \"name\": \"New House Owner\",\n            \"phone\": \"9123400000\",\n            \"house_number\": \"45\",\n            \"mohalla\": \"Ward 2\"\n        }\n    ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/bhukhadan/survey/{{survey_id}}/owners",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "bhukhadan",
+                    "survey",
+                    "{{survey_id}}",
+                    "owners"
+                  ]
+                },
+                "description": "Add house owners only \u2014 no landowners required."
+              },
+              "response": []
+            },
+            {
+              "name": "Add Trees Only",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"tree_lines\": [\n        {\n            \"tree_master_id\": \"{{tree_master_id}}\",\n            \"development_stage\": \"semi_developed\",\n            \"girth_cm\": 30.0,\n            \"quantity\": 5\n        }\n    ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/bhukhadan/survey/{{survey_id}}/owners",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "bhukhadan",
+                    "survey",
+                    "{{survey_id}}",
+                    "owners"
+                  ]
+                },
+                "description": "Add tree lines only. development_stage: undeveloped | semi_developed | fully_developed"
+              },
+              "response": []
+            },
+            {
+              "name": "Add All (Landowners + House Owners + Trees)",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"landowners\": [\n        {\n            \"name\": \"Ram Kumar\",\n            \"phone\": \"9876500000\"\n        }\n    ],\n    \"house_owners\": [\n        {\n            \"name\": \"Sita Devi\",\n            \"house_number\": \"12\"\n        }\n    ],\n    \"tree_lines\": [\n        {\n            \"tree_master_id\": \"{{tree_master_id}}\",\n            \"development_stage\": \"fully_developed\",\n            \"quantity\": 2\n        }\n    ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/bhukhadan/survey/{{survey_id}}/owners",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "bhukhadan",
+                    "survey",
+                    "{{survey_id}}",
+                    "owners"
+                  ]
+                },
+                "description": "Send all three blocks together (optional combination example)."
+              },
+              "response": []
+            },
+            {
+              "name": "Link Existing Owner IDs",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"landowner_ids\": [\n        \"{{landowner_id}}\"\n    ],\n    \"house_owner_ids\": [\n        \"{{house_owner_id}}\"\n    ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/bhukhadan/survey/{{survey_id}}/owners",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "bhukhadan",
+                    "survey",
+                    "{{survey_id}}",
+                    "owners"
+                  ]
+                },
+                "description": "Link existing unlinked records by ID. Can also add tree_lines[] in same request."
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
