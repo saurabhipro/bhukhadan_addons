@@ -44,6 +44,22 @@ class Survey(models.Model):
                AND v.tehsil_id IS NOT NULL
             """
         )
+        self._cr.execute(
+            """
+            DO $$
+            BEGIN
+                IF EXISTS (
+                    SELECT 1 FROM information_schema.columns
+                     WHERE table_name = 'bhu_survey' AND column_name = 'khada_no'
+                ) AND NOT EXISTS (
+                    SELECT 1 FROM information_schema.columns
+                     WHERE table_name = 'bhu_survey' AND column_name = 'khata_no'
+                ) THEN
+                    ALTER TABLE bhu_survey RENAME COLUMN khada_no TO khata_no;
+                END IF;
+            END $$;
+            """
+        )
         return res
 
     # Basic Information
@@ -54,6 +70,7 @@ class Survey(models.Model):
     department_id = fields.Many2one('bhu.department', string='Department / विभाग', required=True, tracking=True)
     village_id = fields.Many2one('bhu.village', string='Village / ग्राम का नाम', required=True, tracking=True, index=True)
     tehsil_id = fields.Many2one('bhu.tehsil', string='Tehsil / तहसील', required=False, tracking=True)
+    area_id = fields.Many2one('bhukhadan.area.master', string='Area / क्षेत्र', tracking=True, ondelete='restrict')
     allowed_village_ids = fields.Many2many(
         'bhu.village',
         compute='_compute_allowed_village_ids',
@@ -119,6 +136,7 @@ class Survey(models.Model):
     
     # Single Khasra Details - One survey per khasra
     khasra_number = fields.Char(string='Khasra Number / खसरा नंबर', required=True, tracking=True, index=True)
+    khata_no = fields.Char(string='Khata No / खाता नंबर', tracking=True)
     total_area = fields.Float(string='Total Area (Hectares) / कुल क्षेत्रफल (हेक्टेयर)', digits=(10, 4), tracking=True)
     acquired_area = fields.Float(string='Acquired Area (Hectares) / अर्जन हेतु प्रस्तावित क्षेत्रफल (हेक्टेयर)', digits=(10, 4), tracking=True)
     has_traded_land = fields.Selection([

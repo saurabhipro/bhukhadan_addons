@@ -137,6 +137,7 @@
         'views/section3d_nh_views.xml',
         'views/section247_cglrc_views.xml',
         'views/photo_type_master_views.xml',
+        'views/area_master_views.xml',
         'views/settings_master_views.xml',
         'views/jwt_token_views.xml',
         'views/mobile_otp_views.xml',

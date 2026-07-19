@@ -75,6 +75,7 @@ from . import token
 
 from .masters import tree_rate_master
 from .masters import photo_type_master
+from .masters import area_master
 from .masters import law_master # noqa: F401
 from .masters import section_master
 

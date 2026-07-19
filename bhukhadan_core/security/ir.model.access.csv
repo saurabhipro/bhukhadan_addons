@@ -21,6 +21,8 @@ access_bhu_survey_line_user,bhu.survey.line.model_access,model_bhu_survey_line,b
 access_bhu_survey_line_public,bhu.survey.line.model_access_public,model_bhu_survey_line,base.group_public,1,1,1,1
 access_bhu_survey_tree_line_public,access_bhu_survey_tree_line_public,model_bhu_survey_tree_line,base.group_public,1,1,1,1
 access_bhu_photo_type_public,access_bhu_photo_type_public,model_bhu_photo_type,base.group_public,1,0,0,0
+access_bhukhadan_area_master,access_bhukhadan_area_master,model_bhukhadan_area_master,base.group_user,1,1,1,1
+access_bhukhadan_area_master_public,access_bhukhadan_area_master_public,model_bhukhadan_area_master,base.group_public,1,0,0,0
 access_bhu_survey_photo_public,access_bhu_survey_photo_public,model_bhu_survey_photo,base.group_public,1,1,1,1
 access_bhu_landowner_user,bhu.landowner.model_access,model_bhu_landowner,base.group_user,1,1,1,1
 access_bhu_landowner_public,bhu.landowner.model_access_public,model_bhu_landowner,base.group_public,1,0,0,0

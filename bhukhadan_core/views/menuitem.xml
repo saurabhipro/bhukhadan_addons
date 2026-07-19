@@ -25,6 +25,7 @@
     <menuitem id="menu_bhu_tehsil" name="Tehsils" action="action_bhu_tehsil" parent="menu_bhu_master" sequence="9" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_district_administrator"/>
     <menuitem id="menu_bhu_village" name="Villages" action="action_bhu_village" parent="menu_bhu_master" sequence="10" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_district_administrator"/>
     <menuitem id="menu_bhu_project" name="Projects" action="action_bhu_project" parent="menu_bhu_master" sequence="11" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_district_administrator"/>
+    <menuitem id="menu_bhu_area_master" name="Area Master" action="action_bhukhadan_area_master" parent="menu_bhu_master" sequence="12" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_district_administrator"/>
     <menuitem id="menu_bhu_department" name="Departments" action="action_bhu_department" parent="menu_bhu_master" sequence="13" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_district_administrator"/>
 
     <menuitem id="menu_bhu_landowner" name="Landowners" action="action_bhu_landowner" parent="menu_bhu_root" sequence="4"  groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_district_administrator"/>

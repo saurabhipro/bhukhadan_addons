@@ -26,16 +26,6 @@
                             <field name="name" placeholder="Enter land type name"/>
                         </h1>
                     </div>
-                    
-                    <group>
-                        <group string="🏷️ Basic Information" class="oe_group_col_2">
-                            <field name="code"/>
-                            <field name="active"/>
-                        </group>
-                        <group string="📝 Description" class="oe_group_col_2">
-                            <field name="description" widget="text" nolabel="1"/>
-                        </group>
-                    </group>
                 </sheet>
             </form>
         </field>
