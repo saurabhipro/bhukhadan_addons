@@ -324,7 +324,7 @@ class SurveyPhoto(models.Model):
         if not survey or not survey.exists():
             return self.browse()
 
-        from odoo.addons.bhukhadan_core.controllers.api.survey_api_helpers import (
+        from odoo.addons.bhukhadan_core.utils.survey_s3 import (
             build_canonical_s3_url,
             register_survey_photos,
         )

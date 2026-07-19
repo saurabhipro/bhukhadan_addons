@@ -348,25 +348,3 @@ class JWTAuthController(http.Controller):
             _logger.error(f"Error in login: {str(e)}", exc_info=True)
             return Response(json.dumps({'error': 'Internal server error', 'details': str(e)}), status=500, content_type='application/json')
 
-    @http.route('/api/get_contacts', type='json', auth='none', methods=['POST'], csrf=False)
-    def get_contacts(self, **kwargs):
-        try:
-            user_id = check_permission(request.httprequest.headers.get('Authorization'))
-            if user_id :
-                contacts = request.env['res.partner'].sudo().search([])
-                contact_data = []
-                for contact in contacts:
-                    contact_data.append({
-                        'name': contact.name,
-                        'phone': contact.phone,
-                        'email': contact.email,
-                        'company': contact.company_id.name if contact.company_id else ''
-                    })
-
-                return {'contacts': contact_data}
-
-        except jwt.ExpiredSignatureError:
-            raise AccessError('JWT token has expired')
-        except jwt.InvalidTokenError:
-            raise AccessError('Invalid JWT token')
-    

@@ -140,7 +140,6 @@
         'views/settings_master_views.xml',
         'views/jwt_token_views.xml',
         'views/mobile_otp_views.xml',
-        'views/api_docs_views.xml',
         'wizard/payment_voucher_generate_wizard_views.xml',
         'wizard/time_savings_report_wizard_views.xml',
         'wizard/report_wizard.xml',
