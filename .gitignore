@@ -1,2 +1,26 @@
 *.pyc
 __pycache__/
+
+# Spec Kit / Cursor — keep skills, commands, and Graphify rule
+.cursor/*
+!.cursor/skills/
+!.cursor/skills/**
+!.cursor/commands/
+!.cursor/commands/**
+!.cursor/rules/
+!.cursor/rules/**
+.specify/extensions.yml
+_otp_nodb.txt
+.env
+*.pem
+credentials*.json
+
+# Playwright API tests
+bhukhadan_test/node_modules/
+bhukhadan_test/test-results/
+bhukhadan_test/playwright-report/
+bhukhadan_test/blob-report/
+bhukhadan_test/.env
+
+# Graphify outputs (large; regenerate locally)
+**/graphify-out/

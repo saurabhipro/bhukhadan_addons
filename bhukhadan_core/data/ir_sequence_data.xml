@@ -74,31 +74,6 @@
         <!-- - Draft Award (managed via bhuarjan.sequence.settings) -->
         <!-- - Payment File (managed via bhuarjan.sequence.settings) -->
         <!-- - Payment Reconciliation (managed via bhuarjan.sequence.settings) -->
-        <!-- Sequences for CGLRC Section 247 -->
-        <record id="seq_bhu_section247_1_cglrc" model="ir.sequence">
-            <field name="name">Section 247.1 CGLRC Number</field>
-            <field name="code">bhu.section247_1.cglrc</field>
-            <field name="prefix">247.1_</field>
-            <field name="padding">4</field>
-            <field name="number_next">1</field>
-            <field name="number_increment">1</field>
-        </record>
-        <record id="seq_bhu_section247_2_cglrc" model="ir.sequence">
-            <field name="name">Section 247.2 CGLRC Number</field>
-            <field name="code">bhu.section247_2.cglrc</field>
-            <field name="prefix">247.2_</field>
-            <field name="padding">4</field>
-            <field name="number_next">1</field>
-            <field name="number_increment">1</field>
-        </record>
-        <record id="seq_bhu_section247_3_cglrc" model="ir.sequence">
-            <field name="name">Section 247.3 CGLRC Number</field>
-            <field name="code">bhu.section247_3.cglrc</field>
-            <field name="prefix">247.3_</field>
-            <field name="padding">4</field>
-            <field name="number_next">1</field>
-            <field name="number_increment">1</field>
-        </record>
     </data>
 
     <data noupdate="0">

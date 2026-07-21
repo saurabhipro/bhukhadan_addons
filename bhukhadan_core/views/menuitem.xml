@@ -99,38 +99,6 @@
         <field name="groups_id" eval="[(6, 0, [ref('bhukhadan_core.group_bhuarjan_admin'), ref('base.group_system')])]"/>
     </record>
 
-    <!-- Railway Act Sections -->
-    <menuitem id="menu_sec20a_railways" name="(Sec 20 A) Railways" action="action_section20a_railways" parent="menu_bhu_process" sequence="15" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system" active="0"/>
-    <record id="menu_sec20a_railways" model="ir.ui.menu">
-        <field name="groups_id" eval="[(6, 0, [ref('bhukhadan_core.group_bhuarjan_admin'), ref('base.group_system')])]"/>
-    </record>
-
-    <menuitem id="menu_sec20d_railways" name="(Sec 20 D) Railways (Objection)" action="action_section20d_railways" parent="menu_bhu_process" sequence="16" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system" active="0"/>
-    <record id="menu_sec20d_railways" model="ir.ui.menu">
-        <field name="groups_id" eval="[(6, 0, [ref('bhukhadan_core.group_bhuarjan_admin'), ref('base.group_system')])]"/>
-    </record>
-
-    <menuitem id="menu_sec20e_railways" name="(Sec 20 E) Railways" action="action_section20e_railways" parent="menu_bhu_process" sequence="17" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system" active="0"/>
-    <record id="menu_sec20e_railways" model="ir.ui.menu">
-        <field name="groups_id" eval="[(6, 0, [ref('bhukhadan_core.group_bhuarjan_admin'), ref('base.group_system')])]"/>
-    </record>
-
-    <!-- National Highway Act Sections -->
-    <menuitem id="menu_sec3a_nh" name="(Sec 3A) National Highway" action="action_section3a_nh" parent="menu_bhu_process" sequence="18" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system" active="0"/>
-    <record id="menu_sec3a_nh" model="ir.ui.menu">
-        <field name="groups_id" eval="[(6, 0, [ref('bhukhadan_core.group_bhuarjan_admin'), ref('base.group_system')])]"/>
-    </record>
-
-    <menuitem id="menu_sec3c_nh" name="(Sec 3C) National Highway (Objection)" action="action_section3c_nh" parent="menu_bhu_process" sequence="19" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system" active="0"/>
-    <record id="menu_sec3c_nh" model="ir.ui.menu">
-        <field name="groups_id" eval="[(6, 0, [ref('bhukhadan_core.group_bhuarjan_admin'), ref('base.group_system')])]"/>
-    </record>
-
-    <menuitem id="menu_sec3d_nh" name="(Sec 3D) National Highway" action="action_section3d_nh" parent="menu_bhu_process" sequence="20" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system" active="0"/>
-    <record id="menu_sec3d_nh" model="ir.ui.menu">
-        <field name="groups_id" eval="[(6, 0, [ref('bhukhadan_core.group_bhuarjan_admin'), ref('base.group_system')])]"/>
-    </record>
-
     <menuitem id="menu_process_report" name="Reports" parent="menu_bhu_root" sequence="11" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_district_administrator" active="0"/>
     <record id="menu_process_report" model="ir.ui.menu">
         <field name="groups_id" eval="[(6, 0, [

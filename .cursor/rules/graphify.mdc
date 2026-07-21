@@ -1,0 +1,23 @@
+---
+description: graphify knowledge graph context for bhukhadan_core
+alwaysApply: true
+---
+
+This project has a Graphify knowledge graph for `bhukhadan_core` at
+`bhukhadan_core/graphify-out/`.
+
+**Before broad codebase exploration**, prefer Graphify when available:
+- `graphify query "<question>" --graph bhukhadan_core/graphify-out/graph.json`
+- `graphify path "<A>" "<B>" --graph bhukhadan_core/graphify-out/graph.json`
+- `graphify explain "<concept>" --graph bhukhadan_core/graphify-out/graph.json`
+- `graphify god-nodes --graph bhukhadan_core/graphify-out/graph.json`
+
+Use Read/Grep/Glob directly for:
+1. Editing or debugging specific known files/lines
+2. Spec Kit / focused tasks where the touch list is already known
+3. When `bhukhadan_core/graphify-out/graph.json` is missing
+
+- Open `bhukhadan_core/graphify-out/graph.html` for interactive visualization
+- Read `bhukhadan_core/graphify-out/GRAPH_REPORT.md` for architecture hubs
+- After substantial code changes: `graphify update bhukhadan_core` then
+  `graphify cluster-only bhukhadan_core --no-label`

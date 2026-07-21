@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Survey REST API: create, read, update."""
+"""Survey REST API: create, read, update, and mobile master-data lookups."""
 
 import json
 import logging
@@ -57,6 +57,60 @@ class SurveyAPIController(http.Controller):
             merged[key] = request.httprequest.args.get(key)
         return merged
 
+    def _int_arg(self, name, required=False):
+        raw = request.httprequest.args.get(name)
+        if raw in (None, ''):
+            if required:
+                raise ValidationError(f'{name} is required')
+            return None
+        try:
+            return int(raw)
+        except (TypeError, ValueError) as err:
+            raise ValidationError(f'Invalid {name}: must be an integer') from err
+
+    @http.route('/api/bhukhadan/projects', type='http', auth='public', methods=['GET'], csrf=False)
+    @check_permission
+    def list_projects(self, **kwargs):
+        try:
+            department_id = self._int_arg('department_id')
+            projects = request.env['bhuarjan.dashboard'].get_user_projects(department_id)
+            return self._json_response({'success': True, 'data': projects})
+        except ValidationError as err:
+            return self._json_response({'success': False, 'error': str(err)}, status=400)
+        except Exception as err:
+            _logger.exception('Mobile projects list failed')
+            return self._json_response({'success': False, 'error': str(err)}, status=500)
+
+    @http.route('/api/bhukhadan/areas', type='http', auth='public', methods=['GET'], csrf=False)
+    @check_permission
+    def list_areas(self, **kwargs):
+        try:
+            project_id = self._int_arg('project_id', required=True)
+            areas = request.env['bhuarjan.dashboard'].get_areas_by_project(project_id)
+            return self._json_response({'success': True, 'data': areas})
+        except ValidationError as err:
+            return self._json_response({'success': False, 'error': str(err)}, status=400)
+        except Exception as err:
+            _logger.exception('Mobile areas list failed')
+            return self._json_response({'success': False, 'error': str(err)}, status=500)
+
+    @http.route('/api/bhukhadan/villages', type='http', auth='public', methods=['GET'], csrf=False)
+    @check_permission
+    def list_villages(self, **kwargs):
+        try:
+            project_id = self._int_arg('project_id', required=True)
+            area_id = self._int_arg('area_id', required=True)
+            villages = request.env['bhuarjan.dashboard'].get_villages_by_project(
+                project_id,
+                area_id,
+            )
+            return self._json_response({'success': True, 'data': villages})
+        except ValidationError as err:
+            return self._json_response({'success': False, 'error': str(err)}, status=400)
+        except Exception as err:
+            _logger.exception('Mobile villages list failed')
+            return self._json_response({'success': False, 'error': str(err)}, status=500)
+
     @http.route('/api/bhukhadan/survey', type='http', auth='public', methods=['POST'], csrf=False)
     @check_permission
     def create_survey(self, **kwargs):
@@ -105,10 +159,13 @@ class SurveyAPIController(http.Controller):
             Survey = request.env['bhu.survey'].sudo()
             surveys = Survey.search(domain, limit=limit, offset=offset, order='create_date desc')
             total = Survey.search_count(domain)
+            khasra_search = bool(args.get('q'))
 
             return self._json_response({
                 'success': True,
-                'data': [api_serialize_survey(s, summary=True) for s in surveys],
+                'data': [
+                    api_serialize_survey(s, summary=not khasra_search) for s in surveys
+                ],
                 'total': total,
                 'limit': limit,
                 'offset': offset,

@@ -300,31 +300,11 @@ class DashboardData(models.AbstractModel):
 
     @api.model
     def apply_coal_runtime_gating(self):
-        """Disable legacy NH/Railway law sections from active runtime use."""
+        """Keep only Coal Act sections active and default unconfigured projects to Coal law."""
         Section = self.env['bhu.section.master'].sudo()
         Law = self.env['bhu.law.master'].sudo()
         Project = self.env['bhu.project'].sudo()
 
-        legacy_section_domain = [
-            '|', '|',
-            ('name', 'ilike', 'Railways'),
-            ('name', 'ilike', '(NH)'),
-            ('name', 'ilike', 'Sec 3A'),
-        ]
-        legacy_sections = Section.search(legacy_section_domain)
-        if legacy_sections:
-            legacy_sections.write({'active': False})
-
-        legacy_laws = Law.search([
-            '|',
-            ('name', 'ilike', 'Railway'),
-            ('name', 'ilike', 'National Highway'),
-        ])
-        if legacy_laws:
-            legacy_laws.write({'active': False})
-
-        # Section Master sync for coal-only mode:
-        # keep only Coal Act sections active, hide legacy LARR/CGLRC/NH/Railways.
         coal_section_xmlids = [
             'bhukhadan_core.section_coal_surveys',
             'bhukhadan_core.section_coal_4',
@@ -352,15 +332,4 @@ class DashboardData(models.AbstractModel):
         coal_law = Law.search([('name', '=', 'Coal Bearing Areas (A&D) Act, 1957')], limit=1)
         if coal_law:
             Project.search([('law_master_id', '=', False)]).write({'law_master_id': coal_law.id})
-            # Coal-only migration guard: remap legacy project laws to Coal law.
-            legacy_projects = Project.search([
-                ('law_master_id', '!=', False),
-                '|', '|', '|',
-                ('law_master_id.name', 'ilike', 'cglrc'),
-                ('law_master_id.name', 'ilike', '247'),
-                ('law_master_id.name', 'ilike', 'railway'),
-                ('law_master_id.name', 'ilike', 'national highway'),
-            ])
-            if legacy_projects:
-                legacy_projects.write({'law_master_id': coal_law.id})
         return True

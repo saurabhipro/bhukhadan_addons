@@ -79,14 +79,6 @@ from .masters import area_master
 from .masters import law_master # noqa: F401
 from .masters import section_master
 
-from .sections import section20a_railways
-from .sections import section20d_railways
-from .sections import section20e_railways
-from .sections import section3a_nh
-from .sections import section3c_nh
-from .sections import section3d_nh
-from .sections import section247_cglrc
-
 from .survey import survey_photo
 
 from .survey import form10_export_utils

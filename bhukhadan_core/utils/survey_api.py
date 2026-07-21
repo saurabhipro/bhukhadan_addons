@@ -35,6 +35,8 @@ SURVEY_WRITABLE = {
     'has_well', 'well_type', 'well_count', 'has_tubewell', 'tubewell_count',
     'has_pond', 'latitude', 'longitude', 'location_accuracy',
     'location_timestamp', 'remarks', 'state',
+    'mb_owner_decl_date', 'mb_decl_no_claim_pending', 'mb_decl_documents_received',
+    'mb_decl_gps_photo_video',
 }
 
 
@@ -57,6 +59,66 @@ def api_resolve_tehsil_id(env, village_id, tehsil_id=None):
         return False
     village = env['bhu.village'].sudo().browse(int(village_id))
     return village.tehsil_id.id if village.exists() and village.tehsil_id else False
+
+
+def api_validate_survey_location(env, project_id, area_id, village_id, require_area=True):
+    """Validate Project → Area → Village consistency for mobile survey payloads."""
+    try:
+        pid = int(project_id)
+        vid = int(village_id)
+    except (TypeError, ValueError) as err:
+        raise ValidationError('project_id and village_id must be integers') from err
+
+    project = env['bhu.project'].sudo().browse(pid)
+    if not project.exists():
+        raise ValidationError(f'project_id {project_id} does not exist')
+
+    village = env['bhu.village'].sudo().browse(vid)
+    if not village.exists():
+        raise ValidationError(f'village_id {village_id} does not exist')
+
+    if vid not in project.village_ids.ids:
+        raise ValidationError('village_id does not belong to the specified project_id')
+
+    if not require_area:
+        return
+
+    if not area_id:
+        raise ValidationError('area_id is required before village selection')
+
+    try:
+        aid = int(area_id)
+    except (TypeError, ValueError) as err:
+        raise ValidationError('area_id must be an integer') from err
+
+    area = env['bhukhadan.area.master'].sudo().browse(aid)
+    if not area.exists() or not area.active:
+        raise ValidationError(f'area_id {area_id} does not exist or is inactive')
+
+    if not village.area_id or village.area_id.id != aid:
+        raise ValidationError('village_id does not belong to the specified area_id')
+
+    project_area_ids = project.village_ids.mapped('area_id').filtered('active').ids
+    if aid not in project_area_ids:
+        raise ValidationError('area_id is not linked to the specified project_id')
+
+
+def _api_serialize_mb_fields(survey):
+    return {
+        'mb_owner_decl_date': (
+            survey.mb_owner_decl_date.strftime('%Y-%m-%d') if survey.mb_owner_decl_date else None
+        ),
+        'mb_decl_no_claim_pending': bool(survey.mb_decl_no_claim_pending),
+        'mb_decl_documents_received': bool(survey.mb_decl_documents_received),
+        'mb_decl_gps_photo_video': bool(survey.mb_decl_gps_photo_video),
+    }
+
+
+def _api_serialize_area_fields(survey):
+    return {
+        'area_id': survey.area_id.id if survey.area_id else None,
+        'area_name': survey.area_id.name if survey.area_id else '',
+    }
 
 
 def api_patwari_survey_domain(user):
@@ -104,6 +166,7 @@ def api_build_survey_list_domain(env, args):
     domain = []
     department_id = _api_int_query_arg(args, 'department_id')
     project_id = _api_int_query_arg(args, 'project_id')
+    area_id = _api_int_query_arg(args, 'area_id')
     village_id = _api_int_query_arg(args, 'village_id')
     project = env['bhu.project'].sudo().browse()
 
@@ -120,12 +183,19 @@ def api_build_survey_list_domain(env, args):
             raise ValidationError('project_id does not belong to the specified department_id')
         domain.append(('project_id', '=', project_id))
 
+    if area_id:
+        if not env['bhukhadan.area.master'].sudo().browse(area_id).exists():
+            raise ValidationError(f'area_id {area_id} does not exist')
+        domain.append(('area_id', '=', area_id))
+
     if village_id:
         village = env['bhu.village'].sudo().browse(village_id)
         if not village.exists():
             raise ValidationError(f'village_id {village_id} does not exist')
         if project_id and village_id not in project.village_ids.ids:
             raise ValidationError('village_id does not belong to the specified project_id')
+        if area_id and village.area_id.id != area_id:
+            raise ValidationError('village_id does not belong to the specified area_id')
         domain.append(('village_id', '=', village_id))
 
     state = args.get('state')
@@ -352,6 +422,22 @@ def api_build_survey_vals(env, data, user_id=None):
     if data.get('area_id'):
         vals['area_id'] = int(data['area_id'])
 
+    api_validate_survey_location(
+        env,
+        vals['project_id'],
+        vals.get('area_id'),
+        vals['village_id'],
+    )
+
+    for mb_field in (
+        'mb_owner_decl_date',
+        'mb_decl_no_claim_pending',
+        'mb_decl_documents_received',
+        'mb_decl_gps_photo_video',
+    ):
+        if mb_field in data:
+            vals[mb_field] = data[mb_field]
+
     crop_type_id = api_resolve_crop_type_id(env, data)
     if crop_type_id:
         vals['crop_type_id'] = crop_type_id
@@ -419,6 +505,14 @@ def api_build_survey_update_vals(env, survey, data):
 
     if vals.get('state') == 'submitted' and not survey.submitted_date:
         vals['submitted_date'] = datetime.now(timezone.utc).replace(tzinfo=None)
+
+    if any(key in data for key in ('project_id', 'area_id', 'village_id')):
+        api_validate_survey_location(
+            env,
+            vals.get('project_id', survey.project_id.id),
+            vals.get('area_id', survey.area_id.id if survey.area_id else data.get('area_id')),
+            vals.get('village_id', survey.village_id.id),
+        )
 
     return vals
 
@@ -625,6 +719,8 @@ def api_serialize_tree_lines(survey):
 
 
 def api_serialize_survey(survey, include_image=False, summary=False):
+    area_fields = _api_serialize_area_fields(survey)
+    mb_fields = _api_serialize_mb_fields(survey)
     if summary:
         return {
             'id': survey.id,
@@ -633,17 +729,48 @@ def api_serialize_survey(survey, include_image=False, summary=False):
             'khasra_number': survey.khasra_number or '',
             'project_id': survey.project_id.id if survey.project_id else None,
             'project_name': survey.project_id.name if survey.project_id else '',
+            'department_id': survey.department_id.id if survey.department_id else None,
+            'department_name': survey.department_id.name if survey.department_id else '',
             'village_id': survey.village_id.id if survey.village_id else None,
             'village_name': survey.village_id.name if survey.village_id else '',
             'tehsil_id': survey.tehsil_id.id if survey.tehsil_id else None,
             'tehsil_name': survey.tehsil_id.name if survey.tehsil_id else '',
+            **area_fields,
             'survey_type': survey.survey_type or 'rural',
             'survey_date': survey.survey_date.strftime('%Y-%m-%d') if survey.survey_date else None,
+            'khata_no': survey.khata_no or '',
+            'land_acquire_year': survey.land_acquire_year or '',
             'total_area': survey.total_area,
             'acquired_area': survey.acquired_area,
+            'has_traded_land': survey.has_traded_land or 'no',
+            'traded_land_area': survey.traded_land_area or 0.0,
+            'distance_from_main_road': survey.distance_from_main_road or 0.0,
+            'crop_type_id': survey.crop_type_id.id if survey.crop_type_id else None,
+            'crop_type_name': survey.crop_type_id.name if survey.crop_type_id else '',
+            'irrigation_type': survey.irrigation_type,
+            'has_house': survey.has_house,
+            'house_type': survey.house_type,
+            'house_area': survey.house_area,
+            'has_shed': survey.has_shed,
+            'shed_area': survey.shed_area,
+            'has_well': survey.has_well,
+            'well_type': survey.well_type,
+            'well_count': survey.well_count or 0,
+            'has_tubewell': survey.has_tubewell,
+            'tubewell_count': survey.tubewell_count or 0,
+            'has_pond': survey.has_pond,
+            'latitude': survey.latitude,
+            'longitude': survey.longitude,
+            'location_accuracy': survey.location_accuracy,
+            'location_timestamp': (
+                survey.location_timestamp.strftime('%Y-%m-%d %H:%M:%S')
+                if survey.location_timestamp else None
+            ),
+            'remarks': survey.remarks or '',
             'state': survey.state or '',
             'user_id': survey.user_id.id if survey.user_id else None,
             'user_name': survey.user_id.name if survey.user_id else '',
+            **mb_fields,
             'landowners_count': len(survey.landowner_ids),
             'house_owners_count': len(survey.house_owner_ids),
             'photos_count': len(survey.photo_ids),
@@ -672,6 +799,7 @@ def api_serialize_survey(survey, include_image=False, summary=False):
         'department_name': survey.department_id.name if survey.department_id else '',
         'tehsil_id': survey.tehsil_id.id if survey.tehsil_id else None,
         'tehsil_name': survey.tehsil_id.name if survey.tehsil_id else '',
+        **area_fields,
         'district_name': survey.district_name or '',
         'survey_type': survey.survey_type or 'rural',
         'khasra_number': survey.khasra_number or '',
@@ -716,6 +844,7 @@ def api_serialize_survey(survey, include_image=False, summary=False):
         'location_timestamp': survey.location_timestamp.strftime('%Y-%m-%d %H:%M:%S') if survey.location_timestamp else None,
         'remarks': survey.remarks or '',
         'state': survey.state,
+        **mb_fields,
         'survey_image': survey_image,
         'landowners': [api_serialize_landowner(lo) for lo in survey.landowner_ids],
         'landowner_ids': survey.landowner_ids.ids,

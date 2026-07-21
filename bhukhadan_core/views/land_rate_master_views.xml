@@ -21,11 +21,22 @@
         <field name="arch" type="xml">
             <form string="Land Type">
                 <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
                     <div class="oe_title">
+                        <label for="name"/>
                         <h1>
                             <field name="name" placeholder="Enter land type name"/>
                         </h1>
                     </div>
+                    <group>
+                        <group>
+                            <field name="code" placeholder="e.g. SINGLE_CROP"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="description" placeholder="Optional description"/>
+                        </group>
+                    </group>
                 </sheet>
             </form>
         </field>

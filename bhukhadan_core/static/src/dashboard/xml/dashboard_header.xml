@@ -24,6 +24,12 @@
                                 <span class="o_project_name_bold" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><t t-esc="state.selectedProjectName"/></span>
                             </span>
                         </t>
+                        <t t-if="state.selectedAreaName">
+                            <span class="o_selected_project_inline o_scope_pill o_scope_pill_area" t-att-title="state.selectedAreaName" style="margin-left: 10px; max-width: 240px; display: inline-flex; align-items: center;">
+                                <i class="fa fa-map-marker" style="margin-right: 8px; flex-shrink: 0;"/>
+                                <span class="o_project_name_bold" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><t t-esc="state.selectedAreaName"/></span>
+                            </span>
+                        </t>
                         <t t-if="state.selectedVillageName">
                             <span class="o_selected_project_inline o_scope_pill o_scope_pill_village" t-att-title="state.selectedVillageName" style="margin-left: 10px; max-width: 280px; display: inline-flex; align-items: center;">
                                 <i class="fa fa-home" style="margin-right: 8px; flex-shrink: 0;"/>
@@ -116,6 +122,25 @@
                             </t>
                         </select>
                     </t>
+                    <!-- Area (between Project and Village) -->
+                    <t t-if="this.config.showAreaFilter">
+                        <t t-set="selArea" t-value="this.getSelectedArea()"/>
+                        <select class="form-select o_area_selector o_bhu_native_filter"
+                                t-att-value="this.toString(state.selectedArea)"
+                                t-att-title="selArea ? this.getAreaOptionTitle(selArea) : ''"
+                                t-on-change="onAreaChange"
+                                t-att-disabled="!state.selectedProject">
+                            <option value="">Area</option>
+                            <t t-foreach="state.areas" t-as="area" t-key="area.id">
+                                <option
+                                    t-att-value="this.toString(area.id)"
+                                    t-att-title="this.getAreaOptionTitle(area)"
+                                >
+                                    <t t-esc="this.getAreaOptionTitle(area)"/>
+                                </option>
+                            </t>
+                        </select>
+                    </t>
                     <!-- Village -->
                     <t t-if="this.config.showVillageFilter">
                         <t t-set="selVillage" t-value="this.getSelectedVillage()"/>
@@ -123,7 +148,7 @@
                                 t-att-value="this.toString(state.selectedVillage)"
                                 t-att-title="selVillage ? this.getVillageOptionTitle(selVillage) : ''"
                                 t-on-change="onVillageChange"
-                                t-att-disabled="!state.selectedProject">
+                                t-att-disabled="this.config.showAreaFilter ? !state.selectedArea : !state.selectedProject">
                             <option value="">Village</option>
                             <t t-foreach="state.villages" t-as="village" t-key="village.id">
                                 <option

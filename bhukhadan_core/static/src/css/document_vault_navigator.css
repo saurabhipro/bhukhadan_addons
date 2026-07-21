@@ -327,9 +327,6 @@
 .o_docvault_step_list .theme-sec21 .o_docvault_section_icon { background: linear-gradient(135deg, #5dade2, #2e86c1); }
 .o_docvault_step_list .theme-award .o_docvault_section_icon { background: linear-gradient(135deg, #f1c40f, #d4ac0d); color: #5c4a03; }
 .o_docvault_step_list .theme-payment .o_docvault_section_icon { background: linear-gradient(135deg, #1abc9c, #148f77); }
-.o_docvault_step_list .theme-cglrc .o_docvault_section_icon { background: linear-gradient(135deg, #af601a, var(--dv-brown)); }
-.o_docvault_step_list .theme-rail .o_docvault_section_icon { background: linear-gradient(135deg, #566573, #34495e); }
-.o_docvault_step_list .theme-nh .o_docvault_section_icon { background: linear-gradient(135deg, #7f8c8d, #566573); }
 .o_docvault_step_list .theme-survey .o_docvault_section_icon { background: linear-gradient(135deg, #5499c7, #2874a6); }
 .o_docvault_step_list .theme-default .o_docvault_section_icon { background: linear-gradient(135deg, var(--dv-brown-soft), var(--dv-brown)); }
 

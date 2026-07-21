@@ -10,6 +10,7 @@
                 <field name="district_id" string="District"/>
                 <field name="sub_division_id" string="Sub Division"/>
                 <field name="tehsil_id" string="Tehsil"/>
+                <field name="area_id" string="Area"/>
                 <field name="village_code" string="Village Code"/>
                 <field name="name" string="Village Name"/>
                 <field name="name_english" string="English name"/>
@@ -63,6 +64,7 @@
                         <group>
                             <field name="sub_division_id" options="{'no_create':True,'no_create_edit':True,'no_open':True}"/>
                             <field name="tehsil_id" options="{'no_create':True,'no_create_edit':True,'no_open':True}"/>
+                            <field name="area_id" options="{'no_create':True,'no_create_edit':True,'no_open':True}"/>
                             <field name="pincode"/>
                             <field name="village_type" widget="radio" options="{'horizontal': true}"/>
                             <field name="urban_body_type"
@@ -119,11 +121,13 @@
                        filter_domain="['|', '|', '|', ('user_id.name', 'ilike', self), ('user_id.login', 'ilike', self), ('user_id.email', 'ilike', self), ('user_id.name_english', 'ilike', self)]"/>
                 <field name="district_id"/>
                 <field name="tehsil_id"/>
+                <field name="area_id"/>
                 <field name="pincode"/>
                 
                 <group expand="0" string="Group By / समूह बनाएं">
                     <filter string="District / जिला" name="group_district" context="{'group_by': 'district_id'}"/>
                     <filter string="Tehsil / तहसील" name="group_tehsil" context="{'group_by': 'tehsil_id'}"/>
+                    <filter string="Area / क्षेत्र" name="group_area" context="{'group_by': 'area_id'}"/>
                 </group>
             </search>
         </field>

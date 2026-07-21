@@ -81,33 +81,6 @@ class DocumentVaultNavigator(models.Model):
         'Payment File',
         'Payment Reconciliation',
     )
-    _DASHBOARD_ORDER_RAILWAY = (
-        'Surveys',
-        'Section 23 Award',
-        'Payment Voucher',
-        'Sec 20 A (Railways)',
-        'Sec 20 E (Railways)',
-        'Payment File',
-        'Payment Reconciliation',
-    )
-    _DASHBOARD_ORDER_NH = (
-        'Surveys',
-        'Section 23 Award',
-        'Payment Voucher',
-        'Sec 3A (NH)',
-        'Sec 3D (NH)',
-        'Payment File',
-        'Payment Reconciliation',
-    )
-    _DASHBOARD_ORDER_CGLRC = (
-        'Surveys',
-        'Personal Notice generation (247.1)',
-        'Istehar प्रकाशन (247.2)',
-        'Award (247.3)',
-        'Payment Voucher',
-        'Payment File',
-        'Payment Reconciliation',
-    )
     _DASHBOARD_ORDER_COAL = (
         'Surveys (Coal Act)',
         '(Sec 4) CBA Notification',
@@ -697,17 +670,13 @@ class DocumentVaultNavigator(models.Model):
         self.ensure_one()
         if not self.project_id or not self.project_id.law_master_id:
             return []
-        names = list(self.project_id.law_master_id.section_ids.mapped('name'))
-        names = [n for n in names if '(Railways)' not in n and '(NH)' not in n]
-        return names
+        return list(self.project_id.law_master_id.section_ids.mapped('name'))
 
     def _get_dashboard_section_order(self):
         self.ensure_one()
         allowed = set(self._get_allowed_section_names())
         if '(Sec 4) CBA Notification' in allowed:
             template = self._DASHBOARD_ORDER_COAL
-        elif 'Personal Notice generation (247.1)' in allowed:
-            template = self._DASHBOARD_ORDER_CGLRC
         else:
             template = self._DASHBOARD_ORDER_LARR
         return [
@@ -1016,12 +985,6 @@ class DocumentVaultNavigator(models.Model):
                 cmds, step, seen, _('Section 21'), 'bhu.section21.notification'),
             'Section 23 Award': lambda nav, cmds, step, seen: nav._append_section23_award_step(cmds, step, seen),
             'Award (Coal Act)': lambda nav, cmds, step, seen: nav._append_section23_award_step(cmds, step, seen),
-            'Personal Notice generation (247.1)': lambda nav, cmds, step, seen: nav._append_signed_workflow_step(
-                cmds, step, seen, _('Personal Notice (247.1)'), 'bhu.section247_1.cglrc'),
-            'Istehar प्रकाशन (247.2)': lambda nav, cmds, step, seen: nav._append_signed_workflow_step(
-                cmds, step, seen, _('Istehar (247.2)'), 'bhu.section247_2.cglrc'),
-            'Award (247.3)': lambda nav, cmds, step, seen: nav._append_signed_workflow_step(
-                cmds, step, seen, _('Award (247.3)'), 'bhu.section247_3.cglrc'),
             'Payment File': lambda nav, cmds, step, seen: nav._append_payment_file_step(cmds, step, seen),
         }
 
@@ -1152,10 +1115,6 @@ class DocumentVaultNavigatorLine(models.Model):
             ('section 23', 'fa-trophy', 'theme-award'),
             ('award', 'fa-trophy', 'theme-award'),
             ('payment file', 'fa-credit-card', 'theme-payment'),
-            ('personal notice', 'fa-id-card-o', 'theme-cglrc'),
-            ('istehar', 'fa-newspaper-o', 'theme-cglrc'),
-            ('railways', 'fa-train', 'theme-rail'),
-            ('(nh)', 'fa-road', 'theme-nh'),
             ('surveys', 'fa-clipboard', 'theme-survey'),
         )
         for needle, icon, theme in styles:

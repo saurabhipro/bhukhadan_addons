@@ -11,6 +11,11 @@ class AreaMaster(models.Model):
 
     name = fields.Char(string='Area Name / क्षेत्र का नाम', required=True, tracking=True)
     active = fields.Boolean(string='Active / सक्रिय', default=True, tracking=True)
+    village_ids = fields.One2many(
+        'bhu.village',
+        'area_id',
+        string='Villages / ग्राम',
+    )
 
     _sql_constraints = [
         ('name_unique', 'unique(name)', 'Area name must be unique! / क्षेत्र का नाम अद्वितीय होना चाहिए!'),

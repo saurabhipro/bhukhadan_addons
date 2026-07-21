@@ -423,24 +423,8 @@
     color: #2c3e50;
 }
 
-/* Railway Act Sections - Yellow pattern */
-.o_card_section20a_railways,
-.o_card_section20e_railways {
-    background-image: url('/bhukhadan_core/static/src/dashboard/images/yellow_pattern.jpg');
-    color: #2c3e50;
-}
-
-.o_card_section20d_railways,
-.o_card_section3c_nh,
 .o_card_section23_award {
     background-image: url('/bhukhadan_core/static/src/dashboard/images/pink_pattern.jpg');
-    color: #2c3e50;
-}
-
-/* National Highway Act Sections - Green pattern */
-.o_card_section3a_nh,
-.o_card_section3d_nh {
-    background-image: url('/bhukhadan_core/static/src/dashboard/images/green_pattern.jpg');
     color: #2c3e50;
 }
 

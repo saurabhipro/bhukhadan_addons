@@ -66,9 +66,6 @@
             <div t-if="showTimeline" class="o_timeline_body" style="padding:14px 16px 12px;">
 
                 <!-- Detect act type -->
-                <t t-set="is_railways" t-value="allowedSectionNames &amp;&amp; allowedSectionNames.includes('Sec 20 A (Railways)')"/>
-                <t t-set="is_nh"       t-value="allowedSectionNames &amp;&amp; allowedSectionNames.includes('Sec 3A (NH)')"/>
-                <t t-set="is_cglrc"    t-value="allowedSectionNames &amp;&amp; allowedSectionNames.includes('Personal Notice generation (247.1)')"/>
                 <t t-set="is_coal"     t-value="allowedSectionNames &amp;&amp; (allowedSectionNames.includes('Sec 4(i) Notification of intention to prospect') or allowedSectionNames.includes('(Sec 4) CBA Notification'))"/>
 
                 <!-- Shared step states -->
@@ -80,51 +77,7 @@
                 <t t-set="sur_active" t-value="stats &amp;&amp; stats.survey_info &amp;&amp; (stats.survey_info.submitted_count || stats.survey_info.approved_count) &amp;&amp; !stats.survey_info.is_completed"/>
 
                 <!-- Build steps array based on act type -->
-                <t t-if="is_railways">
-                    <t t-set="r2_active" t-value="stats &amp;&amp; (stats.section20a_railways_total || 0) > 0"/>
-                    <t t-set="r3_done"   t-value="stats &amp;&amp; stats.section23_award_info &amp;&amp; stats.section23_award_info.is_completed"/>
-                    <t t-set="r3_active" t-value="stats &amp;&amp; stats.section23_award_info &amp;&amp; (stats.section23_award_info.submitted_count || stats.section23_award_info.approved_count) &amp;&amp; !stats.section23_award_info.is_completed"/>
-                    <t t-set="r4_active" t-value="stats &amp;&amp; (stats.section20e_railways_total || 0) > 0"/>
-                    <t t-set="steps" t-value="[
-                        {'num': '1', 'label': 'Survey',  'done': sur_done,  'active': sur_active},
-                        {'num': '2', 'label': 'Sec 20A', 'done': false,     'active': r2_active},
-                        {'num': '3', 'label': 'Award', 'done': r3_done,   'active': r3_active},
-                        {'num': '4', 'label': 'Sec 20E', 'done': false,     'active': r4_active},
-                        {'num': '5', 'label': 'Voucher', 'done': pv_done,  'active': pv_active},
-                        {'num': '6', 'label': 'Pay File', 'done': pay_done,  'active': pay_active}
-                    ]"/>
-                </t>
-                <t t-elif="is_nh">
-                    <t t-set="n2_active" t-value="stats &amp;&amp; (stats.section3a_nh_total || 0) > 0"/>
-                    <t t-set="n3_done"   t-value="stats &amp;&amp; stats.section23_award_info &amp;&amp; stats.section23_award_info.is_completed"/>
-                    <t t-set="n3_active" t-value="stats &amp;&amp; stats.section23_award_info &amp;&amp; (stats.section23_award_info.submitted_count || stats.section23_award_info.approved_count) &amp;&amp; !stats.section23_award_info.is_completed"/>
-                    <t t-set="n4_active" t-value="stats &amp;&amp; (stats.section3d_nh_total || 0) > 0"/>
-                    <t t-set="steps" t-value="[
-                        {'num': '1', 'label': 'Survey',  'done': sur_done,  'active': sur_active},
-                        {'num': '2', 'label': 'Sec 3A',  'done': false,     'active': n2_active},
-                        {'num': '3', 'label': 'Award',  'done': n3_done,   'active': n3_active},
-                        {'num': '4', 'label': 'Sec 3D',  'done': false,     'active': n4_active},
-                        {'num': '5', 'label': 'Voucher', 'done': pv_done,  'active': pv_active},
-                        {'num': '6', 'label': 'Pay File', 'done': pay_done,  'active': pay_active}
-                    ]"/>
-                </t>
-                <t t-elif="is_cglrc">
-                    <t t-set="c2_done"   t-value="stats &amp;&amp; stats.section247_1_cglrc_info &amp;&amp; stats.section247_1_cglrc_info.is_completed"/>
-                    <t t-set="c2_active" t-value="stats &amp;&amp; stats.section247_1_cglrc_info &amp;&amp; stats.section247_1_cglrc_info.approved_count &amp;&amp; !stats.section247_1_cglrc_info.is_completed"/>
-                    <t t-set="c3_done"   t-value="stats &amp;&amp; stats.section247_2_cglrc_info &amp;&amp; stats.section247_2_cglrc_info.is_completed"/>
-                    <t t-set="c3_active" t-value="stats &amp;&amp; stats.section247_2_cglrc_info &amp;&amp; stats.section247_2_cglrc_info.approved_count &amp;&amp; !stats.section247_2_cglrc_info.is_completed"/>
-                    <t t-set="c4_done"   t-value="stats &amp;&amp; stats.section247_3_cglrc_info &amp;&amp; stats.section247_3_cglrc_info.is_completed"/>
-                    <t t-set="c4_active" t-value="stats &amp;&amp; stats.section247_3_cglrc_info &amp;&amp; stats.section247_3_cglrc_info.approved_count &amp;&amp; !stats.section247_3_cglrc_info.is_completed"/>
-                    <t t-set="steps" t-value="[
-                        {'num': '1', 'label': 'Survey',  'done': sur_done,  'active': sur_active},
-                        {'num': '2', 'label': '247.1',   'done': c2_done,   'active': c2_active},
-                        {'num': '3', 'label': '247.2',   'done': c3_done,   'active': c3_active},
-                        {'num': '4', 'label': '247.3',   'done': c4_done,   'active': c4_active},
-                        {'num': '5', 'label': 'Voucher', 'done': pv_done,  'active': pv_active},
-                        {'num': '6', 'label': 'Pay File', 'done': pay_done,  'active': pay_active}
-                    ]"/>
-                </t>
-                <t t-elif="is_coal">
+                <t t-if="is_coal">
                     <t t-set="c2_done"   t-value="stats &amp;&amp; stats.section4_info &amp;&amp; stats.section4_info.is_completed"/>
                     <t t-set="c2_active" t-value="stats &amp;&amp; stats.section4_info &amp;&amp; (stats.section4_info.submitted_count || stats.section4_info.approved_count) &amp;&amp; !stats.section4_info.is_completed"/>
                     <t t-set="c3_done"   t-value="stats &amp;&amp; stats.sia_info &amp;&amp; stats.sia_info.is_completed"/>

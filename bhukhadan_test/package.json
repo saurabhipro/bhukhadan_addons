@@ -1,0 +1,20 @@
+{
+  "name": "bhukhadan_test",
+  "version": "1.0.0",
+  "description": "Playwright API tests for BhuKhadan Odoo mobile endpoints",
+  "private": true,
+  "scripts": {
+    "test": "playwright test",
+    "test:auth": "playwright test tests/auth.spec.ts",
+    "test:masters": "playwright test tests/masters.spec.ts",
+    "test:surveys": "playwright test tests/surveys.spec.ts",
+    "test:report": "playwright show-report",
+    "test:headed": "playwright test --headed"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.61.1",
+    "@types/node": "^26.1.1",
+    "dotenv": "^16.4.7",
+    "typescript": "^7.0.2"
+  }
+}

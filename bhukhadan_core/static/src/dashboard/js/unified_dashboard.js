@@ -20,6 +20,7 @@ import { _t } from "@web/core/l10n/translation";
  *         showDepartmentFilter: true/false,
  *         showProjectFilter: true/false,
  *         showVillageFilter: true/false,
+ *         showAreaFilter: true/false,
  *         initialDataMethod: 'method_name', // Optional: custom method for initial data
  *         statsMapping: { // Map backend stats keys to frontend state keys
  *             'survey_total': 'survey_total',
@@ -39,6 +40,7 @@ const DASHBOARD_CONFIG = {
         showDepartmentFilter: true,
         showProjectFilter: true,
         showVillageFilter: true,
+        showAreaFilter: true,
         statsMapping: {
             // Maps backend response keys to frontend state keys
             'survey_total': 'survey_total',
@@ -102,21 +104,6 @@ const DASHBOARD_CONFIG = {
             'reconciliation_completed': 'reconciliation_completed',
             'reconciliation_completion_percent': 'reconciliation_completion_percent',
             'reconciliation_info': 'reconciliation_info',
-            'section247_1_cglrc_total': 'section247_1_cglrc_total',
-            'section247_1_cglrc_draft': 'section247_1_cglrc_draft',
-            'section247_1_cglrc_approved': 'section247_1_cglrc_approved',
-            'section247_1_cglrc_info': 'section247_1_cglrc_info',
-            'section247_1_cglrc_completion_percent': 'section247_1_cglrc_completion_percent',
-            'section247_2_cglrc_total': 'section247_2_cglrc_total',
-            'section247_2_cglrc_draft': 'section247_2_cglrc_draft',
-            'section247_2_cglrc_approved': 'section247_2_cglrc_approved',
-            'section247_2_cglrc_info': 'section247_2_cglrc_info',
-            'section247_2_cglrc_completion_percent': 'section247_2_cglrc_completion_percent',
-            'section247_3_cglrc_total': 'section247_3_cglrc_total',
-            'section247_3_cglrc_draft': 'section247_3_cglrc_draft',
-            'section247_3_cglrc_approved': 'section247_3_cglrc_approved',
-            'section247_3_cglrc_info': 'section247_3_cglrc_info',
-            'section247_3_cglrc_completion_percent': 'section247_3_cglrc_completion_percent',
         }
     },
     'collector': {
@@ -127,6 +114,7 @@ const DASHBOARD_CONFIG = {
         showDepartmentFilter: true,
         showProjectFilter: true,
         showVillageFilter: true,
+        showAreaFilter: true,
         statsMapping: {
             // Same as SDM
             'survey_total': 'survey_total',
@@ -190,21 +178,6 @@ const DASHBOARD_CONFIG = {
             'reconciliation_completed': 'reconciliation_completed',
             'reconciliation_completion_percent': 'reconciliation_completion_percent',
             'reconciliation_info': 'reconciliation_info',
-            'section247_1_cglrc_total': 'section247_1_cglrc_total',
-            'section247_1_cglrc_draft': 'section247_1_cglrc_draft',
-            'section247_1_cglrc_approved': 'section247_1_cglrc_approved',
-            'section247_1_cglrc_info': 'section247_1_cglrc_info',
-            'section247_1_cglrc_completion_percent': 'section247_1_cglrc_completion_percent',
-            'section247_2_cglrc_total': 'section247_2_cglrc_total',
-            'section247_2_cglrc_draft': 'section247_2_cglrc_draft',
-            'section247_2_cglrc_approved': 'section247_2_cglrc_approved',
-            'section247_2_cglrc_info': 'section247_2_cglrc_info',
-            'section247_2_cglrc_completion_percent': 'section247_2_cglrc_completion_percent',
-            'section247_3_cglrc_total': 'section247_3_cglrc_total',
-            'section247_3_cglrc_draft': 'section247_3_cglrc_draft',
-            'section247_3_cglrc_approved': 'section247_3_cglrc_approved',
-            'section247_3_cglrc_info': 'section247_3_cglrc_info',
-            'section247_3_cglrc_completion_percent': 'section247_3_cglrc_completion_percent',
         }
     },
     'admin': {
@@ -215,6 +188,7 @@ const DASHBOARD_CONFIG = {
         showDepartmentFilter: true,
         showProjectFilter: true,
         showVillageFilter: true,
+        showAreaFilter: true,
         statsMapping: {
             'survey_total': 'survey_total',
             'survey_draft': 'survey_draft',
@@ -277,21 +251,6 @@ const DASHBOARD_CONFIG = {
             'reconciliation_completed': 'reconciliation_completed',
             'reconciliation_completion_percent': 'reconciliation_completion_percent',
             'reconciliation_info': 'reconciliation_info',
-            'section247_1_cglrc_total': 'section247_1_cglrc_total',
-            'section247_1_cglrc_draft': 'section247_1_cglrc_draft',
-            'section247_1_cglrc_approved': 'section247_1_cglrc_approved',
-            'section247_1_cglrc_info': 'section247_1_cglrc_info',
-            'section247_1_cglrc_completion_percent': 'section247_1_cglrc_completion_percent',
-            'section247_2_cglrc_total': 'section247_2_cglrc_total',
-            'section247_2_cglrc_draft': 'section247_2_cglrc_draft',
-            'section247_2_cglrc_approved': 'section247_2_cglrc_approved',
-            'section247_2_cglrc_info': 'section247_2_cglrc_info',
-            'section247_2_cglrc_completion_percent': 'section247_2_cglrc_completion_percent',
-            'section247_3_cglrc_total': 'section247_3_cglrc_total',
-            'section247_3_cglrc_draft': 'section247_3_cglrc_draft',
-            'section247_3_cglrc_approved': 'section247_3_cglrc_approved',
-            'section247_3_cglrc_info': 'section247_3_cglrc_info',
-            'section247_3_cglrc_completion_percent': 'section247_3_cglrc_completion_percent',
         }
     },
     'department': {
@@ -302,6 +261,7 @@ const DASHBOARD_CONFIG = {
         showDepartmentFilter: false, // Department users have only one department - no dropdown needed
         showProjectFilter: true,
         showVillageFilter: true,
+        showAreaFilter: true,
         statsMapping: {
             'survey_total': 'survey_total',
             'survey_draft': 'survey_draft',
@@ -345,6 +305,7 @@ const DASHBOARD_CONFIG = {
         showDepartmentFilter: true,
         showProjectFilter: true,
         showVillageFilter: true,
+        showAreaFilter: true,
         isReadOnly: true, // District admin can only view, not create
         statsMapping: {
             'survey_total': 'survey_total',
@@ -408,21 +369,6 @@ const DASHBOARD_CONFIG = {
             'reconciliation_completed': 'reconciliation_completed',
             'reconciliation_completion_percent': 'reconciliation_completion_percent',
             'reconciliation_info': 'reconciliation_info',
-            'section247_1_cglrc_total': 'section247_1_cglrc_total',
-            'section247_1_cglrc_draft': 'section247_1_cglrc_draft',
-            'section247_1_cglrc_approved': 'section247_1_cglrc_approved',
-            'section247_1_cglrc_info': 'section247_1_cglrc_info',
-            'section247_1_cglrc_completion_percent': 'section247_1_cglrc_completion_percent',
-            'section247_2_cglrc_total': 'section247_2_cglrc_total',
-            'section247_2_cglrc_draft': 'section247_2_cglrc_draft',
-            'section247_2_cglrc_approved': 'section247_2_cglrc_approved',
-            'section247_2_cglrc_info': 'section247_2_cglrc_info',
-            'section247_2_cglrc_completion_percent': 'section247_2_cglrc_completion_percent',
-            'section247_3_cglrc_total': 'section247_3_cglrc_total',
-            'section247_3_cglrc_draft': 'section247_3_cglrc_draft',
-            'section247_3_cglrc_approved': 'section247_3_cglrc_approved',
-            'section247_3_cglrc_info': 'section247_3_cglrc_info',
-            'section247_3_cglrc_completion_percent': 'section247_3_cglrc_completion_percent',
         }
     },
 
@@ -465,6 +411,8 @@ export class UnifiedDashboard extends Component {
         const savedProject = localStorage.getItem(`${localStoragePrefix}_project`);
         const savedProjectName = localStorage.getItem(`${localStoragePrefix}_project_name`);
         const savedProjectCode = localStorage.getItem(`${localStoragePrefix}_project_code`);
+        const savedArea = localStorage.getItem(`${localStoragePrefix}_area`);
+        const savedAreaName = localStorage.getItem(`${localStoragePrefix}_area_name`);
         const savedVillage = localStorage.getItem(`${localStoragePrefix}_village`);
         const savedVillageName = localStorage.getItem(`${localStoragePrefix}_village_name`);
 
@@ -475,10 +423,13 @@ export class UnifiedDashboard extends Component {
             selectedProject: savedProject ? parseInt(savedProject, 10) : null,
             selectedProjectName: savedProjectName || null,
             selectedProjectCode: savedProjectCode || null,
+            selectedArea: savedArea ? parseInt(savedArea, 10) : null,
+            selectedAreaName: savedAreaName || null,
             selectedVillage: savedVillage ? parseInt(savedVillage, 10) : null,
             selectedVillageName: savedVillageName || null,
             departments: [],
             projects: [],
+            areas: [],
             villages: [],
             isCollector: false,
             isAdmin: false,
@@ -719,6 +670,22 @@ export class UnifiedDashboard extends Component {
         return label ? `${label} (${count}) (${type})` : "";
     }
 
+    getAreaOptionTitle(area) {
+        if (!area) {
+            return "";
+        }
+        const label = (area.dropdown_label || area.name || "").trim();
+        const count = area.village_count || 0;
+        return label ? `${label} (${count})` : "";
+    }
+
+    getSelectedArea() {
+        if (!this.state.selectedArea) {
+            return null;
+        }
+        return this.state.areas.find((a) => a.id === this.state.selectedArea) || null;
+    }
+
     getSelectedVillage() {
         if (!this.state.selectedVillage) {
             return null;
@@ -812,9 +779,39 @@ export class UnifiedDashboard extends Component {
             await this.loadProjects();
         }
 
-        // Load villages if project is selected
+        // Load areas / villages if project is selected
         if (this.state.selectedProject) {
-            await this.loadVillages();
+            if (this.config.showAreaFilter) {
+                await this.loadAreas();
+                if (this.state.selectedArea && this.state.areas.length > 0) {
+                    const area = this.state.areas.find((a) => a.id === this.state.selectedArea);
+                    if (area) {
+                        this.state.selectedAreaName = area.dropdown_label || area.name || null;
+                        localStorage.setItem(
+                            `${localStoragePrefix}_area_name`,
+                            this.state.selectedAreaName || ""
+                        );
+                    } else {
+                        this.state.selectedArea = null;
+                        this.state.selectedAreaName = null;
+                        localStorage.removeItem(`${localStoragePrefix}_area`);
+                        localStorage.removeItem(`${localStoragePrefix}_area_name`);
+                        this.state.selectedVillage = null;
+                        this.state.selectedVillageName = null;
+                        localStorage.removeItem(`${localStoragePrefix}_village`);
+                        localStorage.removeItem(`${localStoragePrefix}_village_name`);
+                    }
+                }
+                if (this.state.selectedArea) {
+                    await this.loadVillages();
+                } else {
+                    this.state.villages = [];
+                    this.state.selectedVillage = null;
+                    this.state.selectedVillageName = null;
+                }
+            } else {
+                await this.loadVillages();
+            }
 
             // Restore village title from loaded list (includes village_code when present)
             if (this.state.selectedVillage && this.state.villages.length > 0) {
@@ -824,9 +821,12 @@ export class UnifiedDashboard extends Component {
                     this.state.selectedVillageName = title;
                     localStorage.setItem(`${localStoragePrefix}_village_name`, title || "");
                 } else {
+                    this.state.selectedVillage = null;
                     this.state.selectedVillageName = null;
+                    localStorage.removeItem(`${localStoragePrefix}_village`);
+                    localStorage.removeItem(`${localStoragePrefix}_village_name`);
                 }
-            } else {
+            } else if (!this.state.selectedVillage) {
                 this.state.selectedVillageName = null;
             }
         }
@@ -955,17 +955,57 @@ export class UnifiedDashboard extends Component {
         }
     }
 
+    async loadAreas() {
+        if (!this.state.selectedProject) {
+            this.state.areas = [];
+            return;
+        }
+        try {
+            const areas = await this.orm.call(
+                "bhuarjan.dashboard",
+                "get_areas_by_project",
+                [this.state.selectedProject]
+            );
+            const areasArray = Array.isArray(areas) ? areas : [];
+            this.state.areas = areasArray.sort((a, b) => {
+                const an = String(a.name || "").toLowerCase();
+                const bn = String(b.name || "").toLowerCase();
+                return an.localeCompare(bn) || (Number(a.id) - Number(b.id));
+            });
+            if (this.state.selectedArea) {
+                const sel = this.state.areas.find((a) => a.id === this.state.selectedArea);
+                if (sel) {
+                    this.state.selectedAreaName = sel.dropdown_label || sel.name || null;
+                    localStorage.setItem(
+                        `${this.config.localStoragePrefix}_area_name`,
+                        this.state.selectedAreaName || ""
+                    );
+                }
+            }
+        } catch (error) {
+            console.error("Error loading areas:", error);
+            this.state.areas = [];
+        }
+    }
+
     async loadVillages() {
         if (!this.state.selectedProject) {
             this.state.villages = [];
             return;
         }
+        if (this.config.showAreaFilter && !this.state.selectedArea) {
+            this.state.villages = [];
+            return;
+        }
 
         try {
+            const callArgs = this.config.showAreaFilter
+                ? [this.state.selectedProject, this.state.selectedArea || false]
+                : [this.state.selectedProject];
             const villages = await this.orm.call(
                 "bhuarjan.dashboard",
                 "get_villages_by_project",
-                [this.state.selectedProject]
+                callArgs
             );
             const villagesArray = Array.isArray(villages) ? villages : [];
             const sortedByName = [...villagesArray].sort((a, b) => {
@@ -1128,17 +1168,22 @@ export class UnifiedDashboard extends Component {
             localStorage.removeItem(`${prefix}_department`);
         }
 
-        // Reset project and village when department changes
+        // Reset project, area and village when department changes
         this.state.selectedProject = null;
         this.state.selectedProjectName = null;
         this.state.selectedProjectCode = null;
+        this.state.selectedArea = null;
+        this.state.selectedAreaName = null;
         this.state.selectedVillage = null;
         this.state.selectedVillageName = null;
         this.state.projects = [];
+        this.state.areas = [];
         this.state.villages = [];
         localStorage.removeItem(`${prefix}_project`);
         localStorage.removeItem(`${prefix}_project_name`);
         localStorage.removeItem(`${prefix}_project_code`);
+        localStorage.removeItem(`${prefix}_area`);
+        localStorage.removeItem(`${prefix}_area_name`);
         localStorage.removeItem(`${prefix}_village`);
         localStorage.removeItem(`${prefix}_village_name`);
 
@@ -1192,21 +1237,67 @@ export class UnifiedDashboard extends Component {
             this.state.selectedProjectCode = null;
         }
 
-        // Check if current village belongs to new project
+        // Reset Area + Village when project changes; load Areas for cascade
+        this.state.selectedArea = null;
+        this.state.selectedAreaName = null;
+        this.state.selectedVillage = null;
+        this.state.selectedVillageName = null;
+        this.state.areas = [];
+        this.state.villages = [];
+        localStorage.removeItem(`${prefix}_area`);
+        localStorage.removeItem(`${prefix}_area_name`);
+        localStorage.removeItem(`${prefix}_village`);
+        localStorage.removeItem(`${prefix}_village_name`);
+
         if (projectId) {
+            if (this.config.showAreaFilter) {
+                await this.loadAreas();
+            } else {
+                await this.loadVillages();
+            }
+        }
+
+        // Save selection to server for bulk approval
+        await this.saveDashboardSelection();
+
+        await this.loadDashboardData();
+    }
+
+    async onAreaChange(ev) {
+        if (!this.config.showAreaFilter) return;
+        const value = ev.target.value;
+        const areaId = value ? parseInt(value, 10) : null;
+        await this.applyAreaSelection(areaId);
+    }
+
+    async applyAreaSelection(areaId) {
+        this.state.selectedArea = areaId;
+        const prefix = this.config.localStoragePrefix;
+
+        if (areaId) {
+            localStorage.setItem(`${prefix}_area`, String(areaId));
+            const area = this.state.areas.find((a) => a.id === areaId);
+            this.state.selectedAreaName = area
+                ? (area.dropdown_label || area.name || null)
+                : null;
+            if (this.state.selectedAreaName) {
+                localStorage.setItem(`${prefix}_area_name`, this.state.selectedAreaName);
+            }
             await this.loadVillages();
-            const currentVillage = this.state.villages.find(v => v.id === this.state.selectedVillage);
+            const currentVillage = this.state.villages.find((v) => v.id === this.state.selectedVillage);
             if (!currentVillage) {
                 this.state.selectedVillage = null;
                 this.state.selectedVillageName = null;
                 localStorage.removeItem(`${prefix}_village`);
                 localStorage.removeItem(`${prefix}_village_name`);
             } else {
-                // Update village title if village still exists in new project
                 this.state.selectedVillageName = this._formatVillageTitle(currentVillage);
                 localStorage.setItem(`${prefix}_village_name`, this.state.selectedVillageName || "");
             }
         } else {
+            localStorage.removeItem(`${prefix}_area`);
+            localStorage.removeItem(`${prefix}_area_name`);
+            this.state.selectedAreaName = null;
             this.state.selectedVillage = null;
             this.state.selectedVillageName = null;
             this.state.villages = [];
@@ -1214,9 +1305,7 @@ export class UnifiedDashboard extends Component {
             localStorage.removeItem(`${prefix}_village_name`);
         }
 
-        // Save selection to server for bulk approval
         await this.saveDashboardSelection();
-
         await this.loadDashboardData();
     }
 
@@ -1376,12 +1465,6 @@ export class UnifiedDashboard extends Component {
             'bhu.section23.award',
             'bhu.payment.voucher',
             'bhu.payment.voucher.export',
-            'bhu.section20a.railways',
-            'bhu.section20d.railways',
-            'bhu.section20e.railways',
-            'bhu.section3a.nh',
-            'bhu.section3c.nh',
-            'bhu.section3d.nh',
             'bhu.payment.file',
             'bhu.payment.voucher',
             'bhu.payment.reconciliation.bank',
@@ -1857,10 +1940,6 @@ export class UnifiedDashboard extends Component {
             'bhu.section19.notification': 'Section 19 Notification',
             'bhu.section21.notification': 'Section 21 Notification',
             'bhu.section23.award': 'Award',
-            'bhu.section20a.railways': 'Section 20 A (Railways)',
-            'bhu.section20e.railways': 'Section 20 E (Railways)',
-            'bhu.section3a.nh': 'Section 3A (NH)',
-            'bhu.section3d.nh': 'Section 3D (NH)',
             'bhu.payment.reconciliation.bank': 'Bank Recon',
         };
 
@@ -1884,7 +1963,7 @@ export class UnifiedDashboard extends Component {
                 return;
             }
 
-            // LARR only: Section 4 approval required before award (not Railway, NHAI, or CGLRC).
+            // LARR/Coal: Section 4 approval required before award when Sec 4 is in the workflow.
             if (this.requiresSection4BeforeAward()) {
                 const section4Records = await this.orm.searchRead(
                     "bhu.section4.notification",
@@ -2186,10 +2265,6 @@ export class UnifiedDashboard extends Component {
             'bhu.section9.notification': 'Section 9 Notifications',
             'bhu.section21.notification': 'Section 21 Notifications',
             'bhu.section23.award': 'Award',
-            'bhu.section20a.railways': 'Section 20 A (Railways)',
-            'bhu.section20e.railways': 'Section 20 E (Railways)',
-            'bhu.section3a.nh': 'Section 3A (NH)',
-            'bhu.section3d.nh': 'Section 3D (NH)',
             'bhu.payment.voucher': 'Payment Voucher',
             'bhu.payment.file': 'Payment File',
             'bhu.payment.reconciliation.bank': 'Bank Recon',
@@ -2219,18 +2294,11 @@ export class UnifiedDashboard extends Component {
             'Post-Gazette Step 4 Conduct Asset Survey': 'Post-Gazette Step 4 Conduct Asset Survey',
             'Post-Gazette Step 5 Land Compensation & Award': 'Post-Gazette Step 5 Land Compensation & Award',
             'Post-Gazette Step 6 Structure/Asset Assessment & Award': 'Post-Gazette Step 6 Structure/Asset Assessment & Award',
-            'Sec 20 A (Railways)': 'Sec 20 A (Railways)',
-            'Sec 20 E (Railways)': 'Sec 20 E (Railways)',
-            'Sec 3A (NH)': 'Sec 3A (NH)',
-            'Sec 3D (NH)': 'Sec 3D (NH)',
             'Mutual Consent': 'आपसी सहमति की क्रय नीति (Only in रायगढ़ and पसौर)',
             'Payment Voucher': 'Payment Voucher',
             'Payment File': 'Payment File',
             'Payment Reconciliation': 'Payment Reconciliation',
             'Bank Recon': 'Payment Reconciliation',
-            'Personal Notice generation (247.1)': 'Personal Notice generation (247.1)',
-            'Istehar प्रकाशन (247.2)': 'Istehar प्रकाशन (247.2)',
-            'Award (247.3)': 'Award (247.3)',
         };
         return mapping[dashboardSectionName] || dashboardSectionName;
     }
@@ -2261,13 +2329,6 @@ export class UnifiedDashboard extends Component {
             'Payment File': 'project',
             'Payment Reconciliation': 'project',
             'Bank Recon': 'project',
-            'Sec 20 A (Railways)': 'project',
-            'Sec 20 E (Railways)': 'project',
-            'Sec 3A (NH)': 'project',
-            'Sec 3D (NH)': 'project',
-            'Personal Notice generation (247.1)': 'village',
-            'Istehar प्रकाशन (247.2)': 'village',
-            'Award (247.3)': 'village',
             'Mutual Consent': 'village',
             'आपसी सहमति की क्रय नीति (Only in रायगढ़ and पसौर)': 'village',
         };
@@ -2290,66 +2351,15 @@ export class UnifiedDashboard extends Component {
         return text || null;
     }
 
-    isRailwayLaw() {
-        const names = this.state.allowedSectionNames;
-        return !!(names && names.includes('Sec 20 A (Railways)'));
-    }
-
-    isNHLaw() {
-        const names = this.state.allowedSectionNames;
-        return !!(names && names.includes('Sec 3A (NH)'));
-    }
-
-    /** True only for LARR: Sec 4 must exist in the project workflow and this is not Railway, NHAI, or CGLRC. */
+    /** True when Sec 4 is in the project workflow (LARR/Coal). */
     requiresSection4BeforeAward() {
         const names = this.state.allowedSectionNames || [];
-        if (this.isRailwayLaw() || this.isNHLaw()) {
-            return false;
-        }
-        if (names.includes('Personal Notice generation (247.1)')) {
-            return false;
-        }
         return names.includes('Sec 4(i) Notification of intention to prospect');
     }
 
-    // Check if a section should be visible based on project's law
     getStepNumber(sectionName, defaultText) {
         if (!this.state.allowedSectionNames) {
             return defaultText;
-        }
-
-        // Check for Railways
-        const isRailways = this.state.allowedSectionNames.includes('Sec 20 A (Railways)');
-        if (isRailways) {
-            const steps = {
-                'Surveys': 'Step 1',
-                'Section 23 Award': 'Step 2',
-                'Payment Voucher': 'Step 3',
-                'Sec 20 A (Railways)': 'Step 4',
-                'Sec 20 E (Railways)': 'Step 5',
-                'Payment File': 'Step 6',
-                'Payment Reconciliation': 'Step 7',
-                'Bank Recon': 'Step 7',
-            };
-            const masterName = this.getSectionMasterName(sectionName);
-            if (steps[masterName]) return steps[masterName];
-        }
-
-        // Check for NH
-        const isNH = this.state.allowedSectionNames.includes('Sec 3A (NH)');
-        if (isNH) {
-            const steps = {
-                'Surveys': 'Step 1',
-                'Section 23 Award': 'Step 2',
-                'Payment Voucher': 'Step 3',
-                'Sec 3A (NH)': 'Step 4',
-                'Sec 3D (NH)': 'Step 5',
-                'Payment File': 'Step 6',
-                'Payment Reconciliation': 'Step 7',
-                'Bank Recon': 'Step 7',
-            };
-            const masterName = this.getSectionMasterName(sectionName);
-            if (steps[masterName]) return steps[masterName];
         }
 
         // Coal Act
@@ -2378,60 +2388,21 @@ export class UnifiedDashboard extends Component {
             }
         }
 
-        // Check for CGLRC 247
-        const isCGLRC = this.state.allowedSectionNames.includes('Personal Notice generation (247.1)');
-        if (isCGLRC) {
-            const steps = {
-                'Surveys': 'Step 1',
-                'Personal Notice generation (247.1)': 'Step 2',
-                'Istehar प्रकाशन (247.2)': 'Step 3',
-                'Award (247.3)': 'Step 4',
-                'Payment Voucher': 'Step 5',
-                'Payment File': 'Step 6',
-                'Payment Reconciliation': 'Step 7',
-                'Bank Recon': 'Step 7',
-            };
-            const masterName = this.getSectionMasterName(sectionName);
-            if (steps[masterName]) return steps[masterName];
-        }
-
         return defaultText;
     }
 
     isSectionVisible(dashboardSectionName) {
         try {
             // Coal-only runtime: strict section set for process dashboard.
-            // Hide all non-Coal cards even if old law master data exists.
+            // Hide non-Coal LARR cards even if old law master data exists.
             const coalHidden = new Set([
-                'Personal Notice generation (247.1)',
-                'Istehar प्रकाशन (247.2)',
-                'Award (247.3)',
                 'Create SIA Team',
                 'Expert Group',
                 '(Sec 15) Objections',
                 'Section 18 R and R Scheme',
             ]);
 
-            // Railway and NH sections require department to be selected
-            // Check both dashboard names and mapped names
-            const railwayNhSections = [
-                'Sec 20 A (Railways)',
-                'Sec 20 E (Railways)',
-                'Sec 3A (NH)',
-                'Sec 3D (NH)'
-            ];
-
-            // Check if this is a Railway or NH section
-            const isRailwayNh = railwayNhSections.includes(dashboardSectionName) ||
-                dashboardSectionName.includes('Railways') ||
-                dashboardSectionName.includes('(NH)');
-
-            if (isRailwayNh) {
-                // Coal-only runtime: always hide NH/Railway flow cards.
-                return false;
-            }
-
-            // If no project is selected, show all sections (except Railway/NH which need department)
+            // If no project is selected, show all sections
             if (!this.state || !this.state.selectedProject) {
                 return true;
             }
@@ -2447,13 +2418,13 @@ export class UnifiedDashboard extends Component {
             }
 
             // Strict Coal-mode visibility for selected project.
-            // This hides CGLRC, SIA, Expert Committee, Sec 15, NH, Railways, etc.
+            // This hides SIA, Expert Committee, Sec 15, etc.
             if (this.state && this.state.selectedProject) {
                 return !coalHidden.has(dashboardSectionName);
             }
 
             // If project is selected but no law sections are configured yet,
-            // default to showing core Coal/LARR cards (except legacy NH/Railway already hidden).
+            // default to showing core Coal/LARR cards.
             if (!this.state.allowedSectionNames || this.state.allowedSectionNames.length === 0) {
                 console.warn(`Project ${this.state.selectedProject} has no law master sections configured. Using fallback section visibility.`);
                 return true;

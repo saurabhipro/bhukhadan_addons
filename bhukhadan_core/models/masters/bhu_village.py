@@ -109,6 +109,13 @@ class BhuVillage(models.Model):
     district_id = fields.Many2one('bhu.district', string='District / जिला', tracking=True)
     sub_division_id = fields.Many2one('bhu.sub.division', string='Sub Division / उपभाग', tracking=True)
     tehsil_id = fields.Many2one('bhu.tehsil', string='Tehsil / तहसील', tracking=True)
+    area_id = fields.Many2one(
+        'bhukhadan.area.master',
+        string='Area / क्षेत्र',
+        tracking=True,
+        index=True,
+        help='Area used to cascade-filter villages on dashboards.',
+    )
     name = fields.Char(string='Village Name / ग्राम का नाम', required=True)
     name_english = fields.Char(
         string='Village Name (English)',

@@ -194,7 +194,7 @@ class DashboardHelpers(models.AbstractModel):
     def _get_simple_section_counts(self, model_name, base_domain):
         """Simple count method for sections without workflow states
         Args:
-            model_name: Model name (e.g., 'bhu.section20a.railways')
+            model_name: Model name (e.g., 'bhu.section4.notification')
             base_domain: Base domain to filter by
         Returns:
             dict: Dictionary with total count only (no state breakdown)

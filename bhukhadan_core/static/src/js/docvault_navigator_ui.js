@@ -22,10 +22,6 @@ const THEME_BY_LABEL = [
     ["section 23", "theme-award"],
     ["award", "theme-award"],
     ["payment file", "theme-payment"],
-    ["personal notice", "theme-cglrc"],
-    ["istehar", "theme-cglrc"],
-    ["railways", "theme-rail"],
-    ["(nh)", "theme-nh"],
     ["form 10", "theme-survey"],
     ["surveys", "theme-survey"],
 ];

@@ -88,7 +88,7 @@ class Section23Award(models.Model):
         return body_map.get(body_type, body_type)
 
     def _requires_section4_for_award_generate(self):
-        """LARR-only: Section 4 must be in the project's law and not Railway/NH/CGLRC.
+        """LARR-only: Section 4 must be in the project's law.
 
         Mirrors dashboard ``requiresSection4BeforeAward`` (unified_dashboard.js).
         """
@@ -97,12 +97,6 @@ class Section23Award(models.Model):
         if not law:
             return False
         names = law.section_ids.mapped('name')
-        if 'Sec 20 A (Railways)' in names:
-            return False
-        if 'Sec 3A (NH)' in names:
-            return False
-        if 'Personal Notice generation (247.1)' in names:
-            return False
         return '(Sec 4) Section 4 Notifications' in names
 
     def _get_section4_approval_date(self):

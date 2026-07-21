@@ -68,44 +68,6 @@
             <field name="active">True</field>
         </record>
 
-        <!-- Sections from Railways Act -->
-        <record id="section_20_a_railways" model="bhu.section.master">
-            <field name="name">Sec 20 A (Railways)</field>
-            <field name="description">Section 20 A - Railways Act</field>
-            <field name="active">True</field>
-        </record>
-
-        <record id="section_20_d_objection_railways" model="bhu.section.master">
-            <field name="name">Sec 20 D (Objection) (Railways)</field>
-            <field name="description">Section 20 D - Objection process under Railways Act</field>
-            <field name="active">True</field>
-        </record>
-
-        <record id="section_20_e_railways" model="bhu.section.master">
-            <field name="name">Sec 20 E (Railways)</field>
-            <field name="description">Section 20 E - Railways Act</field>
-            <field name="active">True</field>
-        </record>
-
-        <!-- Sections from National Highway Act -->
-        <record id="section_3a_nh" model="bhu.section.master">
-            <field name="name">Sec 3A (NH)</field>
-            <field name="description">Section 3A - National Highway Act</field>
-            <field name="active">True</field>
-        </record>
-
-        <record id="section_3c_objection_nh" model="bhu.section.master">
-            <field name="name">Sec 3C (Objection) (NH)</field>
-            <field name="description">Section 3C - Objection process under National Highway Act</field>
-            <field name="active">True</field>
-        </record>
-
-        <record id="section_3d_nh" model="bhu.section.master">
-            <field name="name">Sec 3D (NH)</field>
-            <field name="description">Section 3D - National Highway Act</field>
-            <field name="active">True</field>
-        </record>
-
     </data>
 </odoo>
 

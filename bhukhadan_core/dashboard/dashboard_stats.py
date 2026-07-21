@@ -461,7 +461,6 @@ class DashboardStats(models.AbstractModel):
         if pending_state == 'submitted':
             first_pending = submitted[0] if submitted else False
         elif pending_state == 'draft':
-            # For CGLRC 247, draft records are considered pending SDM approval
             first_pending = draft[0] if draft else False
         else:
             first_pending = submitted[0] if submitted else False
@@ -578,16 +577,6 @@ class DashboardStats(models.AbstractModel):
             'sia': self._get_section_counts('bhu.sia.team', domain_without_village, states=workflow_states),
             'section8': self._get_section_counts('bhu.section8', domain_without_village, state_field='state', states=['draft', 'approved', 'rejected']),  # Section 8 is per project, not per village
             'section9': self._get_section_counts('bhu.section9.notification', domain_with_village, states=workflow_states),
-            # Railway Act Sections (all have village_id)
-            # Sections 20A and 20E have no workflow - simple count only
-            'section20a_railways': self._get_simple_section_counts('bhu.section20a.railways', domain_with_village),
-            'section20d_railways': self._get_section_counts('bhu.section20d.railways', domain_with_village, states=workflow_states),
-            'section20e_railways': self._get_simple_section_counts('bhu.section20e.railways', domain_with_village),
-            # National Highway Act Sections (all have village_id)
-            # Sections 3A and 3D have no workflow - simple count only
-            'section3a_nh': self._get_simple_section_counts('bhu.section3a.nh', domain_with_village),
-            'section3c_nh': self._get_section_counts('bhu.section3c.nh', domain_with_village, states=workflow_states),
-            'section3d_nh': self._get_simple_section_counts('bhu.section3d.nh', domain_with_village),
             # Section 23 Award (has village_id)
             'section23_award': self._get_section_counts('bhu.section23.award', domain_with_village, states=workflow_states),
             # Payment Voucher + Payment File (generated bank exports)
@@ -595,10 +584,6 @@ class DashboardStats(models.AbstractModel):
             'payment_file': self._get_payment_file_counts(domain_with_village),
             # Payment Reconciliation (has village_id)
             'reconciliation': self._get_section_counts('bhu.payment.reconciliation.bank', domain_with_village, states=['draft', 'processed', 'completed']),
-            # CGLRC Section 247 Sections
-            'section247_1_cglrc': self._get_section_counts('bhu.section247_1.cglrc', domain_with_village, states=workflow_states),
-            'section247_2_cglrc': self._get_section_counts('bhu.section247_2.cglrc', domain_with_village, states=workflow_states),
-            'section247_3_cglrc': self._get_section_counts('bhu.section247_3.cglrc', domain_with_village, states=workflow_states),
         }
         
         # Section 21 Notification uses standard workflow states (draft, submitted, approved, send_back)
@@ -718,11 +703,6 @@ class DashboardStats(models.AbstractModel):
                     if project.law_master_id and project.law_master_id.section_ids:
                         allowed_section_names = list(project.law_master_id.section_ids.mapped('name'))
                         _logger.info(f"Dashboard Stats - Project {project_id} has law '{project.law_master_id.name}' with sections: {allowed_section_names}")
-                        # Coal-only runtime: do not surface NH/Railway section tracks.
-                        allowed_section_names = [
-                            n for n in allowed_section_names
-                            if '(Railways)' not in n and '(NH)' not in n
-                        ]
                         # Coal dashboard label bridge
                         if 'Sec 4(i) Notification of intention to prospect' in allowed_section_names:
                             allowed_section_names.extend([
@@ -931,108 +911,6 @@ class DashboardStats(models.AbstractModel):
                 ),
                 'draft_award_info': self._get_section_info('bhu.section21.notification', domains['final_domain']),
                 
-                # Railway Act Sections (all have village_id)
-                # Section 20A - No workflow, just total count
-                'section20a_railways_total': counts['section20a_railways']['total'],
-                'section20a_railways_draft': 0,
-                'section20a_railways_submitted': 0,
-                'section20a_railways_approved': 0,
-                'section20a_railways_send_back': 0,
-                'section20a_railways_completion_percent': 0.0,
-                'section20a_railways_info': {
-                    'total': counts['section20a_railways']['total'],
-                    'draft_count': 0,
-                    'submitted_count': 0,
-                    'approved_count': 0,
-                    'rejected_count': 0,
-                    'send_back_count': 0,
-                    'all_approved': True,
-                    'is_completed': True,
-                    'first_pending_id': False,
-                    'first_document_id': False,
-                },
-                
-                'section20d_railways_total': counts['section20d_railways']['total'],
-                'section20d_railways_draft': counts['section20d_railways']['draft'],
-                'section20d_railways_submitted': counts['section20d_railways']['submitted'],
-                'section20d_railways_approved': counts['section20d_railways']['approved'],
-                'section20d_railways_send_back': counts['section20d_railways']['send_back'],
-                'section20d_railways_completion_percent': self._calculate_completion_percentage(
-                    counts['section20d_railways']['approved'], 0, counts['section20d_railways']['total'], is_survey=False
-                ),
-                'section20d_railways_info': self._get_section_info('bhu.section20d.railways', domains['final_domain']),
-                
-                # Section 20E - No workflow, just total count
-                'section20e_railways_total': counts['section20e_railways']['total'],
-                'section20e_railways_draft': 0,
-                'section20e_railways_submitted': 0,
-                'section20e_railways_approved': 0,
-                'section20e_railways_send_back': 0,
-                'section20e_railways_completion_percent': 0.0,
-                'section20e_railways_info': {
-                    'total': counts['section20e_railways']['total'],
-                    'draft_count': 0,
-                    'submitted_count': 0,
-                    'approved_count': 0,
-                    'rejected_count': 0,
-                    'send_back_count': 0,
-                    'all_approved': True,
-                    'is_completed': True,
-                    'first_pending_id': False,
-                    'first_document_id': False,
-                },
-                
-                # National Highway Act Sections (all have village_id)
-                # Section 3A - No workflow, just total count
-                'section3a_nh_total': counts['section3a_nh']['total'],
-                'section3a_nh_draft': 0,
-                'section3a_nh_submitted': 0,
-                'section3a_nh_approved': 0,
-                'section3a_nh_send_back': 0,
-                'section3a_nh_completion_percent': 0.0,
-                'section3a_nh_info': {
-                    'total': counts['section3a_nh']['total'],
-                    'draft_count': 0,
-                    'submitted_count': 0,
-                    'approved_count': 0,
-                    'rejected_count': 0,
-                    'send_back_count': 0,
-                    'all_approved': True,
-                    'is_completed': True,
-                    'first_pending_id': False,
-                    'first_document_id': False,
-                },
-                
-                'section3c_nh_total': counts['section3c_nh']['total'],
-                'section3c_nh_draft': counts['section3c_nh']['draft'],
-                'section3c_nh_submitted': counts['section3c_nh']['submitted'],
-                'section3c_nh_approved': counts['section3c_nh']['approved'],
-                'section3c_nh_send_back': counts['section3c_nh']['send_back'],
-                'section3c_nh_completion_percent': self._calculate_completion_percentage(
-                    counts['section3c_nh']['approved'], 0, counts['section3c_nh']['total'], is_survey=False
-                ),
-                'section3c_nh_info': self._get_section_info('bhu.section3c.nh', domains['final_domain']),
-                
-                # Section 3D - No workflow, just total count
-                'section3d_nh_total': counts['section3d_nh']['total'],
-                'section3d_nh_draft': 0,
-                'section3d_nh_submitted': 0,
-                'section3d_nh_approved': 0,
-                'section3d_nh_send_back': 0,
-                'section3d_nh_completion_percent': 0.0,
-                'section3d_nh_info': {
-                    'total': counts['section3d_nh']['total'],
-                    'draft_count': 0,
-                    'submitted_count': 0,
-                    'approved_count': 0,
-                    'rejected_count': 0,
-                    'send_back_count': 0,
-                    'all_approved': True,
-                    'is_completed': True,
-                    'first_pending_id': False,
-                    'first_document_id': False,
-                },
-                
                 # Section 23 Award (has village_id)
                 'section23_award_total': counts['section23_award']['total'],
                 'section23_award_draft': counts['section23_award']['draft'],
@@ -1077,31 +955,6 @@ class DashboardStats(models.AbstractModel):
                     counts['reconciliation']['completed'], 0, counts['reconciliation']['total'], is_survey=False
                 ),
                 'reconciliation_info': self._get_section_info('bhu.payment.reconciliation.bank', domains['final_domain'], state_field='state'),
-
-                # CGLRC Section 247
-                'section247_1_cglrc_total': counts['section247_1_cglrc']['total'],
-                'section247_1_cglrc_draft': counts['section247_1_cglrc']['draft'],
-                'section247_1_cglrc_approved': counts['section247_1_cglrc']['approved'],
-                'section247_1_cglrc_completion_percent': self._calculate_completion_percentage(
-                    counts['section247_1_cglrc']['approved'], 0, counts['section247_1_cglrc']['total'], is_survey=False
-                ),
-                'section247_1_cglrc_info': self._get_section_info('bhu.section247_1.cglrc', domains['final_domain'], pending_state='draft'),
-
-                'section247_2_cglrc_total': counts['section247_2_cglrc']['total'],
-                'section247_2_cglrc_draft': counts['section247_2_cglrc']['draft'],
-                'section247_2_cglrc_approved': counts['section247_2_cglrc']['approved'],
-                'section247_2_cglrc_completion_percent': self._calculate_completion_percentage(
-                    counts['section247_2_cglrc']['approved'], 0, counts['section247_2_cglrc']['total'], is_survey=False
-                ),
-                'section247_2_cglrc_info': self._get_section_info('bhu.section247_2.cglrc', domains['final_domain'], pending_state='draft'),
-
-                'section247_3_cglrc_total': counts['section247_3_cglrc']['total'],
-                'section247_3_cglrc_draft': counts['section247_3_cglrc']['draft'],
-                'section247_3_cglrc_approved': counts['section247_3_cglrc']['approved'],
-                'section247_3_cglrc_completion_percent': self._calculate_completion_percentage(
-                    counts['section247_3_cglrc']['approved'], 0, counts['section247_3_cglrc']['total'], is_survey=False
-                ),
-                'section247_3_cglrc_info': self._get_section_info('bhu.section247_3.cglrc', domains['final_domain'], pending_state='draft'),
 
             }
             
@@ -1148,40 +1001,10 @@ class DashboardStats(models.AbstractModel):
             'section9_completion_percent': 0, 'section9_info': empty_info.copy(),
             'draft_award_total': 0, 'draft_award_draft': 0, 'draft_award_submitted': 0, 'draft_award_approved': 0, 'draft_award_send_back': 0,
             'draft_award_completion_percent': 0, 'draft_award_info': empty_info.copy(),
-            # Railway Act Sections
-            'section20a_railways_total': 0, 'section20a_railways_draft': 0, 'section20a_railways_submitted': 0,
-            'section20a_railways_approved': 0, 'section20a_railways_send_back': 0, 'section20a_railways_completion_percent': 0,
-            'section20a_railways_info': empty_info.copy(),
-            'section20d_railways_total': 0, 'section20d_railways_draft': 0, 'section20d_railways_submitted': 0,
-            'section20d_railways_approved': 0, 'section20d_railways_send_back': 0, 'section20d_railways_completion_percent': 0,
-            'section20d_railways_info': empty_info.copy(),
-            'section20e_railways_total': 0, 'section20e_railways_draft': 0, 'section20e_railways_submitted': 0,
-            'section20e_railways_approved': 0, 'section20e_railways_send_back': 0, 'section20e_railways_completion_percent': 0,
-            'section20e_railways_info': empty_info.copy(),
-            # National Highway Act Sections
-            'section3a_nh_total': 0, 'section3a_nh_draft': 0, 'section3a_nh_submitted': 0,
-            'section3a_nh_approved': 0, 'section3a_nh_send_back': 0, 'section3a_nh_completion_percent': 0,
-            'section3a_nh_info': empty_info.copy(),
-            'section3c_nh_total': 0, 'section3c_nh_draft': 0, 'section3c_nh_submitted': 0,
-            'section3c_nh_approved': 0, 'section3c_nh_send_back': 0, 'section3c_nh_completion_percent': 0,
-            'section3c_nh_info': empty_info.copy(),
-            'section3d_nh_total': 0, 'section3d_nh_draft': 0, 'section3d_nh_submitted': 0,
-            'section3d_nh_approved': 0, 'section3d_nh_send_back': 0, 'section3d_nh_completion_percent': 0,
-            'section3d_nh_info': empty_info.copy(),
             # Section 23 Award
             'section23_award_total': 0, 'section23_award_draft': 0, 'section23_award_submitted': 0,
             'section23_award_approved': 0, 'section23_award_send_back': 0, 'section23_award_completion_percent': 0,
             'section23_award_info': empty_info.copy(),
-            # CGLRC Section 247
-            'section247_1_cglrc_total': 0, 'section247_1_cglrc_draft': 0,
-            'section247_1_cglrc_approved': 0, 'section247_1_cglrc_completion_percent': 0,
-            'section247_1_cglrc_info': empty_info.copy(),
-            'section247_2_cglrc_total': 0, 'section247_2_cglrc_draft': 0,
-            'section247_2_cglrc_approved': 0, 'section247_2_cglrc_completion_percent': 0,
-            'section247_2_cglrc_info': empty_info.copy(),
-            'section247_3_cglrc_total': 0, 'section247_3_cglrc_draft': 0,
-            'section247_3_cglrc_approved': 0, 'section247_3_cglrc_completion_percent': 0,
-            'section247_3_cglrc_info': empty_info.copy(),
             # Payment Voucher
             'payment_voucher_total': 0, 'payment_voucher_draft': 0, 'payment_voucher_generated': 0,
             'payment_voucher_completion_percent': 0, 'payment_voucher_info': empty_info.copy(),
@@ -1245,13 +1068,49 @@ class DashboardStats(models.AbstractModel):
                 _logger.warning(f"No project_ids found for user {self.env.user.name} (ID: {self.env.user.id})")
                 return []
         
-        result = projects.read(["id", "name", "code"])
+        result = []
+        for project in projects:
+            result.append({
+                'id': project.id,
+                'name': project.name or '',
+                'code': project.code or '',
+                'department_id': project.department_id.id if project.department_id else None,
+                'department_name': project.department_id.name if project.department_id else '',
+            })
         _logger.info(f"Returning {len(result)} projects: {[p['name'] for p in result]}")
         return result
     
     @api.model
-    def get_villages_by_project(self, project_id):
-        """Get villages for a specific project.
+    def get_areas_by_project(self, project_id):
+        """Areas linked to villages of a project (for dashboard Area cascade filter)."""
+        try:
+            pid = int(project_id)
+        except (TypeError, ValueError):
+            return []
+        project = self.env["bhu.project"].browse(pid)
+        if not project.exists():
+            return []
+        villages = project.village_ids.filtered(lambda v: v.area_id and v.area_id.active)
+        counts = {}
+        for village in villages:
+            area = village.area_id
+            entry = counts.setdefault(area.id, {"area": area, "count": 0})
+            entry["count"] += 1
+        out = []
+        for aid in sorted(counts, key=lambda i: (counts[i]["area"].name or "").lower()):
+            area = counts[aid]["area"]
+            name = (area.name or "").strip()
+            out.append({
+                "id": area.id,
+                "name": name,
+                "dropdown_label": name,
+                "village_count": counts[aid]["count"],
+            })
+        return out
+
+    @api.model
+    def get_villages_by_project(self, project_id, area_id=None):
+        """Get villages for a specific project, optionally filtered by Area.
 
         Each dict includes ``display_code``: ``village_code`` from master when set, otherwise a
         stable per-project fallback ``V1``, ``V2``, … (sorted by village name, id) so the
@@ -1264,7 +1123,15 @@ class DashboardStats(models.AbstractModel):
         project = self.env["bhu.project"].browse(pid)
         if not project.exists():
             return []
-        villages = project.village_ids.sorted(key=lambda v: ((v.name or "").lower(), v.id))
+        villages = project.village_ids
+        if area_id not in (None, False, ""):
+            try:
+                aid = int(area_id)
+            except (TypeError, ValueError):
+                aid = None
+            if aid:
+                villages = villages.filtered(lambda v: v.area_id.id == aid)
+        villages = villages.sorted(key=lambda v: ((v.name or "").lower(), v.id))
         out = []
         for idx, village in enumerate(villages, start=1):
             row = village.read(["id", "name", "village_type", "village_code"])[0]
