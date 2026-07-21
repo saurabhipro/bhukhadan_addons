@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_bhu_user_import_wizard_form" model="ir.ui.view">
+        <field name="name">bhu.user.import.wizard.form</field>
+        <field name="model">bhu.user.import.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Import Users from Excel">
+                <sheet>
+                    <group invisible="state != 'draft'">
+                        <div class="alert alert-info" role="alert">
+                            <p><strong>Expected sheet layout</strong> (same as Patwari roster export / Google Sheet):</p>
+                            <ul>
+                                <li><strong>B</strong> तहसील का नाम → Tehsil master lookup</li>
+                                <li><strong>C</strong> तहसीलदार → Tehsildar user, linked on tehsil</li>
+                                <li><strong>D</strong> Sub Division → Sub division master lookup</li>
+                                <li><strong>E</strong> SDM → SDM user, linked on sub division</li>
+                                <li><strong>H</strong> प्रभावित ग्राम का नाम → Village master lookup</li>
+                                <li><strong>I</strong> पटवारी का नाम → Patwari user, linked on village</li>
+                                <li><strong>J</strong> पटवारी का मोबाइल → Patwari mobile / login match</li>
+                                <li><strong>K</strong> Email ID → Patwari login (when provided)</li>
+                            </ul>
+                            <p>Each row can create or update Tehsildar, SDM, and Patwari users and link them to the matching masters.</p>
+                            <p groups="bhukhadan_core.group_bhuarjan_district_administrator">District Administrators import only within their district.</p>
+                        </div>
+                    </group>
+                    <group invisible="state != 'draft'">
+                        <group>
+                            <field name="district_id" options="{'no_create': True}"/>
+                            <field name="data_file" filename="data_file_filename"/>
+                        </group>
+                        <group>
+                            <field name="update_existing"/>
+                            <field name="dry_run"/>
+                        </group>
+                    </group>
+                    <group invisible="state != 'done'">
+                        <group>
+                            <field name="rows_count"/>
+                            <field name="created_count"/>
+                            <field name="updated_count"/>
+                        </group>
+                        <group>
+                            <field name="tehsils_linked_count"/>
+                            <field name="subdivisions_linked_count"/>
+                            <field name="villages_linked_count"/>
+                            <field name="error_count"/>
+                        </group>
+                    </group>
+                    <group invisible="state != 'done'">
+                        <field name="log_text" nolabel="1" widget="text"/>
+                    </group>
+                    <field name="state" invisible="1"/>
+                </sheet>
+                <footer invisible="state != 'draft'">
+                    <button name="action_import" string="Import" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+                <footer invisible="state != 'done'">
+                    <button string="Close" class="btn-primary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_bhu_user_import_wizard" model="ir.actions.act_window">
+        <field name="name">Import Users</field>
+        <field name="res_model">bhu.user.import.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_bhu_user_import"
+              name="Import Users"
+              parent="menu_bhu_users_maai_menu"
+              action="action_bhu_user_import_wizard"
+              sequence="12"
+              groups="bhukhadan_core.group_bhuarjan_admin,base.group_system,bhukhadan_core.group_bhuarjan_district_administrator"/>
+</odoo>

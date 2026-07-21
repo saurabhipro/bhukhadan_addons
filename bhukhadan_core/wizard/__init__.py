@@ -13,3 +13,4 @@ from . import image_capture
 from . import payment_voucher_generate_wizard
 from . import time_savings_report_wizard
 from . import survey_import_wizard
+from . import user_import_wizard
