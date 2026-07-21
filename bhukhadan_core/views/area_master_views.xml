@@ -24,6 +24,23 @@
                             <field name="name" placeholder="Enter area name"/>
                             <field name="active"/>
                         </group>
+                        <notebook>
+                            <page string="Villages / ग्राम" name="villages">
+                                <field name="village_ids" nolabel="1" readonly="1">
+                                    <list string="Villages / ग्राम" create="0" delete="0" edit="0">
+                                        <field name="village_code" string="Village Code"/>
+                                        <field name="name" string="Village Name"/>
+                                        <field name="name_english" string="English Name" optional="hide"/>
+                                        <field name="state_id" string="State"/>
+                                        <field name="district_id" string="District"/>
+                                        <field name="sub_division_id" string="Sub Division" optional="hide"/>
+                                        <field name="tehsil_id" string="Tehsil"/>
+                                        <field name="pincode" string="Pincode" optional="hide"/>
+                                        <field name="village_type" string="Type" optional="hide"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
                     </sheet>
                     <chatter/>
                 </form>
