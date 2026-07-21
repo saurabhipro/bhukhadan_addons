@@ -24,3 +24,17 @@ bhukhadan_test/.env
 
 # Graphify outputs (large; regenerate locally)
 **/graphify-out/
+
+# Flutter app (nested sources in monorepo)
+bhukhadan_app/.dart_tool/
+bhukhadan_app/.packages
+bhukhadan_app/.pub-cache/
+bhukhadan_app/.pub/
+bhukhadan_app/build/
+bhukhadan_app/.flutter-plugins
+bhukhadan_app/.flutter-plugins-dependencies
+bhukhadan_app/**/*.iml
+bhukhadan_app/.idea/
+bhukhadan_app/.idea/
+bhukhadan_app/.vscode/
+bhukhadan_app/.metadata
