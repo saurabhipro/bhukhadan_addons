@@ -8,6 +8,7 @@
     "test:auth": "playwright test tests/auth.spec.ts",
     "test:masters": "playwright test tests/masters.spec.ts",
     "test:surveys": "playwright test tests/surveys.spec.ts",
+    "test:screenshot": "playwright test tests/screenshot_audit.spec.ts",
     "test:report": "playwright show-report",
     "test:headed": "playwright test --headed"
   },

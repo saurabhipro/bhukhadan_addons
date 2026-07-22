@@ -61,4 +61,5 @@ export const Endpoints = {
   surveyById: (id: number | string) => `/api/bhukhadan/survey/${id}`,
   surveyOwners: (id: number | string) => `/api/bhukhadan/survey/${id}/owners`,
   screenshotAudit: '/api/bhukhadan/audit/screenshot',
+  screenshotAuditById: (id: number | string) => `/api/bhukhadan/audit/screenshot/${id}`,
 } as const;

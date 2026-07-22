@@ -58,6 +58,39 @@
 - Apply app-wide screenshot blocking where OS supports it.
 - Never crash the app on report failure.
 
+## `DELETE /api/bhukhadan/audit/screenshot/<id>`
+
+**Purpose**: Remove a screenshot audit row (admin cleanup / test teardown). Does not replace the Odoo UI delete for administrators.
+
+### Auth
+
+- `Authorization: Bearer <jwt>` required.
+
+### Authorization
+
+- **BhuKhadan Administrator** or **System** may delete any row.
+- The **owner** of the event (`user_id` = JWT user) may delete their own row (so API tests can clean up without an admin token).
+- Other users receive `403`.
+
+### Success response
+
+- Status: `200`
+```json
+{
+  "success": true,
+  "message": "Screenshot event deleted",
+  "data": { "id": 1 }
+}
+```
+
+### Error responses
+
+| Status | When |
+|--------|------|
+| 401/403 | Missing/invalid token, or not allowed to delete this row |
+| 404 | Unknown `id` |
+| 500 | Unexpected server error |
+
 ## Admin UI (non-HTTP contract)
 
 - Menu: **Users → Screenshot Audit Log**

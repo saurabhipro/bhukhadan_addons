@@ -440,3 +440,51 @@ class SurveyAPIController(http.Controller):
         except Exception as err:
             _logger.exception('Screenshot audit log failed')
             return self._json_response({'success': False, 'error': str(err)}, status=500)
+
+    def _user_can_delete_screenshot_log(self, user, log):
+        """Admin/System may delete any row; the event owner may delete their own (API cleanup)."""
+        if user.has_group('bhukhadan_core.group_bhuarjan_admin') or user.has_group('base.group_system'):
+            return True
+        return bool(log.user_id) and log.user_id.id == user.id
+
+    @http.route(
+        '/api/bhukhadan/audit/screenshot/<int:log_id>',
+        type='http',
+        auth='public',
+        methods=['DELETE'],
+        csrf=False,
+    )
+    @check_permission
+    def delete_screenshot(self, log_id, **kwargs):
+        try:
+            user = self._current_user()
+            if not user or user._is_public():
+                return self._json_response({'success': False, 'error': 'Unauthorized'}, status=401)
+
+            log = request.env['bhu.screenshot.log'].sudo().browse(log_id)
+            if not log.exists():
+                return self._json_response(
+                    {'success': False, 'error': 'Screenshot event not found', 'error_code': 'NOT_FOUND'},
+                    status=404,
+                )
+
+            if not self._user_can_delete_screenshot_log(user, log):
+                return self._json_response(
+                    {'success': False, 'error': 'You do not have permission to delete this event'},
+                    status=403,
+                )
+
+            log.unlink()
+            return self._json_response(
+                {
+                    'success': True,
+                    'message': 'Screenshot event deleted',
+                    'data': {'id': log_id},
+                },
+                status=200,
+            )
+        except AccessError as err:
+            return self._json_response({'success': False, 'error': str(err)}, status=403)
+        except Exception as err:
+            _logger.exception('Screenshot audit delete failed for %s', log_id)
+            return self._json_response({'success': False, 'error': str(err)}, status=500)

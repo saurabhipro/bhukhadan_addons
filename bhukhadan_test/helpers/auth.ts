@@ -107,6 +107,14 @@ export async function authedPatch(
   return request.patch(path, { headers: authHeader(token), data });
 }
 
+export async function authedDelete(
+  request: APIRequestContext,
+  path: string,
+  token: string,
+) {
+  return request.delete(path, { headers: authHeader(token) });
+}
+
 /** Resolve Project → Area → Village cascade for mutation tests. */
 export async function resolveLocationCascade(request: APIRequestContext, token: string) {
   const projectsBody = await expectOk(await authedGet(request, Endpoints.projects, token));

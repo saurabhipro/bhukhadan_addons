@@ -16,12 +16,26 @@ class BhuUserImportWizard(models.TransientModel):
         'bhu.district',
         string='District / जिला',
         default=lambda self: self.env.user.district_id,
-        help='Optional scope for master lookups. District Administrators are limited to their district.',
+        help='Used for master lookups. Required when auto-creating missing '
+             'Project / Tehsil / Sub Division / Village. District Administrators '
+             'are limited to their district.',
     )
     update_existing = fields.Boolean(
         string='Update Existing Users',
         default=True,
         help='Update name, mobile, and role when a matching user already exists.',
+    )
+    create_missing_masters = fields.Boolean(
+        string='Create Missing Masters',
+        default=True,
+        help='If Project / Department / Tehsil / Sub Division / Village is not found, create it '
+             'under the selected District, then map the user.',
+    )
+    force_relink = fields.Boolean(
+        string='Overwrite Existing Officer Links',
+        default=False,
+        help='If a Tehsil / Sub Division / Village is already linked to another user, '
+             'replace that link with the imported user.',
     )
     dry_run = fields.Boolean(
         string='Validate Only (Dry Run)',
@@ -35,9 +49,12 @@ class BhuUserImportWizard(models.TransientModel):
     log_text = fields.Text(string='Import Log', readonly=True)
     created_count = fields.Integer(string='Users Created', readonly=True)
     updated_count = fields.Integer(string='Users Updated', readonly=True)
+    masters_created_count = fields.Integer(string='Masters Created', readonly=True)
     tehsils_linked_count = fields.Integer(string='Tehsils Linked', readonly=True)
     subdivisions_linked_count = fields.Integer(string='Sub Divisions Linked', readonly=True)
     villages_linked_count = fields.Integer(string='Villages Linked', readonly=True)
+    projects_linked_count = fields.Integer(string='Project↔Village Maps', readonly=True)
+    departments_linked_count = fields.Integer(string='Departments Linked', readonly=True)
     rows_count = fields.Integer(string='Rows Processed', readonly=True)
     error_count = fields.Integer(string='Errors', readonly=True)
 
@@ -72,13 +89,22 @@ class BhuUserImportWizard(models.TransientModel):
         if not self.data_file:
             raise ValidationError(_('Please upload an Excel file.'))
 
+        district_id = self._resolve_district_id()
+        if self.create_missing_masters and not district_id:
+            raise ValidationError(_(
+                'Select a District when “Create Missing Masters” is enabled, '
+                'so new Department / Tehsil / Village / Project records can be placed correctly.'
+            ))
+
         stats, log_text = import_user_roster_xlsx(
             self.env,
             self.data_file,
             self.data_file_filename or 'user_roster_import.xlsx',
-            district_id=self._resolve_district_id(),
+            district_id=district_id,
             update_existing=self.update_existing,
             dry_run=self.dry_run,
+            create_missing_masters=self.create_missing_masters,
+            force_relink=self.force_relink,
         )
 
         self.write({
@@ -86,9 +112,12 @@ class BhuUserImportWizard(models.TransientModel):
             'log_text': log_text,
             'created_count': stats['created'],
             'updated_count': stats['updated'],
+            'masters_created_count': stats.get('masters_created', 0),
             'tehsils_linked_count': stats['tehsils_linked'],
             'subdivisions_linked_count': stats['subdivisions_linked'],
             'villages_linked_count': stats['villages_linked'],
+            'projects_linked_count': stats.get('projects_linked', 0),
+            'departments_linked_count': stats.get('departments_linked', 0),
             'rows_count': stats['rows'],
             'error_count': stats['errors'],
         })

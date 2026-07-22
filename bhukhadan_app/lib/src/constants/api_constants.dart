@@ -45,5 +45,7 @@ class ApiEndpoints {
 
   // Screenshot audit
   // POST /bhukhadan/audit/screenshot
+  // DELETE /bhukhadan/audit/screenshot/$id
   static const String screenshotAudit = '/bhukhadan/audit/screenshot';
+  static String screenshotAuditById(int id) => '/bhukhadan/audit/screenshot/$id';
 }

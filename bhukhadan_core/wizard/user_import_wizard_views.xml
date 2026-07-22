@@ -8,18 +8,33 @@
                 <sheet>
                     <group invisible="state != 'draft'">
                         <div class="alert alert-info" role="alert">
-                            <p><strong>Expected sheet layout</strong> (same as Patwari roster export / Google Sheet):</p>
+                            <p><strong>Expected sheet layout</strong> (Patwari roster / Google Sheet style):</p>
                             <ul>
-                                <li><strong>B</strong> तहसील का नाम → Tehsil master lookup</li>
-                                <li><strong>C</strong> तहसीलदार → Tehsildar user, linked on tehsil</li>
-                                <li><strong>D</strong> Sub Division → Sub division master lookup</li>
-                                <li><strong>E</strong> SDM → SDM user, linked on sub division</li>
-                                <li><strong>H</strong> प्रभावित ग्राम का नाम → Village master lookup</li>
-                                <li><strong>I</strong> पटवारी का नाम → Patwari user, linked on village</li>
+                                <li><strong>Department / विभाग</strong> (optional) → find or create Department master</li>
+                                <li><strong>Department User</strong> (optional) → Department user, linked on department + project</li>
+                                <li><strong>Project</strong> (optional) → find or create Project, set its Department, map Village onto it</li>
+                                <li><strong>B</strong> तहसील का नाम → Tehsil lookup / create, then map Tehsildar</li>
+                                <li><strong>C</strong> तहसीलदार → Tehsildar user</li>
+                                <li><strong>D</strong> Sub Division → Sub division lookup / create, then map SDM</li>
+                                <li><strong>E</strong> SDM → SDM user</li>
+                                <li><strong>H</strong> प्रभावित ग्राम → Village lookup / create, then map Patwari</li>
+                                <li><strong>I</strong> पटवारी का नाम → Patwari user</li>
                                 <li><strong>J</strong> पटवारी का मोबाइल → Patwari mobile / login match</li>
-                                <li><strong>K</strong> Email ID → Patwari login (when provided)</li>
+                                <li><strong>K</strong> Email ID → login (when provided)</li>
                             </ul>
-                            <p>Each row can create or update Tehsildar, SDM, and Patwari users and link them to the matching masters.</p>
+                            <p>
+                                Codes use <strong>[brackets]</strong> like villages/projects:
+                                <code>[D1] Coal India</code>, <code>[P1] SECL Korba</code>,
+                                <code>[T1] Tehsil</code>, <code>[SD1] Sub Division</code>,
+                                <code>[V1] Village</code>.
+                                If a code is present in Excel it is used; if missing, one is auto-created
+                                (D1, P1, T1, SD1, V1…).
+                            </p>
+                            <p>
+                                If a Department / Project / Tehsil / Sub Division / Village name is <strong>not found</strong>
+                                and <em>Create Missing Masters</em> is on, it is created under the selected District,
+                                then the user is mapped.
+                            </p>
                             <p groups="bhukhadan_core.group_bhuarjan_district_administrator">District Administrators import only within their district.</p>
                         </div>
                     </group>
@@ -30,6 +45,8 @@
                         </group>
                         <group>
                             <field name="update_existing"/>
+                            <field name="create_missing_masters"/>
+                            <field name="force_relink"/>
                             <field name="dry_run"/>
                         </group>
                     </group>
@@ -38,11 +55,14 @@
                             <field name="rows_count"/>
                             <field name="created_count"/>
                             <field name="updated_count"/>
+                            <field name="masters_created_count"/>
                         </group>
                         <group>
                             <field name="tehsils_linked_count"/>
                             <field name="subdivisions_linked_count"/>
                             <field name="villages_linked_count"/>
+                            <field name="projects_linked_count"/>
+                            <field name="departments_linked_count"/>
                             <field name="error_count"/>
                         </group>
                     </group>

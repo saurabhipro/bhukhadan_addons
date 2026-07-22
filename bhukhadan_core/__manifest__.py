@@ -1,6 +1,6 @@
 {
     'name': 'BhuKhadan',
-    'version': '18.0.1.7.2',
+    'version': '18.0.1.7.6',
     'summary': 'BhuKhadan — Coal Bearing & Land Acquisition Management System.',
     'sequence':'-1',
     'description':'Digitize end-to-end land acquisition under the Coal Bearing Areas (Acquisition & Development) Act, 1957 and RFCTLARR Act, 2013 — from notification through award, ensuring transparency, traceability, and accountability.',

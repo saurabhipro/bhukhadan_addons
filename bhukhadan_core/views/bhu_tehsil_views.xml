@@ -6,6 +6,7 @@
             <field name="model">bhu.tehsil</field>
             <field name="arch" type="xml">
                 <list string="Tehsils / तहसील">
+                    <field name="code"/>
                     <field name="name"/>
                     <field name="sub_division_id"/>
                     <field name="district_id"/>
@@ -26,6 +27,7 @@
                                 <field name="state_id" options="{'no_create':True,'no_create_edit':True,'no_open':True}"/>
                                 <field name="district_id" options="{'no_create':True,'no_create_edit':True,'no_open':True}" domain="[('state_id', '=', state_id)]"/>
                                 <field name="sub_division_id" options="{'no_create':True,'no_create_edit':True,'no_open':True}" domain="[('district_id', '=', district_id)]"/>
+                                <field name="code"/>
                                 <field name="name"/>
                                 <field name="user_id" domain="[('bhuarjan_role','=', 'tahsildar')]" options="{'no_create_edit':True, 'no_create':True}"/>
                             </group>
@@ -47,6 +49,7 @@
             <field name="model">bhu.tehsil</field>
             <field name="arch" type="xml">
                 <search string="Search Tehsils / तहसील खोजें">
+                    <field name="code"/>
                     <field name="name"/>
                     <field name="district_id"/>
                     

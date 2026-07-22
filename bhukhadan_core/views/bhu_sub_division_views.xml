@@ -6,6 +6,7 @@
         <field name="model">bhu.sub.division</field>
         <field name="arch" type="xml">
             <list>
+                <field name="code"/>
                 <field name="name"/>
                 <field name="district_id"/>
                 <field name="state_id"/>
@@ -24,6 +25,7 @@
                     <group>
                         <field name="state_id" options="{'no_create':True,'no_create_edit':True,'no_open':True}"/>
                         <field name="district_id" options="{'no_create':True,'no_create_edit':True,'no_open':True}" domain="[('state_id', '=', state_id)]"/>
+                        <field name="code"/>
                         <field name="name"/>
                         <field name="user_id" domain="[('bhuarjan_role','=', 'nodal_officer_lr')]" options="{'no_create_edit':True, 'no_create':True}"/>
                     </group>
