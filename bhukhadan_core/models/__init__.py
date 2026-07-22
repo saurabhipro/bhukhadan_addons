@@ -84,6 +84,7 @@ from .survey import survey_photo
 from .survey import form10_export_utils
 
 from . import issue
+from . import screenshot_log
 from . import compat_theme_placeholders
 from . import ir_http
 from . import ir_qweb

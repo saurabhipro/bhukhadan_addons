@@ -342,3 +342,101 @@ class SurveyAPIController(http.Controller):
         except Exception as err:
             _logger.exception('Survey update failed for %s', survey_id)
             return self._json_response({'success': False, 'error': str(err)}, status=500)
+
+    def _client_ip(self):
+        httpreq = request.httprequest
+        forwarded = httpreq.headers.get('X-Forwarded-For') or ''
+        if forwarded:
+            return forwarded.split(',')[0].strip()
+        real_ip = httpreq.headers.get('X-Real-IP')
+        if real_ip:
+            return real_ip.strip()
+        return httpreq.remote_addr or ''
+
+    @http.route('/api/bhukhadan/audit/screenshot', type='http', auth='public', methods=['POST'], csrf=False)
+    @check_permission
+    def log_screenshot(self, **kwargs):
+        try:
+            try:
+                data = self._parse_json_body()
+            except json.JSONDecodeError:
+                return self._json_response(
+                    {'success': False, 'error': 'Invalid JSON body', 'error_code': 'INVALID_JSON'},
+                    status=400,
+                )
+            if not isinstance(data, dict):
+                return self._json_response({'success': False, 'error': 'Invalid JSON body'}, status=400)
+
+            user = self._current_user()
+            if not user or user._is_public():
+                return self._json_response({'success': False, 'error': 'Unauthorized'}, status=401)
+
+            platform = (data.get('platform') or 'unknown')
+            allowed = {'android', 'ios', 'web', 'linux', 'windows', 'macos', 'unknown'}
+            if platform not in allowed:
+                platform = 'unknown'
+
+            survey = False
+            survey_id = data.get('survey_id')
+            if survey_id not in (None, '', False):
+                try:
+                    survey = request.env['bhu.survey'].sudo().browse(int(survey_id))
+                    if not survey.exists():
+                        survey = False
+                except (TypeError, ValueError):
+                    survey = False
+
+            ua = request.httprequest.headers.get('User-Agent') or ''
+            if len(ua) > 512:
+                ua = ua[:512]
+
+            raw = json.dumps(data, default=str)
+            if len(raw) > 4000:
+                raw = raw[:4000]
+
+            role = ''
+            if getattr(user, 'bhuarjan_role', None):
+                role = user.bhuarjan_role or ''
+                try:
+                    selection = user._fields['bhuarjan_role'].selection
+                    if callable(selection):
+                        selection = selection(user)
+                    role = dict(selection).get(user.bhuarjan_role, user.bhuarjan_role) or user.bhuarjan_role
+                except Exception:
+                    role = user.bhuarjan_role or ''
+
+            vals = {
+                'user_id': user.id,
+                'user_login': user.login or '',
+                'user_mobile': getattr(user, 'mobile', None) or '',
+                'user_role': role or '',
+                'ip_address': self._client_ip(),
+                'user_agent': ua,
+                'platform': platform,
+                'screen_name': (data.get('screen_name') or '')[:128] or False,
+                'survey_id': survey.id if survey else False,
+                'device_info': (data.get('device_info') or '')[:256] or False,
+                'notes': data.get('notes') or False,
+                'raw_payload': raw,
+            }
+
+            log = request.env['bhu.screenshot.log'].sudo().create(vals)
+            from odoo import fields as odoo_fields
+            return self._json_response(
+                {
+                    'success': True,
+                    'message': 'Screenshot event logged',
+                    'data': {
+                        'id': log.id,
+                        'user_id': user.id,
+                        'ip_address': log.ip_address or '',
+                        'event_time': odoo_fields.Datetime.to_string(log.event_time),
+                    },
+                },
+                status=201,
+            )
+        except AccessError as err:
+            return self._json_response({'success': False, 'error': str(err)}, status=403)
+        except Exception as err:
+            _logger.exception('Screenshot audit log failed')
+            return self._json_response({'success': False, 'error': str(err)}, status=500)

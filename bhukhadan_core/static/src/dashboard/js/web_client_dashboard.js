@@ -9,6 +9,7 @@ import {
     getImpersonationInfo,
 } from "../../js/login_as_banner";
 import { scheduleBhuTermsAcceptanceGate } from "../../js/bhu_terms_acceptance";
+import { scheduleScreenshotWatermark } from "../../js/screenshot_watermark";
 
 patch(WebClient.prototype, {
     setup() {
@@ -18,6 +19,7 @@ patch(WebClient.prototype, {
             this.makeLogoClickable();
             this._scheduleImpersonationNav();
             scheduleBhuTermsAcceptanceGate();
+            scheduleScreenshotWatermark();
         });
     },
 

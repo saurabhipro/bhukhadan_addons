@@ -1,0 +1,35 @@
+/* Identity watermark for Odoo backend screenshots (attribution, not detection). */
+
+.bhu-screenshot-watermark {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 10050 !important;
+    pointer-events: none !important;
+    overflow: hidden !important;
+    opacity: 0.28 !important;
+    user-select: none !important;
+}
+
+.bhu-screenshot-watermark__grid {
+    position: absolute;
+    inset: -45%;
+    width: 190%;
+    height: 190%;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 3.5rem 2.5rem;
+    transform: rotate(-28deg);
+    transform-origin: center;
+}
+
+.bhu-screenshot-watermark__tile {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: #2c1a4a;
+    text-shadow: 0 0 1px rgba(255, 255, 255, 0.35);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}

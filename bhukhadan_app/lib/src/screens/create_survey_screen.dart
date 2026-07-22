@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import '../utils/theme_provider.dart';
 import '../components/language_selector.dart';
 import '../utils/colors.dart';
+import '../services/screenshot_audit_service.dart';
 
 class CreateSurveyScreen extends StatefulWidget {
   final Map<String, dynamic>? prefilledData;
@@ -128,6 +129,12 @@ class _CreateSurveyScreenState extends State<CreateSurveyScreen> {
   @override
   void initState() {
     super.initState();
+    final editId = widget.prefilledData?['id'];
+    ScreenshotAuditService.instance.setContext(
+      screenName: editId != null ? 'Edit Survey' : 'Create Survey',
+      surveyId: editId is int ? editId : int.tryParse('${editId ?? ''}'),
+      clearSurvey: editId == null,
+    );
     _initScreen();
   }
 

@@ -19,6 +19,9 @@ const String SELECTED_DISTRICT_NAME_KEY = 'selected_district_name';
 const String SELECTED_TEHSIL_ID_KEY = 'selected_tehsil_id';
 const String SELECTED_TEHSIL_NAME_KEY = 'selected_tehsil_name';
 
+/// JSON list of pending screenshot audit events for offline retry.
+const String SCREENSHOT_AUDIT_QUEUE_KEY = 'screenshot_audit_queue';
+
 Future<String?> getAsyncItem(String key) async {
   final prefs = await SharedPreferences.getInstance();
   return prefs.getString(key);

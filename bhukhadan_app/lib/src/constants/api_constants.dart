@@ -42,4 +42,8 @@ class ApiEndpoints {
 
   // PDF
   static const String generatePdf = '/bhukhadan/pdf/generate';
+
+  // Screenshot audit
+  // POST /bhukhadan/audit/screenshot
+  static const String screenshotAudit = '/bhukhadan/audit/screenshot';
 }

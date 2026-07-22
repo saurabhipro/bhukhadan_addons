@@ -18,6 +18,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:image/image.dart' as img;
 import 'package:intl/intl.dart';
 import 'create_survey_screen.dart';
+import '../services/screenshot_audit_service.dart';
 
 class SurveyDetailsScreen extends StatefulWidget {
   final int surveyId;
@@ -37,6 +38,10 @@ class _SurveyDetailsScreenState extends State<SurveyDetailsScreen> {
   @override
   void initState() {
     super.initState();
+    ScreenshotAuditService.instance.setContext(
+      screenName: 'Survey Details',
+      surveyId: widget.surveyId,
+    );
     _ids = widget.allSurveyIds ?? [widget.surveyId];
     _currentIndex = _ids.indexOf(widget.surveyId);
     if (_currentIndex == -1) {
@@ -58,6 +63,13 @@ class _SurveyDetailsScreenState extends State<SurveyDetailsScreen> {
       controller: _pageController,
       itemCount: _ids.length,
       physics: const BouncingScrollPhysics(),
+      onPageChanged: (index) {
+        _currentIndex = index;
+        ScreenshotAuditService.instance.setContext(
+          screenName: 'Survey Details',
+          surveyId: _ids[index],
+        );
+      },
       itemBuilder: (context, index) {
         return SurveyDetailsContent(surveyId: _ids[index]);
       },
@@ -311,6 +323,10 @@ class _SurveyDetailsContentState extends State<SurveyDetailsContent> {
   @override
   void initState() {
     super.initState();
+    ScreenshotAuditService.instance.setContext(
+      screenName: 'Survey Details',
+      surveyId: widget.surveyId,
+    );
     _fetchDetails();
   }
 

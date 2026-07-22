@@ -7,6 +7,7 @@ import '../utils/theme_provider.dart';
 import '../utils/colors.dart';
 import '../services/api_service.dart';
 import '../constants/api_constants.dart';
+import '../services/screenshot_audit_service.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -25,6 +26,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
+    ScreenshotAuditService.instance.setContext(screenName: 'Profile', clearSurvey: true);
     _loadUserName();
   }
 

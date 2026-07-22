@@ -12,6 +12,7 @@ import '../utils/localization.dart';
 import '../components/language_selector.dart';
 import 'package:provider/provider.dart';
 import '../utils/theme_provider.dart';
+import '../services/screenshot_audit_service.dart';
 
 
 
@@ -45,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    ScreenshotAuditService.instance.setContext(screenName: 'Home', clearSurvey: true);
     _loadInitialData();
   }
 

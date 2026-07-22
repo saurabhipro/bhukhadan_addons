@@ -1,12 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'navigation/app_navigation.dart';
+import 'services/screenshot_audit_service.dart';
 import 'utils/globals.dart';
 import 'utils/theme_provider.dart';
 import 'screens/survey_details_screen.dart';
 
-class BhuarjanApp extends StatelessWidget {
+class BhuarjanApp extends StatefulWidget {
   const BhuarjanApp({super.key});
+
+  @override
+  State<BhuarjanApp> createState() => _BhuarjanAppState();
+}
+
+class _BhuarjanAppState extends State<BhuarjanApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    ScreenshotAuditService.instance.start();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    ScreenshotAuditService.instance.stop();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      ScreenshotAuditService.instance.flushQueue();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

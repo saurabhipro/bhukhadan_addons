@@ -160,6 +160,15 @@
     <menuitem id="menu_sia_team_members" name="SIA Team Members" action="action_sia_team_member" parent="menu_bhu_users_maai_menu" sequence="8" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system" active="0"/>
     <menuitem id="jwt_token_menu_item" name="JWT Token List" parent="menu_bhu_users_maai_menu" action="jwt_token_action" />
     <menuitem id="mobile_otp_menu_item" name="Mobile OTP List" parent="menu_bhu_users_maai_menu" action="mobile_otp_action" />
+    <menuitem id="menu_bhu_screenshot_log"
+              name="Screenshot Audit Log"
+              parent="menu_bhu_users_maai_menu"
+              action="action_bhu_screenshot_log"
+              sequence="20"
+              groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
+    <record id="menu_bhu_screenshot_log" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('bhukhadan_core.group_bhuarjan_admin'), ref('base.group_system')])]"/>
+    </record>
     <menuitem id="menu_bhu_reporting" name="Reporting Section" parent="menu_bhu_root" sequence="8" groups="bhukhadan_core.group_bhuarjan_admin,base.group_system"/>
     <record id="menu_bhu_reporting" model="ir.ui.menu">
         <field name="groups_id" eval="[(6, 0, [ref('bhukhadan_core.group_bhuarjan_admin'), ref('base.group_system')])]"/>

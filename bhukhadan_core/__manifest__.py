@@ -1,6 +1,6 @@
 {
     'name': 'BhuKhadan',
-    'version': '18.0.1.6.0',
+    'version': '18.0.1.7.2',
     'summary': 'BhuKhadan — Coal Bearing & Land Acquisition Management System.',
     'sequence':'-1',
     'description':'Digitize end-to-end land acquisition under the Coal Bearing Areas (Acquisition & Development) Act, 1957 and RFCTLARR Act, 2013 — from notification through award, ensuring transparency, traceability, and accountability.',
@@ -132,6 +132,7 @@
         'views/settings_master_views.xml',
         'views/jwt_token_views.xml',
         'views/mobile_otp_views.xml',
+        'views/screenshot_log_views.xml',
         'wizard/payment_voucher_generate_wizard_views.xml',
         'wizard/time_savings_report_wizard_views.xml',
         'wizard/report_wizard.xml',
@@ -171,6 +172,8 @@
             'bhukhadan_core/static/src/css/bhu_terms_acceptance.css',
             'bhukhadan_core/static/src/js/bhu_terms_acceptance.js',
             'bhukhadan_core/static/src/js/login_as_banner.js',
+            'bhukhadan_core/static/src/css/screenshot_watermark.css',
+            'bhukhadan_core/static/src/js/screenshot_watermark.js',
             'bhukhadan_core/static/src/css/dashboard.css',
             # Dashboard files - organized in separate folders
             'bhukhadan_core/static/src/dashboard/css/admin_dashboard.css',

@@ -9,6 +9,7 @@ import '../utils/storage.dart';
 import '../constants/api_constants.dart';
 import '../services/api_service.dart';
 import '../navigation/bottom_navigation.dart';
+import '../services/screenshot_audit_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -41,6 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
+    ScreenshotAuditService.instance.setContext(screenName: 'Login', clearSurvey: true);
     smartAuth = SmartAuth();
     smsRetriever = SmsRetrieverImpl(smartAuth);
   }
@@ -149,6 +151,8 @@ class _LoginScreenState extends State<LoginScreen> {
           await setAsyncItem(USER_NAME_KEY, data['user_name'] ?? data['name'] ?? '');
           await setAsyncItem(USER_PHONE_KEY, _phoneController.text.trim());
           
+          if (!mounted) return;
+          await ScreenshotAuditService.instance.flushQueue();
           if (!mounted) return;
           Navigator.of(context).pushAndRemoveUntil(
              MaterialPageRoute(builder: (_) => const BottomNavigation()),

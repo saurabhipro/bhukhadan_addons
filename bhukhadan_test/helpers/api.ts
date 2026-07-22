@@ -60,4 +60,5 @@ export const Endpoints = {
   surveyDetail: '/api/bhukhadan/survey/detail',
   surveyById: (id: number | string) => `/api/bhukhadan/survey/${id}`,
   surveyOwners: (id: number | string) => `/api/bhukhadan/survey/${id}/owners`,
+  screenshotAudit: '/api/bhukhadan/audit/screenshot',
 } as const;

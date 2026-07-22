@@ -15,6 +15,7 @@ import '../components/photo_picker_modal.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:io';
 import 'dart:async';
+import '../services/screenshot_audit_service.dart';
 
 class SurveyListScreen extends StatefulWidget {
   final bool isActive;
@@ -69,6 +70,7 @@ class _SurveyListScreenState extends State<SurveyListScreen> {
   @override
   void initState() {
     super.initState();
+    ScreenshotAuditService.instance.setContext(screenName: 'Survey List', clearSurvey: true);
     _activeFilter = globalSurveyFilter;
     _scrollController.addListener(_onScroll);
     _loadInitialData();

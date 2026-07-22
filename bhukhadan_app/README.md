@@ -47,3 +47,9 @@ The APK will be found at: `build/app/outputs/flutter-apk/app-release.apk`.
 ```bash
 flutter build appbundle
 ```
+
+## Screenshot audit / blocking
+
+- **Android**: `FLAG_SECURE` is enabled on the app window so system screenshots are blank/blocked. Detection of a successful capture is limited on Android; blocked captures are the primary protection.
+- **iOS**: Screenshots are **detected** via `userDidTakeScreenshotNotification` and reported to Odoo. iOS does not provide an equivalent of Android `FLAG_SECURE` for fully blocking screenshots of the app UI.
+- Detected events show a brief “Screenshot recorded for audit” snackbar, queue offline, and POST to `/api/bhukhadan/audit/screenshot`.
